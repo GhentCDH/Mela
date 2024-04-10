@@ -1,0 +1,20 @@
+# Backend project
+backend
+
+# Frontend project
+frontend
+
+
+#do not index database data file
+db/data
+db
+
+# Local env files
+#.env
+.env.*
+!.env.example
+
+# Misc
+.DS_Store
+.fleet
+.idea
