@@ -24,8 +24,8 @@ services:
       - ./backend:/app
       - ~/.docker/mounts/mela/bakend/homedir:/root
     environment:
-      BACKEND_DB_CONNECTION_STRING: "postgresql+asyncpg://${DATABASE_APP_USER}:${DATABASE_APP_PASSWORD}@${DATABASE_APP_HOST}/${DATABASE_APP_DBNAME}"
-      BACKEND_DB_TEST_CONNECTION_STRING: "postgresql+asyncpg://${DATABASE_TEST_USER}:${DATABASE_TEST_PASSWORD}@${DATABASE_TEST_HOST}/${DATABASE_TEST_DBNAME}"
+      BACKEND_DB_CONNECTION_STRING: "postgresql+asyncpg://${DATABASE_APP_USERNAME}:${DATABASE_APP_PASSWORD}@${DATABASE_APP_HOST}/${DATABASE_APP_DBNAME}"
+      BACKEND_DB_TEST_CONNECTION_STRING: "postgresql+asyncpg://${DATABASE_NAME}:${DATABASE_TEST_PASSWORD}@${DATABASE_TEST_HOST}/${DATABASE_TEST_DBNAME}"
       BACKEND_KEYCLOAK_ISSUER: $BACKEND_KEYCLOAK_ISSUER
       BACKEND_KEYCLOAK_CLIENT_ID: $BACKEND_KEYCLOAK_CLIENT_ID
       BACKEND_KEYCLOAK_REALM: $BACKEND_KEYCLOAK_REALM
@@ -48,10 +48,11 @@ services:
     tmpfs: /tmp # to avoid a problem with lingering tmp files related to server PID
     volumes:
       - ./frontend:/app
+      - /app/node_modules
       - ~/.docker/mounts/mela/app/frontend/homedir:/root
     environment:
-      FRONTEND_BACKEND_SCHEMA_URL: "http://backend:${BACKEND_INTERNAL_TCP_PORT}/schema/**" # For nuxt reverse proxy
-      FRONTEND_BACKEND_API_URL: "http://backend:${BACKEND_INTERNAL_TCP_PORT}/api/**" # For nuxt reverse proxy
+      FRONTEND_BACKEND_SCHEMA_URL: "http://mela.backend:${BACKEND_INTERNAL_TCP_PORT}/schema/**" # For nuxt reverse proxy
+      FRONTEND_BACKEND_API_URL: "http://mela.backend:${BACKEND_INTERNAL_TCP_PORT}/api/**" # For nuxt reverse proxy
       AUTH_ORIGIN: $FRONTEND_AUTH_ORIGIN
       NUXT_AUTH_SECRET: $FRONTEND_NEXT_AUTH_SECRET
       FRONTEND_KEYCLOAK_CLIENT_ID: $BACKEND_KEYCLOAK_CLIENT_ID
@@ -79,7 +80,7 @@ services:
       -  ~/.docker/mounts/mela/elasticsearch:/usr/share/elasticsearch/data
 
   authentication:
-    image: keycloak/keycloak:24.0.1
+    image: keycloak/keycloak:24.0.2
     container_name: mela.keycloak
     deploy:
       resources:
@@ -107,7 +108,7 @@ services:
   
   database_app:
     image: postgres:16.2-bookworm
-    container_name: mela.data.app
+    container_name: $DATABASE_APP_HOST
     deploy:
       resources:
         limits:
@@ -119,19 +120,19 @@ services:
         - pg_isready 
         - --dbname=$DATABASE_APP_DBNAME
         - --username=$DATABASE_APP_USERNAME
-      retries: 5
+      retries: 3
     ports:
       - "127.0.0.1:${DATABASE_APP_EXTERNAL_TCP_PORT}:${DATABASE_APP_INTERNAL_TCP_PORT}"
     volumes:
       - ~/.docker/mounts/mela/data/app:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: $DATABASE_APP_USER
+      POSTGRES_USER: $DATABASE_APP_USERNAME
       POSTGRES_PASSWORD: $DATABASE_APP_PASSWORD
       POSTGRES_DB: $DATABASE_APP_DBNAME
 
   database_test:
     image: postgres:16.2-bookworm
-    container_name: mela.data.test
+    container_name: $DATABASE_TEST_HOST
     deploy:
       resources:
         limits:
@@ -143,7 +144,7 @@ services:
         - pg_isready 
         - --username=$DATABASE_TEST_USERNAME
         - --dbname=$DATABASE_TEST_DBNAME
-      retries: 5
+      retries: 3
     volumes:
       - ~/.docker/mounts/mela/data/test:/var/lib/postgresql/data
     environment:
@@ -153,7 +154,7 @@ services:
 
   database_auth:
     image: postgres:16.2-bookworm
-    container_name: mela.data.auth
+    container_name: $DATABASE_AUTH_HOST
     deploy:
       resources:
         limits:
@@ -165,7 +166,7 @@ services:
         - pg_isready 
         - --username=$DATABASE_AUTH_USERNAME
         - --dbname=$DATABASE_AUTH_DBNAME
-      retries: 5
+      retries: 3
     volumes:
       -  ~/.docker/mounts/mela/data/auth:/var/lib/postgresql/data
     environment:
