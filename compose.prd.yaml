@@ -12,9 +12,7 @@ services:
           memory: "2G"
     build:
       context: backend
-      target: dev
-      
-    #before starting the backend, we need to make sure that the authentication service is up and running and healthy
+      target: prd
     depends_on:
       authentication: 
           condition: service_healthy
@@ -33,8 +31,8 @@ services:
     command: $BACKEND_COMMAND
 
   frontend:
-    image: $FRONTEND_HOSTNAME
-    container_name: $FRONTEND_HOSTNAME
+    image: ${FRONTEND_HOSTNAME}.prd
+    container_name: ${FRONTEND_HOSTNAME}.prd
     deploy:
       resources:
         limits:
@@ -42,15 +40,9 @@ services:
           memory: "2G"
     build:
       context: frontend
-      target: dev
+      target: prd
     ports:
-      - "127.0.0.1:${FRONTEND_EXTERNAL_TCP_PORT}:${FRONTEND_INTERNAL_TCP_PORT}"
-    tmpfs: /tmp # to avoid a problem with lingering tmp files related to server PID
-    volumes:
-      - ${STORE_DIR}/frontend/homedir:/root
-      - ./frontend:/app
-      - /app/node_modules
-      
+      - "127.0.0.1:${FRONTEND_EXTERNAL_TCP_PORT}:${FRONTEND_INTERNAL_TCP_PORT}"      
     environment:
       FRONTEND_BACKEND_SCHEMA_URL: "http://${BACKEND_HOSTNAME}:${BACKEND_INTERNAL_TCP_PORT}/schema/**" # For nuxt reverse proxy
       FRONTEND_BACKEND_API_URL: "http://${BACKEND_HOSTNAME}:${BACKEND_INTERNAL_TCP_PORT}/api/**" # For nuxt reverse proxy
@@ -59,26 +51,7 @@ services:
       FRONTEND_KEYCLOAK_CLIENT_ID: $KEYCLOAK_CLIENT_ID
       FRONTEND_KEYCLOAK_CLIENT_SECRET: $KEYCLOAK_CLIENT_SECRET
       FRONTEND_KEYCLOAK_ISSUER: $FRONTEND_KEYCLOAK_ISSUER
-    command: $FRONTEND_COMMAND
-  
-  # elasticsearch:
-  #   image: elasticsearch:8.13.0
-  #   container_name: $ELASTICSEARCH_HOSTNAME
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: "1"
-  #         memory: "1G"
-  #   ports:
-  #     - "127.0.0.1:9200:9200"
-  #   environment:
-  #     - ELASTIC_PASSWORD=elastic_password
-  #     - discovery.type=single-node
-  #     - xpack.security.enabled=false
-  #     - xpack.security.http.ssl.enabled=false
-  #     - xpack.security.transport.ssl.enabled=false
-  #   volumes:
-  #     -  $STORE_DIR/elasticsearch:/usr/share/elasticsearch/data
+    command: bash -c "node .output/server/index.mjs" ]
 
   authentication:
     image: keycloak/keycloak:24.0.2

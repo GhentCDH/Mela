@@ -23,3 +23,9 @@ docker compose -f compose.dev.yaml up
 Make sure the following is added to your hosts file
 
 echo "127.0.0.1 mela.keycloak\n127.0.0.1 mela.frontend\n" | sudo tee -a /etc/hosts
+
+# credits
+
+Pieterjan De Potter, Joren Six @ GhentCDH, Ghent University.
+
+Development partly funded by the MELA project. MELA has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 101001328)
