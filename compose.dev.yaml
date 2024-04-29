@@ -18,6 +18,8 @@ services:
     depends_on:
       authentication: 
           condition: service_healthy
+      database_app: 
+          condition: service_healthy
     ports:
       - "127.0.0.1:${BACKEND_EXTERNAL_TCP_PORT}:${BACKEND_INTERNAL_TCP_PORT}"
     volumes:
