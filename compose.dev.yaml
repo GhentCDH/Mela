@@ -81,7 +81,7 @@ services:
   #     -  $STORE_DIR/elasticsearch:/usr/share/elasticsearch/data
 
   authentication:
-    image: keycloak/keycloak:24.0.2
+    image: keycloak/keycloak:25.0.5
     container_name: $KEYCLOAK_HOSTNAME
     deploy:
       resources:
@@ -108,7 +108,7 @@ services:
     command: start-dev
   
   database_app:
-    image: postgres:16.2-bookworm
+    image: postgres:16.4-bookworm
     container_name: $DATABASE_APP_HOST
     deploy:
       resources:
@@ -132,7 +132,7 @@ services:
       POSTGRES_DB: $DATABASE_APP_DBNAME
 
   database_test:
-    image: postgres:16.2-bookworm
+    image: postgres:16.4-bookworm
     container_name: $DATABASE_TEST_HOST
     deploy:
       resources:
@@ -154,7 +154,7 @@ services:
       POSTGRES_DB: $DATABASE_TEST_DBNAME
 
   database_auth:
-    image: postgres:16.2-bookworm
+    image: postgres:16.4-bookworm
     container_name: $DATABASE_AUTH_HOST
     deploy:
       resources:
