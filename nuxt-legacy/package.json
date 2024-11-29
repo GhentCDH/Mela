@@ -1,0 +1,39 @@
+{
+  "name": "mela-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "lint:js": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
+    "lint:prettier": "prettier --check .",
+    "lint": "pnpm run lint:js && pnpm run lint:prettier",
+    "lintfix": "prettier --write --list-different . && pnpm run lint:js --fix"
+  },
+  "devDependencies": {
+    "@formkit/core": "^1.6.7",
+    "@formkit/vue": "^1.6.7",
+    "@sfxcode/formkit-primevue": "^2.4.12",
+    "@typescript-eslint/eslint-plugin": "^8.6.0",
+    "@typescript-eslint/parser": "^8.6.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.1",
+    "bootstrap": "^5.3.3",
+    "eslint": "^9.11.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.0.7",
+    "sass": "^1.79.3",
+    "typescript": "^5.6.2",
+    "vue-router": "^4.4.5"
+  },
+  "dependencies": {
+    "@ghentcdh/vue-component-annotated-text": "^0.3.0",
+    "vue": "^3.5.8"
+  },
+  "packageManager": "pnpm@9.0.1+sha256.46d50ee2afecb42b185ebbd662dc7bdd52ef5be56bf035bb615cab81a75345df"
+}

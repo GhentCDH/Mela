@@ -4,6 +4,10 @@ backend
 # Frontend project
 frontend
 
+backendjs/node_modules
+
+backendjs/dist
+
 # Local env files
 #.env
 .env.*

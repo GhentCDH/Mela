@@ -60,7 +60,26 @@ services:
       FRONTEND_KEYCLOAK_CLIENT_SECRET: $KEYCLOAK_CLIENT_SECRET
       FRONTEND_KEYCLOAK_ISSUER: $FRONTEND_KEYCLOAK_ISSUER
     command: $FRONTEND_COMMAND
-  
+
+
+  jsbackend:
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2G"
+    build:
+      context: jsbackend
+      target: dev
+    ports:
+      - "127.0.0.1:4000:3000"
+    tmpfs: /tmp # to avoid a problem with lingering tmp files related to server PID
+    volumes:
+      - ${STORE_DIR}/frontend/homedir:/root
+      - ./backendjs:/app
+      - /app/node_modules
+    command: sleep infinity
+
   # elasticsearch:
   #   image: elasticsearch:8.13.0
   #   container_name: $ELASTICSEARCH_HOSTNAME
@@ -95,7 +114,7 @@ services:
       - "127.0.0.1:${KEYCLOAK_EXTERNAL_TCP_PORT}:${KEYCLOAK_INTERNAL_TCP_PORT}"
     healthcheck:
       # since keycloak does not have wget or curl, we need to use java to check the health, from here, thanks @sarath-soman https://gist.github.com/sarath-soman/5d9aec06953bbd0990c648605d4dba07
-      test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/health/live']
+      test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/health/live']
       retries: 3
     environment:
       - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN_USERNAME
@@ -104,7 +123,7 @@ services:
       - KC_DB_URL=jdbc:postgresql://$DATABASE_AUTH_HOST/$DATABASE_AUTH_DBNAME
       - KC_DB_USERNAME=$DATABASE_AUTH_USERNAME
       - KC_DB_PASSWORD=$DATABASE_AUTH_PASSWORD
-      - KC_HEALTH_ENABLED=true # enable health check at /health/live
+      - KC_HEALTH_ENABLED=$KEYCLOAK_HEALTH_ENABLED # enable health check at /health/live
     command: start-dev
   
   database_app:

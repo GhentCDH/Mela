@@ -17,12 +17,14 @@ The platform consists of a bunch of Docker containers which each have some funct
 Check the configuration in the `.env` variables file and run Docker compose:
 
 ```sh
-docker compose -f compose.dev.yaml up
+docker compose up
 ```
 
 Make sure the following is added to your hosts file
 
+```sh
 echo "127.0.0.1 mela.keycloak\n127.0.0.1 mela.frontend\n" | sudo tee -a /etc/hosts
+```
 
 # credits
 

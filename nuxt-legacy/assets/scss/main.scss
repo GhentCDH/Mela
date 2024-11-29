@@ -1,0 +1,10 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/containers";
+@import "@sfxcode/formkit-primevue/dist/sass/formkit-primevue.scss";
+
+@import "edit";
+@import "lists";
+@import "pages";
+@import "scroll";

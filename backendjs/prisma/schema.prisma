@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model author {
+  name       String    @db.VarChar @unique
+  id         BigInt    @id(map: "pk_author") @default(autoincrement())
+  created_at DateTime  @db.Timestamp(6) @default(now())
+  updated_at DateTime  @db.Timestamp(6) @updatedAt
+  edition    edition[]
+}
+
+model edition {
+  author_id           BigInt?
+  name                String                @db.VarChar
+  year                Int
+  id                  BigInt                @id(map: "pk_edition") @default(autoincrement())
+  created_at          DateTime              @db.Timestamp(6) @default(now())
+  updated_at          DateTime              @db.Timestamp(6) @updatedAt
+  author              author?               @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_edition_author_id_author")
+  edition__manuscript edition__manuscript[]
+  phrase              phrase[]
+}
+
+model edition__manuscript {
+  manuscript_id BigInt
+  edition_id    BigInt
+  id            BigInt     @id(map: "pk_edition__manuscript") @default(autoincrement())
+  created_at    DateTime   @db.Timestamp(6) @default(now())
+  updated_at    DateTime   @db.Timestamp(6) @updatedAt
+  edition       edition    @relation(fields: [edition_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_edition__manuscript_edition_id_edition")
+  manuscript    manuscript @relation(fields: [manuscript_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_edition__manuscript_manuscript_id_manuscript")
+}
+
+model manuscript {
+  name                String                @db.VarChar
+  id                  BigInt                @id(map: "pk_manuscript") @default(autoincrement())
+  created_at          DateTime              @db.Timestamp(6) @default(now())
+  updated_at          DateTime              @db.Timestamp(6) @updatedAt
+  edition__manuscript edition__manuscript[]
+}
+
+model phrase {
+  edition_id          BigInt?
+  phrase_order        Int
+  extra_field         String   @db.VarChar
+  mela_identifier     String   @db.VarChar
+  external_identifier String   @db.VarChar
+  content             String   @db.VarChar
+  translation         String   @db.VarChar
+  id                  BigInt   @id(map: "pk_phrase") @default(autoincrement())
+  created_at          DateTime @db.Timestamp(6) @default(now())
+  updated_at          DateTime @db.Timestamp(6) @updatedAt
+  edition             edition? @relation(fields: [edition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_phrase_edition_id_edition")
+}
+
+model location {
+  id          BigInt  @id(map: "pk_location") @default(autoincrement())
+  latitude    Float
+  longitude   Float
+  name        String  @db.VarChar
+}
+
+model register {
+  name String @db.VarChar
+  id   BigInt @id(map: "pk_register") @default(autoincrement())
+}

@@ -1,6 +1,6 @@
 {
     "name": "Mela back-end",
-    "dockerComposeFile": ["../../compose.dev.yaml"],
+    "dockerComposeFile": ["../../compose.yaml"],
     "service": "backend",
     "shutdownAction": "none",
     "workspaceFolder": "/app"
