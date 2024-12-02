@@ -1,0 +1,40 @@
+{
+  "realm": "mela-realm",
+  "displayName": "Mela realm",
+  "users": [
+    {
+      "username":"user",
+      "firstName":"Example",
+      "lastName":"User",
+      "email":"example@keycloak.org",
+      "enabled":true,
+      "credentials":[
+        {
+          "type":"password",
+          "value":"password"
+        }
+      ],
+      "clientRoles":{
+        "account":[
+          "admin"
+        ]
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "id": "ff805070-808f-4ba4-8673-bcd4247249b2",
+        "name": "admin",
+        "description": "Generic admin role.",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "1427c8c3-5062-4015-816c-a241182ccb64"
+      }
+    ]
+  },
+  "groups": [],
+  "requiredCredentials": [
+    "password"
+  ]
+}
