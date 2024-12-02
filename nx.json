@@ -15,7 +15,6 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "674d813f7cf8fa3c7677d205",
   "plugins": [
     {
       "plugin": "@nx/eslint/plugin",
