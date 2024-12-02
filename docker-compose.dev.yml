@@ -68,7 +68,10 @@ services:
       service: database
     healthcheck:
       test:
-        ["CMD", "pg_isready -U", $DATABASE_APP_USERNAME," -d", $DATABASE_APP_DBNAME]
+        - CMD
+        - pg_isready
+        - --username=$DATABASE_APP_USERNAME
+        - --dbname=$DATABASE_APP_DBNAME
       retries: 3
     ports:
       - "127.0.0.1:${DATABASE_APP_EXTERNAL_TCP_PORT}:${DATABASE_APP_INTERNAL_TCP_PORT}"
@@ -109,3 +112,7 @@ services:
       environment:
         - NGINX_HOST=foobar.com
         - NGINX_PORT=80
+
+      depends_on:
+        - frontend
+        - backend
