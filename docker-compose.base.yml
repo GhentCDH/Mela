@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nx-app-base-dev:
+    restart: always
+    build:
+      context: .
+      dockerfile: $PWD/docker/dev/Dockerfile
+      target: node-dev
+    environment:
+      - DEV_PLATFORM=DOCKER
+    volumes:
+      - ./:/app
+      - /app/node_modules
+  database:
+    image: postgres:latest
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "256M"
