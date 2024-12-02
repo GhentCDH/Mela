@@ -3,8 +3,6 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "frontend:docker": "nx serve frontend --host=0.0.0.0",
-    "backend:docker": "nx serve backend"
   },
   "private": true,
   "dependencies": {
