@@ -1,0 +1,94 @@
+
+services:
+
+  frontend:
+    container_name: mela.app.frontend
+    extends:
+      file:  docker-compose.base.yml
+      service: nx-app-base-dev
+    command: pnpm run frontend:docker
+
+  backend:
+    container_name: mela.app.backend
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base-dev
+    command: pnpm run backend:docker
+    depends_on:
+      - database_app
+
+  authentication:
+    container_name: mela.keycloak
+    image: keycloak/keycloak:25.0.5
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2G"
+    depends_on:
+      - database_auth
+#        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:${KEYCLOAK_INTERNAL_TCP_PORT}"
+    healthcheck:
+      # since keycloak does not have wget or curl, we need to use java to check the health, from here, thanks @sarath-soman https://gist.github.com/sarath-soman/5d9aec06953bbd0990c648605d4dba07
+      test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/health/live']
+      retries: 3
+    environment:
+      - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN_USERNAME
+      - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://$DATABASE_AUTH_HOST/$DATABASE_AUTH_DBNAME
+      - KC_DB_USERNAME=$DATABASE_AUTH_USERNAME
+      - KC_DB_PASSWORD=$DATABASE_AUTH_PASSWORD
+      - KC_HEALTH_ENABLED=$KEYCLOAK_HEALTH_ENABLED # enable health check at /health/live
+    command: start-dev
+#     Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+#     (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  database_app:
+    container_name: mela.data.app
+    extends:
+      file: docker-compose.base.yml
+      service: database
+    healthcheck:
+      test:
+        ["CMD", "pg_isready -U $DATABASE_APP_USERNAME -d $DATABASE_APP_DBNAME"]
+      retries: 3
+    ports:
+      - "127.0.0.1:${DATABASE_APP_EXTERNAL_TCP_PORT}:${DATABASE_APP_INTERNAL_TCP_PORT}"
+    volumes:
+      - $STORE_DIR/data/app:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: $DATABASE_APP_USERNAME
+      POSTGRES_PASSWORD: $DATABASE_APP_PASSWORD
+      POSTGRES_DB: $DATABASE_APP_DBNAME
+
+  database_auth:
+    container_name: mela.data.auth
+    extends:
+      file: docker-compose.base.yml
+      service: database
+    healthcheck:
+      test:
+        [ "CMD", "pg_isready -U $DATABASE_AUTH_USERNAME -d $DATABASE_AUTH_DBNAME" ]
+      retries: 3
+    volumes:
+      -  $STORE_DIR/data/auth:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: $DATABASE_AUTH_USERNAME
+      POSTGRES_PASSWORD: $DATABASE_AUTH_PASSWORD
+      POSTGRES_DB: $DATABASE_AUTH_DBNAME
+
+
+  nginx:
+      container_name: mela.app
+      image: nginx
+      restart: always
+      volumes:
+        - ./docker/dev/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - "4000:80"
+      environment:
+        - NGINX_HOST=foobar.com
+        - NGINX_PORT=80

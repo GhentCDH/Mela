@@ -4,21 +4,25 @@ A text tagging and translation platform developed for the research project [MELA
 
 ## Components
 
-The platform consists of a bunch of Docker containers which each have some functionality:
+The platform is a monorepo created with nx, and some docker containers to run the services. The main components are:
 
-* Front-end: A Nuxt front-end with an SSR component for server side rendering and authentication callbacks. 
-* Back-end: a Python back-end based on litestar.
+* Frontend: a VUEjs frontend.
+* Backend: a node backend based on NestJs.
 * Database: A PostgreSQL dababase to store the application data.
 * Authentication service: Keycloak provides user authentication and management. It also integrates with the several identity providers such as the Ghent University identity provider.
-* Elasticsearch service: provides a way to quickly do full-text or faceted search.
+* nginx: To ensure the por
+
+* (TODO) Elasticsearch service: provides a way to quickly do full-text or faceted search.
 
 ## Running and development
 
 Check the configuration in the `.env` variables file and run Docker compose:
 
 ```sh
-docker compose up
+docker compose -f docker-compose.dev.yml up --build  
 ```
+
+The app is served on: [http://mela.frontend](http://mela.frontend)
 
 Make sure the following is added to your hosts file
 
@@ -28,6 +32,6 @@ echo "127.0.0.1 mela.keycloak\n127.0.0.1 mela.frontend\n" | sudo tee -a /etc/hos
 
 # credits
 
-Pieterjan De Potter, Joren Six @ GhentCDH, Ghent University.
+Pieterjan De Potter, Joren Six @ GhentCDH, Bo Vandersteene, Ghent University.
 
 Development partly funded by the MELA project. MELA has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 101001328)

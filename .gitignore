@@ -1,19 +1,47 @@
-# Backend project
-backend
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Frontend project
-frontend
+# compiled output
+dist
+tmp
+/out-tsc
 
-backendjs/node_modules
+# dependencies
+node_modules
 
-backendjs/dist
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# Local env files
-#.env
-.env.*
-!.env.example
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# Misc
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
 .DS_Store
-.fleet
-.idea
+Thumbs.db
+
+.nx/cache
+.nx/workspace-data
+
+vite.config.*.timestamp*
+
+generated
+var
