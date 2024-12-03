@@ -4,7 +4,6 @@ import Keycloak from 'keycloak-js';
 export class KeycloackAdapter {
 
     private constructor(private readonly keycloak: Keycloak) {
-
     }
 
     private async initKeycloack() {
