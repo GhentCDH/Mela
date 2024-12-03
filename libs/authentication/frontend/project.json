@@ -1,0 +1,9 @@
+{
+  "name": "authentication-frontend",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/authentication/frontend/src",
+  "projectType": "library",
+  "tags": ["frontend feature"],
+  "// targets": "to see all targets run: nx show project authentication-frontend --web",
+  "targets": {}
+}

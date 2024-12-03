@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ghentcdh/authentication/api": ["libs/authentication/api/src/index.ts"],
+      "@ghentcdh/authentication/frontend": [
+        "libs/authentication/frontend/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
