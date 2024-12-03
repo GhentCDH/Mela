@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import {KeycloackAdapter} from "./keycloack.adapter";
+import {KeycloakAdapter} from "./keycloak.adapter";
 
 const AUTH_STORE_NAME = 'GHENT_CDH_AUTH_STORE';
 
@@ -10,8 +10,9 @@ export const useAuthenticationStore = defineStore(AUTH_STORE_NAME, () => {
     const isAuthenticated = ref(false);
 
 
-    const keycloackAdapter = ref<KeycloackAdapter>()
-    KeycloackAdapter.init().then(adapter => {
+    const keycloackAdapter = ref<KeycloakAdapter>();
+
+    KeycloakAdapter.init().then(adapter => {
         isAuthenticated.value = adapter.isAuthenticated;
         keycloackAdapter.value = adapter;
 

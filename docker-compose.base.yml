@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nx-app-base-dev:
-    restart: always
+    #    restart: always
     build:
       context: .
       dockerfile: $PWD/docker/dev/Dockerfile

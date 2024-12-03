@@ -9,22 +9,31 @@ services:
       service: nx-app-base-dev
     ports:
       - "4200:4200"
+    #    command: sleep infinity
     command: npx nx run frontend:serve --host=0.0.0.0
-  #    depends_on:
-  #      backend:
-  #        condition: service_healthy
+    #    depends_on:
+    #      backend:
+    #        condition: service_healthy
+
+    environment:
+      - KEYCLOAK_HOST=http://localhost:8080/
+      - KEYCLOAK_REALM=mela-realm
+      - KEYCLOAK_CLIENT_ID:"mela-client
 
   backend:
     container_name: mela.app.backend
     extends:
       file: docker-compose.base.yml
       service: nx-app-base-dev
-    command: npx nx serve backend
+    command: npx nx serve backend --host=0.0.0.0
     environment:
       - DATABASE=postgres
       - DATABASE_URL=jdbc:postgresql://$DATABASE_APP_HOST/$DATABASE_APP_DBNAME
       - DATABASE_USERNAME=$DATABASE_APP_USERNAME
       - DATABASE_PASSWORD=$DATABASE_APP_PASSWORD
+      # we need this internal redirect to the keycloak container
+      - KEYCLOAK_HOST=http://127.0.0.1:8080/
+      - KEYCLOAK_REALM=mela-realm
     ports:
       - "3000:3000"
     depends_on:
@@ -117,3 +126,8 @@ services:
     depends_on:
       - frontend
       - backend
+
+networks:
+  default:
+    name: dev_network
+    driver: bridge

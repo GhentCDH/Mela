@@ -1,14 +1,12 @@
 import {Module} from '@nestjs/common';
-import {AuthService} from "./auth.service";
-import {LocalStrategy} from "./local.strategy";
 import {LoginController} from "./login.controller";
 import {HttpModule} from "@nestjs/axios";
+import {ConfigModule} from "@nestjs/config";
 
 @Module({
-    imports: [HttpModule
-    ],
+    imports: [HttpModule, ConfigModule],
     controllers: [LoginController],
-    providers: [AuthService, LocalStrategy],
+    providers: [],
     exports: [],
 })
 export class AuthenticationApiModule {
