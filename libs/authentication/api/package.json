@@ -5,11 +5,12 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "passport": "0.7.x",
-    "passport-jwt": "4.x.x"
+    "@nestjs/common": "^10.0.2",
+    "rxjs": "^7.8.0",
+    "@nestjs/axios": "^3.1.2",
+    "@nestjs/config": "^3.3.0"
   },
   "devDependencies": {
-    "@types/passport-jwt": "4.0.1"
   },
   "type": "commonjs",
   "main": "./src/index.js",
