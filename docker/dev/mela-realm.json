@@ -49,6 +49,15 @@
   "roles": {
     "realm": [
       {
+        "id": "661ada3a-c69b-4c47-8368-79ef8c41cef8",
+        "name": "test_bo",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "2a92097e-9a60-4080-846a-986ccd85dfd3",
+        "attributes": {}
+      },
+      {
         "id": "111a1903-7875-443b-9866-21aea35ab90e",
         "name": "default-roles-mela_realm",
         "description": "${role_default-roles}",
@@ -673,6 +682,7 @@
         "http://localhost:4000/*"
       ],
       "webOrigins": [
+        "http://172.18.0.5",
         "http://localhost:4200",
         "http://localhost:4000"
       ],
@@ -689,7 +699,7 @@
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4000/*",
+        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4000/*##http://localhost:3000/*",
         "display.on.consent.screen": "false",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
