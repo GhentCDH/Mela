@@ -69,7 +69,7 @@ services:
       - KC_DB_PASSWORD=$DATABASE_AUTH_PASSWORD
       - KC_HEALTH_ENABLED=$KEYCLOAK_HEALTH_ENABLED # enable health check at /health/live
       - KC_HOSTNAME=authentication
-    command: start-dev
+    command: start-dev --import-realm
     # --import-realm
     # --realm-import-file=/opt/keycloak/data/import/mela-realm.json
     volumes:
