@@ -12,3 +12,6 @@ RUN corepack enable
 RUN corepack prepare pnpm --activate
 
 RUN pnpm install
+
+
+#RUN sleep infinity&
