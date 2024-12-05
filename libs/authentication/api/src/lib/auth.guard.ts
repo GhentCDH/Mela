@@ -20,23 +20,20 @@ export class GhentCdhGuard implements CanActivate {
         const authorization = request.headers.authorization;
 
         if (authorization) {
-            const keycloakHost = this.configService.get('KEYCLOAK_HOST')
+            const keycloakHost = this.configService.get('KEYCLOAK_HOST');
             const realmName = this.configService.get('KEYCLOAK_REALM')
+            console.log(keycloakHost, realmName)
 
-            const keycloakHost_ = "http://localhost:8080/"
-
-            console.log(keycloakHost_)
-            console.log(keycloakHost)
-            console.log(realmName)
-            console.log('http://localhost:8080/realms/mela-realm/protocol/openid-connect/userinfo')
             const url = `${keycloakHost}realms/${realmName}/protocol/openid-connect/userinfo`
-            console.log(url)
+
             return firstValueFrom(this.httpService.get(url, {
                 headers: {
                     // add the token you received to the userinfo request, sent to keycloak
                     Authorization: authorization,
+                    ' X-Forwarded-Host': 'localhost:8080',
                 },
             })).then((response) => {
+                console.log(response.status)
                 // if the request status isn't "OK", the token is invalid
                 if (response.status !== 200) {
                     throw new UnauthorizedException()
@@ -47,7 +44,8 @@ export class GhentCdhGuard implements CanActivate {
 
                 return true
             }).catch((error) => {
-                console.log('error', error)
+                console.log('an error')
+                console.error(error)
                 throw new UnauthorizedException()
             });
         }

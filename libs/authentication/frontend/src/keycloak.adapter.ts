@@ -2,17 +2,17 @@ import Keycloak from 'keycloak-js';
 
 
 export class KeycloakAdapter extends Keycloak {
-    private readonly keycloak: Keycloak
+
 
     private constructor() {
+        const {VITE_KEYCLOAK_REALM, VITE_KEYCLOAK_HOST, VITE_KEYCLOAK_CLIENT_ID} = import.meta.env;
+
         super({
-            // TODO through environment variables
-            url: "http://localhost:8080/",
-            realm: "mela-realm",
-            clientId: "mela-client"
+            url: VITE_KEYCLOAK_HOST,
+            realm: VITE_KEYCLOAK_REALM,
+            clientId: VITE_KEYCLOAK_CLIENT_ID
         })
 
-        console.log(import.meta.env)
     }
 
     private async initialize() {

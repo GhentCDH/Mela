@@ -9,16 +9,16 @@ services:
       service: nx-app-base-dev
     ports:
       - "4200:4200"
-    #    command: sleep infinity
-    command: npx nx run frontend:serve --host=0.0.0.0
+    command: sleep infinity
+    #    command: npx nx run frontend:serve --host=0.0.0.0
     #    depends_on:
     #      backend:
     #        condition: service_healthy
 
     environment:
-      - KEYCLOAK_HOST=http://localhost:8080/
-      - KEYCLOAK_REALM=mela-realm
-      - KEYCLOAK_CLIENT_ID:"mela-client
+      - VITE_KEYCLOAK_HOST=$KEYCLOAK_HOST
+      - VITE_KEYCLOAK_REALM=$KEYCLOAK_REALM
+      - VITE_KEYCLOAK_CLIENT_ID=$KEYCLOAK_CLIENT_ID
 
   backend:
     container_name: mela.app.backend
@@ -32,11 +32,13 @@ services:
       - DATABASE_USERNAME=$DATABASE_APP_USERNAME
       - DATABASE_PASSWORD=$DATABASE_APP_PASSWORD
       # we need this internal redirect to the keycloak container
-      - KEYCLOAK_HOST=http://127.0.0.1:8080/
-      - KEYCLOAK_REALM=mela-realm
+      - KEYCLOAK_HOST=$KEYCLOAK_HOST
+      - KEYCLOAK_REALM=$KEYCLOAK_REALM
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
+      authentication:
+        condition: service_healthy
       database_app:
         condition: service_healthy
 
@@ -60,12 +62,16 @@ services:
     environment:
       - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN_USERNAME
       - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
+      - KC_FRONTEND_URL=$KEYCLOAK_HOST
       - KC_DB=postgres
       - KC_DB_URL=jdbc:postgresql://$DATABASE_AUTH_HOST/$DATABASE_AUTH_DBNAME
       - KC_DB_USERNAME=$DATABASE_AUTH_USERNAME
       - KC_DB_PASSWORD=$DATABASE_AUTH_PASSWORD
       - KC_HEALTH_ENABLED=$KEYCLOAK_HEALTH_ENABLED # enable health check at /health/live
+      - KC_HOSTNAME=authentication
     command: start-dev
+    # --import-realm
+    # --realm-import-file=/opt/keycloak/data/import/mela-realm.json
     volumes:
       - ./docker/dev/mela-realm.json:/opt/keycloak/data/import/mela-realm.json
   #     Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
@@ -84,6 +90,7 @@ services:
         - --dbname=$DATABASE_APP_DBNAME
       retries: 3
     ports:
+      #      - 8080:8080
       - "127.0.0.1:${DATABASE_APP_EXTERNAL_TCP_PORT}:${DATABASE_APP_INTERNAL_TCP_PORT}"
     volumes:
       - $STORE_DIR/data/app:/var/lib/postgresql/data
@@ -122,12 +129,8 @@ services:
     environment:
       - NGINX_HOST=foobar.com
       - NGINX_PORT=80
-
     depends_on:
       - frontend
       - backend
 
-networks:
-  default:
-    name: dev_network
-    driver: bridge
+
