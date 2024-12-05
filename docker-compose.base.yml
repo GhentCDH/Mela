@@ -8,8 +8,6 @@ services:
       context: .
       dockerfile: $PWD/docker/dev/Dockerfile
       target: node-dev
-    environment:
-      - DEV_PLATFORM=DOCKER
     volumes:
       - ./:/app
       - /app/node_modules

@@ -1,4 +1,4 @@
-import {Controller, Post, Request, UseGuards} from '@nestjs/common';
+import {Controller, Get, Post, Request, UseGuards} from '@nestjs/common';
 import {GhentCdhGuard} from "./auth.guard";
 import {User} from "./user";
 
@@ -9,6 +9,9 @@ export class LoginController {
     async login(@User() user: any, @Request() req: any) {
         return user;
     }
+
+    @Get('auth/login')
+    getLogin() {
+        return {test: 'Login abc'};
+    }
 }
-
-
