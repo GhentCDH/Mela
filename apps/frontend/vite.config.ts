@@ -11,6 +11,9 @@ export default defineConfig({
     server: {
         port: 4200,
         host: 'localhost',
+        watcher: {
+            ignored: ['*/**/vite.config.ts']
+        }
     },
     preview: {
         port: 4300,

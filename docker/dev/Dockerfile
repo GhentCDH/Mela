@@ -2,7 +2,7 @@ ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-slim as node-dev
 
-WORKDIR "/app"
+WORKDIR /app
 
 COPY package*.json ./
 COPY pnpm*.json ./
