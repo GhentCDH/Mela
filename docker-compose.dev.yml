@@ -4,13 +4,17 @@ services:
 
   frontend:
     container_name: mela.app.frontend
-    extends:
-      file: docker-compose.base.yml
-      service: nx-app-base-dev
+    build:
+      context: .
+      dockerfile: $PWD/docker/dev/Dockerfile
+      target: node-fe
+    volumes:
+      - ./:/app
+      - /app/node_modules
     ports:
       - "4200:4200"
     #    command: sleep infinity
-    command: npx nx run frontend:serve --host=0.0.0.0
+    #    command: npx vite serve
     #    depends_on:
     #      backend:
     #        condition: service_healthy
@@ -22,10 +26,13 @@ services:
 
   backend:
     container_name: mela.app.backend
-    extends:
-      file: docker-compose.base.yml
-      service: nx-app-base-dev
-    command: npx nx serve backend --host=0.0.0.0
+    build:
+      context: .
+      dockerfile: $PWD/docker/dev/Dockerfile
+      target: node-be
+    volumes:
+      - ./:/app
+      - /app/node_modules
     environment:
       - DATABASE=postgres
       - DATABASE_URL=jdbc:postgresql://$DATABASE_APP_HOST/$DATABASE_APP_DBNAME

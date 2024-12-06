@@ -10,7 +10,7 @@ export default defineConfig({
     cacheDir: '../../node_modules/.vite/apps/frontend',
     server: {
         port: 4200,
-        host: 'localhost',
+        host: '0.0.0.0',
         watcher: {
             ignored: ['*/**/vite.config.ts']
         }
