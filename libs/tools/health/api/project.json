@@ -1,0 +1,33 @@
+{
+  "name": "api",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/tools/health/api/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist/{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/tools/health/api",
+        "tsConfig": "libs/tools/health/api/tsconfig.lib.json",
+        "packageJson": "libs/tools/health/api/package.json",
+        "main": "libs/tools/health/api/src/index.ts",
+        "assets": ["libs/tools/health/api/*.md"]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
+  }
+}

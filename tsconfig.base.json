@@ -18,7 +18,8 @@
       "@ghentcdh/authentication/api": ["libs/authentication/api/src/index.ts"],
       "@ghentcdh/authentication/frontend": [
         "libs/authentication/frontend/src/index.ts"
-      ]
+      ],
+      "@ghentcdh/tools/health/api": ["libs/tools/health/api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
