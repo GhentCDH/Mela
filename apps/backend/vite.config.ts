@@ -18,7 +18,7 @@ export default defineConfig({
         adapter: 'nest',
         appPath: './src/main.ts',
         // exportName: 'backend',
-        tsCompiler: "esbuild",
+        tsCompiler: "swc",
         initAppOnBoot: false,
         swcOptions: {}
     }), nxViteTsPaths(),],
