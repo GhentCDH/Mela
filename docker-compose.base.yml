@@ -2,15 +2,30 @@ version: '3'
 
 services:
   nx-app-base-dev:
-    #    tty: true
-    restart: unless-stopped
+    restart: always
     build:
       context: .
       dockerfile: $PWD/docker/dev/Dockerfile
       target: node-dev
-    volumes:
-      - ./:/app
-      - /app/node_modules
+    #    volumes:
+    #      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./apps
+          target: /app/apps
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./libs
+          target: /app/libs
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: pnpm-lock.yaml
+        - action: sync
+          path: tsconfig.base.json
+          target: /app/tsconfig.base.json
   database:
     image: postgres:latest
     restart: always

@@ -1,34 +1,36 @@
 ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-slim AS node-dev
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
+RUN useradd -ms /bin/sh -u 1001 app
+USER app
+
+# Install dependencies
 WORKDIR /app
-
-# Set NX_DAEMON environment variable to false to prevent nx from running in daemon mode
-#ENV NX_DAEMON=false
 
 COPY package*.json ./
 COPY pnpm*.json ./
 
 RUN corepack enable
-
-ENV NX_DAEMON_SOCKET_DIR=/tmp/nx-daemon
-ENV NX_DEAMON=true
-
 RUN corepack prepare pnpm --activate
-
 RUN pnpm install
 
-CMD npx vite serve
+# Copy source files into application directory
+COPY --chown=app:app . /app
 
 
-FROM node-dev AS node-fe
+# Frontend development
+FROM node-dev AS node-fe-dev
 
 WORKDIR /app/apps/frontend
 
 CMD npx vite serve
 
-FROM node-dev AS node-be
+# Backend development
+FROM node-dev AS node-be-dev
 
 WORKDIR /app/apps/backend
 

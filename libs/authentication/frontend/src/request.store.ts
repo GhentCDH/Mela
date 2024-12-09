@@ -37,7 +37,6 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
             headers['Authorization'] = `Bearer ${authStore.token()}`
         }
 
-        console.log('url', url)
         const _url = new URL(url, window.location.href)
 
         console.log(_url.toString())
@@ -54,11 +53,10 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
         });
 
         if (!response.ok) {
-
             if (!options?.skipAuth) {
                 // TODO if response return 400 then redirect to login page
             }
-            
+
             throw new Error({content: response.body, status: response.status} as any)
         }
 
