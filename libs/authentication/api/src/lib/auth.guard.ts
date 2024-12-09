@@ -2,6 +2,7 @@ import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from '
 import {firstValueFrom, Observable} from "rxjs";
 import {HttpService} from "@nestjs/axios";
 import {ConfigService} from "@nestjs/config";
+import {KEYCLOACK} from "./auth.const";
 
 export const AUTH_NAME = 'keycloack';
 
@@ -20,9 +21,10 @@ export class GhentCdhGuard implements CanActivate {
         const authorization = request.headers.authorization;
 
         if (authorization) {
-            const keycloakHost = this.configService.get('KEYCLOAK_HOST');
-            const realmName = this.configService.get('KEYCLOAK_REALM')
-            console.log('keycloack: ', keycloakHost, realmName);
+            const keycloakHost = this.configService.get(KEYCLOACK.HOST);
+            const realmName = this.configService.get(KEYCLOACK.REALM);
+
+            console.log('keycloak: ', keycloakHost, realmName);
 
             const url = `${keycloakHost}realms/${realmName}/protocol/openid-connect/userinfo`
 

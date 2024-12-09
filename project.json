@@ -12,11 +12,8 @@
       }
     },
     "docker-build": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "command": "docker build -f Dockerfile . -t @mela/source"
     }
   }
 }
-
