@@ -32,4 +32,3 @@ export const useAuthenticationStore = defineStore(AUTH_STORE_NAME, () => {
         updateToken: () => keycloackAdapter.value?.updateToken()
     };
 })
-

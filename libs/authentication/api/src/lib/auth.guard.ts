@@ -22,7 +22,7 @@ export class GhentCdhGuard implements CanActivate {
         if (authorization) {
             const keycloakHost = this.configService.get('KEYCLOAK_HOST');
             const realmName = this.configService.get('KEYCLOAK_REALM')
-            console.log(keycloakHost, realmName)
+            console.log('keycloack: ', keycloakHost, realmName);
 
             const url = `${keycloakHost}realms/${realmName}/protocol/openid-connect/userinfo`
 

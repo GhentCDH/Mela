@@ -1,7 +1,7 @@
 # MELA. The meaning of language
 
 A text tagging and translation platform developed for the research
-project [MELA: The MEning of Language - A digital grammar of the Greek taught at schools in late Constantinople](https://research.flw.ugent.be/en/projects/mela-meaning-language-digital-grammar-greek-taught-schools-late-constantinople).
+project [MELA: The MEaning of Language - A digital grammar of the Greek taught at schools in late Constantinople](https://research.flw.ugent.be/en/projects/mela-meaning-language-digital-grammar-greek-taught-schools-late-constantinople).
 
 ## Components
 
@@ -21,7 +21,7 @@ The platform is a monorepo created with nx, and some docker containers to run th
 Check the configuration in the `.env` variables file and run Docker compose:
 
 ```sh
-docker compose -f docker-compose.dev.yml up --build 
+docker compose -f docker-compose.dev.yml up --build    
 ```
 
 The app is served on: [http://localhost:4000](http://localhost:4000)

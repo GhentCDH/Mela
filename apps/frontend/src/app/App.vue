@@ -22,7 +22,7 @@ window.setTimeout(() => {
   {{ authenticationStore.isAuthenticated() }}<br>
   {{ authenticationStore.token() }}<br>
   <pre>{{ authenticationStore.user() }}</pre>
-  Hello world-no more restart
+  Hello world
   <button @click="checkAuth">
     Check Auth
   </button>
