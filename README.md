@@ -21,7 +21,7 @@ The platform is a monorepo created with nx, and some docker containers to run th
 Check the configuration in the `.env` variables file and run Docker compose:
 
 ```sh
-docker compose -f docker-compose.dev.yml up --build    
+docker compose -f docker-compose.dev.yml up --build 
 ```
 
 The app is served on: [http://localhost:4000](http://localhost:4000)
