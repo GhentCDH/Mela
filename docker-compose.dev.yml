@@ -27,6 +27,12 @@ services:
     extends:
       file: docker-compose.base.yml
       service: nx-app-base-dev
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3333/api/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
     build:
       target: node-be-dev
     environment:
@@ -40,8 +46,6 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
-      authentication:
-        condition: service_healthy
       database_app:
         condition: service_healthy
 
@@ -70,9 +74,9 @@ services:
       - KC_DB_URL=jdbc:postgresql://$DATABASE_AUTH_HOST/$DATABASE_AUTH_DBNAME
       - KC_DB_USERNAME=$DATABASE_AUTH_USERNAME
       - KC_DB_PASSWORD=$DATABASE_AUTH_PASSWORD
-      - KC_HEALTH_ENABLED=$KEYCLOAK_HEALTH_ENABLED # enable health check at /health/live
+      - KC_HEALTH_ENABLED=true
       - KC_HOSTNAME=authentication
-    command: start-dev --import-realm
+    command: start-dev --import-realm --health-enabled=true
     # --import-realm
     # --realm-import-file=/opt/keycloak/data/import/mela-realm.json
     volumes:
