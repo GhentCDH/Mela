@@ -7,6 +7,7 @@ import {Logger} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app/app.module';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
+import {Logger as MyLogger} from '@ghentcdh/tools/logging/api';
 
 const globalPrefix = 'api';
 
@@ -14,6 +15,8 @@ async function bootstrapApp() {
     const app = await NestFactory.create(AppModule);
     app.setGlobalPrefix(globalPrefix);
 
+
+    //#region Add swagger
     const config = new DocumentBuilder()
         .setTitle('Mela backend')
         .setDescription(`
@@ -27,8 +30,13 @@ async function bootstrapApp() {
         .addBearerAuth()
         .build();
     const documentFactory = () => SwaggerModule.createDocument(app, config);
-    // documentFactory().addBearerAuth()
+
     SwaggerModule.setup('doc', app, documentFactory);
+    //#endregion
+
+    // Add logger
+    app.useLogger(MyLogger.init())
+
 
     return app;
 }
@@ -49,4 +57,5 @@ if (import.meta.env.PROD) {
     bootstrap();
 }
 
+// This is only for dev purpose
 export const viteNodeApp = bootstrapApp()

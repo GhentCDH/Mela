@@ -1,7 +1,7 @@
 {
-  "name": "health-api",
+  "name": "api",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/tools/health/api/src",
+  "sourceRoot": "libs/tools/logging/api/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -15,17 +15,13 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/tools/health/api",
-        "tsConfig": "libs/tools/health/api/tsconfig.lib.json",
-        "packageJson": "libs/tools/health/api/package.json",
-        "main": "libs/tools/health/api/src/index.ts",
-        "assets": [
-          "libs/tools/health/api/*.md"
-        ]
+        "outputPath": "dist/libs/tools/logging/api",
+        "tsConfig": "libs/tools/logging/api/tsconfig.lib.json",
+        "packageJson": "libs/tools/logging/api/package.json",
+        "main": "libs/tools/logging/api/src/index.ts",
+        "assets": ["libs/tools/logging/api/*.md"]
       }
     },
     "nx-release-publish": {

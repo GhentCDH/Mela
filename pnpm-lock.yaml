@@ -44,6 +44,9 @@ importers:
       keycloak-js:
         specifier: ^26.0.7
         version: 26.0.7
+      log4js:
+        specifier: ^6.9.1
+        version: 6.9.1
       passport:
         specifier: ^0.7.0
         version: 0.7.0
