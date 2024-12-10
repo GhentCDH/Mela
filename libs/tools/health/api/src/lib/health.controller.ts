@@ -1,6 +1,7 @@
 import {Controller, Get} from '@nestjs/common';
-import {HealthCheck, HealthCheckService, HttpHealthIndicator} from '@nestjs/terminus';
 import {ConfigService} from "@nestjs/config";
+import {HealthCheck, HealthCheckService, HttpHealthIndicator} from '@nestjs/terminus';
+
 import {KEYCLOACK} from "@ghentcdh/authentication/api";
 
 

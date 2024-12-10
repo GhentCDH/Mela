@@ -1,7 +1,9 @@
 import './styles.scss';
-import {createApp} from 'vue';
-import App from './app/App.vue';
 import {createPinia} from "pinia";
+import {createApp} from 'vue';
+
+import App from './app/App.vue';
+
 
 const app = createApp(App);
 

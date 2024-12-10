@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
+
 import {useAuthenticationStore} from "./authentication.store";
+
 
 const AUTH_STORE_NAME = 'GHENT_CDH_HTTP_REQUEST';
 

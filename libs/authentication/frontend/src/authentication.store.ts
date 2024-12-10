@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
+
 import {KeycloakAdapter} from "./keycloak.adapter";
+
 
 const AUTH_STORE_NAME = 'GHENT_CDH_AUTH_STORE';
 

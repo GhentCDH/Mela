@@ -1,8 +1,10 @@
-import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from '@nestjs/common';
-import {firstValueFrom, Observable} from "rxjs";
 import {HttpService} from "@nestjs/axios";
+import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
+import { Observable,firstValueFrom} from "rxjs";
+
 import {KEYCLOACK} from "./auth.const";
+
 
 export const AUTH_NAME = 'keycloack';
 
