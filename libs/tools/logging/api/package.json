@@ -1,0 +1,14 @@
+{
+  "name": "@ghentcdh/tools/logging/api",
+  "version": "0.0.1",
+  "dependencies": {
+    "@nestjs/common": "^10.0.2",
+    "log4js": "^6.9.1",
+    "vite": "^5.0.0",
+    "vite-plugin-node": "^4.0.0",
+    "@nx/vite": "20.1.4"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
+}

@@ -16,14 +16,6 @@ type Error = {
 export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
     const authStore = useAuthenticationStore();
 
-
-    //try {
-    //     await keycloak.updateToken(30);
-    // } catch (error) {
-    //     console.error('Failed to refresh token:', error);
-    // }
-
-
     const makeRequest = async (url: string, requestInit: RequestInit,
                                options?: RequestOptions) => {
 
@@ -38,8 +30,6 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
         }
 
         const _url = new URL(url, window.location.href)
-
-        console.log(_url.toString())
 
         if (options?.queryParams) {
             for (const [key, value] of Object.entries(options.queryParams)) {

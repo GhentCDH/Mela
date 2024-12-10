@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import {useAuthenticationStore, useHttpStore} from "@ghentcdh/authentication/frontend";
+import {Debugger} from "@ghentcdh/tools/logging/frontend";
 
 
 const authenticationStore = useAuthenticationStore()
 const httpStore = useHttpStore();
 
-console.table(import.meta.env)
+Debugger.table(import.meta.env)
 const checkAuth = () => {
   httpStore.post('/api/auth/login', {}).then(response => {
-    console.log(response);
+    Debugger.log(response);
     alert('login ok')
   });
 }

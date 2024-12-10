@@ -10,17 +10,33 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ghentcdh/authentication/api": ["libs/authentication/api/src/index.ts"],
+      "@ghentcdh/authentication/api": [
+        "libs/authentication/api/src/index.ts"
+      ],
       "@ghentcdh/authentication/frontend": [
         "libs/authentication/frontend/src/index.ts"
       ],
-      "@ghentcdh/tools/health/api": ["libs/tools/health/api/src/index.ts"]
+      "@ghentcdh/tools/health/api": [
+        "libs/tools/health/api/src/index.ts"
+      ],
+      "@ghentcdh/tools/logging/api": [
+        "libs/tools/logging/api/src/index.ts"
+      ],
+      "@ghentcdh/tools/logging/frontend": [
+        "libs/tools/logging/frontend/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

@@ -43,11 +43,14 @@ services:
       # we need this internal redirect to the keycloak container
       - KEYCLOAK_HOST=$KEYCLOAK_HOST
       - KEYCLOAK_REALM=$KEYCLOAK_REALM
+      - LOG_DIR=/tmp/logs
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
       database_app:
         condition: service_healthy
+    volumes:
+      - ./var/logs/backend:/tmp/logs
 
   authentication:
     container_name: mela.keycloak
