@@ -1,6 +1,7 @@
 import {ConsoleLogger, Injectable, Scope} from '@nestjs/common';
 import log4js from 'log4js';
 
+
 @Injectable({scope: Scope.TRANSIENT})
 export class Logger extends ConsoleLogger {
     public static debug(context: string, message: string,) {

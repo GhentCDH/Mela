@@ -1,7 +1,9 @@
 import {Controller, Get, Post, Request, UseGuards} from '@nestjs/common';
+import {ApiBearerAuth} from "@nestjs/swagger";
+
 import {GhentCdhGuard} from "./auth.guard";
 import {User} from "./user";
-import {ApiBearerAuth} from "@nestjs/swagger";
+
 
 @Controller()
 export class LoginController {

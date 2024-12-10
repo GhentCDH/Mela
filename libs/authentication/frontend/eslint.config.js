@@ -1,5 +1,7 @@
 const vue = require('eslint-plugin-vue');
+
 const baseConfig = require('../../../eslint.config.js');
+
 
 module.exports = [
   ...baseConfig,

@@ -1,9 +1,11 @@
 const nx = require('@nx/eslint-plugin');
+const importPlugin = require('eslint-plugin-import');
 
 module.exports = [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
+  importPlugin.flatConfigs['recommended'],
   {
     ignores: ['**/dist'],
   },
@@ -21,6 +23,29 @@ module.exports = [
               onlyDependOnLibsWithTags: ['*'],
             },
           ],
+        },
+      ],
+      'import/named': 'off',
+      'import/no-unresolved': 'off',
+      'import/newline-after-import': ['error', { count: 1 }],
+      'import/order': [
+        'error',
+        {
+          named: true,
+          // sortTypesAmongThemselves: true,
+          alphabetize: {
+            order: 'asc',
+          },
+          'newlines-between': 'always',
+          pathGroups: [
+            {
+              pattern: '@ghentcdh/**',
+              group: 'external',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          groups: ['external', 'internal', 'index', 'object'],
         },
       ],
     },
