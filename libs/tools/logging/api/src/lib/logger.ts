@@ -34,7 +34,7 @@ export class Logger extends ConsoleLogger {
 
     private constructor() {
         super();
-        const logDir = process.env.LOG_DIR ?? 'logs';
+        const logDir = process.env['LOG_DIR'] ?? 'logs';
         console.log('logDir:', logDir);
         log4js.configure({
             appenders: {app: {type: "file", filename: `${logDir}/app.log`}},

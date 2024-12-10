@@ -3,6 +3,7 @@ export class Debugger {
     private _debugEnabled: boolean = import.meta.env.VITE_DEBUG_ENABLE === 'true';
     private static _instance: Debugger;
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
     }
 
@@ -36,7 +37,7 @@ export class Debugger {
     public static table(...message: any) {
         console.table(message);
     }
-    
+
     public static log(...message: any) {
         console.log(message);
     }

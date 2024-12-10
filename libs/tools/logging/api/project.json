@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "logging-api",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/tools/logging/api/src",
   "projectType": "library",
@@ -15,13 +15,17 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/tools/logging/api",
         "tsConfig": "libs/tools/logging/api/tsconfig.lib.json",
         "packageJson": "libs/tools/logging/api/package.json",
         "main": "libs/tools/logging/api/src/index.ts",
-        "assets": ["libs/tools/logging/api/*.md"]
+        "assets": [
+          "libs/tools/logging/api/*.md"
+        ]
       }
     },
     "nx-release-publish": {
