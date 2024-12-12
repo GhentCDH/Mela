@@ -35,6 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
+      - run: npm run generate:prisma
       - run: npx nx run-many -t test --parallel --max-parallel=6
         continue-on-error: true
   lint:

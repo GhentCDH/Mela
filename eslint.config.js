@@ -2,12 +2,21 @@ const nx = require('@nx/eslint-plugin');
 const importPlugin = require('eslint-plugin-import');
 
 module.exports = [
+  {
+    files: ['**/*.json'],
+    // Override or add rules here
+    rules: {},
+    languageOptions: {
+      parser: require('jsonc-eslint-parser'),
+    },
+  },
+
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
   importPlugin.flatConfigs['recommended'],
   {
-    ignores: ['**/dist'],
+    ignores: ['**/dist', 'generated/prisma-client'],
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.vue'],

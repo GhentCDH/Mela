@@ -16,6 +16,14 @@ The platform is a monorepo created with nx, and some docker containers to run th
 
 * (TODO) Elasticsearch service: provides a way to quickly do full-text or faceted search.
 
+## Generate required files
+
+The first time, and each time you adjust the prisma configuration run
+
+```bash
+ pnpm run generate:prisma 
+```
+
 ## Running and development
 
 Check the configuration in the `.env` variables file and run Docker compose:
