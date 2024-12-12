@@ -11,12 +11,6 @@ services:
       target: node-fe-dev
     ports:
       - "4200:4200"
-    #    command: sleep infinity
-    #    command: npx vite serve
-    #    depends_on:
-    #      backend:
-    #        condition: service_healthy
-
     environment:
       - VITE_KEYCLOAK_HOST=$KEYCLOAK_HOST
       - VITE_KEYCLOAK_REALM=$KEYCLOAK_REALM
@@ -36,10 +30,7 @@ services:
     build:
       target: node-be-dev
     environment:
-      - DATABASE=postgres
-      - DATABASE_URL=jdbc:postgresql://$DATABASE_APP_HOST/$DATABASE_APP_DBNAME
-      - DATABASE_USERNAME=$DATABASE_APP_USERNAME
-      - DATABASE_PASSWORD=$DATABASE_APP_PASSWORD
+      - DATABASE_APP_URL=$DATABASE_APP_URL
       # we need this internal redirect to the keycloak container
       - KEYCLOAK_HOST=$KEYCLOAK_HOST
       - KEYCLOAK_REALM=$KEYCLOAK_REALM
