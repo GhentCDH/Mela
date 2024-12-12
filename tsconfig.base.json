@@ -47,7 +47,8 @@
       ],
       "@mela/text/api": [
         "libs/text/api/src/index.ts"
-      ]
+      ],
+      "@ghentcdh/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": [
