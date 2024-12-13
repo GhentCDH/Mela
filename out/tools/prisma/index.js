@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var prisma_1 = require("./prisma");
+var path = require("path");
+var form_1 = require("./form");
+var prismaPackage = "@prisma/client";
+var generatedDir = path.join(__dirname, '../../generated');
+var prismaDir = path.join(generatedDir, 'prisma');
+var typesDir = path.join(generatedDir, 'types');
+(0, form_1.generateForm)(typesDir);
+(0, prisma_1.generatePrismaService)(prismaPackage, prismaDir);

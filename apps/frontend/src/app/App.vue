@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useAuthenticationStore } from '@ghentcdh/authentication/frontend';
-import { Debugger } from '@ghentcdh/tools/logging/frontend';
+import { ShellComponent } from '@ghentcdh/ui';
+
+import { menu } from './configuration/menu';
 
 const authenticationStore = useAuthenticationStore();
-
-Debugger.table(import.meta.env);
 </script>
 
 <template>
-  <div class="navbar bg-primary">
-    <a class="btn btn-ghost text-xl">daisyUI</a>
-  </div>
-  {{ authenticationStore.isAuthenticated() }}<br />
-  {{ authenticationStore.token() }}<br />
-  <pre>{{ authenticationStore.user() }}</pre>
-  Hello world
+  <ShellComponent
+    title="MeLa | Meaning of LAnguage"
+    :menu="menu()"
+  >
+    <RouterView />
+  </ShellComponent>
 </template>
