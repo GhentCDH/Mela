@@ -14,13 +14,4 @@ module.exports = {
   theme: {
     extend: {},
   },
-  daisyui: {
-    themes: ['emerald'],
-  },
-  plugins: [
-     
-    require('@tailwindcss/typography'),
-     
-    require('daisyui'),
-  ],
 };
