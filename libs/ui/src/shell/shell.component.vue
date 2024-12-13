@@ -1,49 +1,51 @@
 <template>
-  <div class="navbar bg-primary text-primary-content">
-    <div class="navbar-start">
-      <div class="dropdown">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+  <div class="drawer">
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content flex flex-col">
+      <nav class="navbar bg-primary text-primary-content w-full">
+        <div class="navbar-start">
+          <label
+            for="my-drawer-3"
+            aria-label="open sidebar"
+            class="btn btn-square btn-ghost"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h7"
-            />
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </label>
         </div>
-        <ul
-          tabindex="0"
-          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-text"
-        >
-          <li v-for="item of menu">
-            <RouterLink :to="item.routerLink" class="btn btn-ghost">
-              {{ item.label }}
-            </RouterLink>
-          </li>
-        </ul>
-        <ul
-          tabindex="0"
-          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-        >
-          <li><a>Homepage</a></li>
-          <li><a>Portfolio</a></li>
-          <li><a>About</a></li>
-        </ul>
-      </div>
+        <div class="navbar-center">
+          <a class="btn btn-ghost text-xl" :href="baseUrl">{{ title }}</a>
+        </div>
+        <div class="navbar-end"></div>
+      </nav>
+      <Slot />
     </div>
-    <div class="navbar-center">
-      <a class="btn btn-ghost text-xl" :href="baseUrl">{{ title }}</a>
+    <div class="drawer-side mt-16">
+      <label
+        for="my-drawer-3"
+        aria-label="close sidebar"
+        class="drawer-overlay"
+      ></label>
+      <ul class="menu bg-base-200 min-h-full w-80 p-4">
+        <li v-for="item of menu">
+          <RouterLink :to="item.routerLink">
+            {{ item.label }}
+          </RouterLink>
+        </li>
+      </ul>
     </div>
-    <div class="navbar-end"></div>
   </div>
-  <Slot />
 </template>
 
 <script setup lang="ts">
