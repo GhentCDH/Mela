@@ -36,7 +36,7 @@ model Text {
   id        String @id @default(uuid())
   mela_id   String @unique
   name      String
-  author    Author @relation(fields: [author_id], references: [id])
+  text      Author @relation(fields: [author_id], references: [id])
   author_id String
   year      Int
 }
