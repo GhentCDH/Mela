@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 
 import { PrismaModule } from '@ghentcdh/mela/generated/prisma';
 
-import { TextApiController } from './TextApi.controller';
-import { TextApiRepository } from './text-api-repository.service';
+import { AuthorRepository } from './author/author-repository.service';
+import { AuthorController } from './author/author.controller';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [TextApiController],
-  providers: [TextApiRepository],
-  exports: [TextApiRepository],
+  controllers: [AuthorController],
+  providers: [AuthorRepository],
+  exports: [AuthorRepository],
 })
 export class TextApiModule {}

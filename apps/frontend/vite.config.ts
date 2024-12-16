@@ -10,9 +10,6 @@ export default defineConfig({
   server: {
     port: 4200,
     host: '0.0.0.0',
-    watcher: {
-      ignored: ['*/**/vite.config.ts'],
-    },
   },
   preview: {
     port: 4300,

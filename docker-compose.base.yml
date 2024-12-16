@@ -11,33 +11,18 @@ services:
     #      - /app/node_modules
     develop:
       watch:
-        - action: sync
-          path: ./prisma
-          target: /app/prisma
-          ignore:
-            - node_modules/
-        - action: sync
-          path: ./apps
-          target: /app/apps
-          ignore:
-            - node_modules/
-        - action: sync
-          path: ./libs
-          target: /app/libs
-          ignore:
-            - node_modules/
-        - action: sync
-          path: ./generated
-          target: /app/generated
-          ignore:
-            - node_modules/
         - action: rebuild
           path: pnpm-lock.yaml
-        - action: rebuild
-          path: prisma/schema.prisma
+          target: /app/pnpm-lock.yaml
         - action: sync
           path: tsconfig.base.json
           target: /app/tsconfig.base.json
+    volumes:
+      - ./libs:/app/libs
+      - ./apps:/app/apps
+      - ./prisma:/app/prisma
+      - ./generated:/app/generated
+      - /app/node_modules
   database:
     image: postgres:latest
     restart: always

@@ -42,13 +42,15 @@ RUN pnpm run generate:prisma
 # Frontend development
 FROM node-dev AS node-fe-dev
 
-WORKDIR /app/apps/frontend
+WORKDIR /app
 
-CMD npx vite serve
+#CMD SLEEP INFINITY
+CMD npx nx run frontend:serve
 
 # Backend development
 FROM node-dev AS node-be-dev
 
-WORKDIR /app/apps/backend
+WORKDIR /app
 
-CMD npx vite serve
+#CMD SLEEP INFINITY
+CMD npx nx run backend:serve
