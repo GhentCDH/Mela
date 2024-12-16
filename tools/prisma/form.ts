@@ -1,8 +1,9 @@
+import { JsonSchema } from '@jsonforms/core';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+
 import * as model from '../../generated/types/modelSchema';
 import * as fs from 'fs';
 import * as path from 'path';
-import { JsonSchema } from '@jsonforms/core';
 
 export const generateForm = (dir: string) => {
   const dtoDir = path.join(dir, 'dtos');
@@ -16,7 +17,10 @@ export const generateForm = (dir: string) => {
 
   const imports = [`import { JsonSchema } from '@jsonforms/core';`];
 
-  const importsDto = [`import { createZodDto } from 'nestjs-zod';`];
+  const importsDto = [
+    `import { createZodDto } from '@anatine/zod-nestjs';`,
+    "import { extendApi } from '@anatine/zod-openapi';",
+  ];
 
   const dtoExports: string[] = [];
   const formExports: string[] = [];
@@ -26,10 +30,12 @@ export const generateForm = (dir: string) => {
     const nameDto = key.replace('Schema', 'Dto');
     const entry = (model as any)[key];
 
-    const jsonSchema = zodToJsonSchema(entry, 'Schema');
-    const schema = jsonSchema.definitions!['Schema'] as JsonSchema;
+    const jsonSchema = zodToJsonSchema(entry, {
+      removeAdditionalStrategy: 'strict',
+    });
+    const schema = jsonSchema.definitions?.['Schema'] as JsonSchema;
 
-    Object.entries(schema?.properties as any).forEach(
+    Object.entries((schema?.properties as any) ?? {}).forEach(
       ([key, prop]: [string, any]) => {
         if ('anyOf' in prop) {
           const type = prop.anyOf[0] as any;
@@ -45,8 +51,7 @@ export const generateForm = (dir: string) => {
     const forms = [
       imports,
       '',
-      `export const ${name}Detail = ${JSON.stringify(jsonSchema, null, 2)};`,
-      `export const ${name} = ${name}Detail.definitions!['Schema'] as JsonSchema;`,
+      `export const ${name} = ${JSON.stringify(jsonSchema, null, 2)};`,
       '',
     ]
       .flat()

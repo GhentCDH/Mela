@@ -27,16 +27,16 @@ datasource db {
 }
 
 model Author {
-  id   Int    @id @default(autoincrement())
-  name String
+  id   String @id @default(uuid())
+  name String @unique
   Text Text[]
 }
 
 model Text {
-  id       Int    @id @default(autoincrement())
-  mela_id  String @unique
-  name     String
-  author   Author @relation(fields: [authorId], references: [id])
-  authorId Int
-  year     Int
+  id        String @id @default(uuid())
+  mela_id   String @unique
+  name      String
+  author    Author @relation(fields: [author_id], references: [id])
+  author_id String
+  year      Int
 }

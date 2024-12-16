@@ -36,7 +36,9 @@
         </div>
         <div class="navbar-end" />
       </nav>
-      <Slot />
+      <div class="p-2">
+        <slot />
+      </div>
     </div>
     <div class="drawer-side mt-16">
       <label
