@@ -19,7 +19,6 @@ const properties = defineProps<{
 const valid = ref(false);
 
 const store = useFormStore(properties.id);
-console.log(properties);
 onMounted(() => {
   store.init(properties.urlSchema);
 });
@@ -29,10 +28,6 @@ const activeId = ref<string | null>(null);
 
 const onChange = (event: Data) => {
   formData.value = event.data;
-  console.table(event.errors);
-  console.table(event);
-  console.log(store.formSchema);
-  console.log(store.uiSchema);
   valid.value = event.errors.length === 0;
 };
 
@@ -67,7 +62,7 @@ const deleteFn = (data: Data) => {
       class="card-body"
     >
       <h1 class="card-title">
-        {{ createTitle }}
+        {{ activeId ? updateTitle : createTitle }}
       </h1>
       <form
         :id="id"

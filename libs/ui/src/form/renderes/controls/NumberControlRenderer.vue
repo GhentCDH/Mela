@@ -41,10 +41,12 @@ import {
 import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
+import { ControlRendererType } from '@ghentcdh/tools/form';
+
 import ControlWrapper from './ControlWrapper.vue';
 
 const controlRenderer = defineComponent({
-  name: 'NumberControlRenderer',
+  name: ControlRendererType.number,
   components: {
     ControlWrapper,
   },

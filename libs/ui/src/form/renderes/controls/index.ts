@@ -1,3 +1,9 @@
+import { entry as integerControlRendererEntry } from './IntegerControlRenderer.vue';
+import { entry as numberControlRendererEntry } from './NumberControlRenderer.vue';
+import { entry as stringControlRendererEntry } from './StringControlRenderer.vue';
+import { entry as autocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
+
+export { default as AutocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
 export { default as ControlWrapper } from './ControlWrapper.vue';
 export { default as StringControlRenderer } from './StringControlRenderer.vue';
 // export { default as MultiStringControlRenderer } from './MultiStringControlRenderer.vue';
@@ -9,10 +15,6 @@ export { default as IntegerControlRenderer } from './IntegerControlRenderer.vue'
 // export { default as DateTimeControlRenderer } from './DateTimeControlRenderer.vue';
 // export { default as TimeControlRenderer } from './TimeControlRenderer.vue';
 // export { default as BooleanControlRenderer } from './BooleanControlRenderer.vue';
-
-import { entry as integerControlRendererEntry } from './IntegerControlRenderer.vue';
-import { entry as numberControlRendererEntry } from './NumberControlRenderer.vue';
-import { entry as stringControlRendererEntry } from './StringControlRenderer.vue';
 // import { entry as multiStringControlRendererEntry } from './MultiStringControlRenderer.vue';
 // import { entry as enumControlRendererEntry } from './EnumControlRenderer.vue';
 // import { entry as oneOfEnumControlRendererEntry } from './EnumOneOfControlRenderer.vue';
@@ -22,14 +24,19 @@ import { entry as stringControlRendererEntry } from './StringControlRenderer.vue
 // import { entry as booleanControlRendererEntry } from './BooleanControlRenderer.vue';
 
 export const controlRenderers = [
-  stringControlRendererEntry,
+  // First custom renderers on format
+  autocompleteControlRenderer,
+
   // multiStringControlRendererEntry,
-  numberControlRendererEntry,
-  integerControlRendererEntry,
   // enumControlRendererEntry,
   // oneOfEnumControlRendererEntry,
   // dateControlRendererEntry,
   // dateTimeControlRendererEntry,
   // timeControlRendererEntry,
   // booleanControlRendererEntry,
+
+  // Renderers based on type if no format is provided
+  stringControlRendererEntry,
+  numberControlRendererEntry,
+  integerControlRendererEntry,
 ];

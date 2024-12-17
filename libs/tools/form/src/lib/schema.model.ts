@@ -1,7 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
+import { generateSchema } from '@anatine/zod-openapi';
 import { JsonSchema } from '@jsonforms/core';
 import { ZodObject } from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
 
 import { ColumDef, ColumnSchema, createColumnSchema } from './column.utils';
 
@@ -22,9 +22,11 @@ export const createSchema = (props: {
 }) => {
   const dtoSchema = props.dtoSchema;
 
-  const detail = zodToJsonSchema(props.dtoSchema, {
-    removeAdditionalStrategy: 'strict',
-  }) as JsonSchema;
+  const detail = {
+    ...generateSchema(dtoSchema),
+    additionalProperties: true,
+    $schema: 'http://json-schema.org/draft-07/schema#',
+  };
 
   const dto = class CreateDto extends createZodDto(dtoSchema) {};
 

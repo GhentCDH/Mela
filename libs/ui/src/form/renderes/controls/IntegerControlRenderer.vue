@@ -38,10 +38,12 @@ import {
 import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
+import { ControlRendererType } from '@ghentcdh/tools/form';
+
 import ControlWrapper from './ControlWrapper.vue';
 
 const controlRenderer = defineComponent({
-  name: 'IntegerControlRenderer',
+  name: ControlRendererType.integer,
   components: {
     ControlWrapper,
   },
@@ -56,7 +58,7 @@ const controlRenderer = defineComponent({
   computed: {
     step(): number {
       const options: any = this.appliedOptions;
-      return options.step ?? 0.1;
+      return options.step ?? 1;
     },
   },
 });

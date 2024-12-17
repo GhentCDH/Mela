@@ -1,6 +1,8 @@
+import { z } from 'zod';
+
 import { TextForm } from '@ghentcdh/mela/generated/forms';
-import { TextSchema } from '@ghentcdh/mela/generated/types';
-import { SchemaModel, createSchema } from '@ghentcdh/tools/form';
+import { AuthorSchema, TextSchema } from '@ghentcdh/mela/generated/types';
+import { ControlType, SchemaModel, createSchema } from '@ghentcdh/tools/form';
 
 // TODO add autocomplete for textschema
 
@@ -19,8 +21,17 @@ const uiSchema = {
           scope: '#/properties/name',
         },
         {
-          type: 'Control',
-          scope: '#/properties/author_id',
+          type: 'Object',
+          scope: '#/properties/author',
+          options: {
+            format: ControlType.autocomplete,
+            uri: '/api/author?q=',
+            uriDetail: '/api/author/',
+            field: {
+              id: 'id',
+              label: 'name',
+            },
+          },
         },
         {
           type: 'Control',
@@ -51,10 +62,9 @@ const columnDef = [
 
 const dtoSchema = TextSchema.pick({
   name: true,
-  author_id: true,
   mela_id: true,
   year: true,
-});
+}).extend({ author: AuthorSchema.extend({ id: z.string().optional() }) });
 
 const formSchema = createSchema({
   uiSchema,

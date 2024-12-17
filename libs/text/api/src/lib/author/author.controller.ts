@@ -29,24 +29,31 @@ export class AuthorController extends AbstractController<
   }
 
   @Get()
+  @ApiCreatedResponse({
+    type: AuthorDto,
+  })
   override async list(): Promise<ResponseData<AuthorDto>> {
-    const data = await this.repository.list();
-
-    return { data };
+    return super.list();
   }
 
   @Post()
   @ApiCreatedResponse({
-    description: 'The record has been successfully created.',
     type: AuthorDto,
   })
   override async create(@Body() dto: CreateAuthorDto): Promise<AuthorDto> {
     return super.create(dto);
   }
 
+  @Get('/:id')
+  @ApiCreatedResponse({
+    type: AuthorDto,
+  })
+  override async findOne(@Param('id') id: string): Promise<AuthorDto> {
+    return super.findOne(id);
+  }
+
   @Patch('/:id')
   @ApiResponse({
-    description: 'The record has been successfully updated.',
     type: AuthorDto,
   })
   override async update(
@@ -58,7 +65,6 @@ export class AuthorController extends AbstractController<
 
   @Delete('/:id')
   @ApiResponse({
-    description: 'The record has been successfully updated.',
     type: AuthorDto,
   })
   override async delete(@Param('id') id: string): Promise<AuthorDto> {
