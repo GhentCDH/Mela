@@ -11,25 +11,22 @@ import {
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
-import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
+import { TextDto } from '@ghentcdh/mela/generated/dtos';
 import { ResponseData } from '@ghentcdh/tools/form';
 
-import { AuthorRepository } from './author-repository.service';
-import { CreateAuthorDto, authorSchema } from './author.schema';
+import { TextRepositoryService } from './text-repository.service';
+import { CreateTextDto, textSchema } from './text.schema';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
-@Controller('author')
-export class AuthorController extends AbstractController<
-  AuthorDto,
-  CreateAuthorDto
-> {
-  constructor(repository: AuthorRepository) {
-    super(repository, authorSchema);
+@Controller('text')
+export class TextController extends AbstractController<TextDto, CreateTextDto> {
+  constructor(repository: TextRepositoryService) {
+    super(repository, textSchema);
   }
 
   @Get()
-  override async list(): Promise<ResponseData<AuthorDto>> {
+  override async list(): Promise<ResponseData<CreateTextDto>> {
     const data = await this.repository.list();
 
     return { data };
@@ -38,30 +35,30 @@ export class AuthorController extends AbstractController<
   @Post()
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
-    type: AuthorDto,
+    type: TextDto,
   })
-  override async create(@Body() dto: CreateAuthorDto): Promise<AuthorDto> {
+  override async create(@Body() dto: CreateTextDto): Promise<TextDto> {
     return super.create(dto);
   }
 
   @Patch('/:id')
   @ApiResponse({
     description: 'The record has been successfully updated.',
-    type: AuthorDto,
+    type: TextDto,
   })
   override async update(
     @Param('id') id: string,
-    @Body() dto: CreateAuthorDto
-  ): Promise<AuthorDto> {
+    @Body() dto: CreateTextDto
+  ): Promise<TextDto> {
     return super.update(id, dto);
   }
 
   @Delete('/:id')
   @ApiResponse({
     description: 'The record has been successfully updated.',
-    type: AuthorDto,
+    type: TextDto,
   })
-  override async delete(@Param('id') id: string): Promise<AuthorDto> {
+  override async delete(@Param('id') id: string): Promise<TextDto> {
     return super.delete(id);
   }
 }

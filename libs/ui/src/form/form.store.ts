@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { SchemaModel } from '@ghentcdh/tools/form';
+import { ResponseData, SchemaModel } from '@ghentcdh/tools/form';
 
 // TODO add warnings, success, ....
 // TODO add pagination
