@@ -58,8 +58,6 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
       } as any);
     }
 
-    console.log(response.body);
-
     return response.json();
   };
 

@@ -38,10 +38,12 @@ import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
+import { ControlRendererType } from '@ghentcdh/tools/form';
+
 import ControlWrapper from './ControlWrapper.vue';
 
 const controlRenderer = defineComponent({
-  name: 'StringControlRenderer',
+  name: ControlRendererType.string,
   components: {
     ControlWrapper,
   },
@@ -51,7 +53,7 @@ const controlRenderer = defineComponent({
   setup(props: RendererProps<ControlElement>) {
     return useVanillaControl(
       useJsonFormsControl(props),
-      (target) => target.value || undefined
+      (target) => target.value ?? undefined
     );
   },
 });

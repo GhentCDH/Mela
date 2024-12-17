@@ -10,11 +10,23 @@ export class AbstractController<Entity, CreateDto = Entity> {
     private readonly schema: SchemaModel
   ) {}
 
+  @Get('schema')
+  schemaRequest() {
+    return this.schema;
+  }
+
   @Get()
   protected async list(): Promise<ResponseData<Entity>> {
     const data = await this.repository.list();
 
     return { data };
+  }
+
+  @Get('/:id')
+  protected async findOne(@Param('id') id: string): Promise<Entity> {
+    if (id === 'schema') return this.schemaRequest() as any;
+    
+    return this.repository.findOne(id);
   }
 
   @Post()
@@ -33,10 +45,5 @@ export class AbstractController<Entity, CreateDto = Entity> {
   @Delete('/:id')
   protected delete(@Param('id') id: string): Promise<Entity> {
     return this.repository.delete(id);
-  }
-
-  @Get('schema')
-  schemaRequest() {
-    return this.schema;
   }
 }

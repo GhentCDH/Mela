@@ -1,5 +1,4 @@
-import { JsonSchema } from '@jsonforms/core';
-import { zodToJsonSchema } from 'zod-to-json-schema';
+import { generateSchema } from '@anatine/zod-openapi';
 
 import * as model from '../../generated/types/modelSchema';
 import * as fs from 'fs';
@@ -15,41 +14,24 @@ export const generateForm = (dir: string) => {
   fs.mkdirSync(dtoDir, { recursive: true });
   fs.mkdirSync(formDir, { recursive: true });
 
-  const imports = [`import { JsonSchema } from '@jsonforms/core';`];
-
-  const importsDto = [
-    `import { createZodDto } from '@anatine/zod-nestjs';`,
-    "import { extendApi } from '@anatine/zod-openapi';",
-  ];
+  const importsDto = [`import { createZodDto } from '@anatine/zod-nestjs';`];
 
   const dtoExports: string[] = [];
   const formExports: string[] = [];
 
   Object.keys(model).forEach((key) => {
+    const _name = key.replace('Schema', '');
     const name = key.replace('Schema', 'Form');
     const nameDto = key.replace('Schema', 'Dto');
     const entry = (model as any)[key];
 
-    const jsonSchema = zodToJsonSchema(entry, {
-      removeAdditionalStrategy: 'strict',
-    });
-    const schema = jsonSchema.definitions?.['Schema'] as JsonSchema;
-
-    Object.entries((schema?.properties as any) ?? {}).forEach(
-      ([key, prop]: [string, any]) => {
-        if ('anyOf' in prop) {
-          const type = prop.anyOf[0] as any;
-          (schema.properties as any)[key] = {
-            ...prop,
-            anyOf: undefined,
-            ...type,
-          };
-        }
-      }
-    );
+    const jsonSchema = {
+      ...generateSchema(entry),
+      additionalProperties: true,
+      $schema: 'http://json-schema.org/draft-07/schema#',
+    };
 
     const forms = [
-      imports,
       '',
       `export const ${name} = ${JSON.stringify(jsonSchema, null, 2)};`,
       '',
@@ -66,11 +48,11 @@ export const generateForm = (dir: string) => {
       .flat()
       .join('\n');
 
-    fs.writeFileSync(path.join(formDir, `${name}.form.ts`), forms);
-    fs.writeFileSync(path.join(dtoDir, `${name}.dto.ts`), dtos);
+    fs.writeFileSync(path.join(formDir, `${_name}.form.ts`), forms);
+    fs.writeFileSync(path.join(dtoDir, `${_name}.dto.ts`), dtos);
 
-    formExports.push(`export * from './${name}.form.ts';`);
-    dtoExports.push(`export * from './${name}.dto.ts';`);
+    formExports.push(`export * from './${_name}.form.ts';`);
+    dtoExports.push(`export * from './${_name}.dto.ts';`);
   });
 
   fs.writeFileSync(path.join(formDir, 'index.ts'), formExports.join('\n'));
