@@ -1,0 +1,76 @@
+import { computedAsync } from '@vueuse/core';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+import { useHttpStore } from '@ghentcdh/authentication/frontend';
+import { RequestDtoNoOffset, ResponseUnknown } from '@ghentcdh/tools/form';
+
+const toNumber = (value: any) => {
+  const newValue = Number(value);
+  return isNaN(newValue) ? null : newValue;
+};
+
+const defaultPageSize = 20;
+
+type RequestData = RequestDtoNoOffset;
+
+// TODO add sorting
+
+export const useTableStore = (name) =>
+  defineStore(`ghentCDH_table_form_${name}`, () => {
+    const route = useRoute();
+    const router = useRouter();
+
+    const requestData = ref<RequestData>({
+      page: toNumber(route.query.page) ?? 1,
+      pageSize: toNumber(route.query.pageSize) ?? defaultPageSize,
+    });
+
+    const httpStore = useHttpStore();
+    const reload = ref(Date.now());
+
+    const uri = ref<string>('');
+
+    const data = computedAsync(async () => {
+      const r = reload.value;
+
+      if (!uri.value) return null;
+
+      const response = await httpStore.get<ResponseUnknown>(uri.value, {
+        queryParams: requestData.value,
+      });
+
+      if (response.request.totalPages < response.request.page) {
+        updateRequest({ page: response.request.totalPages });
+      }
+
+      return response;
+    });
+
+    const reloadFn = () => {
+      reload.value = Date.now();
+    };
+
+    const init = (url: string) => {
+      uri.value = url;
+    };
+
+    const updateRequest = (data: Partial<RequestData>) => {
+      requestData.value = { ...requestData.value, ...data };
+
+      router.replace({
+        query: {
+          ...route.query,
+          ...requestData.value,
+        },
+      });
+    };
+
+    return {
+      data,
+      init,
+      reload: reloadFn,
+      updatePage: (page: number) => updateRequest({ page }),
+    };
+  })();

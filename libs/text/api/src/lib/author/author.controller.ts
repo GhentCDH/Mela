@@ -7,15 +7,16 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
-import { ResponseData } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form';
 
 import { AuthorRepository } from './author-repository.service';
-import { CreateAuthorDto, authorSchema } from './author.schema';
+import { CreateAuthorDto, ListAuthorDto, authorSchema } from './author.schema';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -30,10 +31,10 @@ export class AuthorController extends AbstractController<
 
   @Get()
   @ApiCreatedResponse({
-    type: AuthorDto,
+    type: ListAuthorDto,
   })
-  override async list(): Promise<ResponseData<AuthorDto>> {
-    return super.list();
+  override async list(@Query() params: RequestDto): Promise<ListAuthorDto> {
+    return super.list(params);
   }
 
   @Post()

@@ -1,8 +1,17 @@
 import { z } from 'zod';
 
 import { TextForm } from '@ghentcdh/mela/generated/forms';
-import { AuthorSchema, TextSchema } from '@ghentcdh/mela/generated/types';
-import { ControlType, SchemaModel, createSchema } from '@ghentcdh/tools/form';
+import {
+  AuthorSchema,
+  TextSchema,
+  TextWithRelationsSchema,
+} from '@ghentcdh/mela/generated/types';
+import {
+  ControlType,
+  SchemaModel,
+  createResponseData,
+  createSchema,
+} from '@ghentcdh/tools/form';
 
 // TODO add autocomplete for textschema
 
@@ -25,7 +34,7 @@ const uiSchema = {
           scope: '#/properties/author',
           options: {
             format: ControlType.autocomplete,
-            uri: '/api/author?q=',
+            uri: '/api/author?name=',
             uriDetail: '/api/author/',
             field: {
               id: 'id',
@@ -77,3 +86,5 @@ const formSchema = createSchema({
 export const textSchema: SchemaModel = formSchema.schema;
 
 export class CreateTextDto extends formSchema.dto {}
+
+export class ListTextDto extends createResponseData(TextWithRelationsSchema) {}

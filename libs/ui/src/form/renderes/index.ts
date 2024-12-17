@@ -4,7 +4,7 @@ import { controlRenderers } from './controls';
 
 export const customRenderers = [
   controlRenderers,
-  // ...layoutRenderers,
+  // layoutRenderers,
   // ...complexRenderers,
   // ...arrayRenderers,
   // ...labelRenderers,
@@ -16,5 +16,4 @@ const useVanillaRenderers = vanillaRenderers.filter(
   (v) => !customRenderesName.includes(v.renderer.name)
 );
 
-export const tailwindRenderers = [useVanillaRenderers, customRenderers].flat();
-
+export const tailwindRenderers = [customRenderers, useVanillaRenderers].flat();

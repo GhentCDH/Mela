@@ -4,6 +4,7 @@ import { findProperty } from './schema.utils';
 
 export type Column = {
   scope: string;
+  id: string;
   label: string;
 };
 

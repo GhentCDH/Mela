@@ -1,8 +1,17 @@
+import { RequestDto } from '@ghentcdh/tools/form';
+
 export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   protected constructor(private readonly prismaModel: any) {}
 
-  async list(): Promise<Entity[]> {
-    return this.prismaModel.findMany();
+  async list(request: RequestDto): Promise<Entity[]> {
+    return this.prismaModel.findMany({
+      take: request.pageSize,
+      skip: request.offset,
+    });
+  }
+
+  async count(): Promise<number> {
+    return this.prismaModel.count();
   }
 
   async findOne(id: string): Promise<Entity> {
