@@ -6,6 +6,7 @@ import { Column } from '@ghentcdh/tools/form';
 import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
 import IconButton from '../button/icon-button.vue';
+import TextCell from './cells/text.cell.vue';
 
 type Data = {
   [key: string]: any;
@@ -41,6 +42,10 @@ const edit = (data: Data) => {
 const deleteFn = (data: Data) => {
   emit('delete', data);
 };
+
+const components = {
+  TextCell,
+};
 </script>
 
 <template>
@@ -65,7 +70,11 @@ const deleteFn = (data: Data) => {
           v-for="column in columns"
           :key="column.scope"
         >
-          {{ data[column.id] }}
+          <component
+            :is="components[column.component ?? 'TextCell']"
+            :data="data"
+            :column="column"
+          />
         </td>
         <td>
           <IconButton
