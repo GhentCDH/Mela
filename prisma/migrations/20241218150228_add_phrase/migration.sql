@@ -7,7 +7,7 @@ CREATE TABLE "Phrase" (
     "phrase_nbr" TEXT NOT NULL,
     "text_id" TEXT NOT NULL,
     "source_text" TEXT NOT NULL,
-    "translation" TEXT NOT NULL,
+    "translation" TEXT,
 
     CONSTRAINT "Phrase_pkey" PRIMARY KEY ("id")
 );

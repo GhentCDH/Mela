@@ -24,13 +24,17 @@ export class AbstractController<Entity, CreateDto = Entity> {
       this.repository.count(),
     ]);
 
+    let totalPages = Math.ceil(count / params.pageSize);
+
+    if (totalPages < 1) totalPages = 1;
+
     return {
       data,
       request: {
         count,
         page: params.page,
         pageSize: params.pageSize,
-        totalPages: Math.ceil(count / params.pageSize),
+        totalPages,
       },
     };
   }

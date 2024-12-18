@@ -7,17 +7,13 @@ import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
 import IconButton from '../button/icon-button.vue';
 import TextCell from './cells/text.cell.vue';
-
-export type TableAction = {
-  label: string;
-  action: (data: unknown) => void;
-};
+import { TableAction } from './table.model';
 
 const properties = defineProps<{
   id: string;
   columns: Column[];
   uri: string;
-  reload: number;
+  reload?: number;
   actions?: TableAction[];
 }>();
 
@@ -82,7 +78,15 @@ const components = {
           />
         </td>
         <td v-if="actions">
-          actions
+          <button
+            v-for="action of actions"
+            key="action.label"
+            class="btn btn-outline btn-sm p-1"
+            type="button"
+            @click="action.action(data)"
+          >
+            {{ action.label }}
+          </button>
         </td>
         <td>
           <IconButton
