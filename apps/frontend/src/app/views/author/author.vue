@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { FormComponent } from '@ghentcdh/ui';
-
 const formId = 'author';
 const urlSchema = '/api/author/schema';
+import { FormWithTableCompnent } from '@ghentcdh/ui';
 </script>
 
 <template>
   <div class="max-w-screen-lg m-auto">
-    <FormComponent
+    <FormWithTableCompnent
       :id="formId"
       :create-title="'Create Author'"
       :update-title="'Update Author'"
