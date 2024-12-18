@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FormComponent } from '@ghentcdh/ui';
+import { FormWithTableCompnent } from '@ghentcdh/ui';
 
 const formId = 'text-index';
 const urlSchema = '/api/text/schema';
@@ -7,7 +7,7 @@ const urlSchema = '/api/text/schema';
 
 <template>
   <div class="max-w-screen-lg m-auto">
-    <FormComponent
+    <FormWithTableCompnent
       :id="formId"
       :create-title="'Create text'"
       :update-title="'Update text'"
