@@ -5,3 +5,6 @@ export { default as FormComponent } from './form/form.component.vue';
 export * from './icons';
 export { default as TableComponent } from './table/table.component.vue';
 export { default as FormWithTableCompnent } from './form/form-with-table.component.vue';
+export { default as FormWithActions } from './form/form-with-actions.component.vue';
+export * from './table/table.model';
+export * from './form/form.store';

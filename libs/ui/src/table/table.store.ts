@@ -37,6 +37,10 @@ export const useTableStore = (name) =>
 
       if (!uri.value) return null;
 
+      if (requestData.value.page < 1) {
+        requestData.value.page = 1;
+      }
+
       const response = await httpStore.get<ResponseUnknown>(uri.value, {
         queryParams: requestData.value,
       });

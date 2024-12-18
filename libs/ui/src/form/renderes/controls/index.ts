@@ -1,6 +1,7 @@
 import { entry as integerControlRendererEntry } from './IntegerControlRenderer.vue';
 import { entry as numberControlRendererEntry } from './NumberControlRenderer.vue';
 import { entry as stringControlRendererEntry } from './StringControlRenderer.vue';
+import { entry as textAreaControlRenderer } from './TextAreaControlRenderer.vue';
 import { entry as autocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
 
 export { default as AutocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
@@ -26,7 +27,7 @@ export { default as IntegerControlRenderer } from './IntegerControlRenderer.vue'
 export const controlRenderers = [
   // First custom renderers on format
   autocompleteControlRenderer,
-
+  textAreaControlRenderer,
   // multiStringControlRendererEntry,
   // enumControlRendererEntry,
   // oneOfEnumControlRendererEntry,

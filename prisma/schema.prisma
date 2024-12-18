@@ -33,10 +33,23 @@ model Author {
 }
 
 model Text {
-  id        String @id @default(uuid())
-  mela_id   String @unique
+  id        String   @id @default(uuid())
+  mela_id   String   @unique
   name      String
-  author    Author @relation(fields: [author_id], references: [id])
+  author    Author   @relation(fields: [author_id], references: [id])
   author_id String
   year      Int
+  Phrase    Phrase[]
+}
+
+model Phrase {
+  id          String  @id @default(uuid())
+  mela_id     String  @unique
+  book_nbr    String
+  chapter_nbr String
+  phrase_nbr  String
+  text        Text    @relation(fields: [text_id], references: [id])
+  text_id     String
+  source_text String
+  translation String?
 }

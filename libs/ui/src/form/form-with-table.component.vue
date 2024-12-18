@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, shallowRef } from 'vue';
 
-import FormComponent from './form.component.vue';
+import FormWithActions from './form-with-actions.component.vue';
 import { useFormStore } from './form.store';
 import TableComponent from '../table/table.component.vue';
+import { TableAction } from '../table/table.model';
 
 type Data = {
   [key: string]: any;
@@ -14,8 +15,8 @@ const properties = defineProps<{
   urlSchema: string;
   createTitle: string;
   updateTitle?: string;
+  tableActions?: TableAction[];
 }>();
-const valid = ref(false);
 const reload = ref(0);
 const formData = shallowRef({});
 
@@ -26,57 +27,37 @@ onMounted(() => {
 
 const activeId = shallowRef<string | null>(null);
 
-const save = () => {
-  store.save(activeId.value, formData.value).then(() => {
-    formData.value = null;
-    activeId.value = null;
-    reload.value = Date.now();
-  });
-};
-
 const edit = (data: Data) => {
   formData.value = data;
   activeId.value = data.id;
-};
-
-const onValid = (v: boolean) => {
-  valid.value = v;
 };
 
 const deleteFn = (data: Data) => {
   // TODO add warning
   store.delete(data).then(() => (reload.value = Date.now()));
 };
+
+const onReload = () => {
+  reload.value = Date.now();
+};
+
+const onSuccess = () => {
+  reload.value = Date.now();
+  formData.value = {};
+  activeId.value = null;
+};
 </script>
 
 <template>
-  <div class="card bg-base-100 w-full shadow border-2">
-    <div
-      v-if="store.formSchema && store.uiSchema"
-      class="card-body"
-    >
-      <h1 class="card-title">
-        {{ activeId ? updateTitle : createTitle }}
-      </h1>
-      <FormComponent
-        id="ud"
-        v-model="formData"
-        :schema="store.formSchema"
-        :uischema="store.uiSchema"
-        @valid="onValid($event)"
-      />
-      <div class="card-actions flex justify-end">
-        <button
-          :disabled="!valid"
-          class="btn btn-primary"
-          @click="save"
-        >
-          Save
-        </button>
-      </div>
-    </div>
-  </div>
-
+  <FormWithActions
+    :id="id"
+    v-model="formData"
+    :schema="store.formSchema"
+    :uischema="store.uiSchema"
+    :create-title="createTitle"
+    :update-title="updateTitle"
+    @success="onSuccess"
+  />
   <div
     v-if="store.columnSchema"
     class="card bg-base-100 w-full shadow border-2"
@@ -91,6 +72,7 @@ const deleteFn = (data: Data) => {
         :columns="store.columnSchema?.columns"
         :uri="store.uri"
         :reload="reload"
+        :actions="tableActions"
         @edit="edit"
         @delete="deleteFn"
       />

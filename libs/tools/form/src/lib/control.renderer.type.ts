@@ -1,8 +1,9 @@
 export const ControlType = {
   number: 'number',
   string: 'string',
-  integer: 'IntintegeregerControlRendererinteger',
+  integer: 'Integer',
   autocomplete: 'autocomplete',
+  textArea: 'textArea',
 } as const;
 
 export const ControlRendererType = {
@@ -10,4 +11,5 @@ export const ControlRendererType = {
   string: 'StringControlRenderer',
   integer: 'IntegerControlRenderer',
   autocomplete: 'AutocompleteControlRenderer',
+  textArea: 'TextAreaControlRenderer',
 } as const;

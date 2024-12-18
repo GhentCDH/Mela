@@ -51,7 +51,7 @@
           v-for="item of menu"
           :key="item.label"
         >
-          <RouterLink :to="item.routerLink">
+          <RouterLink :to="{ name: item.routerLink }">
             {{ item.label }}
           </RouterLink>
         </li>
