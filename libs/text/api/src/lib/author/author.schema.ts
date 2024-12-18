@@ -1,6 +1,10 @@
 import { AuthorForm } from '@ghentcdh/mela/generated/forms';
 import { AuthorSchema } from '@ghentcdh/mela/generated/types';
-import { SchemaModel, createSchema } from '@ghentcdh/tools/form';
+import {
+  SchemaModel,
+  createResponseData,
+  createSchema,
+} from '@ghentcdh/tools/form';
 
 // TODO add autocomplete for textschema
 
@@ -43,3 +47,5 @@ const formSchema = createSchema({
 export const authorSchema: SchemaModel = formSchema.schema;
 
 export class CreateAuthorDto extends formSchema.dto {}
+
+export class ListAuthorDto extends createResponseData(AuthorSchema) {}

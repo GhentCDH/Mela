@@ -1,6 +1,6 @@
 <template>
   <button
-    class="btn btn-square btn-outline btn-md p-2"
+    class="btn btn-square btn-outline btn-sm p-1"
     @click="emit('click')"
   >
     <Icon :icon="icon" />

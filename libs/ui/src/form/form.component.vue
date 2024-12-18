@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 
 import { useFormStore } from './form.store';
 import { tailwindRenderers } from './renderes';
-import IconButton from '../button/icon-button.vue';
+import TableComponent from '../table/table.component.vue';
 
 type Data = {
   [key: string]: any;
@@ -17,6 +17,7 @@ const properties = defineProps<{
   updateTitle?: string;
 }>();
 const valid = ref(false);
+const reload = ref(0);
 
 const store = useFormStore(properties.id);
 onMounted(() => {
@@ -36,6 +37,7 @@ const save = (event: Data) => {
 
   store.save(activeId.value, formData.value).then(() => {
     clear();
+    reload.value = Date.now();
   });
 };
 
@@ -51,7 +53,7 @@ const edit = (data: Data) => {
 
 const deleteFn = (data: Data) => {
   // TODO add warning
-  store.delete(data);
+  store.delete(data).then(() => (reload.value = Date.now()));
 };
 </script>
 
@@ -96,43 +98,15 @@ const deleteFn = (data: Data) => {
       <h1 class="card-title">
         Data
       </h1>
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th
-              v-for="column in store.columnSchema?.columns"
-              :key="column.scope"
-            >
-              {{ column.label }}
-            </th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="data in store.data?.data"
-            :key="data.id"
-          >
-            <td
-              v-for="column in store.columnSchema?.columns"
-              :key="column.scope"
-            >
-              {{ data[column.id] }}
-            </td>
-            <td>
-              <IconButton
-                icon="Edit"
-                class="mr-2"
-                @click="edit(data)"
-              />
-              <IconButton
-                icon="Delete"
-                @click="deleteFn(data)"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <TableComponent
+        v-if="store.uri"
+        :id="`form_table${id}`"
+        :columns="store.columnSchema?.columns"
+        :uri="store.uri"
+        :reload="reload"
+        @edit="edit"
+        @delete="deleteFn"
+      />
     </div>
   </div>
 </template>
