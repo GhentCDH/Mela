@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeView from './app/Home.vue';
 import AuthorView from './app/views/author/author.vue';
+import TextIndexPhrasesView from './app/views/text-index/phrases.vue';
 import TextIndexView from './app/views/text-index/text-index.vue';
 
 const routes = [
@@ -10,6 +11,11 @@ const routes = [
     path: '/text-index',
     name: 'text-index',
     component: TextIndexView,
+  },
+  {
+    path: '/text-index/:id/phrases',
+    name: 'text-index-phrases',
+    component: TextIndexPhrasesView,
   },
   {
     path: '/authors',

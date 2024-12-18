@@ -8,8 +8,9 @@ import { useTableStore } from './table.store';
 import IconButton from '../button/icon-button.vue';
 import TextCell from './cells/text.cell.vue';
 
-type Data = {
-  [key: string]: any;
+export type TableAction = {
+  label: string;
+  action: (data: unknown) => void;
 };
 
 const properties = defineProps<{
@@ -17,6 +18,7 @@ const properties = defineProps<{
   columns: Column[];
   uri: string;
   reload: number;
+  actions?: TableAction[];
 }>();
 
 // TODO add reload functionality!
@@ -35,11 +37,11 @@ onMounted(() => {
   store.init(properties.uri);
 });
 
-const edit = (data: Data) => {
+const edit = (data: unknown) => {
   emit('edit', data);
 };
 
-const deleteFn = (data: Data) => {
+const deleteFn = (data: unknown) => {
   emit('delete', data);
 };
 
@@ -58,6 +60,9 @@ const components = {
         >
           {{ column.label }}
         </th>
+        <th v-if="actions">
+          actions
+        </th>
         <th />
       </tr>
     </thead>
@@ -75,6 +80,9 @@ const components = {
             :data="data"
             :column="column"
           />
+        </td>
+        <td v-if="actions">
+          actions
         </td>
         <td>
           <IconButton
