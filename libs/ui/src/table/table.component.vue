@@ -80,7 +80,7 @@ const components = {
         <td v-if="actions">
           <button
             v-for="action of actions"
-            key="action.label"
+            :key="action.label"
             class="btn btn-outline btn-sm p-1"
             type="button"
             @click="action.action(data)"
