@@ -23,6 +23,7 @@ import { phraseFormSchema } from '@mela/text/shared';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { Phrase } from '@ghentcdh/mela/generated/types';
 import { TableComponent, useFormStore } from '@ghentcdh/ui';
 
 import { usePhraseStore } from '../phrase.store';
@@ -35,10 +36,10 @@ const router = useRouter();
 
 const uriData = computed(() => `${phrase_uri}?text_id=${phraseStore.text?.id}`);
 
-const onEdit = (phraseId: string) => {
+const onEdit = (phrase: Phrase) => {
   router.replace({
     name: 'text-index-phrase-edit',
-    params: { phraseId },
+    params: { phraseId: phrase.id },
   });
 };
 </script>

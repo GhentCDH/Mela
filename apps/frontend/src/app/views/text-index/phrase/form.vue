@@ -9,20 +9,31 @@
       </router-link>
     </div>
     <FormWithActions
-      :id="phrase_store_id"
+      :id="store.phrase_store_id"
       :form-schema="phraseFormSchema"
       :create-title="'Create Phrase'"
       :model-value="formData"
+      @success="onSuccess"
     />
   </div>
 </template>
 <script setup lang="ts">
 import { phraseFormSchema } from '@mela/text/shared';
-import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 import { FormWithActions } from '@ghentcdh/ui';
 
-import { phrase_store_id } from './phrase.const';
+import { usePhraseStore } from '../phrase.store';
 
-let formData = { text_id: useRoute().params.textId };
+const store = usePhraseStore();
+const formData = computed(() => {
+  return {
+    ...store.phrase,
+    text_id: store.text?.id,
+  };
+});
+
+const onSuccess = () => {
+  store.reload();
+};
 </script>
