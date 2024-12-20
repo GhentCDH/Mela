@@ -8,7 +8,8 @@
       type="text"
       :class="[
         'input',
-        'input-bordered input-primary w-full max-w-xs',
+        'input-bordered input-primary w-full',
+        'h-80',
         { 'input-error': control.errors },
       ]"
       :rows="10"

@@ -3,7 +3,7 @@
     v-if="visible"
     :id="id"
     :for="id + '-input'"
-    class="form-control w-full max-w-xs"
+    class="form-control w-full"
   >
     <div class="label">
       <span class="label-text">

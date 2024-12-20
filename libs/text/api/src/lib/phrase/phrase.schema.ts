@@ -34,15 +34,23 @@ const uiSchema = {
       ],
     },
     {
-      type: 'Control',
-      scope: '#/properties/source_text',
-    },
-    {
-      type: 'Control',
-      scope: '#/properties/translation',
-      options: {
-        format: ControlType.textArea,
-      },
+      type: 'HorizontalLayout',
+      elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/source_text',
+          options: {
+            format: ControlType.textArea,
+          },
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/translation',
+          options: {
+            format: ControlType.textArea,
+          },
+        },
+      ],
     },
   ],
 };
