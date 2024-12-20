@@ -18,7 +18,7 @@ const uiSchema = LayoutBuilder.vertical()
       ControlBuilder.scope('#/properties/phrase_nbr')
     ),
     LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/text').textArea(),
+      ControlBuilder.scope('#/properties/source_text').textArea(),
       ControlBuilder.scope('#/properties/translation').textArea()
     )
   )
@@ -32,7 +32,7 @@ const columnDef = [
     scope: '#/properties/mela_id',
   },
   {
-    scope: '#/properties/text',
+    scope: '#/properties/source_text',
   },
 ];
 
