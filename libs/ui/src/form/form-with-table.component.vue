@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, shallowRef } from 'vue';
 
+import { FormSchemaModel } from '@ghentcdh/tools/form';
+
 import FormWithActions from './form-with-actions.component.vue';
 import { useFormStore } from './form.store';
 import TableComponent from '../table/table.component.vue';
@@ -16,13 +18,14 @@ const properties = defineProps<{
   createTitle: string;
   updateTitle?: string;
   tableActions?: TableAction[];
+  formSchema: FormSchemaModel;
 }>();
 const reload = ref(0);
 const formData = shallowRef({});
 
 const store = useFormStore(properties.id);
 onMounted(() => {
-  store.init(properties.urlSchema);
+  store.init(properties.formSchema);
 });
 
 const activeId = shallowRef<string | null>(null);
@@ -52,14 +55,13 @@ const onSuccess = () => {
   <FormWithActions
     :id="id"
     v-model="formData"
-    :schema="store.formSchema"
-    :uischema="store.uiSchema"
+    :form-schema="formSchema"
     :create-title="createTitle"
     :update-title="updateTitle"
     @success="onSuccess"
   />
   <div
-    v-if="store.columnSchema"
+    v-if="formSchema.columnSchema"
     class="card bg-base-100 w-full shadow border-2"
   >
     <div class="card-body">
@@ -67,10 +69,10 @@ const onSuccess = () => {
         Data
       </h1>
       <TableComponent
-        v-if="store.uri"
+        v-if="formSchema.uri"
         :id="`form_table${id}`"
-        :columns="store.columnSchema?.columns"
-        :uri="store.uri"
+        :columns="formSchema.columnSchema?.columns"
+        :uri="formSchema.uri"
         :reload="reload"
         :actions="tableActions"
         @edit="edit"

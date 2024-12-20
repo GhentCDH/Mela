@@ -1,4 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { CreateTextDto, ListTextDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -17,7 +18,6 @@ import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 import { RequestDto } from '@ghentcdh/tools/form';
 
 import { TextRepositoryService } from './text-repository.service';
-import { CreateTextDto, ListTextDto, textSchema } from './text.schema';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -27,7 +27,7 @@ export class TextController extends AbstractController<
   CreateTextDto
 > {
   constructor(repository: TextRepositoryService) {
-    super(repository, textSchema);
+    super(repository);
   }
 
   @Get()

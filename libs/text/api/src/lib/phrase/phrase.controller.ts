@@ -1,4 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { CreatePhraseDto, ListPhraseDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -16,7 +17,6 @@ import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form';
 
 import { PhraseRepository } from './phrase.repository';
-import { CreatePhraseDto, ListPhraseDto, phraseSchema } from './phrase.schema';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -26,7 +26,7 @@ export class PhraseController extends AbstractController<
   CreatePhraseDto
 > {
   constructor(repository: PhraseRepository) {
-    super(repository, phraseSchema);
+    super(repository);
   }
 
   @Get()

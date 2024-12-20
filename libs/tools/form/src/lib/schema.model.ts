@@ -5,7 +5,7 @@ import { ZodObject } from 'zod';
 
 import { ColumDef, ColumnSchema, createColumnSchema } from './column.utils';
 
-export type SchemaModel = {
+export type FormSchemaModel = {
   uiSchema: any;
   formSchema: JsonSchema;
   columnSchema?: ColumnSchema;
@@ -38,6 +38,6 @@ export const createSchema = (props: {
       formSchema: detail,
       columnSchema: createColumnSchema(props.columnDef, props.jsonSchema),
       uri: props.uri,
-    } as SchemaModel,
+    } as FormSchemaModel,
   };
 };
