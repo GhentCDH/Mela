@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { textFormSchema } from '@mela/text/shared';
 import { useRouter } from 'vue-router';
 
 import { Text } from '@ghentcdh/mela/generated/types';
@@ -29,6 +30,7 @@ const tableActions: TableAction[] = [
       :update-title="'Update text'"
       :url-schema="urlSchema"
       :table-actions="tableActions"
+      :form-schema="textFormSchema"
     />
   </div>
 </template>

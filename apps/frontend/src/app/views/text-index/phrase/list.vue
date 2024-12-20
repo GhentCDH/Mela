@@ -12,14 +12,14 @@
       </RouterLink>
     </div>
     <TableComponent
-      v-if="formStore.columnSchema"
       :uri="uriData"
-      :columns="formStore.columnSchema.columns"
+      :columns="phraseFormSchema.columnSchema.columns"
       @edit="onEdit"
     />
   </div>
 </template>
 <script setup lang="ts">
+import { phraseFormSchema } from '@mela/text/shared';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 

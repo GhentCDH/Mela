@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
+
+import { FormSchemaModel } from '@ghentcdh/tools/form';
 
 import FormComponent from './form.component.vue';
 import { useFormStore } from './form.store';
 
 const properties = defineProps<{
   id: string;
-  urlSchema: string;
   createTitle: string;
   updateTitle?: string;
+  formSchema: FormSchemaModel;
 }>();
 const valid = ref(false);
 const formData = defineModel();
 
 const store = useFormStore(properties.id);
-onMounted(() => {
-  store.init(properties.urlSchema);
-});
 
 const emits = defineEmits(['success']);
 
@@ -37,18 +36,15 @@ const onValid = (v: boolean) => {
 
 <template>
   <div class="card bg-base-100 w-full shadow border-2">
-    <div
-      v-if="store.formSchema && store.uiSchema"
-      class="card-body"
-    >
+    <div class="card-body">
       <h1 class="card-title">
         {{ formData?.id ? updateTitle : createTitle }}
       </h1>
       <FormComponent
         id="ud"
         v-model="formData"
-        :schema="store.formSchema"
-        :uischema="store.uiSchema"
+        :schema="formSchema.formSchema"
+        :uischema="formSchema.uiSchema"
         @valid="onValid($event)"
       />
       <div class="card-actions flex justify-end">

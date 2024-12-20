@@ -10,18 +10,19 @@
     </div>
     <FormWithActions
       :id="phrase_store_id"
-      :url-schema="phrase_schema_uri"
+      :form-schema="phraseFormSchema"
       :create-title="'Create Phrase'"
       :model-value="formData"
     />
   </div>
 </template>
 <script setup lang="ts">
+import { phraseFormSchema } from '@mela/text/shared';
 import { useRoute } from 'vue-router';
 
 import { FormWithActions } from '@ghentcdh/ui';
 
-import { phrase_schema_uri, phrase_store_id } from './phrase.const';
+import { phrase_store_id } from './phrase.const';
 
 let formData = { text_id: useRoute().params.textId };
 </script>

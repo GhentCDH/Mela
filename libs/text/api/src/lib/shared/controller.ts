@@ -1,19 +1,13 @@
 import { Body, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
-import { RequestDto, ResponseData, SchemaModel } from '@ghentcdh/tools/form';
+import { RequestDto, ResponseData } from '@ghentcdh/tools/form';
 
 import { AbstractRepository } from './repository.service';
 
 export class AbstractController<Entity, CreateDto = Entity> {
   protected constructor(
-    protected readonly repository: AbstractRepository<Entity, CreateDto>,
-    private readonly schema: SchemaModel
+    protected readonly repository: AbstractRepository<Entity, CreateDto>
   ) {}
-
-  @Get('schema')
-  schemaRequest() {
-    return this.schema;
-  }
 
   @Get()
   protected async list(
@@ -41,8 +35,6 @@ export class AbstractController<Entity, CreateDto = Entity> {
 
   @Get('/:id')
   protected async findOne(@Param('id') id: string): Promise<Entity> {
-    if (id === 'schema') return this.schemaRequest() as any;
-
     return this.repository.findOne(id);
   }
 

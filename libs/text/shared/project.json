@@ -1,0 +1,9 @@
+{
+  "name": "text/shared",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/text/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+  }
+}

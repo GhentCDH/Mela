@@ -77,7 +77,7 @@ const dtoSchema = PhraseSchema.pick({
   translation: true,
 });
 
-const formSchema = createSchema({
+export const schema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: PhraseForm,
@@ -85,8 +85,8 @@ const formSchema = createSchema({
   columnDef,
 });
 
-export const phraseSchema: SchemaModel = formSchema.schema;
+export const phraseFormSchema: SchemaModel = schema.schema;
 
-export class CreatePhraseDto extends formSchema.dto {}
+export class CreatePhraseDto extends schema.dto {}
 
 export class ListPhraseDto extends createResponseData(PhraseSchema) {}

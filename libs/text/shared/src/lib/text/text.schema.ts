@@ -75,7 +75,7 @@ const dtoSchema = TextSchema.pick({
   year: true,
 }).extend({ author: AuthorSchema.extend({ id: z.string().optional() }) });
 
-const formSchema = createSchema({
+export const schema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: TextForm,
@@ -83,8 +83,8 @@ const formSchema = createSchema({
   columnDef,
 });
 
-export const textSchema: SchemaModel = formSchema.schema;
+export const textFormSchema: SchemaModel = schema.schema;
 
-export class CreateTextDto extends formSchema.dto {}
+export class CreateTextDto extends schema.dto {}
 
 export class ListTextDto extends createResponseData(TextWithRelationsSchema) {}

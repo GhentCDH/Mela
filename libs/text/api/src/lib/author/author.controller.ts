@@ -1,4 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { CreateAuthorDto, ListAuthorDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -16,7 +17,6 @@ import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form';
 
 import { AuthorRepository } from './author-repository.service';
-import { CreateAuthorDto, ListAuthorDto, authorSchema } from './author.schema';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -26,7 +26,7 @@ export class AuthorController extends AbstractController<
   CreateAuthorDto
 > {
   constructor(repository: AuthorRepository) {
-    super(repository, authorSchema);
+    super(repository);
   }
 
   @Get()

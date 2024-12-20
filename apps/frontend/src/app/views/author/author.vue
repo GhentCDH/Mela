@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { authorFormSchema } from '@mela/text/shared';
+
+import { FormWithTableCompnent } from '@ghentcdh/ui';
+
+
 const formId = 'author';
 const urlSchema = '/api/author/schema';
-import { FormWithTableCompnent } from '@ghentcdh/ui';
+
+const id = 'author';
 </script>
 
 <template>
@@ -11,6 +17,7 @@ import { FormWithTableCompnent } from '@ghentcdh/ui';
       :create-title="'Create Author'"
       :update-title="'Update Author'"
       :url-schema="urlSchema"
+      :form-schema="authorFormSchema"
     />
   </div>
 </template>

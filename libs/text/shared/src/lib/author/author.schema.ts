@@ -36,7 +36,7 @@ const dtoSchema = AuthorSchema.pick({
   name: true,
 });
 
-const formSchema = createSchema({
+const schema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: AuthorForm,
@@ -44,8 +44,8 @@ const formSchema = createSchema({
   columnDef,
 });
 
-export const authorSchema: SchemaModel = formSchema.schema;
+export const authorFormSchema: SchemaModel = schema.schema;
 
-export class CreateAuthorDto extends formSchema.dto {}
+export class CreateAuthorDto extends schema.dto {}
 
 export class ListAuthorDto extends createResponseData(AuthorSchema) {}
