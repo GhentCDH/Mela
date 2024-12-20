@@ -43,11 +43,17 @@ export type LayoutType = {
   elements: Array<ControlType | LayoutType>;
 };
 
-export class ControlBuilder {
-  private control: ControlType;
+abstract class Builder<TYPE> {
+  constructor(protected readonly type: string) {}
 
-  private constructor(scope: string, type = 'Control') {
-    this.control = { scope, type };
+  abstract build(): TYPE;
+}
+
+export class ControlBuilder extends Builder<ControlType> {
+  private options: ControlOption | undefined;
+
+  private constructor(private readonly scope: string, type = 'Control') {
+    super(type);
   }
 
   static object(scope: string) {
@@ -59,7 +65,7 @@ export class ControlBuilder {
   }
 
   textArea(options?: Omit<TextAreaOptions, 'format'>): ControlBuilder {
-    this.control.options = {
+    this.options = {
       format: ControlType.textArea,
       ...(options ?? {}),
     };
@@ -67,24 +73,28 @@ export class ControlBuilder {
   }
 
   autocomplete(options: Omit<AutocompleteOptions, 'format'>): ControlBuilder {
-    this.control.options = {
+    this.options = {
       format: ControlType.autocomplete,
       ...options,
     };
     return this;
   }
 
-  build(): ControlType {
-    return this.control;
+  override build(): ControlType {
+    return {
+      type: this.type,
+      scope: this.scope,
+      options: this.options,
+    } as ControlType;
   }
 }
 
-export class LayoutBuilder {
+export class LayoutBuilder extends Builder<LayoutType> {
   private elements: Array<ControlBuilder | LayoutBuilder> = [];
 
-  private constructor(
-    private readonly type: 'HorizontalLayout' | 'VerticalLayout'
-  ) {}
+  private constructor(type: 'HorizontalLayout' | 'VerticalLayout') {
+    super(type);
+  }
 
   static horizontal() {
     return new LayoutBuilder('HorizontalLayout');
@@ -104,7 +114,7 @@ export class LayoutBuilder {
     return this;
   }
 
-  build() {
+  override build(): LayoutType {
     return {
       type: this.type,
       elements: this.elements.map((e) => e.build()),
