@@ -11,12 +11,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useFormStore } from '@ghentcdh/ui';
-
 import { usePhraseStore } from '../phrase.store';
-import { phrase_store_id, phrase_uri } from './phrase.const';
 
 const phraseStore = usePhraseStore();
-const formStore = useFormStore(phrase_store_id);
-formStore.init(`${phrase_uri}/schema`);
 </script>

@@ -24,17 +24,17 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { Phrase } from '@ghentcdh/mela/generated/types';
-import { TableComponent, useFormStore } from '@ghentcdh/ui';
+import { TableComponent } from '@ghentcdh/ui';
 
 import { usePhraseStore } from '../phrase.store';
-import { phrase_store_id, phrase_uri } from './phrase.const';
 
 const phraseStore = usePhraseStore();
-const formStore = useFormStore(phrase_store_id);
 
 const router = useRouter();
 
-const uriData = computed(() => `${phrase_uri}?text_id=${phraseStore.text?.id}`);
+const uriData = computed(
+  () => `${phraseFormSchema.uri}?text_id=${phraseStore.text?.id}`
+);
 
 const onEdit = (phrase: Phrase) => {
   router.replace({

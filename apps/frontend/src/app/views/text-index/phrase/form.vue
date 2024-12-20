@@ -1,21 +1,20 @@
 <template>
-  <div class="card bg-base-100 w-full shadow border-2">
-    <div class="py-2">
-      <router-link
-        :to="{ name: 'text-index-phrase-list' }"
-        class="btn btn-link"
-      >
-        Back to list
-      </router-link>
-    </div>
-    <FormWithActions
-      :id="store.phrase_store_id"
-      :form-schema="phraseFormSchema"
-      :create-title="'Create Phrase'"
-      :model-value="formData"
-      @success="onSuccess"
-    />
+  <div class="py-2">
+    <router-link
+      :to="{ name: 'text-index-phrase-list' }"
+      class="btn btn-link"
+    >
+      Back to list
+    </router-link>
   </div>
+  <FormWithActions
+    :id="store.phrase_store_id"
+    :form-schema="phraseFormSchema"
+    :create-title="'Create Phrase'"
+    :update-title="'Edit Phrase'"
+    :model-value="formData"
+    @success="onSuccess"
+  />
 </template>
 <script setup lang="ts">
 import { phraseFormSchema } from '@mela/text/shared';
