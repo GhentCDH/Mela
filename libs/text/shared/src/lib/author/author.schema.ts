@@ -1,27 +1,17 @@
 import { AuthorForm } from '@ghentcdh/mela/generated/forms';
 import { AuthorSchema } from '@ghentcdh/mela/generated/types';
 import {
-  SchemaModel,
+  ControlBuilder,
+  LayoutBuilder,
   createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
 // TODO add autocomplete for textschema
 
-const uiSchema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'HorizontalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/name',
-        },
-      ],
-    },
-  ],
-};
+const uiSchema = LayoutBuilder.vertical()
+  .addControls(ControlBuilder.scope('#/properties/name'))
+  .build();
 
 const columnDef = [
   {
@@ -44,7 +34,7 @@ const schema = createSchema({
   columnDef,
 });
 
-export const authorFormSchema: SchemaModel = schema.schema;
+export const authorFormSchema = schema.schema;
 
 export class CreateAuthorDto extends schema.dto {}
 

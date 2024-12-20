@@ -25,7 +25,7 @@ const renderer = defineComponent({
     },
   },
   beforeMount() {
-    console.log('TextCell', this.data, this.column);
+    // console.log('TextCell', this.data, this.column);
   },
 });
 

@@ -1,59 +1,28 @@
 import { PhraseForm } from '@ghentcdh/mela/generated/forms';
 import { PhraseSchema } from '@ghentcdh/mela/generated/types';
 import {
-  ControlType,
-  SchemaModel,
+  ControlBuilder,
+  LayoutBuilder,
   createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
 // TODO add autocomplete for textschema
 
-const uiSchema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'HorizontalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/mela_id',
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/book_nbr',
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/chapter_nbr',
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/phrase_nbr',
-        },
-      ],
-    },
-    {
-      type: 'HorizontalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/source_text',
-          options: {
-            format: ControlType.textArea,
-          },
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/translation',
-          options: {
-            format: ControlType.textArea,
-          },
-        },
-      ],
-    },
-  ],
-};
+const uiSchema = LayoutBuilder.vertical()
+  .addControls(
+    LayoutBuilder.horizontal().addControls(
+      ControlBuilder.scope('#/properties/mela_id'),
+      ControlBuilder.scope('#/properties/book_nbr'),
+      ControlBuilder.scope('#/properties/chapter_nbr'),
+      ControlBuilder.scope('#/properties/phrase_nbr')
+    ),
+    LayoutBuilder.horizontal().addControls(
+      ControlBuilder.scope('#/properties/text').textArea(),
+      ControlBuilder.scope('#/properties/translation').textArea()
+    )
+  )
+  .build();
 
 const columnDef = [
   {
@@ -85,7 +54,7 @@ export const schema = createSchema({
   columnDef,
 });
 
-export const phraseFormSchema: SchemaModel = schema.schema;
+export const phraseFormSchema = schema.schema;
 
 export class CreatePhraseDto extends schema.dto {}
 

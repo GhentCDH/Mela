@@ -1,3 +1,4 @@
+import { uiTypeIs } from '@jsonforms/core';
 import { and, optionIs } from '@jsonforms/core/src/testers/testers';
 
 import { ControlType } from '@ghentcdh/tools/form';
@@ -8,6 +9,6 @@ export const isAutoCompleteControl = and(
 );
 
 export const isTextAreaControl = and(
-  // uiTypeIs('Control'),
+  uiTypeIs('Control'),
   optionIs('format', ControlType.textArea)
 );

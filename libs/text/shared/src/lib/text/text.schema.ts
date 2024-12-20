@@ -7,49 +7,31 @@ import {
   TextWithRelationsSchema,
 } from '@ghentcdh/mela/generated/types';
 import {
-  ControlType,
-  SchemaModel,
+  ControlBuilder,
+  LayoutBuilder,
   createResponseData,
   createSchema,
-} from '@ghentcdh/tools/form';
+} from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema
 
-const uiSchema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'HorizontalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/mela_id',
+const uiSchema = LayoutBuilder.vertical()
+  .addControls(
+    LayoutBuilder.horizontal().addControls(
+      ControlBuilder.scope('#/properties/mela_id'),
+      ControlBuilder.scope('#/properties/name'),
+      ControlBuilder.object('#/properties/author').autocomplete({
+        uri: '/api/author?name=',
+        uriDetail: '/api/author/',
+        field: {
+          id: 'id',
+          label: 'name',
         },
-        {
-          type: 'Control',
-          scope: '#/properties/name',
-        },
-        {
-          type: 'Object',
-          scope: '#/properties/author',
-          options: {
-            format: ControlType.autocomplete,
-            uri: '/api/author?name=',
-            uriDetail: '/api/author/',
-            field: {
-              id: 'id',
-              label: 'name',
-            },
-          },
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/year',
-        },
-      ],
-    },
-  ],
-};
+      }),
+      ControlBuilder.scope('#/properties/year')
+    )
+  )
+  .build();
 
 const columnDef = [
   {
@@ -83,7 +65,9 @@ export const schema = createSchema({
   columnDef,
 });
 
-export const textFormSchema: SchemaModel = schema.schema;
+export const textFormSchema = schema.schema;
+
+console.log(schema.schema);
 
 export class CreateTextDto extends schema.dto {}
 
