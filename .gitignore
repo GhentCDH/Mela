@@ -51,3 +51,5 @@ var
 **/logs/**
 **/*.log
 /qodana.yaml
+
+vitest.config.*.timestamp*
