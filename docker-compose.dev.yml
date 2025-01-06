@@ -119,19 +119,17 @@ services:
       POSTGRES_PASSWORD: $DATABASE_AUTH_PASSWORD
       POSTGRES_DB: $DATABASE_AUTH_DBNAME
 
-  nginx:
-    container_name: mela.app
-    image: nginx
-    restart: always
-    volumes:
-      - ./docker/dev/nginx/default.conf:/etc/nginx/conf.d/default.conf
+  caddy:
+    build:
+      context: .
+      dockerfile: $PWD/docker/dev/Dockerfile
+      target: frontend
+    restart: unless-stopped
     ports:
-      - "4000:80"
-    environment:
-      - NGINX_HOST=foobar.com
-      - NGINX_PORT=80
-    depends_on:
-      - frontend
-      - backend
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker/dev/CaddyFile:/etc/caddy/Caddyfile
+      - /app/node_modules
 
 
