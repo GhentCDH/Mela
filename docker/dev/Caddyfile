@@ -1,0 +1,19 @@
+:80 {
+    root * /srv
+    encode gzip
+
+    file_server {
+        hide .git
+    }
+
+    handle_path /api/* {
+       reverse_proxy backend:3000
+    }
+
+
+    handle_path /* {
+       reverse_proxy frontend:4200
+    }
+
+
+}

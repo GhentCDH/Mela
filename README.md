@@ -32,7 +32,7 @@ Check the configuration in the `.env` variables file and run Docker compose:
 docker compose -f docker-compose.dev.yml up --build    
 ```
 
-The app is served on: [http://localhost:4000](http://localhost:4000)
+The app is served on: [http://localhost](http://localhost:4000)
 
 Make sure the following is added to your hosts file
 
