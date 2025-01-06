@@ -54,3 +54,9 @@ WORKDIR /app
 
 #CMD SLEEP INFINITY
 CMD npx nx run backend:serve
+
+
+  # ====== RUN CADDY =======
+FROM caddy:2.8.4-alpine AS frontend
+
+EXPOSE 80 443
