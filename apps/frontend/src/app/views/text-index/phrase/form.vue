@@ -1,28 +1,38 @@
 <template>
-  <div class="card bg-base-100 w-full shadow border-2">
-    <div class="py-2">
-      <router-link
-        :to="{ name: 'text-index-phrase-list' }"
-        class="btn btn-link"
-      >
-        Back to list
-      </router-link>
-    </div>
-    <FormWithActions
-      :id="phrase_store_id"
-      :form-schema="phraseFormSchema"
-      :create-title="'Create Phrase'"
-      :model-value="formData"
-    />
+  <div class="py-2">
+    <router-link
+      :to="{ name: 'text-index-phrase-list' }"
+      class="btn btn-link"
+    >
+      Back to list
+    </router-link>
   </div>
+  <FormWithActions
+    :id="store.phrase_store_id"
+    :form-schema="phraseFormSchema"
+    :create-title="'Create Phrase'"
+    :update-title="'Edit Phrase'"
+    :model-value="formData"
+    @success="onSuccess"
+  />
 </template>
 <script setup lang="ts">
 import { phraseFormSchema } from '@mela/text/shared';
-import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 import { FormWithActions } from '@ghentcdh/ui';
 
-import { phrase_store_id } from './phrase.const';
+import { usePhraseStore } from '../phrase.store';
 
-let formData = { text_id: useRoute().params.textId };
+const store = usePhraseStore();
+const formData = computed(() => {
+  return {
+    ...store.phrase,
+    text_id: store.text?.id,
+  };
+});
+
+const onSuccess = () => {
+  store.reload();
+};
 </script>
