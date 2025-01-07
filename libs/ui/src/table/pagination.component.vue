@@ -108,7 +108,7 @@ const updatePages = () => {
       page: () => totalPages.value,
       label: `${totalPages.value}`,
       activePage: totalPages.value,
-      hide: () => totalPages.value === 1,
+      hide: () => totalPages.value < 2,
     },
     {
       page: () => props.currentPage + 1,
