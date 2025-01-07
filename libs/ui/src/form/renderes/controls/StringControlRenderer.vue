@@ -1,23 +1,16 @@
 <template>
-  <ControlWrapper
-    v-bind="controlWrapper"
-    :id="control.id"
-  >
+  <ControlWrapper v-bind="controlWrapper">
     <input
       :id="control.id + '-input'"
       type="text"
-      :class="[
-        'input',
-        'input-bordered input-primary w-full max-w-xs',
-        { 'input-error': control.errors },
-      ]"
+      :class="['input']"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
       :placeholder="appliedOptions.placeholder"
       @change="onChange"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+      @focus="onFocus"
+      @blur="onBlur"
     >
   </ControlWrapper>
 </template>
@@ -34,13 +27,13 @@ import {
   rendererProps,
   useJsonFormsControl,
 } from '@jsonforms/vue';
-import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import { ControlRendererType } from '@ghentcdh/tools/form';
 
 import ControlWrapper from './ControlWrapper.vue';
+import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
   name: ControlRendererType.string,
@@ -51,9 +44,9 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControl(
+    return useVanillaControlCustom(
       useJsonFormsControl(props),
-      (target) => target.value ?? undefined
+      (target) => target.value ?? undefined,
     );
   },
 });

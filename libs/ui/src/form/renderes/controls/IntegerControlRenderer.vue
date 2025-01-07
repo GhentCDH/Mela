@@ -1,24 +1,17 @@
 <template>
-  <control-wrapper
-    v-bind="controlWrapper"
-    :is-focused="isFocused"
-  >
+  <control-wrapper v-bind="controlWrapper">
     <input
       :id="control.id + '-input'"
       type="number"
       :step="step"
-      :class="[
-        'input',
-        'input-bordered input-primary w-full max-w-xs',
-        { 'input-error': control.errors },
-      ]"
+      class="input"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
       :placeholder="appliedOptions.placeholder"
       @change="onChange"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
+      @focus="onFocus"
+      @blur="onBlur"
     >
   </control-wrapper>
 </template>
@@ -35,12 +28,12 @@ import {
   rendererProps,
   useJsonFormsControl,
 } from '@jsonforms/vue';
-import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
 import { ControlRendererType } from '@ghentcdh/tools/form';
 
 import ControlWrapper from './ControlWrapper.vue';
+import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
   name: ControlRendererType.integer,
@@ -51,8 +44,8 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControl(useJsonFormsControl(props), (target) =>
-      target.value === '' ? undefined : Number(target.value)
+    return useVanillaControlCustom(useJsonFormsControl(props), (target) =>
+      target.value === '' ? undefined : Number(target.value),
     );
   },
   computed: {
