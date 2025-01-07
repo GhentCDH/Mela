@@ -4,9 +4,9 @@
   "dependencies": {
     "@nestjs/common": "^10.0.2",
     "log4js": "^6.9.1",
-    "vite": "^5.0.0",
+    "vite": "^6.0.7",
     "vite-plugin-node": "^4.0.0",
-    "@nx/vite": "20.1.4"
+    "@nx/vite": "20.3.0"
   },
   "type": "commonjs",
   "main": "./src/index.js",

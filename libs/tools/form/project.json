@@ -11,16 +11,23 @@
       }
     }
   },
-  "tags": ["tools"],
+  "tags": [
+    "tools"
+  ],
   "targets": {
     "build": {
-      "executor": "@nx/js:swc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/tools/form",
         "main": "libs/tools/form/src/index.ts",
+        "packageJson": "libs/tools/form/package.json",
         "tsConfig": "libs/tools/form/tsconfig.lib.json",
-        "assets": ["libs/tools/form/*.md"]
+        "assets": [
+          "libs/tools/form/*.md"
+        ]
       }
     },
     "nx-release-publish": {
