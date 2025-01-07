@@ -10,8 +10,6 @@ export type JsonFormsLayout = {
 };
 
 export type FormSchemaModel = {
-  uiSchema: Layout;
-
   form: JsonFormsLayout;
   table?: JsonFormsLayout;
 
