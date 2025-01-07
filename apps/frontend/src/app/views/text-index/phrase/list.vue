@@ -1,19 +1,17 @@
 <template>
-  <div
-    v-if="phraseStore.text"
-    class="max-w-screen-lg m-auto"
-  >
+  <div v-if="phraseStore.text" class="max-w-screen-lg m-auto">
     <div class="flex justify-end gap-2">
       <RouterLink
         class="btn btn-outline"
         :to="{ name: 'text-index-phrase-new' }"
       >
-        Add Phase
+        Add Phrase
       </RouterLink>
     </div>
     <TableComponent
+      :id="`phrase-table-${phraseStore.text.id}`"
       :uri="uriData"
-      :columns="phraseFormSchema.columnSchema.columns"
+      :layout="phraseFormSchema.table"
       @edit="onEdit"
     />
   </div>
@@ -33,7 +31,7 @@ const phraseStore = usePhraseStore();
 const router = useRouter();
 
 const uriData = computed(
-  () => `${phraseFormSchema.uri}?text_id=${phraseStore.text?.id}`
+  () => `${phraseFormSchema.uri}?text_id=${phraseStore.text?.id}`,
 );
 
 const onEdit = (phrase: Phrase) => {

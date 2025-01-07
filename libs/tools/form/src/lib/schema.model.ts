@@ -1,23 +1,29 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import { generateSchema } from '@anatine/zod-openapi';
 import { JsonSchema } from '@jsonforms/core';
+import { Layout } from '@jsonforms/core/src/models/uischema';
 import { ZodObject } from 'zod';
 
-import { ColumDef, ColumnSchema, createColumnSchema } from './column.utils';
+export type JsonFormsLayout = {
+  uiSchema: Layout;
+  schema: JsonSchema;
+};
 
 export type FormSchemaModel = {
-  uiSchema: any;
-  formSchema: JsonSchema;
-  columnSchema?: ColumnSchema;
+  uiSchema: Layout;
+
+  form: JsonFormsLayout;
+  table?: JsonFormsLayout;
+
   uri: string;
 };
 
 export const createSchema = (props: {
   uiSchema: any;
   jsonSchema: JsonSchema;
-  // TODO extract dto schema from schema
+  tableSchema?: JsonSchema;
+  // TODO extract dto schema from uischema
   dtoSchema: ZodObject<any>;
-  columnDef?: ColumDef[];
   uri: string;
 }) => {
   const dtoSchema = props.dtoSchema;
@@ -33,10 +39,16 @@ export const createSchema = (props: {
   return {
     dto,
     schema: {
-      schema: props.jsonSchema,
-      uiSchema: props.uiSchema,
-      formSchema: detail,
-      columnSchema: createColumnSchema(props.columnDef, props.jsonSchema),
+      form: {
+        uiSchema: props.uiSchema,
+        schema: detail,
+      },
+      table: props.tableSchema
+        ? {
+            uiSchema: props.tableSchema,
+            schema: props.jsonSchema,
+          }
+        : undefined,
       uri: props.uri,
     } as FormSchemaModel,
   };

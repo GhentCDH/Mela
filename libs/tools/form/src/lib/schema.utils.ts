@@ -6,7 +6,7 @@ type Field = {
 
 export const findProperty = <F extends Field>(
   column: F,
-  schema: JsonSchema
+  schema: JsonSchema,
 ) => {
   //TODO check if we can use innerfunction for this
   //

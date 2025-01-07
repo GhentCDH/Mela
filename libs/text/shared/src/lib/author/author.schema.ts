@@ -13,14 +13,10 @@ const uiSchema = LayoutBuilder.vertical()
   .addControls(ControlBuilder.scope('#/properties/name'))
   .build();
 
-const columnDef = [
-  {
-    scope: '#/properties/id',
-  },
-  {
-    scope: '#/properties/name',
-  },
-];
+const tableSchema = LayoutBuilder.table()
+  .addControls(ControlBuilder.scope('#/properties/id'))
+  .addControls(ControlBuilder.scope('#/properties/name'))
+  .build();
 
 const dtoSchema = AuthorSchema.pick({
   name: true,
@@ -30,8 +26,8 @@ const schema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: AuthorForm,
+  tableSchema,
   uri: '/api/author',
-  columnDef,
 });
 
 export const authorFormSchema = schema.schema;

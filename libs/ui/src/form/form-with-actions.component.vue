@@ -13,7 +13,7 @@ const properties = defineProps<{
   formSchema: FormSchemaModel;
 }>();
 const valid = ref(false);
-const formData = defineModel();
+const formData = defineModel<any>();
 
 const store = useFormStore(properties.id);
 
@@ -43,8 +43,8 @@ const onValid = (v: boolean) => {
       <FormComponent
         id="ud"
         v-model="formData"
-        :schema="formSchema.formSchema"
-        :uischema="formSchema.uiSchema"
+        :schema="formSchema.form.schema"
+        :uischema="formSchema.form.uiSchema"
         @valid="onValid($event)"
       />
       <div class="card-actions flex justify-end">

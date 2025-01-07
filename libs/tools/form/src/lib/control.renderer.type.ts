@@ -52,7 +52,10 @@ abstract class Builder<TYPE> {
 export class ControlBuilder extends Builder<ControlType> {
   private options: ControlOption | undefined;
 
-  private constructor(private readonly scope: string, type = 'Control') {
+  private constructor(
+    private readonly scope: string,
+    type = 'Control',
+  ) {
     super(type);
   }
 
@@ -92,12 +95,16 @@ export class ControlBuilder extends Builder<ControlType> {
 export class LayoutBuilder extends Builder<LayoutType> {
   private elements: Array<ControlBuilder | LayoutBuilder> = [];
 
-  private constructor(type: 'HorizontalLayout' | 'VerticalLayout') {
+  private constructor(type: 'HorizontalLayout' | 'VerticalLayout' | 'table') {
     super(type);
   }
 
   static horizontal() {
     return new LayoutBuilder('HorizontalLayout');
+  }
+
+  static table() {
+    return new LayoutBuilder('table');
   }
 
   static vertical() {

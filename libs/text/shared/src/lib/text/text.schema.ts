@@ -28,28 +28,18 @@ const uiSchema = LayoutBuilder.vertical()
           label: 'name',
         },
       }),
-      ControlBuilder.scope('#/properties/year')
-    )
+      ControlBuilder.scope('#/properties/year'),
+    ),
   )
   .build();
 
-const columnDef = [
-  {
-    scope: '#/properties/id',
-  },
-  {
-    scope: '#/properties/mela_id',
-  },
-  {
-    scope: '#/properties/name',
-  },
-  {
-    scope: '#/properties/year',
-  },
-  {
-    scope: '#/properties/author',
-  },
-];
+const tableSchema = LayoutBuilder.table()
+  .addControls(ControlBuilder.scope('#/properties/id'))
+  .addControls(ControlBuilder.scope('#/properties/mela_id'))
+  .addControls(ControlBuilder.scope('#/properties/name'))
+  .addControls(ControlBuilder.scope('#/properties/year'))
+  .addControls(ControlBuilder.scope('#/properties/author'))
+  .build();
 
 const dtoSchema = TextSchema.pick({
   name: true,
@@ -62,7 +52,7 @@ export const schema = createSchema({
   dtoSchema,
   jsonSchema: TextForm,
   uri: '/api/text',
-  columnDef,
+  tableSchema,
 });
 
 export const textFormSchema = schema.schema;

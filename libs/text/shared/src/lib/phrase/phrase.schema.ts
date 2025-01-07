@@ -15,26 +15,20 @@ const uiSchema = LayoutBuilder.vertical()
       ControlBuilder.scope('#/properties/mela_id'),
       ControlBuilder.scope('#/properties/book_nbr'),
       ControlBuilder.scope('#/properties/chapter_nbr'),
-      ControlBuilder.scope('#/properties/phrase_nbr')
+      ControlBuilder.scope('#/properties/phrase_nbr'),
     ),
     LayoutBuilder.horizontal().addControls(
       ControlBuilder.scope('#/properties/source_text').textArea(),
-      ControlBuilder.scope('#/properties/translation').textArea()
-    )
+      ControlBuilder.scope('#/properties/translation').textArea(),
+    ),
   )
   .build();
 
-const columnDef = [
-  {
-    scope: '#/properties/id',
-  },
-  {
-    scope: '#/properties/mela_id',
-  },
-  {
-    scope: '#/properties/source_text',
-  },
-];
+const tableSchema = LayoutBuilder.table()
+  .addControls(ControlBuilder.scope('#/properties/id'))
+  .addControls(ControlBuilder.scope('#/properties/mela_id'))
+  .addControls(ControlBuilder.scope('#/properties/source_text'))
+  .build();
 
 const dtoSchema = PhraseSchema.pick({
   mela_id: true,
@@ -51,7 +45,7 @@ export const schema = createSchema({
   dtoSchema,
   jsonSchema: PhraseForm,
   uri: '/api/phrase',
-  columnDef,
+  tableSchema,
 });
 
 export const phraseFormSchema = schema.schema;

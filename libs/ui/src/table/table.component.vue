@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 
-import { Column } from '@ghentcdh/tools/form';
+import { JsonFormsLayout, findColumnDef } from '@ghentcdh/tools/form';
 
 import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
@@ -11,7 +11,7 @@ import { TableAction } from './table.model';
 
 const properties = defineProps<{
   id: string;
-  columns: Column[];
+  layout: JsonFormsLayout;
   uri: string;
   reload?: number;
   actions?: TableAction[];
@@ -25,7 +25,7 @@ watch(
   () => properties.reload,
   () => {
     store.reload();
-  }
+  },
 );
 
 const store = useTableStore(properties.id);
@@ -44,6 +44,15 @@ const deleteFn = (data: unknown) => {
 const components = {
   TextCell,
 };
+
+const displayColumns = computed(() => {
+  const { schema, uiSchema } = properties.layout;
+  return uiSchema.elements.map((element: any) => {
+    const def = findColumnDef(element, schema);
+
+    return { ...def, component: components['TextCell'] };
+  });
+});
 </script>
 
 <template>
@@ -51,7 +60,7 @@ const components = {
     <thead>
       <tr>
         <th
-          v-for="column in columns"
+          v-for="column in displayColumns"
           :key="column.scope"
         >
           {{ column.label }}
@@ -68,11 +77,11 @@ const components = {
         :key="data.id"
       >
         <td
-          v-for="column in columns"
+          v-for="column in displayColumns"
           :key="column.scope"
         >
           <component
-            :is="components[column.component ?? 'TextCell']"
+            :is="column.component"
             :data="data"
             :column="column"
           />
