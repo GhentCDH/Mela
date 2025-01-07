@@ -2,14 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.vertical-layout, .vertical-layout-item {
-  @apply flex flex-col gap-2;
-}
-
-.horizontal-layout, .horizontal-layout-item {
-  @apply flex flex-row gap-2;
-  @apply w-full;
-}
+@import './form/styles.scss';
 
 
 h1 {
