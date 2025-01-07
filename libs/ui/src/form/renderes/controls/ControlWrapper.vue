@@ -4,23 +4,17 @@
     :id="id"
     :for="id + '-input'"
     class="form-control w-full"
-    :class="[
-      'form-control w-full',
-      {
-        'form-field-error': showErrors,
-      },
-    ]"
   >
     <div class="label">
-      <span :class="['label-text']">
+      <span class="label-text">
         {{ label }}
         <span v-if="showAsterisk">*</span>
       </span>
     </div>
     <slot />
-    <div class="label text-sm text-xs text-gray-500">
-      <span>
-        {{ showErrors ? errors : showDescription ? description : null }}
+    <div class="label text-sm text-gray-500">
+      <span :class="{ 'text-error': errors }">
+        {{ errors ? errors : showDescription ? description : null }}
       </span>
     </div>
   </label>
@@ -35,7 +29,7 @@ export default defineComponent({
   name: 'ControlWrapper',
   props: {
     id: {
-      required: false as const,
+      required: true,
       type: String,
     },
     description: {
@@ -73,11 +67,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    isTouched: {
-      required: false as const,
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     showDescription(): boolean {
@@ -85,14 +74,11 @@ export default defineComponent({
         this.visible,
         this.description,
         this.isFocused,
-        true,
+        true
       );
     },
     showAsterisk(): boolean {
       return this.required; //&& !this.appliedOptions?.hideRequiredAsterisk;
-    },
-    showErrors(): boolean {
-      return !!(this.isTouched && this.errors);
     },
   },
 });

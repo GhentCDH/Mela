@@ -1,17 +1,25 @@
 <template>
-  <ControlWrapper v-bind="controlWrapper">
+  <ControlWrapper
+    v-bind="controlWrapper"
+    :id="control.id"
+  >
     <textarea
       :id="control.id + '-input'"
       type="text"
-      :class="['input', 'h-80']"
+      :class="[
+        'input',
+        'input-bordered input-primary w-full',
+        'h-80',
+        { 'input-error': control.errors },
+      ]"
       :rows="10"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
       :placeholder="appliedOptions.placeholder"
       @change="onChange"
-      @focus="onFocus"
-      @blur="onBlur"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
     />
   </ControlWrapper>
 </template>
@@ -27,6 +35,7 @@ import {
   rendererProps,
   useJsonFormsControl,
 } from '@jsonforms/vue';
+import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
@@ -34,7 +43,6 @@ import { ControlRendererType } from '@ghentcdh/tools/form';
 
 import ControlWrapper from './ControlWrapper.vue';
 import { isTextAreaControl } from './tester';
-import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
   name: ControlRendererType.textArea,
@@ -45,9 +53,9 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControlCustom(
+    return useVanillaControl(
       useJsonFormsControl(props),
-      (target) => target.value ?? undefined,
+      (target) => target.value ?? undefined
     );
   },
 });
