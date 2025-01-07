@@ -1,8 +1,5 @@
 <template>
-  <control-wrapper
-    v-bind="controlWrapper"
-    :is-focused="isFocused"
-  >
+  <control-wrapper v-bind="controlWrapper">
     <div class="dropdown dropdown-open">
       <input
         :id="control.id + '-input'"
@@ -16,8 +13,8 @@
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
         :placeholder="appliedOptions.placeholder"
-        @focus="isFocused = true"
-        @blur="isFocused = false"
+        @focus="onFocus"
+        @blur="onBlur"
       >
       <ul
         v-if="results.length"
@@ -51,7 +48,6 @@ import {
   rendererProps,
   useJsonFormsControl,
 } from '@jsonforms/vue';
-import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import { defineComponent, ref } from 'vue';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
@@ -59,6 +55,7 @@ import { ControlRendererType, ResponseData } from '@ghentcdh/tools/form';
 
 import ControlWrapper from '../ControlWrapper.vue';
 import { isAutoCompleteControl } from '../tester';
+import { useVanillaControlCustom } from '../utils/vanillaControl';
 
 const controlRenderer = defineComponent({
   name: ControlRendererType.autocomplete,
@@ -69,9 +66,9 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    const control = useVanillaControl(
+    const control = useVanillaControlCustom(
       useJsonFormsControl(props),
-      (target) => target.value ?? undefined
+      (target) => target.value ?? undefined,
     );
 
     const results = ref([]);

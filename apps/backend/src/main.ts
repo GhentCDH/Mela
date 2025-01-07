@@ -12,7 +12,7 @@ import { Logger as MyLogger } from '@ghentcdh/tools/logging/api';
 
 import { AppModule } from './app/app.module';
 
-const globalPrefix = 'api';
+const globalPrefix = '';
 
 async function bootstrapApp() {
   const app = await NestFactory.create(AppModule);
@@ -25,11 +25,11 @@ async function bootstrapApp() {
       `
         A text tagging and translation platform developed for the research.
         
-        `
+        `,
     )
     .setExternalDoc(
       'MELA: The MEning of Language - A digital grammar of the Greek taught at schools in late Constantinople',
-      'https://research.flw.ugent.be/en/projects/mela-meaning-language-digital-grammar-greek-taught-schools-late-constantinopl'
+      'https://research.flw.ugent.be/en/projects/mela-meaning-language-digital-grammar-greek-taught-schools-late-constantinopl',
     )
     .setVersion('1.0')
     .addTag('Mela')
@@ -53,7 +53,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
 
   // return app
