@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue';
 
-import { JsonFormsLayout, findColumnDef } from '@ghentcdh/tools/form';
+import {
+  JsonFormsLayout,
+  TextCellType,
+  findColumnDef,
+} from '@ghentcdh/tools/form';
 
 import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
@@ -47,10 +51,22 @@ const components = {
 
 const displayColumns = computed(() => {
   const { schema, uiSchema } = properties.layout;
-  return uiSchema.elements.map((element: any) => {
+  return uiSchema.elements.map((e) => {
+    const element = e as TextCellType;
     const def = findColumnDef(element, schema);
+    let component: any;
+    if (element.options?.format && element.options.format in components) {
+      component = components[element.options.format];
+    } else {
+      component = components[element.type];
+    }
 
-    return { ...def, component: components['TextCell'] };
+    if (!component) console.warn('No component found for type', element.type);
+
+    return {
+      ...def,
+      component,
+    };
   });
 });
 </script>
@@ -82,6 +98,7 @@ const displayColumns = computed(() => {
         >
           <component
             :is="column.component"
+            :v-bind="column"
             :data="data"
             :column="column"
           />

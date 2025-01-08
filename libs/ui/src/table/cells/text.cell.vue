@@ -12,6 +12,10 @@ const rendererProps = () => ({
     type: Object,
     required: true,
   },
+  options: {
+    type: Object,
+    required: false,
+  },
 });
 
 const renderer = defineComponent({
@@ -21,7 +25,15 @@ const renderer = defineComponent({
   },
   computed: {
     value() {
-      return this.data[this.column.id];
+      console.log(this.column);
+      console.log(this.options);
+      const value = this.data[this.column.id];
+
+      if (this.column.options?.format === 'keyValue') {
+        return value[this.column.options.key];
+      }
+
+      return value;
     },
   },
   beforeMount() {

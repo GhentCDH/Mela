@@ -3,6 +3,8 @@ import { AuthorSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
   LayoutBuilder,
+  TableBuilder,
+  TextCellBuilder,
   createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
@@ -13,9 +15,11 @@ const uiSchema = LayoutBuilder.vertical()
   .addControls(ControlBuilder.scope('#/properties/name'))
   .build();
 
-const tableSchema = LayoutBuilder.table()
-  .addControls(ControlBuilder.scope('#/properties/id'))
-  .addControls(ControlBuilder.scope('#/properties/name'))
+const tableSchema = TableBuilder.init()
+  .addControls(
+    TextCellBuilder.scope('#/properties/id'),
+    TextCellBuilder.scope('#/properties/name'),
+  )
   .build();
 
 const dtoSchema = AuthorSchema.pick({

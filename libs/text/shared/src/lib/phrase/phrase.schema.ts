@@ -3,6 +3,8 @@ import { PhraseSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
   LayoutBuilder,
+  TableBuilder,
+  TextCellBuilder,
   createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
@@ -24,10 +26,12 @@ const uiSchema = LayoutBuilder.vertical()
   )
   .build();
 
-const tableSchema = LayoutBuilder.table()
-  .addControls(ControlBuilder.scope('#/properties/id'))
-  .addControls(ControlBuilder.scope('#/properties/mela_id'))
-  .addControls(ControlBuilder.scope('#/properties/source_text'))
+const tableSchema = TableBuilder.init()
+  .addControls(
+    TextCellBuilder.scope('#/properties/id'),
+    TextCellBuilder.scope('#/properties/mela_id'),
+    TextCellBuilder.scope('#/properties/source_text'),
+  )
   .build();
 
 const dtoSchema = PhraseSchema.pick({
