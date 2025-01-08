@@ -52,9 +52,11 @@ FROM node-dev AS node-be-dev
 
 WORKDIR /app
 
+CMD npx prisma migrate dev
+CMD pnpm run generate:prisma
+
 #CMD SLEEP INFINITY
 CMD npx nx run backend:serve
-
 
   # ====== RUN CADDY =======
 FROM caddy:2.8.4-alpine AS frontend

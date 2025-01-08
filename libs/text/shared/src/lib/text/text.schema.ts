@@ -41,7 +41,9 @@ const tableSchema = TableBuilder.init()
     TextCellBuilder.scope('#/properties/mela_id'),
     TextCellBuilder.scope('#/properties/name'),
     TextCellBuilder.scope('#/properties/year'),
-    TextCellBuilder.scope('#/properties/author').keyValue('name'),
+    TextCellBuilder.scope('#/properties/author')
+      .key('name')
+      .setSortId('author.name'),
   )
   .build();
 

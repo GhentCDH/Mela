@@ -1,6 +1,6 @@
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
@@ -25,6 +25,8 @@ export const useTableStore = (name) =>
     const requestData = ref<RequestData>({
       page: toNumber(route.query.page) ?? 1,
       pageSize: toNumber(route.query.pageSize) ?? defaultPageSize,
+      sortDir: route.query.sortDir ?? 'asc',
+      sort: route.query.sort ?? '',
     });
 
     const httpStore = useHttpStore();
@@ -33,6 +35,7 @@ export const useTableStore = (name) =>
     const uri = ref<string>('');
 
     const data = computedAsync(async () => {
+      // Don't remove to listen on reload!
       const r = reload.value;
 
       if (!uri.value) return null;
@@ -71,9 +74,23 @@ export const useTableStore = (name) =>
       });
     };
 
+    const sort = (id: string) => {
+      const sortDir =
+        requestData.value.sort === id && requestData.value.sortDir === 'asc'
+          ? 'desc'
+          : 'asc';
+      updateRequest({ sort: id, sortDir });
+    };
+
+    const sortDirection = computed(() => requestData.value.sortDir);
+    const sortColumn = computed(() => requestData.value.sort);
+
     return {
       data,
+      sortDirection,
+      sortColumn,
       init,
+      sort,
       reload: reloadFn,
       updatePage: (page: number) => updateRequest({ page }),
     };

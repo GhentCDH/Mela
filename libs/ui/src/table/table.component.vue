@@ -2,6 +2,7 @@
 import { computed, onMounted, watch } from 'vue';
 
 import {
+  ColumnDef,
   JsonFormsLayout,
   TextCellType,
   findColumnDef,
@@ -11,6 +12,7 @@ import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
 import IconButton from '../button/icon-button.vue';
 import TextCell from './cells/text.cell.vue';
+import SortHeader from './header/sort.header.vue';
 import { TableAction } from './table.model';
 
 const properties = defineProps<{
@@ -66,7 +68,7 @@ const displayColumns = computed(() => {
     return {
       ...def,
       component,
-    };
+    } as ColumnDef & { component: any };
   });
 });
 </script>
@@ -79,7 +81,10 @@ const displayColumns = computed(() => {
           v-for="column in displayColumns"
           :key="column.scope"
         >
-          {{ column.label }}
+          <SortHeader
+            :store-id="id"
+            :column="column"
+          />
         </th>
         <th v-if="actions">
           actions
