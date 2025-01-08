@@ -17,5 +17,5 @@ export const findProperty = <F extends Field>(
   const id = column.scope?.substring('#/properties/'.length);
   const property = schema?.properties?.[id] ?? {};
 
-  return { id, property };
+  return { id, property } as { id: string; property: any };
 };

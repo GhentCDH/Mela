@@ -7,6 +7,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
     return this.prismaModel.findMany({
       take: request.pageSize,
       skip: request.offset,
+      orderBy: { [request.sort]: request.sortDir },
     });
   }
 

@@ -1,10 +1,14 @@
 import { Builder } from '../layout/builder';
 import { LayoutBuilder } from '../layout/layout.builder';
 
-export interface KeyValueOption {
+export interface TextCellOption {
+  format: 'TextCell';
+  sortId?: string;
+}
+
+export interface KeyValueOption extends Omit<TextCellOption, 'format'> {
   format: 'keyValue';
   key: string;
-  value: string;
 }
 
 export type TextCellType = {
@@ -14,7 +18,7 @@ export type TextCellType = {
 };
 
 export class TextCellBuilder extends Builder<TextCellType> {
-  private options: KeyValueOption | undefined;
+  private options: KeyValueOption | TextCellOption | undefined;
 
   private constructor(
     private readonly scope: string,
@@ -27,11 +31,18 @@ export class TextCellBuilder extends Builder<TextCellType> {
     return new TextCellBuilder(scope);
   }
 
-  keyValue(key: string, value?: string): TextCellBuilder {
+  key(key: string): TextCellBuilder {
     this.options = {
       format: 'keyValue',
       key: key,
-      value: value ?? key,
+    };
+    return this;
+  }
+
+  setSortId(sortId: string): TextCellBuilder {
+    this.options = {
+      ...(this.options ?? { format: 'TextCell' }),
+      sortId: sortId,
     };
     return this;
   }

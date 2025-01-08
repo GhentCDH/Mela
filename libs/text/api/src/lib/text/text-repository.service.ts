@@ -17,10 +17,20 @@ export class TextRepositoryService extends AbstractRepository<
   }
 
   override async list(request: RequestDto): Promise<TextWithRelations[]> {
+    let orderBy: any = {
+      [request.sort]: request.sortDir,
+    };
+    if (request.sort === 'author.name') {
+      orderBy = {
+        author: { name: request.sortDir },
+      };
+    }
+
     return this.prisma.text.findMany({
       include: { author: true },
       take: request.pageSize,
       skip: request.offset,
+      orderBy,
     });
   }
 
@@ -33,7 +43,7 @@ export class TextRepositoryService extends AbstractRepository<
 
   override async update(
     id: string,
-    dto: CreateTextDto
+    dto: CreateTextDto,
   ): Promise<TextWithRelations> {
     return super.update(id, {
       ...dto,
