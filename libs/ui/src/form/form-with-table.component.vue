@@ -60,9 +60,14 @@ const onSuccess = () => {
     :update-title="updateTitle"
     @success="onSuccess"
   />
-  <div v-if="formSchema.table" class="card bg-base-100 w-full shadow border-2">
+  <div
+    v-if="formSchema.table"
+    class="card bg-base-100 w-full shadow border-2"
+  >
     <div class="card-body">
-      <h1 class="card-title">Data</h1>
+      <h1 class="card-title">
+        Data
+      </h1>
       <TableComponent
         v-if="formSchema.uri"
         :id="`form_table${id}`"

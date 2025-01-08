@@ -9,6 +9,8 @@ import {
 import {
   ControlBuilder,
   LayoutBuilder,
+  TableBuilder,
+  TextCellBuilder,
   createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
@@ -33,12 +35,14 @@ const uiSchema = LayoutBuilder.vertical()
   )
   .build();
 
-const tableSchema = LayoutBuilder.table()
-  .addControls(ControlBuilder.scope('#/properties/id'))
-  .addControls(ControlBuilder.scope('#/properties/mela_id'))
-  .addControls(ControlBuilder.scope('#/properties/name'))
-  .addControls(ControlBuilder.scope('#/properties/year'))
-  .addControls(ControlBuilder.scope('#/properties/author'))
+const tableSchema = TableBuilder.init()
+  .addControls(
+    TextCellBuilder.scope('#/properties/id'),
+    TextCellBuilder.scope('#/properties/mela_id'),
+    TextCellBuilder.scope('#/properties/name'),
+    TextCellBuilder.scope('#/properties/year'),
+    TextCellBuilder.scope('#/properties/author').keyValue('name'),
+  )
   .build();
 
 const dtoSchema = TextSchema.pick({
@@ -56,8 +60,6 @@ export const schema = createSchema({
 });
 
 export const textFormSchema = schema.schema;
-
-console.log(schema.schema);
 
 export class CreateTextDto extends schema.dto {}
 

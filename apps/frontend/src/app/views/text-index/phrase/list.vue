@@ -1,5 +1,8 @@
 <template>
-  <div v-if="phraseStore.text" class="max-w-screen-lg m-auto">
+  <div
+    v-if="phraseStore.text"
+    class="max-w-screen-lg m-auto"
+  >
     <div class="flex justify-end gap-2">
       <RouterLink
         class="btn btn-outline"
