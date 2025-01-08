@@ -6,7 +6,7 @@ export interface TextCellOption {
   sortId?: string;
 }
 
-export interface KeyValueOption extends TextCellOption {
+export interface KeyValueOption extends Omit<TextCellOption, 'format'> {
   format: 'keyValue';
   key: string;
 }
