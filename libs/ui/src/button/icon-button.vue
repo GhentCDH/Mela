@@ -1,6 +1,6 @@
 <template>
-  <Btn
-    v-bind="properties"
+  <button
+    class="btn btn-square btn-outline btn-sm p-1"
     @click="emit('click')"
   />
 </template>

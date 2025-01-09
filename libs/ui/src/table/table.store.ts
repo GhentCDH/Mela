@@ -28,6 +28,9 @@ export const useTableStore = (name) =>
 
     const requestData = ref<RequestData>(RequestSchema.parse(route.query));
 
+    console.log('requestData', route.query);
+    console.log(RequestSchema.parse(route.query));
+
     const httpStore = useHttpStore();
     const reload = ref(Date.now());
 
@@ -81,6 +84,17 @@ export const useTableStore = (name) =>
       updateRequest({ sort: id, sortDir });
     };
 
+    const updateFilters = (filters: Record<string, any>) => {
+      console.log('filters __', filters);
+      const filter: string[] = [];
+
+      Object.entries(filters).forEach(([key, value]) => {
+        filter.push(`${key}:${value}`);
+      });
+
+      updateRequest({ filter });
+    };
+
     const sortDirection = computed(() => requestData.value.sortDir);
     const sortColumn = computed(() => requestData.value.sort);
 
@@ -92,5 +106,6 @@ export const useTableStore = (name) =>
       sort,
       reload: reloadFn,
       updatePage: (page: number) => updateRequest({ page }),
+      updateFilters,
     };
   })();

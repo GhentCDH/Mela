@@ -33,6 +33,6 @@ const sortIcon = computed<IconDef>(() =>
 const sortId = computed(() => column.options?.sortId ?? column.id);
 
 const sort = () => {
-  const id = store.sort(sortId.value);
+  store.sort(sortId.value);
 };
 </script>

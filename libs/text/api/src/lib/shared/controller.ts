@@ -6,12 +6,12 @@ import { AbstractRepository } from './repository.service';
 
 export class AbstractController<Entity, CreateDto = Entity> {
   protected constructor(
-    protected readonly repository: AbstractRepository<Entity, CreateDto>
+    protected readonly repository: AbstractRepository<Entity, CreateDto>,
   ) {}
 
   @Get()
   protected async list(
-    @Query() params: RequestDto
+    @Query() params: RequestDto,
   ): Promise<ResponseData<Entity>> {
     const [data, count] = await Promise.all([
       this.repository.list(params),
@@ -29,6 +29,8 @@ export class AbstractController<Entity, CreateDto = Entity> {
         page: params.page,
         pageSize: params.pageSize,
         totalPages,
+        sort: params.sort,
+        sortDir: params.sortDir,
       },
     };
   }
@@ -46,7 +48,7 @@ export class AbstractController<Entity, CreateDto = Entity> {
   @Patch('/:id')
   protected async update(
     @Param('id') id: string,
-    @Body() dto: CreateDto
+    @Body() dto: CreateDto,
   ): Promise<Entity> {
     return this.repository.update(id, dto);
   }
