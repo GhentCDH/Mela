@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { Btn } from '@ghentcdh/ui';
+
+import { Btn } from '../button';
 
 const props = defineProps({
   totalItems: { type: Number, default: 0 },
@@ -160,6 +161,8 @@ updatePages();
         </Btn>
       </div>
     </div>
-    <div class="text-sm">page {{ currentPage }} of {{ totalPages }}</div>
+    <div class="text-sm">
+      page {{ currentPage }} of {{ totalPages }}
+    </div>
   </div>
 </template>
