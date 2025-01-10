@@ -4,10 +4,10 @@
       `btn  p-1 flex justify-center`,
       color,
       ButtonSize[size],
-      color ? ButtonColor[color] : '',
-      { 'btn-square': square },
       { 'btn-outline': outline },
     ]"
+    :type="type"
+    :disabled="disabled"
     v-bind="properties"
     @click="emit('click')"
   >
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { Icon, IconEnum } from '../icons';
 import { ButtonTag, ButtonType } from './const';
-import { ButtonColor, Color } from '../const/colors'; // TODO add properties for links
+import { Color } from '../const/colors'; // TODO add properties for links
 import { ButtonSize, Size } from '../const/size';
 
 // TODO add properties for links
@@ -37,7 +37,6 @@ export interface ButtonProps {
   type?: ButtonType;
   outline?: boolean;
   color?: Color;
-
   size?: Size;
   square?: boolean;
 }

@@ -89,7 +89,9 @@ export const useTableStore = (name) =>
       const filter: string[] = [];
 
       Object.entries(filters).forEach(([key, value]) => {
-        filter.push(`${key}:${value}`);
+        // TODO decide what is the operator
+        const operator = value.operator || 'contains';
+        filter.push(`${key}:${value}:${operator}`);
       });
 
       updateRequest({ filter });
@@ -97,11 +99,13 @@ export const useTableStore = (name) =>
 
     const sortDirection = computed(() => requestData.value.sortDir);
     const sortColumn = computed(() => requestData.value.sort);
+    const filters = computed(() => requestData.value.filter);
 
     return {
       data,
       sortDirection,
       sortColumn,
+      filters,
       init,
       sort,
       reload: reloadFn,

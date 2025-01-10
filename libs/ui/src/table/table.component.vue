@@ -85,6 +85,7 @@ const onChangeFilters = (filters: any) => {
     <div v-if="filterLayout">
       <TableFilter
         :layout="filterLayout"
+        :filters="store.filters"
         @change-filters="onChangeFilters"
       />
     </div>
@@ -135,15 +136,18 @@ const onChangeFilters = (filters: any) => {
               </button>
             </td>
             <td>
-              <IconButton
-                icon="Edit"
-                class="mr-2"
-                @click="edit(data)"
-              />
-              <IconButton
-                icon="Delete"
-                @click="deleteFn(data)"
-              />
+              <span class="flex gap-2">
+                <IconButton
+                  icon="Edit"
+                  :outline="true"
+                  @click="edit(data)"
+                />
+                <IconButton
+                  icon="Delete"
+                  :outline="true"
+                  @click="deleteFn(data)"
+                />
+              </span>
             </td>
           </tr>
         </tbody>

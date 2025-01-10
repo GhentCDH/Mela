@@ -1,6 +1,7 @@
 <template>
-  <button
-    class="btn btn-square btn-outline btn-sm p-1"
+  <Btn
+    :icon="icon"
+    v-bind="properties"
     @click="emit('click')"
   />
 </template>

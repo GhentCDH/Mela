@@ -10,14 +10,15 @@
     >
       <template #content-before />
       <template #modal-actions>
-        <Btn
-          color="btn-primary"
-          @click="onResetFilters"
-        >
-          Reset all filters
-        </Btn>
+        <Btn @click="onResetFilters"> Reset all filters</Btn>
       </template>
     </modal-form>
+
+    <BtnBadge icon="Close">{{ filters }}</BtnBadge>
+    <button class="badge badge-xs">
+      {{ filters }}
+      987,654
+    </button>
   </div>
 </template>
 
@@ -27,9 +28,11 @@ import { JsonFormsLayout } from '@ghentcdh/tools/form';
 import { Btn } from '../../button';
 import { SubmitFormEvent } from '../../form/form.component.vue';
 import ModalForm from '../../form/modal/modal-form.vue';
+import { BtnBadge } from '@ghentcdh/ui';
 
 defineProps<{
   layout: JsonFormsLayout;
+  filters: string[];
 }>();
 
 const emits = defineEmits(['changeFilters']);
