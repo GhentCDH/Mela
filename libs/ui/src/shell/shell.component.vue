@@ -36,7 +36,7 @@
         </div>
         <div class="navbar-end" />
       </nav>
-      <div class="p-2">
+      <div class="p-2 bg-white">
         <slot />
       </div>
     </div>

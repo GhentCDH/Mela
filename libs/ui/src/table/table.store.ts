@@ -4,7 +4,11 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { RequestDtoNoOffset, ResponseUnknown } from '@ghentcdh/tools/form';
+import {
+  RequestDtoNoOffset,
+  RequestSchema,
+  ResponseUnknown,
+} from '@ghentcdh/tools/form';
 
 const toNumber = (value: any) => {
   const newValue = Number(value);
@@ -22,12 +26,7 @@ export const useTableStore = (name) =>
     const route = useRoute();
     const router = useRouter();
 
-    const requestData = ref<RequestData>({
-      page: toNumber(route.query.page) ?? 1,
-      pageSize: toNumber(route.query.pageSize) ?? defaultPageSize,
-      sortDir: route.query.sortDir ?? 'asc',
-      sort: route.query.sort ?? '',
-    });
+    const requestData = ref<RequestData>(RequestSchema.parse(route.query));
 
     const httpStore = useHttpStore();
     const reload = ref(Date.now());

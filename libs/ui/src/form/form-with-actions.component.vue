@@ -5,6 +5,7 @@ import { FormSchemaModel } from '@ghentcdh/tools/form';
 
 import FormComponent from './form.component.vue';
 import { useFormStore } from './form.store';
+import { Btn } from '../button';
 
 const properties = defineProps<{
   id: string;
@@ -35,32 +36,33 @@ const onValid = (v: boolean) => {
 </script>
 
 <template>
-  <div class="card bg-base-100 w-full shadow border-2">
+  <div class="card w-full shadow border-2">
     <div class="card-body">
       <h1 class="card-title">
         {{ formData?.id ? updateTitle : createTitle }}
       </h1>
       <FormComponent
-        id="ud"
+        :id="`form_${properties.id}`"
         v-model="formData"
         :schema="formSchema.form.schema"
         :uischema="formSchema.form.uiSchema"
         @valid="onValid($event)"
+        @submit="save"
       />
       <div class="card-actions flex justify-end">
-        <button
-          class="btn btn-outline"
+        <Btn
+          :outline="true"
           @click="clear"
         >
           Clear
-        </button>
-        <button
+        </Btn>
+        <Btn
+          color="primary"
           :disabled="!valid"
-          class="btn btn-primary"
-          @click="save"
+          @click="clear"
         >
           Save
-        </button>
+        </Btn>
       </div>
     </div>
   </div>
