@@ -15,6 +15,7 @@ const urlSchema = '/api/author/schema';
       :update-title="'Update Author'"
       :url-schema="urlSchema"
       :form-schema="authorFormSchema"
+      table-title="Authors"
     />
   </div>
 </template>
