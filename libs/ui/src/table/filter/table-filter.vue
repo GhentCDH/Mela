@@ -2,19 +2,23 @@
   <div class="">
     <div class="flex gap-2 items-center mb-2">
       <modal-form
+        v-model="formData"
         icon="Funnel"
         modal-title="Filter"
         button-label="Filter"
-        v-model="formData"
         :schema="layout.schema"
         :uischema="layout.uiSchema"
         @submit="onSubmit"
       >
         <template #content-before />
-        <template #modal-actions></template>
+        <template #modal-actions />
       </modal-form>
       <template v-if="filters.length">
-        <Btn size="xs" @click="onResetFilters" :outline="true">
+        <Btn
+          size="xs"
+          :outline="true"
+          @click="onResetFilters"
+        >
           Reset all filters
         </Btn>
       </template>
@@ -22,6 +26,7 @@
     <div class="flex gap-2">
       <BtnBadge
         v-for="filter in filters"
+        :key="filter.key"
         icon="Close"
         @click="removeFilter(filter)"
       >
@@ -32,12 +37,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+
 import { Filter, JsonFormsLayout } from '@ghentcdh/tools/form';
 
-import { Btn } from '../../button';
+import { Btn, BtnBadge } from '../../button';
 import ModalForm from '../../form/modal/modal-form.vue';
-import { BtnBadge } from '@ghentcdh/ui';
-import { ref, watch } from 'vue';
 
 const formData = ref();
 

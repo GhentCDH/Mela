@@ -1,19 +1,29 @@
 <template>
-  <Btn :icon="icon" @click="openModal" :outline="true">
+  <Btn
+    :icon="icon"
+    :outline="true"
+    @click="openModal"
+  >
     {{ buttonLabel }}
   </Btn>
-  <dialog :id="id" class="modal">
+
+  <dialog
+    :id="id"
+    class="modal"
+  >
     <div class="modal-box">
       <button
         type="button"
-        @click="closeModal"
         class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        @click="closeModal"
       >
         ✕
       </button>
-      <h3 class="font-bold">{{ modalTitle }}</h3>
+      <h3 class="font-bold">
+        {{ modalTitle }}
+      </h3>
       <div>
-        <slot name="content-before"></slot>
+        <slot name="content-before" />
         <FormComponent
           :id="`filter-${id}`"
           v-model="formData"
@@ -22,11 +32,15 @@
           @valid="onValid($event)"
           @change="onChange"
         />
-        <slot name="content-after"></slot>
+        <slot name="content-after" />
       </div>
       <div class="modal-action">
-        <slot name="modal-actions"></slot>
-        <Btn color="btn-primary" @click="onSubmit" :disabled="!valid">
+        <slot name="modal-actions" />
+        <Btn
+          color="btn-primary"
+          :disabled="!valid"
+          @click="onSubmit"
+        >
           {{ buttonLabel }}
         </Btn>
       </div>
@@ -35,12 +49,14 @@
 </template>
 
 <script setup lang="ts">
-import { IconDef } from '../../icons';
-import { Btn } from '@ghentcdh/ui';
-import { Layout } from '@jsonforms/core/src/models/uischema';
 import { JsonSchema } from '@jsonforms/core';
-import FormComponent, { SubmitFormEvent } from '../form.component.vue';
+import { Layout } from '@jsonforms/core/src/models/uischema';
 import { ref } from 'vue';
+
+import { Btn } from '../../button';
+import { IconDef } from '../../icons';
+import FormComponent, { SubmitFormEvent } from '../form.component.vue';
+
 
 defineProps<{
   icon?: IconDef;
