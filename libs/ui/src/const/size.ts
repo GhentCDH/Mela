@@ -10,6 +10,6 @@ export const ButtonSize: Record<Size, string> = {
 };
 // Dictionary of Badge size classes
 export const BadgeSize: Record<Size, string> = {
-  xs: 'badge-xs text-xs',
-  sm: 'badge-sm text-sm',
+  xs: 'badge-xs text-xxs',
+  sm: 'badge-sm text-xs',
 };

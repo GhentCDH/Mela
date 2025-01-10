@@ -6,3 +6,4 @@ export * from './lib/layout/control.builder';
 export * from './lib/schema.utils';
 export * from './lib/response.model';
 export * from './lib/request.model';
+export * from './lib/filter';

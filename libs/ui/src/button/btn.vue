@@ -4,7 +4,7 @@
       `btn  p-1 flex justify-center`,
       color,
       ButtonSize[size],
-      { 'btn-outline': outline },
+      { 'btn-outline': outline, 'btn-square': square },
     ]"
     :type="type"
     :disabled="disabled"

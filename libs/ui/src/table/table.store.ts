@@ -8,14 +8,8 @@ import {
   RequestDtoNoOffset,
   RequestSchema,
   ResponseUnknown,
+  extractFilters,
 } from '@ghentcdh/tools/form';
-
-const toNumber = (value: any) => {
-  const newValue = Number(value);
-  return isNaN(newValue) ? null : newValue;
-};
-
-const defaultPageSize = 20;
 
 type RequestData = RequestDtoNoOffset;
 
@@ -85,12 +79,14 @@ export const useTableStore = (name) =>
     };
 
     const updateFilters = (filters: Record<string, any>) => {
-      console.log('filters __', filters);
+      console.log('__filters __', filters);
       const filter: string[] = [];
 
       Object.entries(filters).forEach(([key, value]) => {
+        if (!value) return;
+
         // TODO decide what is the operator
-        const operator = value.operator || 'contains';
+        const operator = value?.operator || 'contains';
         filter.push(`${key}:${value}:${operator}`);
       });
 
@@ -99,7 +95,7 @@ export const useTableStore = (name) =>
 
     const sortDirection = computed(() => requestData.value.sortDir);
     const sortColumn = computed(() => requestData.value.sort);
-    const filters = computed(() => requestData.value.filter);
+    const filters = computed(() => extractFilters(requestData.value.filter));
 
     return {
       data,

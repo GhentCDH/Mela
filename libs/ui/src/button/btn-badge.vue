@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="[`badge badge-xs`, BadgeSize[size]]"
+    :class="[`badge gap-1`, BadgeSize[size]]"
     :type="type"
     :disabled="disabled"
     @click="emit('click')"
@@ -23,7 +23,7 @@ defineProps({
   icon: { required: false, type: IconEnum, default: undefined },
   type: { default: 'button', required: false, type: ButtonType },
   disabled: { default: false, required: false, type: Boolean },
-  size: { default: 'xs', required: false, type: Size },
+  size: { default: 'sm', required: false, type: Size },
 });
 
 const emit = defineEmits(['click']);

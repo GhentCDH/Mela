@@ -13,30 +13,7 @@ export const StringOrArray = () =>
 
       return [val];
     });
-
-export type Filter = {
-  key: string;
-  value: string;
-  operator: string;
-};
-
-export const buildFilter = (filters: string[]) => {
-  const filter: Record<string, any> = {};
-
-  filters.forEach((f) => {
-    const [key, value, operator] = f.split(':') as string[];
-
-    if (!key) return;
-
-    filter[key] = {
-      // TODO check if operator is possible
-      [operator || 'contains']: value.toLowerCase(),
-    };
-  });
-
-  return filter;
-};
-
+ 
 export const RequestSchema = z.object({
   page: PositiveRequestNumber().optional().default(1),
   pageSize: PositiveRequestNumber().optional().default(20),
