@@ -47,6 +47,25 @@ const tableSchema = TableBuilder.init()
   )
   .build();
 
+const filterSchema = LayoutBuilder.vertical()
+  .addControls(
+    LayoutBuilder.horizontal().addControls(
+      ControlBuilder.scope('#/properties/mela_id'),
+      ControlBuilder.scope('#/properties/name'),
+      // TODO autocomplete
+      // ControlBuilder.object('#/properties/author').autocomplete({
+      //   uri: '/api/author?name=',
+      //   uriDetail: '/api/author/',
+      //   field: {
+      //     id: 'id',
+      //     label: 'name',
+      //   },
+      // }),
+      // ControlBuilder.scope('#/properties/year'),
+    ),
+  )
+  .build();
+
 const dtoSchema = TextSchema.pick({
   name: true,
   mela_id: true,
@@ -58,6 +77,7 @@ export const schema = createSchema({
   dtoSchema,
   jsonSchema: TextForm,
   uri: '/api/text',
+  filterSchema,
   tableSchema,
 });
 

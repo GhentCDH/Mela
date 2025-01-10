@@ -1,10 +1,11 @@
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto, buildFilter } from '@ghentcdh/tools/form';
 
 export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   protected constructor(private readonly prismaModel: any) {}
 
   async list(request: RequestDto): Promise<Entity[]> {
     return this.prismaModel.findMany({
+      where: { AND: buildFilter(request.filter) },
       take: request.pageSize,
       skip: request.offset,
       orderBy: { [request.sort]: request.sortDir },

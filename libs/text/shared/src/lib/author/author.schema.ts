@@ -9,8 +9,6 @@ import {
   createSchema,
 } from '@ghentcdh/tools/form';
 
-// TODO add autocomplete for textschema
-
 const uiSchema = LayoutBuilder.vertical()
   .addControls(ControlBuilder.scope('#/properties/name'))
   .build();
@@ -22,6 +20,10 @@ const tableSchema = TableBuilder.init()
   )
   .build();
 
+const filterSchema = LayoutBuilder.vertical()
+  .addControls(ControlBuilder.scope('#/properties/name'))
+  .build();
+
 const dtoSchema = AuthorSchema.pick({
   name: true,
 });
@@ -29,6 +31,7 @@ const dtoSchema = AuthorSchema.pick({
 const schema = createSchema({
   uiSchema,
   dtoSchema,
+  filterSchema,
   jsonSchema: AuthorForm,
   tableSchema,
   uri: '/api/author',

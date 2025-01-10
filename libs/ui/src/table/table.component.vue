@@ -12,9 +12,9 @@ import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
 import IconButton from '../button/icon-button.vue';
 import TextCell from './cells/text.cell.vue';
+import TableFilter from './filter/table-filter.vue';
 import SortHeader from './header/sort.header.vue';
 import { TableAction } from './table.model';
-import { Btn } from '../button';
 
 const properties = defineProps<{
   id: string;
@@ -74,10 +74,21 @@ const displayColumns = computed(() => {
     } as ColumnDef & { component: any };
   });
 });
+
+const onChangeFilters = (filters: any) => {
+  store.updateFilters(filters);
+};
 </script>
 
 <template>
   <div class="flex flex-col gap-2">
+    <div v-if="filterLayout">
+      <TableFilter
+        :layout="filterLayout"
+        :filters="store.filters"
+        @change-filters="onChangeFilters"
+      />
+    </div>
     <div>
       <table class="table w-full">
         <thead>
@@ -114,14 +125,15 @@ const displayColumns = computed(() => {
               />
             </td>
             <td v-if="actions">
-              <Btn
+              <button
                 v-for="action of actions"
                 :key="action.label"
-                :outline="true"
+                class="btn btn-outline btn-sm p-1"
+                type="button"
                 @click="action.action(data)"
               >
                 {{ action.label }}
-              </Btn>
+              </button>
             </td>
             <td>
               <span class="flex gap-2">

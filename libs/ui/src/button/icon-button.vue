@@ -1,5 +1,6 @@
 <template>
   <Btn
+    :icon="icon"
     v-bind="properties"
     @click="emit('click')"
   />

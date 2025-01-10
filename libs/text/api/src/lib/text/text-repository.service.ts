@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import { TextWithRelations } from '@ghentcdh/mela/generated/types';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto, buildFilter } from '@ghentcdh/tools/form';
 
 import { CreateTextDto } from './text.schema';
 import { AbstractRepository } from '../shared/repository.service';
@@ -27,6 +27,7 @@ export class TextRepositoryService extends AbstractRepository<
     }
 
     return this.prisma.text.findMany({
+      where: { AND: buildFilter(request.filter) },
       include: { author: true },
       take: request.pageSize,
       skip: request.offset,

@@ -8,14 +8,8 @@ import {
   RequestDtoNoOffset,
   RequestSchema,
   ResponseUnknown,
+  extractFilters,
 } from '@ghentcdh/tools/form';
-
-const toNumber = (value: any) => {
-  const newValue = Number(value);
-  return isNaN(newValue) ? null : newValue;
-};
-
-const defaultPageSize = 20;
 
 type RequestData = RequestDtoNoOffset;
 
@@ -27,6 +21,9 @@ export const useTableStore = (name) =>
     const router = useRouter();
 
     const requestData = ref<RequestData>(RequestSchema.parse(route.query));
+
+    console.log('requestData', route.query);
+    console.log(RequestSchema.parse(route.query));
 
     const httpStore = useHttpStore();
     const reload = ref(Date.now());
@@ -81,16 +78,34 @@ export const useTableStore = (name) =>
       updateRequest({ sort: id, sortDir });
     };
 
+    const updateFilters = (filters: Record<string, any>) => {
+      console.log('__filters __', filters);
+      const filter: string[] = [];
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (!value) return;
+
+        // TODO decide what is the operator
+        const operator = value?.operator || 'contains';
+        filter.push(`${key}:${value}:${operator}`);
+      });
+
+      updateRequest({ filter });
+    };
+
     const sortDirection = computed(() => requestData.value.sortDir);
     const sortColumn = computed(() => requestData.value.sort);
+    const filters = computed(() => extractFilters(requestData.value.filter));
 
     return {
       data,
       sortDirection,
       sortColumn,
+      filters,
       init,
       sort,
       reload: reloadFn,
       updatePage: (page: number) => updateRequest({ page }),
+      updateFilters,
     };
   })();
