@@ -3,6 +3,7 @@
     :class="[`badge badge-xs`, BadgeSize[size]]"
     :type="type"
     :disabled="disabled"
+    v-bind="properties"
     @click="emit('click')"
   >
     <slot />
@@ -15,16 +16,19 @@
 </template>
 
 <script setup lang="ts">
-import { BadgeSize, Size } from '../const/size';
-import { Icon, IconEnum } from '../icons';
-import { ButtonType } from './const';
+import { BadgeSize, ButtonSize } from '../const/size';
+import { Icon } from '../icons';
+import { ButtonProps } from './btn.vue';
+import { ButtonTag, ButtonType } from './const';
 
-defineProps({
-  icon: { required: false, type: IconEnum, default: undefined },
-  type: { default: 'button', required: false, type: ButtonType },
-  disabled: { default: false, required: false, type: Boolean },
-  size: { default: 'xs', required: false, type: Size },
-});
+const properties = withDefaults(
+  defineProps<Omit<ButtonProps, 'outline' | 'square'>>(),
+  {
+    tag: ButtonTag.button,
+    type: ButtonType.button,
+    size: ButtonSize.xs,
+  },
+);
 
 const emit = defineEmits(['click']);
 </script>

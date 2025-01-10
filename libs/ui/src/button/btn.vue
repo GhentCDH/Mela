@@ -37,6 +37,7 @@ export interface ButtonProps {
   type?: ButtonType;
   outline?: boolean;
   color?: Color;
+
   size?: Size;
   square?: boolean;
 }
