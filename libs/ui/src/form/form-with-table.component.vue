@@ -62,7 +62,7 @@ const onSuccess = () => {
   />
   <div
     v-if="formSchema.table"
-    class="card bg-base-100 w-full shadow border-2"
+    class="card w-full shadow border-2"
   >
     <div class="card-body">
       <h1 class="card-title">
@@ -72,6 +72,7 @@ const onSuccess = () => {
         v-if="formSchema.uri"
         :id="`form_table${id}`"
         :layout="formSchema.table"
+        :filter-layout="formSchema.filter"
         :uri="formSchema.uri"
         :reload="reload"
         :actions="tableActions"

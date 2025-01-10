@@ -3,11 +3,8 @@ import { authorFormSchema } from '@mela/text/shared';
 
 import { FormWithTableCompnent } from '@ghentcdh/ui';
 
-
 const formId = 'author';
 const urlSchema = '/api/author/schema';
-
-const id = 'author';
 </script>
 
 <template>

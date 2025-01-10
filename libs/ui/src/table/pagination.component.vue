@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { Btn } from '@ghentcdh/ui';
 
 const props = defineProps({
   totalItems: { type: Number, default: 0 },
@@ -140,10 +141,12 @@ updatePages();
   <div class="flex gap-2">
     <div class="flex flex-1 justify-center items-center">
       <div class="join">
-        <button
+        <Btn
           v-for="page in pages"
           :key="page.activePage"
           :disabled="page.disabled?.()"
+          :square="true"
+          size="xs"
           :class="[
             'join-item btn btn-outline  btn-xs',
             {
@@ -151,15 +154,12 @@ updatePages();
               hidden: page.hide?.(),
             },
           ]"
-          type="button"
           @click="goToPage(page.page)"
         >
           {{ page.label }}
-        </button>
+        </Btn>
       </div>
     </div>
-    <div class="text-sm">
-      page {{ currentPage }} of {{ totalPages }}
-    </div>
+    <div class="text-sm">page {{ currentPage }} of {{ totalPages }}</div>
   </div>
 </template>
