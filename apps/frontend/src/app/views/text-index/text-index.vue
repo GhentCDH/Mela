@@ -31,6 +31,7 @@ const tableActions: TableAction[] = [
       :url-schema="urlSchema"
       :table-actions="tableActions"
       :form-schema="textFormSchema"
+      table-title="Texts"
     />
   </div>
 </template>

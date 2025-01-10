@@ -3,10 +3,10 @@ import { onMounted, ref, shallowRef } from 'vue';
 
 import { FormSchemaModel } from '@ghentcdh/tools/form';
 
-import FormWithActions from './form-with-actions.component.vue';
 import { useFormStore } from './form.store';
 import TableComponent from '../table/table.component.vue';
 import { TableAction } from '../table/table.model';
+import ModalForm from './modal/modal-form.vue';
 
 type Data = {
   [key: string]: any;
@@ -14,6 +14,7 @@ type Data = {
 
 const properties = defineProps<{
   id: string;
+  tableTitle: string;
   urlSchema: string;
   createTitle: string;
   updateTitle?: string;
@@ -21,7 +22,7 @@ const properties = defineProps<{
   formSchema: FormSchemaModel;
 }>();
 const reload = ref(0);
-const formData = shallowRef({});
+const formData = shallowRef<any>({});
 
 const store = useFormStore(properties.id);
 onMounted(() => {
@@ -30,9 +31,12 @@ onMounted(() => {
 
 const activeId = shallowRef<string | null>(null);
 
+const modalCompRef = ref(null);
+
 const edit = (data: Data) => {
   formData.value = data;
   activeId.value = data.id;
+  modalCompRef.value.openModal();
 };
 
 const deleteFn = (data: Data) => {
@@ -49,25 +53,38 @@ const onSuccess = () => {
   formData.value = {};
   activeId.value = null;
 };
+
+const onCloseModal = () => {
+  formData.value = {};
+  activeId.value = null;
+};
 </script>
 
 <template>
-  <FormWithActions
-    :id="id"
-    v-model="formData"
-    :form-schema="formSchema"
-    :create-title="createTitle"
-    :update-title="updateTitle"
-    @success="onSuccess"
-  />
+  <div class="flex justify-between items-center mb-2">
+    <h1 class="card-title">
+      {{ tableTitle }}
+    </h1>
+    <div>
+      <modal-form
+        ref="modalCompRef"
+        v-model="formData"
+        :modal-title="formData.id ? updateTitle : createTitle"
+        button-label="Add new record"
+        button-save-label="Save"
+        icon="Plus"
+        :schema="formSchema.form.schema"
+        :uischema="formSchema.form.uiSchema"
+        @close-modal="onCloseModal"
+      />
+    </div>
+  </div>
+
   <div
     v-if="formSchema.table"
-    class="card w-full shadow border-2"
+    class="card w-full xs border-2"
   >
     <div class="card-body">
-      <h1 class="card-title">
-        Data
-      </h1>
       <TableComponent
         v-if="formSchema.uri"
         :id="`form_table${id}`"

@@ -37,11 +37,17 @@
       <div class="modal-action">
         <slot name="modal-actions" />
         <Btn
+          :outline="true"
+          @click="onClear"
+        >
+          Clear
+        </Btn>
+        <Btn
           color="btn-primary"
           :disabled="!valid"
           @click="onSubmit"
         >
-          {{ buttonLabel }}
+          {{ buttonSaveLabel ?? buttonLabel }}
         </Btn>
       </div>
     </div>
@@ -57,11 +63,11 @@ import { Btn } from '../../button';
 import { IconDef } from '../../icons';
 import FormComponent, { SubmitFormEvent } from '../form.component.vue';
 
-
 defineProps<{
   icon?: IconDef;
   modalTitle: string;
   buttonLabel: string;
+  buttonSaveLabel?: string;
   schema: JsonSchema;
   uischema: Layout;
   data: any;
@@ -71,11 +77,17 @@ const id = `modal_${Math.floor(Math.random() * 1000)}`;
 
 const valid = ref(false);
 const formData = defineModel<any>();
-const emits = defineEmits(['submit']);
+const emits = defineEmits(['submit', 'clear', 'closeModal']);
 
 const onValid = (v: boolean) => {
   valid.value = v;
 };
+
+const onClear = () => {
+  formData.value = {};
+  emits('clear');
+};
+
 const onChange = (data: any) => {
   formData.value = data;
 };
@@ -88,6 +100,7 @@ const openModal = () => {
 const closeModal = () => {
   const modal = document.getElementById(id) as HTMLDialogElement;
   modal.close();
+  emits('closeModal');
 };
 
 const onSubmit = (event: SubmitFormEvent) => {
@@ -96,4 +109,6 @@ const onSubmit = (event: SubmitFormEvent) => {
   emits('submit', { data: formData.value, valid: valid.value });
   closeModal();
 };
+
+defineExpose({ closeModal, openModal });
 </script>
