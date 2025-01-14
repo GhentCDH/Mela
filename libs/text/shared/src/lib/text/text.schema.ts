@@ -23,7 +23,7 @@ const uiSchema = LayoutBuilder.vertical()
       ControlBuilder.scope('#/properties/mela_id'),
       ControlBuilder.scope('#/properties/name'),
       ControlBuilder.object('#/properties/author').autocomplete({
-        uri: '/api/author?name=',
+        uri: '/api/author?filter=name:',
         uriDetail: '/api/author/',
         field: {
           id: 'id',
