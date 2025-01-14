@@ -3,8 +3,8 @@
     <textarea
       :id="control.id + '-input'"
       type="text"
-      :class="['input', 'h-80']"
-      :rows="10"
+      :class="['input', 'h-1/2']"
+      :rows="5"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"

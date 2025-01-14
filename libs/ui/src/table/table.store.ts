@@ -22,9 +22,6 @@ export const useTableStore = (name) =>
 
     const requestData = ref<RequestData>(RequestSchema.parse(route.query));
 
-    console.log('requestData', route.query);
-    console.log(RequestSchema.parse(route.query));
-
     const httpStore = useHttpStore();
     const reload = ref(Date.now());
 
@@ -79,7 +76,6 @@ export const useTableStore = (name) =>
     };
 
     const updateFilters = (filters: Record<string, any>) => {
-      console.log('__filters __', filters);
       const filter: string[] = [];
 
       Object.entries(filters).forEach(([key, value]) => {

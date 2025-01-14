@@ -15,14 +15,15 @@ type Data = {
 const properties = defineProps<{
   id: string;
   tableTitle: string;
-  urlSchema: string;
   createTitle: string;
   updateTitle?: string;
+  dataUri?: string;
   tableActions?: TableAction[];
   formSchema: FormSchemaModel;
+  initialData?: Data;
 }>();
 const reload = ref(0);
-const formData = shallowRef<any>({});
+const formData = shallowRef<any>({ ...(properties.initialData ?? {}) });
 
 const store = useFormStore(properties.id);
 onMounted(() => {
@@ -36,7 +37,7 @@ const modalCompRef = ref(null);
 const edit = (data: Data) => {
   formData.value = data;
   activeId.value = data.id;
-  modalCompRef.value.openModal();
+  modalCompRef.value?.openModal();
 };
 
 const deleteFn = (data: Data) => {
@@ -49,13 +50,12 @@ const onReload = () => {
 };
 
 const onSuccess = () => {
+  store.save(activeId.value, formData.value);
   reload.value = Date.now();
-  formData.value = {};
-  activeId.value = null;
 };
 
 const onCloseModal = () => {
-  formData.value = {};
+  formData.value = { ...(properties.initialData ?? {}) };
   activeId.value = null;
 };
 </script>
@@ -76,6 +76,7 @@ const onCloseModal = () => {
         :schema="formSchema.form.schema"
         :uischema="formSchema.form.uiSchema"
         @close-modal="onCloseModal"
+        @submit="onSuccess"
       />
     </div>
   </div>
@@ -84,13 +85,13 @@ const onCloseModal = () => {
     v-if="formSchema.table"
     class="card w-full xs border-2"
   >
-    <div class="card-body">
+    <div class="p-4">
       <TableComponent
         v-if="formSchema.uri"
-        :id="`form_table${id}`"
+        :id="`form_table_${id}`"
         :layout="formSchema.table"
         :filter-layout="formSchema.filter"
-        :uri="formSchema.uri"
+        :uri="dataUri ?? formSchema.uri"
         :reload="reload"
         :actions="tableActions"
         @edit="edit"
