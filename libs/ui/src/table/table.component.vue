@@ -81,8 +81,11 @@ const onChangeFilters = (filters: any) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
-    <div v-if="filterLayout">
+  <div>
+    <div
+      v-if="filterLayout"
+      class="mb-2"
+    >
       <TableFilter
         :layout="filterLayout"
         :filters="store.filters"
@@ -152,7 +155,7 @@ const onChangeFilters = (filters: any) => {
           </tr>
         </tbody>
       </table>
-      <hr class="pb-2">
+      <hr class="pb-4">
       <PaginationComponent
         :total-items="store.data?.request.count"
         :items-per-page="store.data?.request.pageSize"

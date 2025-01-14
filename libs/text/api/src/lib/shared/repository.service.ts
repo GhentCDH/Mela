@@ -5,15 +5,36 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
 
   async list(request: RequestDto): Promise<Entity[]> {
     return this.prismaModel.findMany({
-      where: { AND: buildFilter(request.filter) },
+      where: this.buildWhere(request.filter),
+      include: this.include(),
       take: request.pageSize,
       skip: request.offset,
-      orderBy: { [request.sort]: request.sortDir },
+      orderBy: this.buildSort(request),
     });
   }
 
-  async count(): Promise<number> {
-    return this.prismaModel.count();
+  async count(filter: string[]): Promise<number> {
+    return this.prismaModel.count({ where: this.buildWhere(filter) });
+  }
+
+  private buildWhere(filters: string[]) {
+    const filter = this.buildFilter(filters);
+
+    if (!filter) return undefined;
+
+    return { AND: filter };
+  }
+
+  include(): Record<string, true> {
+    return {};
+  }
+
+  buildFilter(filters: string[]): any {
+    return buildFilter(filters);
+  }
+
+  buildSort(request: Pick<RequestDto, 'sort' | 'sortDir'>): any {
+    return { [request.sort]: request.sortDir };
   }
 
   async findOne(id: string): Promise<Entity> {

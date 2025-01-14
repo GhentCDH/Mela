@@ -15,7 +15,7 @@ export class AbstractController<Entity, CreateDto = Entity> {
   ): Promise<ResponseData<Entity>> {
     const [data, count] = await Promise.all([
       this.repository.list(params),
-      this.repository.count(),
+      this.repository.count(params.filter),
     ]);
 
     let totalPages = Math.ceil(count / params.pageSize);

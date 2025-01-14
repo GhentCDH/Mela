@@ -14,7 +14,7 @@ const tableActions: TableAction[] = [
     label: 'Phrases',
     action: (data: Text) => {
       router.replace({
-        name: 'text-index-phrase-list',
+        name: 'text-index-phrase',
         params: { textId: data.id },
       });
     },

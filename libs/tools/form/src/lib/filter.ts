@@ -1,4 +1,4 @@
-export const Operator = ['contains'] as const;
+export const Operator = ['contains', 'equals'] as const;
 export type OperatorType = (typeof Operator)[number];
 
 export type Filter = {
@@ -18,6 +18,16 @@ const getFilterValues = (filter: string): Filter => {
   return { key, value, operator };
 };
 
+const buildFilterKey = (keys: string[], filterObj: any) => {
+  if (keys.length === 1) {
+    return { key: keys[0], filterObj };
+  }
+
+  const buildKey = keys.pop() as string;
+
+  return buildFilterKey(keys, { [buildKey]: filterObj });
+};
+
 export const buildFilter = (filters: string[]) => {
   const filter: Record<string, any> = {};
 
@@ -26,10 +36,12 @@ export const buildFilter = (filters: string[]) => {
 
     if (!key) return;
 
-    filter[key] = {
+    const build = buildFilterKey(key.split('.'), {
       // TODO check if operator is possible
       [operator || 'contains']: value.toLowerCase(),
-    };
+    });
+
+    filter[build.key] = build.filterObj;
   });
 
   return filter;
