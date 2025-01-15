@@ -86,3 +86,8 @@ export const textFormSchema = schema.schema;
 export class CreateTextDto extends schema.dto {}
 
 export class ListTextDto extends createResponseData(TextWithRelationsSchema) {}
+
+export const textParseFileTypes = [
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-excel',
+];

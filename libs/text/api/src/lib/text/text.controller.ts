@@ -1,5 +1,9 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreateTextDto, ListTextDto } from '@mela/text/shared';
+import {
+  CreateTextDto,
+  ListTextDto,
+  textParseFileTypes,
+} from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -9,14 +13,24 @@ import {
   Patch,
   Post,
   Query,
+  UnprocessableEntityException,
+  UploadedFile,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 import { TextWithRelationsDto } from '@ghentcdh/mela/generated/dtos';
 import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 import { RequestDto } from '@ghentcdh/tools/form';
 
+import { TextUploadDto } from './file-upload.dto';
 import { TextRepositoryService } from './text-repository.service';
 import { AbstractController } from '../shared/controller';
 
@@ -28,6 +42,27 @@ export class TextController extends AbstractController<
 > {
   constructor(repository: TextRepositoryService) {
     super(repository);
+  }
+
+  @Post('/:id/upload')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Upload an excell with the text',
+    type: TextUploadDto,
+  })
+  async upload(
+    @Param('id') id: string,
+    @UploadedFile()
+    file: any,
+  ): Promise<TextWithRelations> {
+    console.log('uploadingggg...');
+    console.log(id);
+    console.log(file);
+    if (!textParseFileTypes.some((type) => file?.mimetype))
+      throw new UnprocessableEntityException('Invalid file type');
+
+    throw new Error('implement me!!!');
   }
 
   @Get()
@@ -43,7 +78,7 @@ export class TextController extends AbstractController<
     type: TextWithRelationsDto,
   })
   override async create(
-    @Body() dto: CreateTextDto
+    @Body() dto: CreateTextDto,
   ): Promise<TextWithRelations> {
     return super.create(dto);
   }
@@ -54,7 +89,7 @@ export class TextController extends AbstractController<
   })
   override async update(
     @Param('id') id: string,
-    @Body() dto: CreateTextDto
+    @Body() dto: CreateTextDto,
   ): Promise<TextWithRelations> {
     return super.update(id, dto);
   }

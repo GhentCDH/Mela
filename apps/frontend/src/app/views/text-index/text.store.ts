@@ -4,15 +4,12 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { Phrase } from '@ghentcdh/mela/generated/types';
-import { useTableStore } from '@ghentcdh/ui';
+import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 
-export const usePhraseStore = defineStore('phraseStore', () => {
+export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
   const router = useRouter();
 
-  const phrase_store_id = 'text-index-phrase';
-  const tableStore = useTableStore(phrase_store_id);
   const textId = ref(route.params.textId);
   const phraseId = ref(route.params.phraseId);
 
@@ -36,15 +33,18 @@ export const usePhraseStore = defineStore('phraseStore', () => {
 
   const httpStore = useHttpStore();
 
-  const phrase = computedAsync(() => {
-    if (!phraseId.value) return { text_id: textId.value } as Phrase;
+  const text = computedAsync(() => {
+    if (!textId.value) return null;
 
-    return httpStore.get<Phrase>(`/api/phrase/${phraseId.value}`);
+    return httpStore.get<TextWithRelations>(`/api/text/${textId.value}`);
   });
 
-  const reload = () => {
-    tableStore.reload();
+  const uploadExcel = (file: File) => {
+    return httpStore.postFile<TextWithRelations>(
+      `/api/text/${textId.value}/upload`,
+      file,
+    );
   };
 
-  return { phrase, phrase_store_id, textId, reload };
+  return { text, textId, uploadExcel };
 });

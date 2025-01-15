@@ -3,7 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from './app/Home.vue';
 import AuthorView from './app/views/author/author.vue';
 import TextIndexPhrasesView from './app/views/text-index/phrase/phrase.vue';
+import TextDetailView from './app/views/text-index/text-detail.vue';
 import TextIndexView from './app/views/text-index/text-index.vue';
+import TextView from './app/views/text-index/text-view.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -18,9 +20,21 @@ const routes = [
     component: AuthorView,
   },
   {
-    path: '/text-index/:textId/phrase',
-    name: 'text-index-phrase',
-    component: TextIndexPhrasesView,
+    path: '/text-index/:textId',
+    name: 'text-index-view',
+    component: TextView,
+    children: [
+      {
+        path: '.',
+        name: 'text-index-detail',
+        component: TextDetailView,
+      },
+      {
+        path: 'phrase',
+        name: 'text-index-phrase',
+        component: TextIndexPhrasesView,
+      },
+    ],
   },
 ];
 
