@@ -35,14 +35,12 @@ const excellFile = ref<File | null>(null);
 const allowedFileTypes = textParseFileTypes.join(', ');
 
 const onFilePicked = (event: Event) => {
-  console.log(event);
   const files = event.target.files;
   const fileReader = new FileReader();
   fileReader.readAsDataURL(files[0]);
   excellFile.value = files[0];
 };
 const upload = () => {
-  console.log('upload', excellFile.value);
   store.uploadExcel(excellFile.value);
 };
 </script>

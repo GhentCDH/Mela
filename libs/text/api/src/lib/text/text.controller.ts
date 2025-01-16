@@ -31,6 +31,7 @@ import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 import { RequestDto } from '@ghentcdh/tools/form';
 
 import { TextUploadDto } from './file-upload.dto';
+import { TextImportService } from './text-import.service';
 import { TextRepositoryService } from './text-repository.service';
 import { AbstractController } from '../shared/controller';
 
@@ -40,7 +41,10 @@ export class TextController extends AbstractController<
   TextWithRelations,
   CreateTextDto
 > {
-  constructor(repository: TextRepositoryService) {
+  constructor(
+    repository: TextRepositoryService,
+    private readonly textImportService: TextImportService,
+  ) {
     super(repository);
   }
 
@@ -56,13 +60,10 @@ export class TextController extends AbstractController<
     @UploadedFile()
     file: any,
   ): Promise<TextWithRelations> {
-    console.log('uploadingggg...');
-    console.log(id);
-    console.log(file);
     if (!textParseFileTypes.some((type) => file?.mimetype))
       throw new UnprocessableEntityException('Invalid file type');
 
-    throw new Error('implement me!!!');
+    return this.textImportService.parse(id, file);
   }
 
   @Get()
