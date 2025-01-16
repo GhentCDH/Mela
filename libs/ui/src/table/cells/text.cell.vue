@@ -34,9 +34,7 @@ const renderer = defineComponent({
       return value;
     },
   },
-  beforeMount() {
-    // console.log('TextCell', this.data, this.column);
-  },
+  beforeMount() {},
 });
 
 export default renderer;

@@ -1,4 +1,14 @@
-import { Body, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 
 import { RequestDto, ResponseData } from '@ghentcdh/tools/form';
 
@@ -37,7 +47,12 @@ export class AbstractController<Entity, CreateDto = Entity> {
 
   @Get('/:id')
   protected async findOne(@Param('id') id: string): Promise<Entity> {
-    return this.repository.findOne(id);
+    const find = await this.repository.findOne(id);
+
+    if (!find)
+      throw new HttpException('Entity not found', HttpStatus.NOT_FOUND);
+
+    return find;
   }
 
   @Post()

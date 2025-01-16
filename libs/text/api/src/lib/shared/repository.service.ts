@@ -38,7 +38,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   }
 
   async findOne(id: string): Promise<Entity> {
-    return this.prismaModel.findUniqueOrThrow({ where: { id } });
+    return this.prismaModel.findUnique({ where: { id } });
   }
 
   async create(dto: CreateDto): Promise<Entity> {

@@ -8,6 +8,7 @@ const AUTH_STORE_NAME = 'GHENT_CDH_HTTP_REQUEST';
 type RequestOptions = {
   skipAuth?: boolean;
   queryParams?: Record<string, any>;
+  contentType?: string;
 };
 
 type Error = {
@@ -21,13 +22,16 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
   const makeRequest = async (
     url: string,
     requestInit: RequestInit,
-    options?: RequestOptions
+    options: RequestOptions = { contentType: 'application/json' },
   ) => {
     const headers: Record<string, string> = {
-      ...(requestInit.headers ?? {}),
       accept: 'application/json',
-      'content-type': 'application/json',
+      ...(requestInit.headers ?? {}),
     } as Record<string, string>;
+
+    if (options.contentType) {
+      headers['Content-Type'] = options.contentType;
+    }
 
     if (!options?.skipAuth) {
       await authStore.updateToken();
@@ -64,6 +68,29 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
   return {
     get: <T>(url: string, options?: RequestOptions): Promise<T> =>
       makeRequest(url, { method: 'GET' }, options),
+    postFile: <T>(
+      url: string,
+      file: File,
+      data: any = {},
+      options?: RequestOptions,
+    ): Promise<T> => {
+      const formData = new FormData();
+
+      for (const name in data) {
+        formData.append(name, data[name]);
+      }
+
+      formData.append('file', file);
+
+      return makeRequest(
+        url,
+        {
+          method: 'POST',
+          body: formData,
+        },
+        { ...options, contentType: undefined },
+      );
+    },
     post: <T>(url: string, data: any, options?: RequestOptions): Promise<T> =>
       makeRequest(
         url,
@@ -71,7 +98,7 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
           method: 'POST',
           body: JSON.stringify(data),
         },
-        options
+        options,
       ),
     patch: <T>(url: string, data: any, options?: RequestOptions): Promise<T> =>
       makeRequest(
@@ -80,12 +107,12 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
           method: 'PATCH',
           body: JSON.stringify(data),
         },
-        options
+        options,
       ),
     delete: <T>(
       url: string,
       data?: any,
-      options?: RequestOptions
+      options?: RequestOptions,
     ): Promise<T> =>
       makeRequest(
         url,
@@ -93,7 +120,7 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
           method: 'DELETE',
           body: JSON.stringify(data),
         },
-        options
+        options,
       ),
   };
 });

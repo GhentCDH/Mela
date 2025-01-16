@@ -19,6 +19,15 @@ const tableActions: TableAction[] = [
       });
     },
   },
+  {
+    label: 'Detail',
+    action: (data: Text) => {
+      router.replace({
+        name: 'text-index-detail',
+        params: { textId: data.id },
+      });
+    },
+  },
 ];
 </script>
 
