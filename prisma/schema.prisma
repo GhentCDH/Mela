@@ -53,3 +53,8 @@ model Phrase {
   source_text String
   translation String?
 }
+
+model Register {
+  id   String @id @default(uuid())
+  name String @unique
+}

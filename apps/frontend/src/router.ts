@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeView from './app/Home.vue';
 import AuthorView from './app/views/author/author.vue';
+import RegisterView from './app/views/register/register.vue';
 import TextIndexPhrasesView from './app/views/text-index/phrase/phrase.vue';
 import TextDetailView from './app/views/text-index/text-detail.vue';
 import TextIndexView from './app/views/text-index/text-index.vue';
@@ -19,6 +20,11 @@ const routes = [
     path: '/authors',
     name: 'authors',
     component: AuthorView,
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegisterView,
   },
   {
     path: '/text-index/:textId',
