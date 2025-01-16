@@ -37,7 +37,6 @@ RUN pnpm install
 # Copy source files into application directory
 COPY --chown=app:app . /app
 
-RUN pnpm run generate:prisma
 
 # Frontend development
 FROM node-dev AS node-fe-dev

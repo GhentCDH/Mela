@@ -2,9 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeView from './app/Home.vue';
 import AuthorView from './app/views/author/author.vue';
+import RegisterView from './app/views/register/register.vue';
 import TextIndexPhrasesView from './app/views/text-index/phrase/phrase.vue';
 import TextDetailView from './app/views/text-index/text-detail.vue';
 import TextIndexView from './app/views/text-index/text-index.vue';
+import TextReadView from './app/views/text-index/text-read.vue';
 import TextView from './app/views/text-index/text-view.vue';
 
 const routes = [
@@ -20,6 +22,11 @@ const routes = [
     component: AuthorView,
   },
   {
+    path: '/register',
+    name: 'register',
+    component: RegisterView,
+  },
+  {
     path: '/text-index/:textId',
     name: 'text-index-view',
     component: TextView,
@@ -28,6 +35,11 @@ const routes = [
         path: '.',
         name: 'text-index-detail',
         component: TextDetailView,
+      },
+      {
+        path: 'read',
+        name: 'text-index-read',
+        component: TextReadView,
       },
       {
         path: 'phrase',
