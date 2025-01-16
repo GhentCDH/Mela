@@ -40,6 +40,10 @@ const tabs = [
     label: 'Detail',
   },
   {
+    name: 'text-index-read',
+    label: 'Text',
+  },
+  {
     name: 'text-index-phrase',
     label: 'Phrase',
   },

@@ -5,6 +5,7 @@ import AuthorView from './app/views/author/author.vue';
 import TextIndexPhrasesView from './app/views/text-index/phrase/phrase.vue';
 import TextDetailView from './app/views/text-index/text-detail.vue';
 import TextIndexView from './app/views/text-index/text-index.vue';
+import TextReadView from './app/views/text-index/text-read.vue';
 import TextView from './app/views/text-index/text-view.vue';
 
 const routes = [
@@ -28,6 +29,11 @@ const routes = [
         path: '.',
         name: 'text-index-detail',
         component: TextDetailView,
+      },
+      {
+        path: 'read',
+        name: 'text-index-read',
+        component: TextReadView,
       },
       {
         path: 'phrase',

@@ -30,6 +30,7 @@ const tableSchema = TableBuilder.init()
   .addControls(
     TextCellBuilder.scope('#/properties/id'),
     TextCellBuilder.scope('#/properties/mela_id'),
+    TextCellBuilder.scope('#/properties/phrase_nbr'),
     TextCellBuilder.scope('#/properties/source_text'),
   )
   .build();

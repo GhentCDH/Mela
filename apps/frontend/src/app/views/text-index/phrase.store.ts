@@ -3,8 +3,6 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { Phrase } from '@ghentcdh/mela/generated/types';
 import { useTableStore } from '@ghentcdh/ui';
 
 export const usePhraseStore = defineStore('phraseStore', () => {
@@ -34,17 +32,13 @@ export const usePhraseStore = defineStore('phraseStore', () => {
     return router.push({ params: { id: newId }, query: route.query });
   };
 
-  const httpStore = useHttpStore();
-
-  const phrase = computedAsync(() => {
-    if (!phraseId.value) return { text_id: textId.value } as Phrase;
-
-    return httpStore.get<Phrase>(`/api/phrase/${phraseId.value}`);
+  const phrases = computedAsync(() => {
+    return tableStore.data;
   });
 
   const reload = () => {
     tableStore.reload();
   };
 
-  return { phrase, phrase_store_id, textId, reload };
+  return { phrases, phrase_store_id, textId, reload };
 });

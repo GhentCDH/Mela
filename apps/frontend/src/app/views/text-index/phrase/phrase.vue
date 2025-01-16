@@ -11,19 +11,16 @@
   />
 </template>
 <script setup lang="ts">
-import { phraseFormSchema, textFormSchema } from '@mela/text/shared';
+import { phraseFormSchema } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import { FormWithTableCompnent } from '@ghentcdh/ui';
 
-import { usePhraseStore } from '../phrase.store';
+import { usePhraseRepository } from '../../../repository/phrase.repository';
 import { useTextStore } from '../text.store';
 
 const textStore = useTextStore();
-const store = usePhraseStore();
-
+const phraseRepository = usePhraseRepository();
 const formId = computed(() => `phrase-${textStore.text?.id}`);
-const uriData = computed(
-  () => `${textFormSchema.uri}/${textStore.text?.id}/phrase`,
-);
+const uriData = computed(() => phraseRepository.getDataUri(textStore.text!.id));
 </script>
