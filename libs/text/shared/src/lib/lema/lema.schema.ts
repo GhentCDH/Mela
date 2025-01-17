@@ -37,8 +37,8 @@ const tableSchema = TableBuilder.init()
     TextCellBuilder.scope('#/properties/id'),
     TextCellBuilder.scope('#/properties/word'),
     TextCellBuilder.scope('#/properties/speech')
-      .key('id')
-      .setSortId('speech.id'),
+      .key('name')
+      .setSortId('speech.name'),
   )
   .build();
 

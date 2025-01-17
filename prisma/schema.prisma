@@ -66,13 +66,13 @@ model Speech {
 }
 
 model Lema {
-  id          String  @id @default(uuid())
-  word        String  @unique
+  id          String   @id @default(uuid())
+  word        String   @unique
   link        String
-  grammatical Boolean @default(false)
-  comparative Boolean @default(false)
-  superlative Boolean @default(false)
-  participle  Boolean @default(false)
-  speech      Speech  @relation(fields: [speech_id], references: [id])
+  grammatical Boolean? @default(false)
+  comparative Boolean? @default(false)
+  superlative Boolean? @default(false)
+  participle  Boolean? @default(false)
+  speech      Speech   @relation(fields: [speech_id], references: [id])
   speech_id   String
 }

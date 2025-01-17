@@ -14,4 +14,12 @@ export class SpeechRepository extends AbstractRepository<
   constructor(private readonly prisma: PrismaService) {
     super(prisma.speech);
   }
+
+  public findOrCreate(name: string) {
+    return this.prisma.speech.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+  }
 }

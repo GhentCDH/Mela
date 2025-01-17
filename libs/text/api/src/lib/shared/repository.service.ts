@@ -1,4 +1,9 @@
-import { RequestDto, buildFilter } from '@ghentcdh/tools/form';
+import {
+  RequestDto,
+  buildFilter,
+  buildSort,
+  buildSortKey,
+} from '@ghentcdh/tools/form';
 
 export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   protected constructor(private readonly prismaModel: any) {}
@@ -34,7 +39,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   }
 
   buildSort(request: Pick<RequestDto, 'sort' | 'sortDir'>): any {
-    return { [request.sort]: request.sortDir };
+    return buildSort(request.sort, request.sortDir);
   }
 
   async findOne(id: string): Promise<Entity> {

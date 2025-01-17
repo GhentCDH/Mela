@@ -1,3 +1,5 @@
+import { SortDir } from './request.model';
+
 export const Operator = ['contains', 'equals'] as const;
 export type OperatorType = (typeof Operator)[number];
 
@@ -26,6 +28,21 @@ const buildFilterKey = (keys: string[], filterObj: any) => {
   const buildKey = keys.pop() as string;
 
   return buildFilterKey(keys, { [buildKey]: filterObj });
+};
+
+export const buildSort = (key: string, sortDir: SortDir) => {
+  console.log('-------build sort ', key, sortDir);
+  return buildSortKey(key.split('.'), sortDir);
+};
+
+const buildSortKey = (keys: string[], sortDir: any) => {
+  if (keys.length === 1) {
+    return { [keys[0]]: sortDir };
+  }
+
+  const buildKey = keys.pop() as string;
+
+  return buildSortKey(keys, { [buildKey]: sortDir });
 };
 
 export const buildFilter = (filters: string[]) => {
