@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, shallowRef } from 'vue';
+import { onMounted, ref, shallowRef, watch } from 'vue';
 
 import { FormSchemaModel } from '@ghentcdh/tools/form';
 
@@ -25,10 +25,17 @@ const properties = defineProps<{
 const reload = ref(0);
 const formData = shallowRef<any>({ ...(properties.initialData ?? {}) });
 
-const store = useFormStore(properties.id);
+let store = useFormStore(properties.id);
 onMounted(() => {
   store.init(properties.formSchema);
 });
+
+watch(
+  () => properties.formSchema,
+  (formSchema) => {
+    store.init(formSchema);
+  },
+);
 
 const activeId = shallowRef<string | null>(null);
 

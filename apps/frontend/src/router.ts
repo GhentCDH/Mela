@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeView from './app/Home.vue';
-import AuthorView from './app/views/author/author.vue';
-import RegisterView from './app/views/register/register.vue';
 import TextIndexPhrasesView from './app/views/text-index/phrase/phrase.vue';
 import TextDetailView from './app/views/text-index/text-detail.vue';
 import TextIndexView from './app/views/text-index/text-index.vue';
@@ -12,19 +10,14 @@ import TextView from './app/views/text-index/text-view.vue';
 const routes = [
   { path: '/', name: 'home', component: HomeView },
   {
+    path: '/form/:formId',
+    name: 'form',
+    component: () => import('./app/views/form/form.vue'),
+  },
+  {
     path: '/text-index',
     name: 'text-index',
     component: TextIndexView,
-  },
-  {
-    path: '/authors',
-    name: 'authors',
-    component: AuthorView,
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: RegisterView,
   },
   {
     path: '/text-index/:textId',

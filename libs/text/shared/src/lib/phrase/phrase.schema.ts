@@ -45,7 +45,7 @@ const dtoSchema = PhraseSchema.pick({
   translation: true,
 });
 
-export const schema = createSchema({
+const schema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: PhraseForm,

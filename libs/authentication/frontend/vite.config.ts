@@ -7,7 +7,6 @@ import dts from 'vite-plugin-dts';
 
 import * as path from 'path';
 
-
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../../node_modules/.vite/libs/authentication/frontend',
@@ -34,7 +33,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     lib: {
-      // Could also be a dictionary or array of multiple entry points.
+      // Could also be a form or array of multiple entry points.
       entry: 'src/index.ts',
       name: 'authentication-frontend',
       fileName: 'index',

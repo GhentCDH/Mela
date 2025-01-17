@@ -37,9 +37,15 @@ export const useTableStore = (name) =>
         requestData.value.page = 1;
       }
 
-      const response = await httpStore.get<ResponseUnknown>(uri.value, {
-        queryParams: requestData.value,
-      });
+      const response = await httpStore
+        .get<ResponseUnknown>(uri.value, {
+          queryParams: requestData.value,
+        })
+        .catch((error) => {
+          console.error(error);
+          // TODO snackbar error
+          return { data: [], request: { totalPages: 1, page: 1 } };
+        });
 
       if (response.request.totalPages < response.request.page) {
         updateRequest({ page: response.request.totalPages });
