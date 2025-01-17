@@ -1,29 +1,33 @@
 <template>
-  <label
-    v-if="visible"
-    :id="id"
-    :for="id + '-input'"
-    class="form-control w-full"
-    :class="[
-      'form-control w-full',
-      {
-        'form-field-error': showErrors,
-      },
-    ]"
-  >
-    <div class="label">
-      <span :class="['label-text']">
-        {{ label }}
-        <span v-if="showAsterisk">*</span>
-      </span>
-    </div>
-    <slot />
-    <div class="label text-sm text-xs text-gray-500">
+  <div class="flex flex-col">
+    <label
+      v-if="visible"
+      :id="id"
+      :for="id + '-input'"
+      class="form-control w-full"
+      :class="[
+        'form-control w-full',
+        {
+          'form-field-error': showErrors,
+        },
+      ]"
+    >
+      <div class="label">
+        <span :class="['label-text']">
+          {{ label }}
+          <span v-if="showAsterisk">*</span>
+        </span>
+      </div>
+      <div class="form-control--content">
+        <slot />
+      </div>
+    </label>
+    <div class="form-control--description label text-xs text-gray-500">
       <span>
         {{ showErrors ? errors : showDescription ? description : null }}
       </span>
     </div>
-  </label>
+  </div>
 </template>
 
 <script lang="ts">

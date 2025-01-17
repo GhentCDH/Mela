@@ -24,6 +24,7 @@ export const useFormStore = (name: string) =>
     const init = (schema: FormSchemaModel) => {
       if (uri.value === schema.uri) return;
       uri.value = schema.uri;
+      console.log('init', schema.uri);
     };
 
     const deleteFn = async <T>(data: T & { id?: string }) => {

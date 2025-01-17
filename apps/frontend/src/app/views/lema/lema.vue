@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RegisterFormSchema } from '@mela/text/shared';
+import { LemaFormSchema } from '@mela/text/shared';
 
 import { FormWithTableCompnent } from '@ghentcdh/ui';
 
@@ -10,10 +10,10 @@ const formId = 'register';
   <div class="max-w-screen-lg m-auto">
     <FormWithTableCompnent
       :id="formId"
-      :create-title="'Create Register'"
-      :update-title="'Update Register'"
-      :form-schema="RegisterFormSchema"
-      table-title="Register"
+      :create-title="'Create Lema'"
+      :update-title="'Update Lema'"
+      :form-schema="LemaFormSchema"
+      table-title="Lema"
     />
   </div>
 </template>

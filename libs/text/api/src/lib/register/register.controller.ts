@@ -20,7 +20,7 @@ import { RegisterRepository } from './register-repository.service';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
-@Controller('Register')
+@Controller('register')
 export class RegisterController extends AbstractController<
   RegisterDto,
   CreateRegisterDto

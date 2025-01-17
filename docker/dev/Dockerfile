@@ -23,7 +23,6 @@ RUN corepack enable
 RUN useradd -ms /bin/sh -u 1001 app
 USER app
 
-
 # Install dependencies
 WORKDIR /app
 
@@ -34,9 +33,13 @@ RUN corepack enable
 RUN corepack prepare pnpm --activate
 RUN pnpm install
 
+
 # Copy source files into application directory
 COPY --chown=app:app . /app
 
+WORKDIR /app
+CMD npx prisma migrate dev
+CMD pnpm run generate:prisma
 
 # Frontend development
 FROM node-dev AS node-fe-dev
@@ -51,8 +54,6 @@ FROM node-dev AS node-be-dev
 
 WORKDIR /app
 
-CMD npx prisma migrate dev
-CMD pnpm run generate:prisma
 
 #CMD SLEEP INFINITY
 CMD npx nx run backend:serve

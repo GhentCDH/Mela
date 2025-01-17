@@ -72,7 +72,7 @@ const dtoSchema = TextSchema.pick({
   year: true,
 }).extend({ author: AuthorSchema.extend({ id: z.string().optional() }) });
 
-export const schema = createSchema({
+const schema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: TextForm,

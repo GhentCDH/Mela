@@ -13,13 +13,16 @@ export const StringOrArray = () =>
 
       return [val];
     });
- 
+
+export const SortDirEnum = z.enum(['asc', 'desc']);
+export type SortDir = z.infer<typeof SortDirEnum>;
+
 export const RequestSchema = z.object({
   page: PositiveRequestNumber().optional().default(1),
   pageSize: PositiveRequestNumber().optional().default(20),
   // TODO add sorting and so
   sort: z.string().optional().default('id'),
-  sortDir: z.enum(['asc', 'desc']).optional().default('asc'),
+  sortDir: SortDirEnum.optional().default('asc'),
   // Filter is of the format key:value:operator (e.g. name:john:eq) operator is optional
   filter: StringOrArray().optional().default([]),
 });

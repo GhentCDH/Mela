@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
+import { computed, watch } from 'vue';
 
 import {
   ColumnDef,
@@ -36,11 +36,15 @@ watch(
   },
 );
 
-const store = useTableStore(properties.id);
+let store = useTableStore(properties.id);
 
-onMounted(() => {
-  store.init(properties.uri);
-});
+watch(
+  () => properties.uri,
+  (formSchema) => {
+    store.init(properties.uri);
+  },
+  { immediate: true },
+);
 
 const edit = (data: unknown) => {
   emit('edit', data);
