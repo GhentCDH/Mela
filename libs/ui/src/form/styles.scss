@@ -5,17 +5,19 @@
 
 .horizontal-layout, .horizontal-layout-item {
   @apply flex flex-row gap-2;
-  @apply w-full;
+  //@apply w-full;
 }
 
 .form-control {
-  input {
+  input:not([type='checkbox']) {
     @apply max-w-xs
   }
 
-  input, textarea {
+
+  input:not([type='checkbox']), textarea {
     @apply input-bordered input-primary w-full ;
   }
+
 
   &.form-field-error {
     .label-text {
@@ -25,5 +27,22 @@
     .input, textarea {
       @apply input-error;
     }
+  }
+
+  .checkbox-wrapper & {
+    @apply flex items-center gap-2 flex-row;
+
+    .label {
+      @apply text-nowrap
+    }
+
+    .form-control--content {
+
+    }
+  ;
+  }
+
+  &--description {
+    @apply w-full;
   }
 }

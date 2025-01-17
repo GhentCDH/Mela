@@ -31,7 +31,6 @@ const buildFilterKey = (keys: string[], filterObj: any) => {
 };
 
 export const buildSort = (key: string, sortDir: SortDir) => {
-  console.log('-------build sort ', key, sortDir);
   return buildSortKey(key.split('.'), sortDir);
 };
 

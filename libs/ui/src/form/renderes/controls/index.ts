@@ -1,8 +1,15 @@
+import { entry as booleanControlRendererEntry } from './BooleanControlRenderer.vue';
 import { entry as integerControlRendererEntry } from './IntegerControlRenderer.vue';
 import { entry as numberControlRendererEntry } from './NumberControlRenderer.vue';
 import { entry as stringControlRendererEntry } from './StringControlRenderer.vue';
 import { entry as textAreaControlRenderer } from './TextAreaControlRenderer.vue';
 import { entry as autocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
+// import { entry as multiStringControlRendererEntry } from './MultiStringControlRenderer.vue';
+// import { entry as enumControlRendererEntry } from './EnumControlRenderer.vue';
+// import { entry as oneOfEnumControlRendererEntry } from './EnumOneOfControlRenderer.vue';
+// import { entry as dateControlRendererEntry } from './DateControlRenderer.vue';
+// import { entry as dateTimeControlRendererEntry } from './DateTimeControlRenderer.vue';
+// import { entry as timeControlRendererEntry } from './TimeControlRenderer.vue';
 
 export { default as AutocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
 export { default as ControlWrapper } from './ControlWrapper.vue';
@@ -15,14 +22,7 @@ export { default as IntegerControlRenderer } from './IntegerControlRenderer.vue'
 // export { default as DateControlRenderer } from './DateControlRenderer.vue';
 // export { default as DateTimeControlRenderer } from './DateTimeControlRenderer.vue';
 // export { default as TimeControlRenderer } from './TimeControlRenderer.vue';
-// export { default as BooleanControlRenderer } from './BooleanControlRenderer.vue';
-// import { entry as multiStringControlRendererEntry } from './MultiStringControlRenderer.vue';
-// import { entry as enumControlRendererEntry } from './EnumControlRenderer.vue';
-// import { entry as oneOfEnumControlRendererEntry } from './EnumOneOfControlRenderer.vue';
-// import { entry as dateControlRendererEntry } from './DateControlRenderer.vue';
-// import { entry as dateTimeControlRendererEntry } from './DateTimeControlRenderer.vue';
-// import { entry as timeControlRendererEntry } from './TimeControlRenderer.vue';
-// import { entry as booleanControlRendererEntry } from './BooleanControlRenderer.vue';
+export { default as BooleanControlRenderer } from './BooleanControlRenderer.vue';
 
 export const controlRenderers = [
   // First custom renderers on format
@@ -34,7 +34,7 @@ export const controlRenderers = [
   // dateControlRendererEntry,
   // dateTimeControlRendererEntry,
   // timeControlRendererEntry,
-  // booleanControlRendererEntry,
+  booleanControlRendererEntry,
 
   // Renderers based on type if no format is provided
   stringControlRendererEntry,

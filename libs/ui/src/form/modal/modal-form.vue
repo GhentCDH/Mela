@@ -11,7 +11,7 @@
     :id="id"
     class="modal"
   >
-    <div class="modal-box bg-white">
+    <div class="modal-box bg-white w-[90VW] max-w-screen-2xl">
       <button
         type="button"
         class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
