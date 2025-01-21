@@ -2,6 +2,7 @@
   <control-wrapper v-bind="controlWrapper">
     <input
       :id="control.id + '-input'"
+      autocomplete="off"
       type="number"
       :step="step"
       class="input"

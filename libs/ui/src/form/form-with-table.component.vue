@@ -57,8 +57,9 @@ const onReload = () => {
 };
 
 const onSuccess = () => {
-  store.save(activeId.value, formData.value);
-  reload.value = Date.now();
+  store.save(activeId.value, formData.value).then(() => {
+    reload.value = Date.now();
+  });
 };
 
 const onCloseModal = () => {

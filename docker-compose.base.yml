@@ -15,8 +15,8 @@ services:
           path: pnpm-lock.yaml
           target: /app/pnpm-lock.yaml
         - action: rebuild
-          path: prisma/schema.prisma
-          target: /app/prisma/schema.prisma
+          path: prisma
+          target: /app/prisma
         - action: sync
           path: tsconfig.base.json
           target: /app/tsconfig.base.json

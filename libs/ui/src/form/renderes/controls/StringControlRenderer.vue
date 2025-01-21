@@ -8,6 +8,7 @@
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
       :placeholder="appliedOptions.placeholder"
+      autocomplete="off"
       @change="onChange"
       @focus="onFocus"
       @blur="onBlur"
