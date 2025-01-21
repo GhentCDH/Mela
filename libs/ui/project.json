@@ -3,7 +3,15 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ui/src",
   "projectType": "library",
-  "tags": ["ui"],
+  "tags": [
+    "ui"
+  ],
   "// targets": "to see all targets run: nx show project ui --web",
-  "targets": {}
+  "targets": {
+    "storybook": {
+      "options": {
+        "port": 4400
+      }
+    }
+  }
 }
