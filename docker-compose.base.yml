@@ -24,7 +24,7 @@ services:
       - ./libs:/app/libs
       - ./apps:/app/apps
       - ./prisma:/app/prisma
-      - ./generated:/app/generated
+      - /app/generated
       - /app/node_modules
   database:
     image: postgres:latest

@@ -34,12 +34,16 @@ RUN corepack prepare pnpm --activate
 RUN pnpm install
 
 
+
 # Copy source files into application directory
 COPY --chown=app:app . /app
 
 WORKDIR /app
-CMD npx prisma migrate dev
-CMD pnpm run generate:prisma
+
+#RUN npx prisma generate
+#RUN npx prisma migrate dev
+#RUN npx prisma migrate status
+#RUN pnpm run generate:zod
 
 # Frontend development
 FROM node-dev AS node-fe-dev
@@ -47,7 +51,7 @@ FROM node-dev AS node-fe-dev
 WORKDIR /app
 
 #CMD SLEEP INFINITY
-CMD npx nx run frontend:serve
+CMD  pnpm run generate:prisma && npx nx run frontend:serve
 
 # Backend development
 FROM node-dev AS node-be-dev
@@ -56,7 +60,7 @@ WORKDIR /app
 
 
 #CMD SLEEP INFINITY
-CMD npx nx run backend:serve
+CMD pnpm run generate:prisma && npx nx run backend:serve
 
   # ====== RUN CADDY =======
 FROM caddy:2.8.4-alpine AS frontend

@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE "Lema" ALTER COLUMN "grammatical" DROP NOT NULL,
-ALTER COLUMN "superlative" DROP NOT NULL,
-ALTER COLUMN "participle" DROP NOT NULL,
-ALTER COLUMN "comparative" DROP NOT NULL;

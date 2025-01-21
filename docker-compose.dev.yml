@@ -9,6 +9,10 @@ services:
       service: nx-app-base-dev
     build:
       target: node-fe-dev
+    depends_on:
+      database_app:
+        condition: service_healthy
+        restart: true
     ports:
       - "4200:4200"
     environment:
@@ -40,6 +44,7 @@ services:
     depends_on:
       database_app:
         condition: service_healthy
+        restart: true
     volumes:
       - ./var/logs/backend:/tmp/logs
 
