@@ -1,4 +1,5 @@
 import {
+  ExampleFormSchema,
   LemaFormSchema,
   RegisterFormSchema,
   SpeechFormSchema,
@@ -19,6 +20,7 @@ export enum FormKey {
   register = 'register',
   speech = 'speech',
   lema = 'lema',
+  example = 'example',
 }
 
 export const FormDictionary: Record<FormKey, FormDef> = {
@@ -45,5 +47,11 @@ export const FormDictionary: Record<FormKey, FormDef> = {
     formSchema: LemaFormSchema,
     title: 'Lema',
     tableTitle: 'Lemas',
+  },
+  example: {
+    formId: 'example',
+    formSchema: ExampleFormSchema,
+    title: 'Example',
+    tableTitle: 'Examples',
   },
 };

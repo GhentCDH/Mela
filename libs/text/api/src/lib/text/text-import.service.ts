@@ -5,9 +5,11 @@ import { Logger } from '@ghentcdh/tools/logging/api';
 
 import { parsePhrases } from './import/sheet1';
 import { TextRepositoryService } from './text-repository.service';
+import { ExampleRepository } from '../example/example-repository.service';
 import { PhraseRepository } from '../phrase/phrase.repository';
 import { parseLemas } from './import/lema';
 import { LemaRepository } from '../lema/lema-repository.service';
+import { parseExamples } from './import/example';
 
 const context = 'TextImportService';
 
@@ -17,6 +19,7 @@ export class TextImportService {
     private readonly textRepositoryService: TextRepositoryService,
     private readonly phraseRepository: PhraseRepository,
     private readonly lemaRepository: LemaRepository,
+    private readonly exampleRepository: ExampleRepository,
   ) {}
 
   async parse(id: string, file: any) {
@@ -33,9 +36,11 @@ export class TextImportService {
 
     const created = await Promise.all([
       this.parsePhrases(id, sheet1),
-      this.createLema(sheet3),
+      this.createLema(sheet2),
     ]);
 
+    // Examples should be created as last
+    await this.createExample(sheet3);
     // TODO what if partial fail
     // TODO parse other fields in the sheet
 
@@ -55,8 +60,17 @@ export class TextImportService {
     Logger.log(context, 'Parsing lema...');
     const lemas = parseLemas(sheet);
 
-    Logger.log(context, `parsed success phrases: ${lemas.length}`);
+    Logger.log(context, `parsed success lemaas: ${lemas.length}`);
 
     return this.lemaRepository.createMany(lemas);
+  }
+
+  private async createExample(sheet: WorkSheet) {
+    Logger.log(context, 'Parsing example...');
+    const examples = parseExamples(sheet);
+
+    Logger.log(context, `parsed success examples: ${examples.length}`);
+
+    return this.exampleRepository.createMany(examples);
   }
 }

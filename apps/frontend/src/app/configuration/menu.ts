@@ -21,6 +21,11 @@ export const menu = (): Menu => {
       params: { formId: FormKey.speech },
     },
     {
+      label: 'Example',
+      routerLink: 'form',
+      params: { formId: FormKey.example },
+    },
+    {
       label: 'Lema',
       routerLink: 'form',
       params: { formId: FormKey.lema },

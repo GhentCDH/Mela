@@ -4,6 +4,8 @@ import { PrismaModule } from '@ghentcdh/mela/generated/prisma';
 
 import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
+import { ExampleRepository } from './example/example-repository.service';
+import { ExampleController } from './example/example.controller';
 import { LemaRepository } from './lema/lema-repository.service';
 import { LemaController } from './lema/lema.controller';
 import { PhraseTextController } from './phrase/phrase-text.controller';
@@ -27,6 +29,7 @@ import { TextController } from './text/text.controller';
     RegisterController,
     LemaController,
     SpeechController,
+    ExampleController,
   ],
   providers: [
     AuthorRepository,
@@ -36,6 +39,7 @@ import { TextController } from './text/text.controller';
     RegisterRepository,
     LemaRepository,
     SpeechRepository,
+    ExampleRepository,
   ],
   exports: [AuthorRepository, TextRepositoryService, PhraseRepository],
 })

@@ -55,8 +55,9 @@ model Phrase {
 }
 
 model Register {
-  id   String @id @default(uuid())
-  name String @unique
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Example Example[]
 }
 
 model Speech {
@@ -66,13 +67,89 @@ model Speech {
 }
 
 model Lema {
-  id          String   @id @default(uuid())
-  word        String   @unique
+  id          String        @id @default(uuid())
+  word        String        @unique
   link        String
-  grammatical Boolean? @default(false)
-  comparative Boolean? @default(false)
-  superlative Boolean? @default(false)
-  participle  Boolean? @default(false)
-  speech      Speech   @relation(fields: [speech_id], references: [id])
+  grammatical Boolean?      @default(false)
+  comparative Boolean?      @default(false)
+  superlative Boolean?      @default(false)
+  participle  Boolean?      @default(false)
+  speech      Speech        @relation(fields: [speech_id], references: [id])
   speech_id   String
+  ExampleLema ExampleLema[]
+}
+
+model GrammaticalTopic {
+  id                      String                    @id @default(uuid())
+  name                    String                    @unique
+  ExampleGrammaticalTopic ExampleGrammaticalTopic[]
+}
+
+model SemanticTopic {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  Example Example[]
+}
+
+model Example {
+  id          String @id @default(uuid())
+  example     String
+  translation String
+  mela_id     String @unique
+
+  exampleLemas ExampleLema[]
+
+  related_examples        RelatedExample[] @relation(name: "related_example")
+  related_example_example RelatedExample[] @relation(name: "example")
+
+  register    Register @relation(fields: [register_id], references: [id])
+  register_id String
+
+  semantic_topic    SemanticTopic @relation(fields: [semantic_topic_id], references: [id])
+  semantic_topic_id String
+
+  grammatical_topics ExampleGrammaticalTopic[]
+  parallel_passage   ExampleParallelPassage[]
+}
+
+model RelatedExample {
+  id                 String  @id @default(uuid())
+  example            Example @relation(name: "example", fields: [example_id], references: [id])
+  example_id         String
+  related_example    Example @relation(name: "related_example", fields: [related_example_id], references: [id])
+  related_example_id String
+  importance         Int
+}
+
+enum GrammaticalTopicType {
+  specific
+  overarching
+}
+
+model ExampleParallelPassage {
+  id String @id @default(uuid())
+
+  example    Example @relation(fields: [example_id], references: [id])
+  example_id String
+  passage    String
+}
+
+model ExampleGrammaticalTopic {
+  id String @id @default(uuid())
+
+  type       GrammaticalTopicType
+  example    Example              @relation(fields: [example_id], references: [id])
+  example_id String
+
+  gramatical_topic     GrammaticalTopic @relation(fields: [grammatical_topic_id], references: [id])
+  grammatical_topic_id String
+}
+
+model ExampleLema {
+  id         String  @id @default(uuid())
+  example    Example @relation(fields: [example_id], references: [id])
+  example_id String
+  lema       Lema    @relation(fields: [lema_id], references: [id])
+  lema_id    String
+  importance Int
 }
