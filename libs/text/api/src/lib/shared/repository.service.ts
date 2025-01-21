@@ -30,16 +30,43 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
     return { AND: filter };
   }
 
-  include(): Record<string, true> {
+  /**
+   * Fields to be included in creation
+   * Used in list function
+   * @protected
+   */
+  protected include(): Record<string, true> {
     return {};
   }
 
-  buildFilter(filters: string[]): any {
+  /**
+   * Build filter
+   * Used in list and count functions
+   * @param filters
+   * @protected
+   */
+  protected buildFilter(filters: string[]): any {
     return buildFilter(filters);
   }
 
-  buildSort(request: Pick<RequestDto, 'sort' | 'sortDir'>): any {
+  /**
+   * Build sort
+   * Used in list function
+   * @param request
+   * @protected
+   */
+  protected buildSort(request: Pick<RequestDto, 'sort' | 'sortDir'>): any {
     return buildSort(request.sort, request.sortDir);
+  }
+
+  /**
+   * Connect related entities
+   * Used in create and update functions
+   * @param dto
+   * @protected
+   */
+  protected async connect(dto: CreateDto): Promise<Partial<CreateDto>> {
+    return {};
   }
 
   async findOne(id: string): Promise<Entity> {
@@ -47,8 +74,9 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   }
 
   async create(dto: CreateDto): Promise<Entity> {
+    const connect = await this.connect(dto);
     return this.prismaModel.create({
-      data: dto,
+      data: { ...dto, ...connect },
     });
   }
 
