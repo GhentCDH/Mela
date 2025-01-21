@@ -11,10 +11,10 @@ CREATE TABLE "Lema" (
     "id" TEXT NOT NULL,
     "word" TEXT NOT NULL,
     "link" TEXT NOT NULL,
-    "grammatical" BOOLEAN NOT NULL DEFAULT false,
-    "comparativve" BOOLEAN NOT NULL DEFAULT false,
-    "superlative" BOOLEAN NOT NULL DEFAULT false,
-    "participle" BOOLEAN NOT NULL DEFAULT false,
+    "grammatical" BOOLEAN DEFAULT false,
+    "comparative" BOOLEAN DEFAULT false,
+    "superlative" BOOLEAN DEFAULT false,
+    "participle" BOOLEAN DEFAULT false,
     "speech_id" TEXT NOT NULL,
 
     CONSTRAINT "Lema_pkey" PRIMARY KEY ("id")
