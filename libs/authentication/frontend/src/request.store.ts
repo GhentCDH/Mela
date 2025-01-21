@@ -56,7 +56,7 @@ export const useHttpStore = defineStore(AUTH_STORE_NAME, () => {
         // TODO if response return 400 then redirect to login page
       }
 
-      throw new Error({
+      return Promise.reject({
         content: response.body,
         status: response.status,
       } as any);

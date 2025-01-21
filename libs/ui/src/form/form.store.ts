@@ -4,21 +4,32 @@ import { ref } from 'vue';
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
 import { FormSchemaModel } from '@ghentcdh/tools/form';
 
+import { useNotificationStore } from '../toast/toast.store';
+
 // TODO add warnings, success, ....
 
 export const useFormStore = (name: string) =>
   defineStore(`ghentCDH_form_${name}`, () => {
     const uri = ref<string>(null);
     const httpStore = useHttpStore();
+    const notificationStore = useNotificationStore();
 
     const save = async <T>(id: string | null, data: T) => {
       if (!uri.value) return;
 
-      if (!id) {
-        await httpStore.post(uri.value, data);
-      } else await httpStore.patch(`${uri.value}/${id}`, data);
+      const promise = id
+        ? httpStore.patch(`${uri.value}/${id}`, data)
+        : httpStore.post(uri.value, data);
 
-      return;
+      return promise
+        .then(() => {
+          notificationStore.success('Data saved');
+        })
+        .catch((error) => {
+          console.error(error);
+
+          notificationStore.error('Error saving data');
+        });
     };
 
     const init = (schema: FormSchemaModel) => {
