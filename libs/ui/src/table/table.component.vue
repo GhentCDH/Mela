@@ -125,7 +125,7 @@ const onChangeFilters = (filters: any) => {
             </td>
           </tr>
           <tr
-            v-for="data in store.tableData"
+            v-for="data in store.data?.data"
             :key="data.id"
           >
             <td
