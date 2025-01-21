@@ -5,7 +5,7 @@ import { ToastMessage, ToastType } from './toast-message';
 
 const NOTIFICATION_DURATION = 5000;
 
-export const useNotificationStore = defineStore('textStore', () => {
+export const useNotificationStore = defineStore('toastStore', () => {
   const notifications = ref<ToastMessage[]>([]);
 
   const addNotification = (message: string, type: ToastType = 'info') => {
