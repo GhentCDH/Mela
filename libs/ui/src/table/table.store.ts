@@ -24,6 +24,7 @@ export const useTableStore = (name) =>
 
     const httpStore = useHttpStore();
     const reload = ref(Date.now());
+    const loading = ref(true);
 
     const uri = ref<string>('');
 
@@ -32,6 +33,8 @@ export const useTableStore = (name) =>
       const r = reload.value;
 
       if (!uri.value) return null;
+
+      loading.value = true;
 
       if (requestData.value.page < 1) {
         requestData.value.page = 1;
@@ -45,13 +48,18 @@ export const useTableStore = (name) =>
           console.error(error);
           // TODO snackbar error
           return { data: [], request: { totalPages: 1, page: 1 } };
-        });
+        })
+        .finally(() => (loading.value = false));
 
       if (response.request.totalPages < response.request.page) {
         updateRequest({ page: response.request.totalPages });
       }
-
       return response;
+    });
+
+    const tableData = computed(() => {
+      const d = data.value;
+      return loading?.value ? [] : (d?.data ?? []);
     });
 
     const reloadFn = () => {
@@ -101,9 +109,11 @@ export const useTableStore = (name) =>
 
     return {
       data,
+      tableData,
       sortDirection,
       sortColumn,
       filters,
+      loading,
       init,
       sort,
       reload: reloadFn,

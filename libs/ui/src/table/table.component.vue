@@ -116,6 +116,14 @@ const onChangeFilters = (filters: any) => {
           </tr>
         </thead>
         <tbody>
+          <tr v-if="store.loading">
+            <td
+              :colspan="displayColumns.length + 1"
+              class="text-center"
+            >
+              <span class="loading loading-bars loading-xs" />
+            </td>
+          </tr>
           <tr
             v-for="data in store.data?.data"
             :key="data.id"

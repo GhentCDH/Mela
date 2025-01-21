@@ -1,4 +1,5 @@
 <template>
+  <toast />
   <div class="drawer">
     <input
       id="my-drawer-3"
@@ -62,6 +63,7 @@
 
 <script setup lang="ts">
 import { Menu } from './menu.type';
+import Toast from '../toast/toast.vue';
 
 const baseUrl = import.meta.env.BASE_URL;
 

@@ -6,17 +6,15 @@
       :for="id + '-input'"
       class="form-control w-full"
       :class="[
-        'form-control w-full',
+        'form-control w-full ',
         {
           'form-field-error': showErrors,
         },
       ]"
     >
-      <div class="label">
-        <span :class="['label-text']">
-          {{ label }}
-          <span v-if="showAsterisk">*</span>
-        </span>
+      <div class="text-md font-semibold pt-2">
+        {{ label }}
+        <span v-if="showAsterisk">*</span>
       </div>
       <div class="form-control--content">
         <slot />

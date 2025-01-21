@@ -26,6 +26,7 @@ const renderer = defineComponent({
   computed: {
     value() {
       const value = this.data[this.column.id];
+      if (!value) return null;
 
       if (this.column.options?.format === 'keyValue') {
         return value[this.column.options.key];
