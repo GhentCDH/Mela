@@ -2,6 +2,7 @@
   <ControlWrapper v-bind="controlWrapper">
     <textarea
       :id="control.id + '-input'"
+      autocomplete="off"
       type="text"
       :class="['input', 'h-1/2']"
       :rows="5"

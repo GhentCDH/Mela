@@ -15,32 +15,33 @@ export class TextRepositoryService extends AbstractRepository<
     super(prisma.text);
   }
 
-  override include() {
+  protected override include(): Record<string, true> {
     return { author: true };
   }
 
-  override async create(dto: CreateTextDto): Promise<TextWithRelations> {
-    return super.create({
-      ...dto,
-      author: this.createOrConnectAuthor(dto),
-    });
-  }
-
-  override async update(
-    id: string,
+  protected override async connect(
     dto: CreateTextDto,
-  ): Promise<TextWithRelations> {
-    return super.update(id, {
-      ...dto,
-      author: this.createOrConnectAuthor(dto),
-    });
+  ): Promise<Partial<CreateTextDto>> {
+    return {
+      author: await this.createOrConnectAuthor(dto),
+    };
   }
 
-  private createOrConnectAuthor(dto: CreateTextDto) {
-    return dto.author.id
-      ? {
-          connect: { id: dto.author.id },
-        }
-      : { create: { name: dto.author.name } };
+  private async createOrConnectAuthor(dto: CreateTextDto) {
+    if (dto.author.id) {
+      return {
+        connect: { id: dto.author.id },
+      };
+    }
+
+    const { name } = dto.author;
+
+    return {
+      connect: await this.prisma.author.upsert({
+        where: { name },
+        update: {},
+        create: { name },
+      }),
+    };
   }
 }

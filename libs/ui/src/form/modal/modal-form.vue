@@ -70,7 +70,7 @@ defineProps<{
   buttonSaveLabel?: string;
   schema: JsonSchema;
   uischema: Layout;
-  data: any;
+  data?: any;
 }>();
 
 const id = `modal_${Math.floor(Math.random() * 1000)}`;

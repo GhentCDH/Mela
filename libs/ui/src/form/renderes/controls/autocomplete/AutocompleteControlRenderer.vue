@@ -4,6 +4,7 @@
       <input
         :id="control.id + '-input'"
         v-model="query"
+        autocomplete="off"
         type="text"
         :class="[
           'input',
