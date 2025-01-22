@@ -7,7 +7,6 @@ import {
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
@@ -55,7 +54,7 @@ const dtoSchema = LemaSchema.pick({
   participle: true,
 }).extend({ speech: SpeechSchema.extend({ id: z.string().optional() }) });
 
-const schema = createSchema({
+export const LemaFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
@@ -63,9 +62,3 @@ const schema = createSchema({
   tableSchema,
   uri: '/api/lema',
 });
-
-export const LemaFormSchema = schema.schema;
-
-export class CreateLemaDto extends schema.dto {}
-
-export class ListLemaDto extends createResponseData(LemaSchema) {}

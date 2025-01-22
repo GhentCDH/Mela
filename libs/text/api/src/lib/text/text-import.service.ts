@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { WorkSheet, read } from 'xlsx';
+import type { WorkSheet } from 'xlsx';
+import { read } from 'xlsx';
 
 import { Logger } from '@ghentcdh/tools/logging/api';
 

@@ -12,7 +12,7 @@ const formId = 'register';
       :id="formId"
       :create-title="'Create Lema'"
       :update-title="'Update Lema'"
-      :form-schema="LemaFormSchema"
+      :form-schema="LemaFormSchema.schema"
       table-title="Lema"
     />
   </div>

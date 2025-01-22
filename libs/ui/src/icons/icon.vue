@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { IconDef, IconMap } from './icon-list';
+import type { IconDef} from './icon-list';
+import { IconMap } from './icon-list';
 import { Size } from '../const/size';
 
 defineProps<{

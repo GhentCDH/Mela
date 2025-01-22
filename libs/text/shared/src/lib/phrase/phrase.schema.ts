@@ -5,7 +5,6 @@ import {
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
@@ -45,16 +44,10 @@ const dtoSchema = PhraseSchema.pick({
   translation: true,
 });
 
-const schema = createSchema({
+export const PhraseFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: PhraseForm,
   uri: '/api/phrase',
   tableSchema,
 });
-
-export const phraseFormSchema = schema.schema;
-
-export class CreatePhraseDto extends schema.dto {}
-
-export class ListPhraseDto extends createResponseData(PhraseSchema) {}

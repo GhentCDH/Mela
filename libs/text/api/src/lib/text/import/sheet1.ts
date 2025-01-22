@@ -1,7 +1,8 @@
-import { WorkSheet } from 'xlsx';
+import type { WorkSheet } from 'xlsx';
 import { z } from 'zod';
 
-import { Phrase, PhraseSchema } from '@ghentcdh/mela/generated/types';
+import type { Phrase} from '@ghentcdh/mela/generated/types';
+import { PhraseSchema } from '@ghentcdh/mela/generated/types';
 
 import { parseSheet } from './utils';
 

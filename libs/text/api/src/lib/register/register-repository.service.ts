@@ -1,9 +1,9 @@
-import { CreateRegisterDto } from '@mela/text/shared';
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import { Register } from '@ghentcdh/mela/generated/types';
 
+import { CreateRegisterDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
 
 @Injectable()

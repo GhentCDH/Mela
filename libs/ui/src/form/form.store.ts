@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/tools/form';
 import { Debugger } from '@ghentcdh/tools/logging/frontend';
 
 import { useNotificationStore } from '../toast/toast.store';

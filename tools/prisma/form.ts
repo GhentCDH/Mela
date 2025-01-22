@@ -1,5 +1,6 @@
 import { generateSchema } from '@anatine/zod-openapi';
 
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import * as model from '../../generated/types/modelSchema';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -51,8 +52,8 @@ export const generateForm = (dir: string) => {
     fs.writeFileSync(path.join(formDir, `${_name}.form.ts`), forms);
     fs.writeFileSync(path.join(dtoDir, `${_name}.dto.ts`), dtos);
 
-    formExports.push(`export * from './${_name}.form.ts';`);
-    dtoExports.push(`export * from './${_name}.dto.ts';`);
+    formExports.push(`export * from './${_name}.form';`);
+    dtoExports.push(`export * from './${_name}.dto';`);
   });
 
   fs.writeFileSync(path.join(formDir, 'index.ts'), formExports.join('\n'));

@@ -5,7 +5,6 @@ import {
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
@@ -28,7 +27,7 @@ const dtoSchema = RegisterSchema.pick({
   name: true,
 });
 
-const schema = createSchema({
+export const RegisterFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
@@ -36,9 +35,3 @@ const schema = createSchema({
   tableSchema,
   uri: '/api/register',
 });
-
-export const RegisterFormSchema = schema.schema;
-
-export class CreateRegisterDto extends schema.dto {}
-
-export class ListRegisterDto extends createResponseData(RegisterSchema) {}

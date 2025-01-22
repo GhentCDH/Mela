@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { TextWithRelations } from '@ghentcdh/mela/generated/types';
+import type { TextWithRelations } from '@ghentcdh/mela/generated/types';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();

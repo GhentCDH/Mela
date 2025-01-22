@@ -4,10 +4,11 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import {
+import type {
   RequestDtoNoOffset,
+  ResponseUnknown} from '@ghentcdh/tools/form';
+import {
   RequestSchema,
-  ResponseUnknown,
   extractFilters,
 } from '@ghentcdh/tools/form';
 

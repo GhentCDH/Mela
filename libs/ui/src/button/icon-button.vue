@@ -7,7 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import Btn, { ButtonProps } from './btn.vue';
+import type { ButtonProps } from './btn.vue';
+import Btn from './btn.vue';
 
 const properties = defineProps<ButtonProps>();
 

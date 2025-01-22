@@ -18,26 +18,20 @@
 </template>
 
 <script lang="ts">
-import {
+import type {
   ControlElement,
   JsonFormsRendererRegistryEntry,
-  isBooleanControl,
-  rankWith,
 } from '@jsonforms/core';
-import {
-  RendererProps,
-  rendererProps,
-  useJsonFormsControl,
-} from '@jsonforms/vue';
+import { isBooleanControl, rankWith } from '@jsonforms/core';
+import type { RendererProps } from '@jsonforms/vue';
+import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
-
-import { ControlRendererType } from '@ghentcdh/tools/form';
 
 import ControlWrapper from './ControlWrapper.vue';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
-  name: ControlRendererType.number,
+  name: 'BooleanControlRenderer',
   components: {
     ControlWrapper,
   },

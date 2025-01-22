@@ -1,5 +1,4 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreateSpeechDto, ListSpeechDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -14,8 +13,9 @@ import {
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { SpeechDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
+import { CreateSpeechDto, ListSpeechDto } from './dto';
 import { SpeechRepository } from './speech-repository.service';
 import { AbstractController } from '../shared/controller';
 

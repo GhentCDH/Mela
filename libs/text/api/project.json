@@ -3,7 +3,10 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/text/api/src",
   "projectType": "library",
-  "tags": ["api", "feature"],
+  "tags": [
+    "scope:api",
+    "scope:feature"
+  ],
   "// targets": "to see all targets run: nx show project TextApi --web",
   "targets": {}
 }

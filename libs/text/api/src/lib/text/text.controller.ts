@@ -1,9 +1,6 @@
+// eslint-disable @typescript-eslint/consistent-type-imports
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import {
-  CreateTextDto,
-  ListTextDto,
-  textParseFileTypes,
-} from '@mela/text/shared';
+import { textParseFileTypes } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -28,8 +25,9 @@ import {
 
 import { TextWithRelationsDto } from '@ghentcdh/mela/generated/dtos';
 import { TextWithRelations } from '@ghentcdh/mela/generated/types';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
+import { CreateTextDto, ListTextDto } from './dto';
 import { TextUploadDto } from './file-upload.dto';
 import { TextImportService } from './text-import.service';
 import { TextRepositoryService } from './text-repository.service';

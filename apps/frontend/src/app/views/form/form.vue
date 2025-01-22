@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router';
 
 import { FormWithTableCompnent } from '@ghentcdh/ui';
 
-import { FormDictionary, FormKey } from './form.def';
+import type { FormKey } from './form.def';
+import { FormDictionary } from './form.def';
 
 const route = useRoute();
 const formId = computed(() => route.params['formId']);

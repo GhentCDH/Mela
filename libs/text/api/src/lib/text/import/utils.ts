@@ -1,5 +1,6 @@
-import { WorkSheet, utils } from 'xlsx';
-import { ZodSchema } from 'zod';
+import type { WorkSheet} from 'xlsx';
+import { utils } from 'xlsx';
+import type { ZodSchema } from 'zod';
 
 export type Dictionary = Record<string, string>;
 

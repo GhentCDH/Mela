@@ -1,0 +1,14 @@
+{
+  "name": "@mela/form-api",
+  "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@anatine/zod-nestjs": "^2.0.9",
+    "@ghentcdh/tools/form": "0.0.1",
+    "@anatine/zod-openapi": "^2.2.6",
+    "zod": "^3.24.1"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
+}

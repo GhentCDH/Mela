@@ -1,4 +1,4 @@
-import { Menu } from '@ghentcdh/ui';
+import type { Menu } from '@ghentcdh/ui';
 
 import { FormKey } from '../views/form/form.def';
 

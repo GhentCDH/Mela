@@ -5,7 +5,6 @@ import {
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
@@ -28,7 +27,7 @@ const dtoSchema = SpeechSchema.pick({
   name: true,
 });
 
-const schema = createSchema({
+export const SpeechFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
@@ -36,9 +35,3 @@ const schema = createSchema({
   tableSchema,
   uri: '/api/speech',
 });
-
-export const SpeechFormSchema = schema.schema;
-
-export class CreateSpeechDto extends schema.dto {}
-
-export class ListSpeechDto extends createResponseData(SpeechSchema) {}

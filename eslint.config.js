@@ -21,6 +21,7 @@ module.exports = [
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.vue'],
     rules: {
+      '@typescript-eslint/consistent-type-imports': 'error',
       '@nx/enforce-module-boundaries': [
         'error',
         {
@@ -28,8 +29,69 @@ module.exports = [
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
           depConstraints: [
             {
-              sourceTag: '*',
-              onlyDependOnLibsWithTags: ['*'],
+              sourceTag: 'scope:shared',
+              bannedExternalImports: [
+                '@vue/*',
+                '@nestjs/*',
+                '@anatine/zod-nestjs',
+              ],
+              onlyDependOnLibsWithTags: ['scope:shared'],
+            },
+            {
+              sourceTag: 'scope:tool',
+              bannedExternalImports: [],
+              onlyDependOnLibsWithTags: ['scope:tool', 'scope:shared'],
+            },
+            {
+              sourceTag: 'scope:feature',
+              bannedExternalImports: [],
+              onlyDependOnLibsWithTags: ['scope:tool', 'scope:shared'],
+            },
+            {
+              sourceTag: 'scope:api',
+              bannedExternalImports: ['@vue/*'],
+              onlyDependOnLibsWithTags: [
+                'scope:api',
+                'scope:shared',
+                'scope:tool',
+              ],
+            },
+            {
+              sourceTag: 'scope:ui',
+              bannedExternalImports: [
+                '@nestjs/*',
+                '@anatine/zod-nestjs',
+                '@anatine/zod-openapi',
+              ],
+              onlyDependOnLibsWithTags: [
+                'scope:ui',
+                'scope:shared',
+                'scope:tool',
+              ],
+            },
+            {
+              sourceTag: 'app:api',
+              bannedExternalImports: ['@vue/*'],
+              onlyDependOnLibsWithTags: [
+                'scope:api',
+                'scope:shared',
+                'scope:tool',
+                'scope:feature',
+              ],
+            },
+            {
+              sourceTag: 'app:ui',
+              bannedExternalImports: [
+                '@nestjs/*',
+                '@anatine/zod-nestjs',
+                '@anatine/zod-openapi',
+              ],
+              onlyDependOnLibsWithTags: [
+                'scope:ui',
+                'scope:shared',
+                'scope:tool',
+                'scope:feature',
+              ],
             },
           ],
         },

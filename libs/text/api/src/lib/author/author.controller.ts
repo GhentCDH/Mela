@@ -1,5 +1,4 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreateAuthorDto, ListAuthorDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -14,9 +13,10 @@ import {
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { AuthorRepository } from './author-repository.service';
+import { CreateAuthorDto, ListAuthorDto } from './dto';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -59,7 +59,7 @@ export class AuthorController extends AbstractController<
   })
   override async update(
     @Param('id') id: string,
-    @Body() dto: CreateAuthorDto
+    @Body() dto: CreateAuthorDto,
   ): Promise<AuthorDto> {
     return super.update(id, dto);
   }

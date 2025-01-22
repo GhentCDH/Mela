@@ -1,4 +1,4 @@
-import { textFormSchema } from '@mela/text/shared';
+import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
@@ -8,7 +8,7 @@ export const usePhraseRepository = defineStore('phraseRepository', () => {
   const httpStore = useHttpStore();
 
   const getDataUri = (textId: string) => {
-    return `${textFormSchema.uri}/${textId}/phrase`;
+    return `${TextFormSchema.schema.uri}/${textId}/phrase`;
   };
 
   const getPhraseText = (textId: string) => {

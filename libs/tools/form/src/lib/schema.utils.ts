@@ -1,4 +1,4 @@
-import { JsonSchema } from '@jsonforms/core';
+import type { JsonSchema } from '@jsonforms/core';
 
 type Field = {
   scope: string;

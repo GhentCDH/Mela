@@ -1,6 +1,6 @@
 import { Builder } from './builder';
-import { ControlBuilder, ControlType } from './control.builder';
-import { TextCellBuilder } from '../table/builder';
+import type { ControlBuilder, ControlType } from './control.builder';
+import type { TextCellBuilder } from '../table/builder';
 
 export type ElementBuilder = ControlBuilder | LayoutBuilder | TextCellBuilder;
 

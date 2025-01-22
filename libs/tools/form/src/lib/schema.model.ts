@@ -1,9 +1,8 @@
-import { createZodDto } from '@anatine/zod-nestjs';
 import { generateSchema } from '@anatine/zod-openapi';
-import { JsonSchema } from '@jsonforms/core';
-import { Layout } from '@jsonforms/core/src/models/uischema';
+import type { JsonSchema } from '@jsonforms/core';
+import type { Layout } from '@jsonforms/core/src/models/uischema';
 import { cloneDeep } from 'lodash-es';
-import { ZodObject } from 'zod';
+import type { ZodObject } from 'zod';
 
 export type JsonFormsLayout = {
   uiSchema: Layout;
@@ -38,10 +37,8 @@ export const createSchema = (props: {
   const filterSchema = cloneDeep(props.jsonSchema);
   filterSchema.required = [];
 
-  const dto = class CreateDto extends createZodDto(dtoSchema) {};
-
   return {
-    dto,
+    dtoSchema,
     schema: {
       form: {
         uiSchema: props.uiSchema,

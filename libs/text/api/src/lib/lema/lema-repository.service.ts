@@ -1,10 +1,10 @@
-import { CreateLemaDto } from '@mela/text/shared';
 import { Injectable } from '@nestjs/common';
 import { LemaCreateManyInput } from '@prisma/client';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
 
+import { CreateLemaDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
 import { SpeechRepository } from '../speech/speech-repository.service';
 
@@ -20,7 +20,7 @@ export class LemaRepository extends AbstractRepository<
     super(prisma.lema);
   }
 
-  override include() {
+  override include(): Record<string, true> {
     return { speech: true };
   }
 
