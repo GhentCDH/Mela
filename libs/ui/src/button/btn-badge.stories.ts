@@ -7,7 +7,7 @@ import { IconEnum } from '../icons/icon-list';
 import Icon from '../icons/icon.vue';
 
 export default {
-  title: 'Components/Button badge',
+  title: 'Components/Button/badge',
   component: BtnBadge,
   tags: ['autodocs'],
 } as Meta;
