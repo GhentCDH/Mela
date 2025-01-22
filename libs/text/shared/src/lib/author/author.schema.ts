@@ -5,7 +5,6 @@ import {
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form';
 
@@ -28,7 +27,7 @@ const dtoSchema = AuthorSchema.pick({
   name: true,
 });
 
-const schema = createSchema({
+export const AuthorFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
@@ -36,9 +35,3 @@ const schema = createSchema({
   tableSchema,
   uri: '/api/author',
 });
-
-export const authorFormSchema = schema.schema;
-
-export class CreateAuthorDto extends schema.dto {}
-
-export class ListAuthorDto extends createResponseData(AuthorSchema) {}

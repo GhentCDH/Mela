@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { ToastMessage, ToastType } from './toast-message';
+import type { ToastMessage, ToastType } from './toast-message';
 
 const NOTIFICATION_DURATION = 5000;
 

@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { Menu } from './menu.type';
+import type { Menu } from './menu.type';
 import Toast from '../toast/toast.vue';
 
 const baseUrl = import.meta.env.BASE_URL;

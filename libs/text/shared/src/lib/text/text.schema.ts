@@ -1,17 +1,12 @@
 import { z } from 'zod';
 
 import { TextForm } from '@ghentcdh/mela/generated/forms';
-import {
-  AuthorSchema,
-  TextSchema,
-  TextWithRelationsSchema,
-} from '@ghentcdh/mela/generated/types';
+import { AuthorSchema, TextSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createResponseData,
   createSchema,
 } from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
@@ -72,7 +67,7 @@ const dtoSchema = TextSchema.pick({
   year: true,
 }).extend({ author: AuthorSchema.extend({ id: z.string().optional() }) });
 
-const schema = createSchema({
+export const TextFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   jsonSchema: TextForm,
@@ -80,12 +75,6 @@ const schema = createSchema({
   filterSchema,
   tableSchema,
 });
-
-export const textFormSchema = schema.schema;
-
-export class CreateTextDto extends schema.dto {}
-
-export class ListTextDto extends createResponseData(TextWithRelationsSchema) {}
 
 export const textParseFileTypes = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

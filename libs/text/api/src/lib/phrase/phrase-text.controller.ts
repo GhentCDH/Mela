@@ -1,11 +1,11 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreatePhraseDto, ListPhraseDto } from '@mela/text/shared';
 import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
+import { CreatePhraseDto, ListPhraseDto } from './dto';
 import { PhraseRepository } from './phrase.repository';
 import { AbstractController } from '../shared/controller';
 

@@ -53,3 +53,5 @@ var
 /qodana.yaml
 
 vitest.config.*.timestamp*
+
+storybook-static

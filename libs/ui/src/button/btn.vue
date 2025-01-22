@@ -21,9 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { Icon, IconEnum } from '../icons';
+import type { IconEnum } from '../icons';
+import { Icon } from '../icons';
 import { ButtonTag, ButtonType } from './const';
-import { Color } from '../const/colors'; // TODO add properties for links
+import type { Color } from '../const/colors'; // TODO add properties for links
 import { ButtonSize, Size } from '../const/size';
 
 // TODO add properties for links

@@ -1,11 +1,11 @@
 import {
+  AuthorFormSchema,
   LemaFormSchema,
   RegisterFormSchema,
   SpeechFormSchema,
-  authorFormSchema,
 } from '@mela/text/shared';
 
-import { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/tools/form';
 
 type FormDef = {
   formId: string;
@@ -24,25 +24,25 @@ export enum FormKey {
 export const FormDictionary: Record<FormKey, FormDef> = {
   author: {
     formId: 'author',
-    formSchema: authorFormSchema,
+    formSchema: AuthorFormSchema.schema,
     tableTitle: 'Authors',
     title: 'Author',
   },
   register: {
     formId: 'register',
-    formSchema: RegisterFormSchema,
+    formSchema: RegisterFormSchema.schema,
     tableTitle: 'Registers',
     title: 'Register',
   },
   speech: {
     formId: 'speech',
-    formSchema: SpeechFormSchema,
+    formSchema: SpeechFormSchema.schema,
     tableTitle: 'Speech',
     title: 'Speech',
   },
   lema: {
     formId: 'lema',
-    formSchema: LemaFormSchema,
+    formSchema: LemaFormSchema.schema,
     title: 'Lema',
     tableTitle: 'Lemas',
   },

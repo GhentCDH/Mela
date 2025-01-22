@@ -39,27 +39,24 @@
 </template>
 
 <script lang="ts">
-import {
+import type {
   ControlElement,
   JsonFormsRendererRegistryEntry,
-  rankWith,
 } from '@jsonforms/core';
-import {
-  RendererProps,
-  rendererProps,
-  useJsonFormsControl,
-} from '@jsonforms/vue';
+import { rankWith } from '@jsonforms/core';
+import type { RendererProps } from '@jsonforms/vue';
+import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent, ref } from 'vue';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { ControlRendererType, ResponseData } from '@ghentcdh/tools/form';
+import type { ResponseData } from '@ghentcdh/tools/form';
 
 import ControlWrapper from '../ControlWrapper.vue';
 import { isAutoCompleteControl } from '../tester';
 import { useVanillaControlCustom } from '../utils/vanillaControl';
 
 const controlRenderer = defineComponent({
-  name: ControlRendererType.autocomplete,
+  name: 'AutocompleteControlRenderer',
   components: {
     ControlWrapper,
   },

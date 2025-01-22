@@ -15,9 +15,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { ColumnDef } from '@ghentcdh/tools/form';
+import type { ColumnDef } from '@ghentcdh/tools/form';
 
-import { Icon, IconDef } from '../../icons';
+import type { IconDef } from '../../icons';
+import { Icon } from '../../icons';
 import { useTableStore } from '../table.store';
 
 const { column, storeId } = defineProps<{

@@ -1,5 +1,4 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreatePhraseDto, ListPhraseDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -14,8 +13,9 @@ import {
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
+import { CreatePhraseDto, ListPhraseDto } from './dto';
 import { PhraseRepository } from './phrase.repository';
 import { AbstractController } from '../shared/controller';
 
@@ -59,7 +59,7 @@ export class PhraseController extends AbstractController<
   })
   override async update(
     @Param('id') id: string,
-    @Body() dto: CreatePhraseDto
+    @Body() dto: CreatePhraseDto,
   ): Promise<PhraseDto> {
     return super.update(id, dto);
   }

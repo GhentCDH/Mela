@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { textFormSchema } from '@mela/text/shared';
+import { TextFormSchema } from '@mela/text/shared';
 import { useRouter } from 'vue-router';
 
-import { Text } from '@ghentcdh/mela/generated/types';
-import { FormWithTableCompnent, TableAction } from '@ghentcdh/ui';
+import type { Text } from '@ghentcdh/mela/generated/types';
+import type { TableAction } from '@ghentcdh/ui';
+import { FormWithTableCompnent } from '@ghentcdh/ui';
 
 const formId = 'text-index';
 const urlSchema = '/api/text/schema';
@@ -39,7 +40,7 @@ const tableActions: TableAction[] = [
       :update-title="'Update text'"
       :url-schema="urlSchema"
       :table-actions="tableActions"
-      :form-schema="textFormSchema"
+      :form-schema="TextFormSchema.schema"
       table-title="Texts"
     />
   </div>

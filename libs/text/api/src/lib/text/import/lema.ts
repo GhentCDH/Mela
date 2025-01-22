@@ -1,7 +1,8 @@
-import { WorkSheet } from 'xlsx';
+import type { WorkSheet } from 'xlsx';
 import { z } from 'zod';
 
-import { LemaSchema, LemaWithRelations } from '@ghentcdh/mela/generated/types';
+import type { LemaWithRelations } from '@ghentcdh/mela/generated/types';
+import { LemaSchema } from '@ghentcdh/mela/generated/types';
 
 import { parseSheet } from './utils';
 

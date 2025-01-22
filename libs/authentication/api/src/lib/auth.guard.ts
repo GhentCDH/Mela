@@ -1,12 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { HttpService } from '@nestjs/axios';
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { ConfigService } from '@nestjs/config';
-import { Observable, firstValueFrom } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { Debugger } from '@ghentcdh/tools/logging/frontend';
 

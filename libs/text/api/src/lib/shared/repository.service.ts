@@ -1,9 +1,5 @@
-import {
-  RequestDto,
-  buildFilter,
-  buildSort,
-  buildSortKey,
-} from '@ghentcdh/tools/form';
+import { buildFilter, buildSort } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
 export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   protected constructor(private readonly prismaModel: any) {}

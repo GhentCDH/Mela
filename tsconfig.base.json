@@ -36,9 +36,6 @@
       "@ghentcdh/mela/generated/types": [
         "generated/types/index.ts"
       ],
-      "@mela/text/shared": [
-        "libs/text/shared/src/index.ts"
-      ],
       "@ghentcdh/tools/form": [
         "libs/tools/form/src/index.ts"
       ],
@@ -54,8 +51,14 @@
       "@ghentcdh/ui": [
         "libs/ui/src/index.ts"
       ],
+      "@ghentcdh/tools/form/api": [
+        "libs/tools/form-api/src/index.ts"
+      ],
       "@mela/text/api": [
         "libs/text/api/src/index.ts"
+      ],
+      "@mela/text/shared": [
+        "libs/text/shared/src/index.ts"
       ]
     }
   },

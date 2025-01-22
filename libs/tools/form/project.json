@@ -12,7 +12,8 @@
     }
   },
   "tags": [
-    "tools"
+    "scope:tool",
+    "scope:shared"
   ],
   "targets": {
     "build": {

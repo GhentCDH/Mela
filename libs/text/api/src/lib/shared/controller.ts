@@ -10,9 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { RequestDto, ResponseData } from '@ghentcdh/tools/form';
+import type { ResponseData } from '@ghentcdh/tools/form';
+import type { RequestDto } from '@ghentcdh/tools/form/api';
 
-import { AbstractRepository } from './repository.service';
+import type { AbstractRepository } from './repository.service';
 
 export class AbstractController<Entity, CreateDto = Entity> {
   protected constructor(
@@ -41,6 +42,7 @@ export class AbstractController<Entity, CreateDto = Entity> {
         totalPages,
         sort: params.sort,
         sortDir: params.sortDir,
+        filter: params.filter,
       },
     };
   }

@@ -11,7 +11,10 @@
       }
     }
   },
-  "tags": [],
+  "tags": [
+    "scope:api",
+    "scope:feature"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",

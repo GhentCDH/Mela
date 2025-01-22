@@ -1,5 +1,4 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreateLemaDto, ListLemaDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -14,14 +13,19 @@ import {
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { LemaDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
+import { CreateLemaDto, ListLemaDto } from './dto';
 import { LemaRepository } from './lema-repository.service';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('lema')
-export class LemaController extends AbstractController<LemaDto, CreateLemaDto> {
+export class LemaController extends AbstractController<
+  LemaWithRelations,
+  CreateLemaDto
+> {
   constructor(repository: LemaRepository) {
     super(repository);
   }
@@ -38,7 +42,9 @@ export class LemaController extends AbstractController<LemaDto, CreateLemaDto> {
   @ApiCreatedResponse({
     type: LemaDto,
   })
-  override async create(@Body() dto: CreateLemaDto): Promise<LemaDto> {
+  override async create(
+    @Body() dto: CreateLemaDto,
+  ): Promise<LemaWithRelations> {
     return super.create(dto);
   }
 
@@ -46,7 +52,7 @@ export class LemaController extends AbstractController<LemaDto, CreateLemaDto> {
   @ApiCreatedResponse({
     type: LemaDto,
   })
-  override async findOne(@Param('id') id: string): Promise<LemaDto> {
+  override async findOne(@Param('id') id: string): Promise<LemaWithRelations> {
     return super.findOne(id);
   }
 
@@ -65,7 +71,7 @@ export class LemaController extends AbstractController<LemaDto, CreateLemaDto> {
   @ApiResponse({
     type: LemaDto,
   })
-  override async delete(@Param('id') id: string): Promise<LemaDto> {
+  override async delete(@Param('id') id: string): Promise<LemaWithRelations> {
     return super.delete(id);
   }
 }

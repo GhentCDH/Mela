@@ -18,27 +18,21 @@
 </template>
 
 <script lang="ts">
-import {
+import type {
   ControlElement,
   JsonFormsRendererRegistryEntry,
-  rankWith,
 } from '@jsonforms/core';
-import {
-  RendererProps,
-  rendererProps,
-  useJsonFormsControl,
-} from '@jsonforms/vue';
+import { rankWith } from '@jsonforms/core';
+import type { RendererProps } from '@jsonforms/vue';
+import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
-
-// import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
-import { ControlRendererType } from '@ghentcdh/tools/form';
 
 import ControlWrapper from './ControlWrapper.vue';
 import { isTextAreaControl } from './tester';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
-  name: ControlRendererType.textArea,
+  name: 'TextAreaControlRenderer',
   components: {
     ControlWrapper,
   },

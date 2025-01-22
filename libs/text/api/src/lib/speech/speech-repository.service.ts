@@ -1,9 +1,9 @@
-import { CreateSpeechDto } from '@mela/text/shared';
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import { Speech } from '@ghentcdh/mela/generated/types';
 
+import { CreateSpeechDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
 
 @Injectable()

@@ -30,8 +30,9 @@
 
 <script lang="ts">
 import { isDescriptionHidden } from '@jsonforms/core';
-import { Options } from '@vitejs/plugin-vue';
-import { PropType, defineComponent } from 'vue';
+import type { Options } from '@vitejs/plugin-vue';
+import type { PropType} from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ControlWrapper',

@@ -1,5 +1,4 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { CreateRegisterDto, ListRegisterDto } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -14,8 +13,9 @@ import {
 import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { RegisterDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form';
+import { RequestDto } from '@ghentcdh/tools/form/api';
 
+import { CreateRegisterDto, ListRegisterDto } from './dto';
 import { RegisterRepository } from './register-repository.service';
 import { AbstractController } from '../shared/controller';
 

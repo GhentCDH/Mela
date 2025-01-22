@@ -1,18 +1,6 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import { isArray } from 'lodash-es';
 import { z } from 'zod';
 
-export const PositiveRequestNumber = () =>
-  z.coerce.number().int().positive().nonnegative();
-export const StringOrArray = () =>
-  z
-    .string()
-    .or(z.array(z.string()))
-    .transform((val) => {
-      if (isArray(val)) return val;
-
-      return [val];
-    });
+import { PositiveRequestNumber, StringOrArray } from './zod.types';
 
 export const SortDirEnum = z.enum(['asc', 'desc']);
 export type SortDir = z.infer<typeof SortDirEnum>;
@@ -27,6 +15,8 @@ export const RequestSchema = z.object({
   filter: StringOrArray().optional().default([]),
 });
 
+export type Request = z.infer<typeof RequestSchema>;
+
 export const RequestSchemaWithOffset = RequestSchema.transform((schema) => {
   const { page, pageSize, sort } = schema;
 
@@ -36,7 +26,3 @@ export const RequestSchemaWithOffset = RequestSchema.transform((schema) => {
     offset: (page - 1) * pageSize,
   };
 });
-
-export class RequestDtoNoOffset extends createZodDto(RequestSchema) {}
-
-export class RequestDto extends createZodDto(RequestSchemaWithOffset) {}

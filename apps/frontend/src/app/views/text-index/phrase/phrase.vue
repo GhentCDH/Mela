@@ -5,13 +5,13 @@
     :create-title="'Create Phrase'"
     :update-title="'Update Phrase'"
     :data-uri="uriData"
-    :form-schema="phraseFormSchema"
+    :form-schema="PhraseFormSchema.schema"
     table-title="Phrases"
     :initial-data="{ text_id: textStore.text?.id }"
   />
 </template>
 <script setup lang="ts">
-import { phraseFormSchema } from '@mela/text/shared';
+import { PhraseFormSchema } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import { FormWithTableCompnent } from '@ghentcdh/ui';

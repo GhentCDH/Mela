@@ -17,27 +17,22 @@
 </template>
 
 <script lang="ts">
-import {
+import type {
   ControlElement,
   JsonFormsRendererRegistryEntry,
-  isStringControl,
-  rankWith,
 } from '@jsonforms/core';
-import {
-  RendererProps,
-  rendererProps,
-  useJsonFormsControl,
-} from '@jsonforms/vue';
+import { isStringControl, rankWith } from '@jsonforms/core';
+import type { RendererProps } from '@jsonforms/vue';
+import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
-import { ControlRendererType } from '@ghentcdh/tools/form';
 
 import ControlWrapper from './ControlWrapper.vue';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
-  name: ControlRendererType.string,
+  name: 'StringControlRenderer',
   components: {
     ControlWrapper,
   },

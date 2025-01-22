@@ -55,13 +55,14 @@
 </template>
 
 <script setup lang="ts">
-import { JsonSchema } from '@jsonforms/core';
-import { Layout } from '@jsonforms/core/src/models/uischema';
+import type { JsonSchema } from '@jsonforms/core';
+import type { Layout } from '@jsonforms/core/src/models/uischema';
 import { ref } from 'vue';
 
 import { Btn } from '../../button';
-import { IconDef } from '../../icons';
-import FormComponent, { SubmitFormEvent } from '../form.component.vue';
+import type { IconDef } from '../../icons';
+import type { SubmitFormEvent } from '../form.component.vue';
+import FormComponent from '../form.component.vue';
 
 defineProps<{
   icon?: IconDef;

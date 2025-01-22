@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, shallowRef, watch } from 'vue';
 
-import { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/tools/form';
 
 import { useFormStore } from './form.store';
 import TableComponent from '../table/table.component.vue';
-import { TableAction } from '../table/table.model';
+import type { TableAction } from '../table/table.model';
 import ModalForm from './modal/modal-form.vue';
 
 type Data = {

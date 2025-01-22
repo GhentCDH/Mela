@@ -1,9 +1,14 @@
-import {Controller, Get} from '@nestjs/common';
-import {ConfigService} from "@nestjs/config";
-import {HealthCheck, HealthCheckService, HttpHealthIndicator} from '@nestjs/terminus';
+import { Controller, Get } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { ConfigService } from '@nestjs/config';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
+  HealthCheck,
+  HealthCheckService,
+  HttpHealthIndicator,
+} from '@nestjs/terminus';
 
-import {KEYCLOACK} from "@ghentcdh/authentication/api";
-
+import { KEYCLOACK } from '@ghentcdh/authentication/api';
 
 // import {
 //     HealthCheck,
@@ -14,22 +19,21 @@ import {KEYCLOACK} from "@ghentcdh/authentication/api";
 
 @Controller('health')
 export class HealthController {
-    constructor(
-        private readonly health: HealthCheckService,
-        private http: HttpHealthIndicator,
-        private readonly configService: ConfigService
-        // private prismaHealth: PrismaHealthIndicator,
-        // private prisma: PrismaService,
-    ) {
-    }
+  constructor(
+    private readonly health: HealthCheckService,
+    private http: HttpHealthIndicator,
+    private readonly configService: ConfigService,
+    // private prismaHealth: PrismaHealthIndicator,
+    // private prisma: PrismaService,
+  ) {}
 
-    @Get()
-    @HealthCheck()
-    check() {
-        const keycloakHost = this.configService.get(KEYCLOACK.HOST)!
-        return this.health.check([
-            () => this.http.pingCheck('Keycloak', `${keycloakHost}heatlh`),
-            // async () => this.prismaHealth.pingCheck('prisma', this.prisma),
-        ]);
-    }
+  @Get()
+  @HealthCheck()
+  check() {
+    const keycloakHost = this.configService.get(KEYCLOACK.HOST)!;
+    return this.health.check([
+      () => this.http.pingCheck('Keycloak', `${keycloakHost}heatlh`),
+      // async () => this.prismaHealth.pingCheck('prisma', this.prisma),
+    ]);
+  }
 }

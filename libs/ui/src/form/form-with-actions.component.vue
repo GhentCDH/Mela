@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/tools/form';
 
 import FormComponent from './form.component.vue';
 import { useFormStore } from './form.store';

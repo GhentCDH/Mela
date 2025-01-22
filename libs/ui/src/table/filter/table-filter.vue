@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import { Filter, JsonFormsLayout } from '@ghentcdh/tools/form';
+import type { Filter, JsonFormsLayout } from '@ghentcdh/tools/form';
 
 import { Btn, BtnBadge } from '../../button';
 import ModalForm from '../../form/modal/modal-form.vue';

@@ -1,4 +1,4 @@
-import { SortDir } from './request.model';
+import type { SortDir } from './request.model';
 
 export const Operator = ['contains', 'equals'] as const;
 export type OperatorType = (typeof Operator)[number];
@@ -34,7 +34,7 @@ export const buildSort = (key: string, sortDir: SortDir) => {
   return buildSortKey(key.split('.'), sortDir);
 };
 
-const buildSortKey = (keys: string[], sortDir: any) => {
+export const buildSortKey = (keys: string[], sortDir: any): any => {
   if (keys.length === 1) {
     return { [keys[0]]: sortDir };
   }
@@ -47,7 +47,7 @@ const buildSortKey = (keys: string[], sortDir: any) => {
 export const buildFilter = (filters: string[]) => {
   const filter: Record<string, any> = {};
 
-  filters.forEach((f) => {
+  filters?.forEach((f) => {
     const { key, value, operator } = getFilterValues(f);
 
     if (!key) return;

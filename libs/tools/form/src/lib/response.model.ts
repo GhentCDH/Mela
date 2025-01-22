@@ -1,8 +1,7 @@
-import { createZodDto } from '@anatine/zod-nestjs';
-import { OpenApiZodAny } from '@anatine/zod-openapi';
 import { z } from 'zod';
 
-import { PositiveRequestNumber, RequestSchema } from './request.model';
+import { RequestSchema } from './request.model';
+import { PositiveRequestNumber } from './zod.types';
 
 export const ResponseRequestSchema = RequestSchema.extend({
   count: PositiveRequestNumber(),
@@ -14,8 +13,6 @@ export const ResponseSchema = z.object({
   request: ResponseRequestSchema,
 });
 
-export const createResponseData = <T extends OpenApiZodAny>(zodSchema: T) => {
-  return createZodDto(ResponseSchema.extend({ data: z.array(zodSchema) }));
+export type ResponseData<TYPE> = z.infer<typeof ResponseSchema> & {
+  data: TYPE[];
 };
-
-export class ResponseUnknown extends createResponseData(z.any()) {}

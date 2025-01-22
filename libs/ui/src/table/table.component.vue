@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 
-import {
+import type {
   ColumnDef,
   JsonFormsLayout,
-  TextCellType,
+  TextCellType} from '@ghentcdh/tools/form';
+import {
   findColumnDef,
 } from '@ghentcdh/tools/form';
 
@@ -14,7 +15,7 @@ import IconButton from '../button/icon-button.vue';
 import TextCell from './cells/text.cell.vue';
 import TableFilter from './filter/table-filter.vue';
 import SortHeader from './header/sort.header.vue';
-import { TableAction } from './table.model';
+import type { TableAction } from './table.model';
 
 const properties = defineProps<{
   id: string;
