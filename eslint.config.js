@@ -45,7 +45,11 @@ module.exports = [
             {
               sourceTag: 'scope:feature',
               bannedExternalImports: [],
-              onlyDependOnLibsWithTags: ['scope:tool', 'scope:shared'],
+              onlyDependOnLibsWithTags: [
+                'scope:tool',
+                'scope:shared',
+                'scope:feature',
+              ],
             },
             {
               sourceTag: 'scope:api',
