@@ -32,7 +32,7 @@ export class LemaController extends AbstractController<
 
   @Get()
   @ApiCreatedResponse({
-    type: LemaWithRelations,
+    type: ListLemaDto,
   })
   override async list(@Query() params: RequestDto): Promise<ListLemaDto> {
     return super.list(params);
