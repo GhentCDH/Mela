@@ -4,14 +4,13 @@ import { computed, watch } from 'vue';
 import type {
   ColumnDef,
   JsonFormsLayout,
-  TextCellType} from '@ghentcdh/tools/form';
-import {
-  findColumnDef,
+  TextCellType,
 } from '@ghentcdh/tools/form';
+import { findColumnDef } from '@ghentcdh/tools/form';
 
 import PaginationComponent from './pagination.component.vue';
 import { useTableStore } from './table.store';
-import IconButton from '../button/icon-button.vue';
+import BtnIcon from '../button/btn-icon.vue';
 import TextCell from './cells/text.cell.vue';
 import TableFilter from './filter/table-filter.vue';
 import SortHeader from './header/sort.header.vue';
@@ -153,12 +152,12 @@ const onChangeFilters = (filters: any) => {
             </td>
             <td>
               <span class="flex gap-2">
-                <IconButton
+                <BtnIcon
                   icon="Edit"
                   :outline="true"
                   @click="edit(data)"
                 />
-                <IconButton
+                <BtnIcon
                   icon="Delete"
                   :outline="true"
                   @click="deleteFn(data)"

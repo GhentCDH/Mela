@@ -1,8 +1,13 @@
 import { Builder } from './builder';
+import type { CategoryBuilder } from './category.builder';
 import type { ControlBuilder, ControlTypes } from './control.builder';
 import type { TextCellBuilder } from '../table/builder';
 
-export type ElementBuilder = ControlBuilder | LayoutBuilder | TextCellBuilder;
+export type ElementBuilder =
+  | ControlBuilder
+  | LayoutBuilder
+  | TextCellBuilder
+  | CategoryBuilder;
 
 export type LayoutType = {
   type: 'HorizontalLayout' | 'VerticalLayout';
@@ -11,13 +16,25 @@ export type LayoutType = {
 
 export class LayoutBuilder extends Builder<LayoutType> {
   private elements: Array<ElementBuilder> = [];
+  private options: {};
 
-  protected constructor(type: 'HorizontalLayout' | 'VerticalLayout' | 'table') {
+  protected constructor(
+    type: 'HorizontalLayout' | 'VerticalLayout' | 'Categorization' | 'table',
+    options = {},
+  ) {
     super(type);
+    this.options = options;
   }
 
   static horizontal() {
     return new LayoutBuilder('HorizontalLayout');
+  }
+
+  static stepper(showNavButtons = false) {
+    return new LayoutBuilder('Categorization', {
+      variant: 'stepper',
+      showNavButtons: showNavButtons,
+    });
   }
 
   static table() {
@@ -42,6 +59,7 @@ export class LayoutBuilder extends Builder<LayoutType> {
     return {
       type: this.type,
       elements: this.elements.map((e) => e.build()),
+      options: this.options,
     } as LayoutType;
   }
 }
