@@ -3,7 +3,7 @@
     <div class="flex gap-2 items-center mb-2">
       <modal-form
         v-model="formData"
-        icon="Funnel"
+        :icon="IconEnum.Funnel"
         modal-title="Filter"
         button-label="Filter"
         :schema="layout.schema"
@@ -15,7 +15,7 @@
       </modal-form>
       <template v-if="filters.length">
         <Btn
-          size="xs"
+          :size="Size.xs"
           :outline="true"
           @click="onResetFilters"
         >
@@ -27,7 +27,7 @@
       <BtnBadge
         v-for="filter in filters"
         :key="filter.key"
-        icon="Close"
+        :icon="IconEnum.Close"
         @click="removeFilter(filter)"
       >
         {{ filter.label }}: {{ filter.value }}
@@ -40,8 +40,10 @@
 import { ref, watch } from 'vue';
 
 import type { Filter, JsonFormsLayout } from '@ghentcdh/tools/form';
+import { IconEnum } from '@ghentcdh/ui';
 
 import { Btn, BtnBadge } from '../../button';
+import { Size } from '../../const/size';
 import ModalForm from '../../form/modal/modal-form.vue';
 
 const formData = ref();

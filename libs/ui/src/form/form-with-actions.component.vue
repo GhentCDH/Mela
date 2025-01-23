@@ -6,6 +6,7 @@ import type { FormSchemaModel } from '@ghentcdh/tools/form';
 import FormComponent from './form.component.vue';
 import { useFormStore } from './form.store';
 import { Btn } from '../button';
+import { Color } from '../const';
 
 const properties = defineProps<{
   id: string;
@@ -57,7 +58,7 @@ const onValid = (v: boolean) => {
           Clear
         </Btn>
         <Btn
-          color="primary"
+          :color="Color.primary"
           :disabled="!valid"
           @click="clear"
         >

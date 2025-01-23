@@ -53,7 +53,7 @@
       >
         <Btn
           :disabled="!visibleCategories[selected + 1].value.enabled"
-          color="primary"
+          :color="Color.primary"
         >
           {{ 'Next' }}
         </Btn>
@@ -81,6 +81,7 @@ import { useVanillaLayout } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
 
 import Btn from '../../../button/btn.vue';
+import { Color } from '../../../const/colors';
 
 const layoutRenderer = defineComponent({
   name: 'CategorizationStepperRenderer',
@@ -100,6 +101,9 @@ const layoutRenderer = defineComponent({
     };
   },
   computed: {
+    Color() {
+      return Color;
+    },
     visibleCategories() {
       return this.categories.filter((category) => category.value.visible);
     },

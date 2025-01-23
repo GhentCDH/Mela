@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 
 import { Btn } from '../button';
+import { Size } from '../const/size';
 
 const props = defineProps({
   totalItems: { type: Number, default: 0 },
@@ -147,7 +148,7 @@ updatePages();
           :key="page.activePage"
           :disabled="page.disabled?.()"
           :square="true"
-          size="xs"
+          :size="Size.xs"
           :class="[
             'join-item btn btn-outline  btn-xs',
             {
