@@ -40,11 +40,12 @@
 import { ref, watch } from 'vue';
 
 import type { Filter, JsonFormsLayout } from '@ghentcdh/tools/form';
-import { IconEnum } from '@ghentcdh/ui';
+
 
 import { Btn, BtnBadge } from '../../button';
 import { Size } from '../../const/size';
 import ModalForm from '../../form/modal/modal-form.vue';
+import { IconEnum } from '../../icons';
 
 const formData = ref();
 
