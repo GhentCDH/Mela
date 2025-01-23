@@ -1,12 +1,12 @@
 import { Builder } from './builder';
-import type { ControlBuilder, ControlType } from './control.builder';
+import type { ControlBuilder, ControlTypes } from './control.builder';
 import type { TextCellBuilder } from '../table/builder';
 
 export type ElementBuilder = ControlBuilder | LayoutBuilder | TextCellBuilder;
 
 export type LayoutType = {
   type: 'HorizontalLayout' | 'VerticalLayout';
-  elements: Array<ControlType | LayoutType>;
+  elements: Array<ControlTypes | LayoutType>;
 };
 
 export class LayoutBuilder extends Builder<LayoutType> {
