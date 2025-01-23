@@ -1,10 +1,8 @@
-import type { Meta, Story } from '@storybook/vue3';
+import type { Meta, StoryFn } from '@storybook/vue3';
 
 import Btn from './btn.vue';
-import { ButtonColor } from '../const/colors';
-import { ButtonSize } from '../const/size';
+import { Color, Size } from '../const';
 import { IconEnum } from '../icons/icon-list';
-import Icon from '../icons/icon.vue';
 
 export default {
   title: 'Components/Button',
@@ -12,7 +10,7 @@ export default {
   tags: ['autodocs'],
 } as Meta;
 
-const Template: Story = (args) => ({
+const Template: StoryFn = (args) => ({
   components: { Btn },
   setup() {
     return { args };
@@ -20,8 +18,8 @@ const Template: Story = (args) => ({
   template: '<Btn v-bind="args">{{ args.label }}</Btn>',
 });
 
-const All: Story = (args) => ({
-  components: { Btn, Icon },
+const All: StoryFn = (args) => ({
+  components: { Btn },
   setup() {
     return {
       configs: {
@@ -31,17 +29,19 @@ const All: Story = (args) => ({
         outline: { outline: true },
       },
       icons: [undefined, IconEnum.Plus],
-      buttonSize: Object.values(ButtonSize),
-      buttonColor: ['Default', ...Object.values(ButtonColor)],
+      buttonSize: Object.values(Size),
+      buttonColor: Object.values(Color),
     };
   },
   template: `
   <table>
     <thead>
+    <tr>
       <th></th>
       <template v-for="icon in icons" :key="icon">
         <th v-for="size in buttonSize" :key="size">{{size}}</th>
       </template>
+      </tr>
     </thead>
     <tbody>
     <template v-for="(item, key, index) in configs" :key="index">
@@ -65,7 +65,6 @@ const All: Story = (args) => ({
       </template>
     </tbody>
   </table>
-  </div> 
 `,
 });
 

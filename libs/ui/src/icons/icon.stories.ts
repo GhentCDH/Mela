@@ -1,4 +1,4 @@
-import type { Meta, Story } from '@storybook/vue3';
+import type { Meta, StoryFn } from '@storybook/vue3';
 
 import { IconEnum } from './icon-list';
 import Icon from './icon.vue';
@@ -9,7 +9,7 @@ export default {
   tags: ['autodocs'],
 } as Meta;
 
-const All: Story = (args) => ({
+const All: StoryFn = (args) => ({
   components: { Icon },
   setup() {
     return {

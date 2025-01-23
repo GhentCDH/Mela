@@ -43,7 +43,7 @@
           Clear
         </Btn>
         <Btn
-          color="btn-primary"
+          :color="Color.primary"
           :disabled="!valid"
           @click="onSubmit"
         >
@@ -60,6 +60,7 @@ import type { Layout } from '@jsonforms/core/src/models/uischema';
 import { ref } from 'vue';
 
 import { Btn } from '../../button';
+import { Color } from '../../const/colors';
 import type { IconDef } from '../../icons';
 import type { SubmitFormEvent } from '../form.component.vue';
 import FormComponent from '../form.component.vue';

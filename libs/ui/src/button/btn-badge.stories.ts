@@ -1,10 +1,9 @@
-import type { Meta, Story } from '@storybook/vue3';
+import type { Meta, StoryFn } from '@storybook/vue3';
 
 import BtnBadge from './btn-badge.vue';
-import { ButtonColor } from '../const/colors';
-import { ButtonSize } from '../const/size';
+import { Color } from '../const/colors';
+import { Size } from '../const/size';
 import { IconEnum } from '../icons/icon-list';
-import Icon from '../icons/icon.vue';
 
 export default {
   title: 'Components/Button/badge',
@@ -12,7 +11,7 @@ export default {
   tags: ['autodocs'],
 } as Meta;
 
-const Template: Story = (args) => ({
+const Template: StoryFn = (args) => ({
   components: { BtnBadge },
   setup() {
     return { args };
@@ -20,8 +19,8 @@ const Template: Story = (args) => ({
   template: '<Btn v-bind="args">{{ args.label }}</Btn>',
 });
 
-const All: Story = (args) => ({
-  components: { BtnBadge, Icon },
+const All: StoryFn = (args) => ({
+  components: { BtnBadge },
   setup() {
     return {
       configs: {
@@ -31,8 +30,8 @@ const All: Story = (args) => ({
         outline: { outline: true },
       },
       icons: [undefined, IconEnum.Plus],
-      buttonSize: Object.values(ButtonSize),
-      buttonColor: ['Default', ...Object.values(ButtonColor)],
+      buttonSize: Object.values(Size),
+      buttonColor: Object.values(Color),
     };
   },
   template: `

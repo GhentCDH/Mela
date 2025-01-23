@@ -1,4 +1,4 @@
-import type { Meta, Story } from '@storybook/vue3';
+import type { Meta, StoryFn } from '@storybook/vue3';
 
 import { ControlBuilder, LayoutBuilder } from '@ghentcdh/tools/form';
 
@@ -10,7 +10,7 @@ export default {
   tags: ['autodocs'],
 } as Meta;
 
-const Template: Story = (args) => ({
+const Template: StoryFn = (args) => ({
   components: { FormComponent },
   setup() {
     return { args };

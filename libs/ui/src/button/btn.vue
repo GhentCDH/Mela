@@ -1,13 +1,11 @@
 <template>
   <as
     :class="[
-      `btn  p-1 flex justify-center`,
-      color,
+      `btn  p-1 flex justify-center flex-nowrap`,
+      ButtonColor[color],
       ButtonSize[size],
       { 'btn-outline': outline, 'btn-square': square },
     ]"
-    :type="type"
-    :disabled="disabled"
     v-bind="properties"
     @click="emit('click')"
   >
@@ -24,7 +22,8 @@
 import type { IconEnum } from '../icons';
 import { Icon } from '../icons';
 import { ButtonTag, ButtonType } from './const';
-import type { Color } from '../const/colors'; // TODO add properties for links
+import type { Color } from '../const/colors';
+import { ButtonColor } from '../const/colors'; // TODO add properties for links
 import { ButtonSize, Size } from '../const/size';
 
 // TODO add properties for links

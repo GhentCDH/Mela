@@ -4,18 +4,18 @@ import { computed, watch } from 'vue';
 import type {
   ColumnDef,
   JsonFormsLayout,
-  TextCellType} from '@ghentcdh/tools/form';
-import {
-  findColumnDef,
+  TextCellType,
 } from '@ghentcdh/tools/form';
+import { findColumnDef } from '@ghentcdh/tools/form';
 
-import PaginationComponent from './pagination.component.vue';
-import { useTableStore } from './table.store';
-import IconButton from '../button/icon-button.vue';
 import TextCell from './cells/text.cell.vue';
 import TableFilter from './filter/table-filter.vue';
 import SortHeader from './header/sort.header.vue';
+import PaginationComponent from './pagination.component.vue';
 import type { TableAction } from './table.model';
+import { useTableStore } from './table.store';
+import Btn from '../button/btn.vue';
+import { IconEnum } from '../icons';
 
 const properties = defineProps<{
   id: string;
@@ -153,13 +153,13 @@ const onChangeFilters = (filters: any) => {
             </td>
             <td>
               <span class="flex gap-2">
-                <IconButton
-                  icon="Edit"
+                <Btn
+                  :icon="IconEnum.Edit"
                   :outline="true"
                   @click="edit(data)"
                 />
-                <IconButton
-                  icon="Delete"
+                <Btn
+                  :icon="IconEnum.Delete"
                   :outline="true"
                   @click="deleteFn(data)"
                 />
