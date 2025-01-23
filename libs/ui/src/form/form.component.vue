@@ -22,6 +22,7 @@ const properties = defineProps<{
 const formData = defineModel({});
 const emits = defineEmits(['valid', 'change', 'submit']);
 const valid = ref(false);
+
 const onChange = (event: Data) => {
   formData.value = event.data;
   valid.value = event.errors.length === 0;

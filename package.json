@@ -25,6 +25,8 @@
     "@nestjs/terminus": "^10.2.3",
     "@nx/devkit": "20.3.0",
     "@storybook/addon-styling-webpack": "^1.0.1",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/vue-editor": "^3.2.3",
     "@vueuse/core": "^12.3.0",
     "axios": "^1.7.9",
     "keycloak-connect": "^26.0.7",

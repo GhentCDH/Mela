@@ -1,5 +1,6 @@
 import { entry as booleanControlRendererEntry } from './BooleanControlRenderer.vue';
 import { entry as integerControlRendererEntry } from './IntegerControlRenderer.vue';
+import { entry as markdownControlRenderer } from './MarkdownControlRenderer.vue';
 import { entry as numberControlRendererEntry } from './NumberControlRenderer.vue';
 import { entry as stringControlRendererEntry } from './StringControlRenderer.vue';
 import { entry as textAreaControlRenderer } from './TextAreaControlRenderer.vue';
@@ -23,9 +24,11 @@ export { default as IntegerControlRenderer } from './IntegerControlRenderer.vue'
 // export { default as DateTimeControlRenderer } from './DateTimeControlRenderer.vue';
 // export { default as TimeControlRenderer } from './TimeControlRenderer.vue';
 export { default as BooleanControlRenderer } from './BooleanControlRenderer.vue';
+export { default as markdownControlRenderer } from './MarkdownControlRenderer.vue';
 
 export const controlRenderers = [
   // First custom renderers on format
+  markdownControlRenderer,
   autocompleteControlRenderer,
   textAreaControlRenderer,
   // multiStringControlRendererEntry,

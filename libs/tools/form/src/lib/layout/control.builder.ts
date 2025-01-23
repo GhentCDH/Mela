@@ -1,11 +1,12 @@
 import { Builder } from './builder';
 
-const ControlType = {
+export const ControlType = {
   number: 'number',
   string: 'string',
   integer: 'Integer',
   autocomplete: 'autocomplete',
   textArea: 'textArea',
+  markdown: 'markdown',
 } as const;
 
 export interface TextAreaOptions extends ControlOption {
@@ -26,13 +27,13 @@ export interface ControlOption {
   format: string;
 }
 
-export type ControlType = {
+export type ControlTypes = {
   type: 'Control' | 'Object' | 'TextCell';
   scope: string;
   options?: TextAreaOptions | AutocompleteOptions;
 };
 
-export class ControlBuilder extends Builder<ControlType> {
+export class ControlBuilder extends Builder<ControlTypes> {
   private options: ControlOption | undefined;
 
   private constructor(
@@ -48,6 +49,12 @@ export class ControlBuilder extends Builder<ControlType> {
 
   static scope(scope: string): ControlBuilder {
     return new ControlBuilder(scope);
+  }
+
+  markdown(): ControlBuilder {
+    this.options = { format: ControlType.markdown };
+
+    return this;
   }
 
   textArea(options?: Omit<TextAreaOptions, 'format'>): ControlBuilder {
@@ -66,11 +73,11 @@ export class ControlBuilder extends Builder<ControlType> {
     return this;
   }
 
-  override build(): ControlType {
+  override build(): ControlTypes {
     return {
       type: this.type,
       scope: this.scope,
       options: this.options,
-    } as ControlType;
+    } as ControlTypes;
   }
 }
