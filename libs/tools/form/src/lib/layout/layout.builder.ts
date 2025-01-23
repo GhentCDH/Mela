@@ -16,7 +16,7 @@ export type LayoutType = {
 
 export class LayoutBuilder extends Builder<LayoutType> {
   private elements: Array<ElementBuilder> = [];
-  private options: {};
+  private options: any;
 
   protected constructor(
     type: 'HorizontalLayout' | 'VerticalLayout' | 'Categorization' | 'table',

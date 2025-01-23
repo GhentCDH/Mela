@@ -1,7 +1,10 @@
 import { Builder } from './builder';
 import type { ElementBuilder } from './layout.builder';
 
-type Rule = {};
+type Rule = {
+  effect: 'SHOW';
+  condition: any;
+};
 export type CategoryType = {
   type: 'Category';
   label: string;
