@@ -1,5 +1,3 @@
-import type { Styles } from '@jsonforms/vue-vanilla/src/styles/styles';
-
 import { Builder } from './builder';
 
 export const ControlType = {
@@ -29,7 +27,7 @@ export interface ControlOption {
   format?: string;
   readonly?: boolean;
   label?: string;
-  styles?: Partial<Styles>;
+  styles?: Partial<any>;
 }
 
 export type ControlTypes = {
