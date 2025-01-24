@@ -20,10 +20,10 @@ const Template: StoryFn = (args) => ({
     return { args };
   },
   template: `<div>
-            <FormComponent v-bind="args"
-            v-model="args.formData" />
-<pre>{{args.formData}}</pre>
-</div>`,
+              <FormComponent v-bind="args"
+              v-model="args.formData" />
+              <pre>{{args.formData}}</pre>
+            </div>`,
 });
 
 export const Default = Template.bind({});
@@ -40,11 +40,20 @@ Default.args = {
       step1ControlInt: {
         type: 'integer',
       },
+      step1ControlNumber: {
+        type: 'number',
+      },
+      step1ControlBool: {
+        type: 'boolean',
+      },
       step2ControlMarkdown: {
         type: 'string',
       },
       step3ControlMarkdown: {
         type: 'string',
+      },
+      smallControl: {
+        type: 'number',
       },
     },
     required: ['step1Control'],
@@ -55,13 +64,35 @@ Default.args = {
         LayoutBuilder.vertical().addControls(
           LayoutBuilder.horizontal().addControls(
             ControlBuilder.scope('#/properties/step1Control'),
+          ),
+          LayoutBuilder.horizontal().addControls(
+            ControlBuilder.scope('#/properties/smallControl').width('small'),
+            ControlBuilder.scope('#/properties/smallControl').width('small'),
+          ),
+          LayoutBuilder.horizontal().addControls(
             ControlBuilder.scope('#/properties/step1ControlInt'),
+            ControlBuilder.scope('#/properties/step1ControlNumber'),
+          ),
+          LayoutBuilder.horizontal().addControls(
+            ControlBuilder.scope('#/properties/step1ControlBool'),
+            ControlBuilder.scope('#/properties/step1ControlBool'),
+          ),
+          LayoutBuilder.horizontal().addControls(
+            ControlBuilder.scope(
+              '#/properties/step2ControlMarkdown',
+            ).markdown(),
+            ControlBuilder.scope(
+              '#/properties/step2ControlMarkdown',
+            ).markdown(),
           ),
         ),
       ),
       CategoryBuilder.label('step 2').addControls(
         LayoutBuilder.vertical().addControls(
           LayoutBuilder.horizontal().addControls(
+            ControlBuilder.scope(
+              '#/properties/step2ControlMarkdown',
+            ).markdown(),
             ControlBuilder.scope(
               '#/properties/step2ControlMarkdown',
             ).markdown(),

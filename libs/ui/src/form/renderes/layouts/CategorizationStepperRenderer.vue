@@ -9,7 +9,7 @@
           v-if="category.value.visible"
           :class="['step', { 'step-primary': index <= selected }]"
           :disabled="!category.value.enabled"
-          @click="selected = index"
+          @click="selectCategory(index)"
         >
           <label>{{ category.value.label }}</label>
         </button>
@@ -36,11 +36,11 @@
       <div
         v-if="selected > 0"
         :class="styles.categorization.stepperButtonBack"
-        @click="selected = selected - 1"
       >
         <Btn
           :disabled="!visibleCategories[selected - 1].value.enabled"
           :outline="true"
+          @click="selectCategory(selected - 1)"
         >
           {{ 'Back' }}
         </Btn>
@@ -49,11 +49,11 @@
       <div
         v-if="selected + 1 < visibleCategories.length"
         :class="styles.categorization.stepperButtonNext"
-        @click="selected = selected + 1"
       >
         <Btn
           :disabled="!visibleCategories[selected + 1].value.enabled"
           :color="Color.primary"
+          @click="selectCategory(selected + 1)"
         >
           {{ 'Next' }}
         </Btn>
@@ -79,6 +79,7 @@ import {
 } from '@jsonforms/vue';
 import { useVanillaLayout } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import Btn from '../../../button/btn.vue';
 import { Color } from '../../../const/colors';
@@ -93,7 +94,10 @@ const layoutRenderer = defineComponent({
     ...rendererProps<Layout>(),
   },
   setup(props: RendererProps<Layout>) {
-    return useVanillaLayout(useJsonFormsCategorization(props));
+    return {
+      ...useVanillaLayout(useJsonFormsCategorization(props)),
+      router: useRouter(),
+    };
   },
   data() {
     return {
@@ -106,6 +110,25 @@ const layoutRenderer = defineComponent({
     },
     visibleCategories() {
       return this.categories.filter((category) => category.value.visible);
+    },
+  },
+  mounted() {
+    const stepQuery = useRoute()?.query?.step;
+    if (stepQuery) {
+      const step = parseInt(stepQuery as string) - 1;
+      if (step > 0 && step < this.categories.length) {
+        this.selected = step;
+      }
+    }
+  },
+  methods: {
+    selectCategory(index: number) {
+      this.selected = index;
+
+      this.router?.replace({
+        query: { step: index + 1 },
+      });
+      console.log('----' + 'select category', index);
     },
   },
 });

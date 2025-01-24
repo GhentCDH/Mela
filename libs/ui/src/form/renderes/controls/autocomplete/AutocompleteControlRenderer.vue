@@ -1,16 +1,15 @@
 <template>
-  <control-wrapper v-bind="controlWrapper">
-    <div class="dropdown dropdown-open">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
+    <div class="dropdown dropdown-open w-full">
       <input
         :id="control.id + '-input'"
         v-model="query"
         autocomplete="off"
         type="text"
-        :class="[
-          'input',
-          'input-bordered input-primary w-full max-w-xs',
-          { 'input-error': control.errors },
-        ]"
+        :class="[styles.control.input, { 'input-error': control.errors }]"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
         :placeholder="appliedOptions.placeholder"

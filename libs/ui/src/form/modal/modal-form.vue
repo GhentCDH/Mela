@@ -25,7 +25,7 @@
       <div>
         <slot name="content-before" />
         <FormComponent
-          :id="`filter-${id}`"
+          :id="`modal-${id}`"
           v-model="formData"
           :schema="schema"
           :uischema="uischema"

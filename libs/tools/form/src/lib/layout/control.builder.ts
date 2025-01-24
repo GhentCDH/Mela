@@ -1,3 +1,5 @@
+import type { Styles } from '@jsonforms/vue-vanilla/src/styles/styles';
+
 import { Builder } from './builder';
 
 export const ControlType = {
@@ -24,7 +26,10 @@ export interface AutocompleteOptions extends ControlOption {
 }
 
 export interface ControlOption {
-  format: string;
+  format?: string;
+  readonly?: boolean;
+  label?: string;
+  styles?: Partial<Styles>;
 }
 
 export type ControlTypes = {
@@ -51,6 +56,22 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return new ControlBuilder(scope);
   }
 
+  label(label: string): ControlBuilder {
+    this.options = {
+      ...(this.options ?? {}),
+      label: label,
+    };
+    return this;
+  }
+
+  readonly(): ControlBuilder {
+    this.options = {
+      format: ControlType.string,
+      readonly: true,
+    };
+    return this;
+  }
+
   markdown(): ControlBuilder {
     this.options = { format: ControlType.markdown };
 
@@ -70,6 +91,21 @@ export class ControlBuilder extends Builder<ControlTypes> {
       format: ControlType.autocomplete,
       ...options,
     };
+    return this;
+  }
+
+  width(width: 'small') {
+    const sizes = { small: 'w-24' };
+    this.options = {
+      ...this.options,
+      styles: {
+        ...this.options?.styles,
+        control: {
+          wrapper: sizes[width] ?? sizes.small,
+        },
+      },
+    };
+
     return this;
   }
 

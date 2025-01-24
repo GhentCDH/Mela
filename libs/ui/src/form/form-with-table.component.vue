@@ -70,7 +70,7 @@ const onCloseModal = () => {
 
 <template>
   <div class="flex justify-between items-center mb-2">
-    <h1 class="card-title">
+    <h1>
       {{ tableTitle }}
     </h1>
     <div>

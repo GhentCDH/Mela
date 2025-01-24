@@ -29,6 +29,9 @@ Default.args = {
         type: 'string',
         maxLength: 5,
       },
+      smallControl: {
+        type: 'number',
+      },
       numberControl: {
         type: 'number',
       },

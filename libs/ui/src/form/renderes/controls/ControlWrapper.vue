@@ -1,18 +1,24 @@
 <template>
-  <div class="flex flex-col">
+  <div
+    :class="[
+      {
+        'w-full': fullWidth,
+      },
+      styles.control.wrapper,
+    ]"
+  >
     <label
       v-if="visible"
       :id="id"
       :for="id + '-input'"
-      class="form-control w-full"
       :class="[
-        'form-control w-full ',
+        styles.control.root,
         {
           'form-field-error': showErrors,
         },
       ]"
     >
-      <div class="text-md font-semibold pt-2">
+      <div :class="[styles.control.label]">
         {{ label }}
         <span v-if="showAsterisk">*</span>
       </div>
@@ -20,7 +26,7 @@
         <slot />
       </div>
     </label>
-    <div class="form-control--description label text-xs text-gray-500">
+    <div :class="[styles.control.description]">
       <span>
         {{ showErrors ? errors : showDescription ? description : null }}
       </span>
@@ -30,8 +36,9 @@
 
 <script lang="ts">
 import { isDescriptionHidden } from '@jsonforms/core';
+import type { Styles } from '@jsonforms/vue-vanilla';
 import type { Options } from '@vitejs/plugin-vue';
-import type { PropType} from 'vue';
+import type { PropType } from 'vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -76,10 +83,19 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    fullWidth: {
+      required: false as const,
+      type: Boolean,
+      default: true,
+    },
     isTouched: {
       required: false as const,
       type: Boolean,
       default: false,
+    },
+    styles: {
+      required: true,
+      type: Object as PropType<Styles>,
     },
   },
   computed: {

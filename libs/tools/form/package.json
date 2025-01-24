@@ -6,7 +6,8 @@
     "zod": "^3.24.1",
     "tslib": "^2.8.1",
     "lodash-es": "^4.17.21",
-    "@anatine/zod-openapi": "^2.2.6"
+    "@anatine/zod-openapi": "^2.2.6",
+    "@jsonforms/vue-vanilla": "^3.4.1"
   },
   "type": "commonjs",
   "main": "./src/index.js",

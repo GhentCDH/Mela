@@ -1,5 +1,5 @@
+import type { GroupBuilder } from './Group.builder';
 import { Builder } from './builder';
-import type { CategoryBuilder } from './category.builder';
 import type { ControlBuilder, ControlTypes } from './control.builder';
 import type { TextCellBuilder } from '../table/builder';
 
@@ -7,7 +7,8 @@ export type ElementBuilder =
   | ControlBuilder
   | LayoutBuilder
   | TextCellBuilder
-  | CategoryBuilder;
+  | CategoryBuilder
+  | GroupBuilder;
 
 export type LayoutType = {
   type: 'HorizontalLayout' | 'VerticalLayout';
