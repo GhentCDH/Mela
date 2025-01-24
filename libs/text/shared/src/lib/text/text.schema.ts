@@ -42,7 +42,7 @@ const detailStep = LayoutBuilder.vertical().addControls(
         label: 'name',
       },
     }),
-    ControlBuilder.scope('#/properties/year'),
+    ControlBuilder.scope('#/properties/year').width('small'),
   ),
 );
 
