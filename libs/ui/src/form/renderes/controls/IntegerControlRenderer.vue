@@ -1,11 +1,14 @@
 <template>
-  <control-wrapper v-bind="controlWrapper">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <input
       :id="control.id + '-input'"
       autocomplete="off"
       type="number"
       :step="step"
-      class="input"
+      :class="[styles.control.input]"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"

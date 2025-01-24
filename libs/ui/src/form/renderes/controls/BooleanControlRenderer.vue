@@ -1,10 +1,14 @@
 <template>
-  <div class="pointer checkbox-wrapper">
-    <control-wrapper v-bind="controlWrapper">
+  <div class="pointer checkbox-wrapper items-center">
+    <control-wrapper
+      v-bind="controlWrapper"
+      :styles="styles"
+      :full-width="false"
+    >
       <input
         :id="control.id + '-input'"
         type="checkbox"
-        class="checkbox"
+        :class="['checkbox']"
         :value="control.data"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"

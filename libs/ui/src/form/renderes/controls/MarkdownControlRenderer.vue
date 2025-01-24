@@ -1,5 +1,8 @@
 <template>
-  <control-wrapper v-bind="controlWrapper">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <div :id="mdId" />
   </control-wrapper>
 </template>
@@ -39,7 +42,6 @@ const controlRenderer = defineComponent({
 
     onMounted(() => {
       const { path, data } = control.control.value;
-      console.log(control);
       const editor = new MdEditor({
         el: document.getElementById(mdId),
         height: '500px',
