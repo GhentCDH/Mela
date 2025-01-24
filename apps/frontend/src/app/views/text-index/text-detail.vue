@@ -3,31 +3,22 @@
     v-if="store.text"
     class="max-w-screen-lg m-auto"
   >
-    <div>Upload file</div>
-    <div class="flex gap-2">
-      <input
-        type="file"
-        class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-        :accept="allowedFileTypes"
-        @change="onFilePicked"
-      >
-      <Btn
-        :outline="true"
-        :disabled="!excellFile"
-        @click="upload"
-      >
-        Upload excel
-      </Btn>
-    </div>
+    <FormComponent
+      id="text-detail"
+      v-model="formData"
+      :schema="formSchema.form.schema"
+      :uischema="formSchema.form.uiSchema"
+      @valid="onValid($event)"
+      @change="onChange"
+    />
   </div>
 </template>
 <script setup lang="ts">
-import { textParseFileTypes } from '@mela/text/shared';
+import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
 import { ref } from 'vue';
 
-import { Btn } from '@ghentcdh/ui';
-
 import { useTextStore } from './text.store';
+import FormComponent from '../../../../../../libs/ui/src/form/form.component.vue';
 
 const store = useTextStore();
 
@@ -42,5 +33,24 @@ const onFilePicked = (event: Event) => {
 };
 const upload = () => {
   store.uploadExcel(excellFile.value);
+};
+
+const formSchema = TextFormSchema.schema;
+const formData = ref(store.text);
+
+const valid = ref(false);
+const emits = defineEmits(['submit', 'clear', 'closeModal']);
+
+const onValid = (v: boolean) => {
+  valid.value = v;
+};
+
+const onClear = () => {
+  formData.value = store.text;
+  emits('clear');
+};
+
+const onChange = (data: any) => {
+  formData.value = data;
 };
 </script>

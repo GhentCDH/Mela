@@ -3,10 +3,7 @@
     v-if="store.text"
     class="max-w-screen-lg m-auto"
   >
-    <h1>
-      Text: {{ store.text.name }} (<small>mela id:</small>
-      {{ store.text.mela_id }})
-    </h1>
+    <h1>Text: {{ store.text.name }}</h1>
     <div class="max-w-screen-lg m-auto">
       <div
         role="tablist"
@@ -40,8 +37,8 @@ const tabs = [
     label: 'Detail',
   },
   {
-    name: 'text-index-read',
-    label: 'Text',
+    name: 'text-index-preview',
+    label: 'Preview',
   },
   {
     name: 'text-index-phrase',

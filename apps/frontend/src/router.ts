@@ -1,14 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import HomeView from './app/Home.vue';
-import TextIndexPhrasesView from './app/views/text-index/phrase/phrase.vue';
-import TextDetailView from './app/views/text-index/text-detail.vue';
-import TextIndexView from './app/views/text-index/text-index.vue';
-import TextReadView from './app/views/text-index/text-read.vue';
-import TextView from './app/views/text-index/text-view.vue';
-
 const routes = [
-  { path: '/', name: 'home', component: HomeView },
+  { path: '/', name: 'home', component: import('./app/Home.vue') },
   {
     path: '/form/:formId',
     name: 'form',
@@ -17,27 +10,27 @@ const routes = [
   {
     path: '/text-index',
     name: 'text-index',
-    component: TextIndexView,
+    component: import('./app/views/text-index/text-index.vue'),
   },
   {
     path: '/text-index/:textId',
     name: 'text-index-view',
-    component: TextView,
+    component: import('./app/views/text-index/text-view.vue'),
     children: [
       {
-        path: '.',
+        path: '',
         name: 'text-index-detail',
-        component: TextDetailView,
+        component: import('./app/views/text-index/text-detail.vue'),
       },
       {
-        path: 'read',
-        name: 'text-index-read',
-        component: TextReadView,
+        path: 'preview',
+        name: 'text-index-preview',
+        component: import('./app/views/text-index/text-preview.vue'),
       },
       {
         path: 'phrase',
         name: 'text-index-phrase',
-        component: TextIndexPhrasesView,
+        component: import('./app/views/text-index/phrase/phrase.vue'),
       },
     ],
   },

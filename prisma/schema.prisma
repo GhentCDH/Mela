@@ -33,18 +33,31 @@ model Author {
 }
 
 model Text {
-  id        String   @id @default(uuid())
-  mela_id   String   @unique
-  name      String
-  author    Author   @relation(fields: [author_id], references: [id])
-  author_id String
-  year      Int
-  Phrase    Phrase[]
+  id          String        @id @default(uuid())
+  name        String
+  author      Author        @relation(fields: [author_id], references: [id])
+  author_id   String
+  year        Int
+  Phrase      Phrase[]
+  TextContent TextContent[]
+}
+
+enum TextType {
+  SOURCE
+  TRANSLATION
+}
+
+model TextContent {
+  id       String   @id @default(uuid())
+  text     Text     @relation(fields: [text_id], references: [id])
+  text_id  String
+  textType TextType
+  language String
+  content  String   @db.Text
 }
 
 model Phrase {
   id          String  @id @default(uuid())
-  mela_id     String  @unique
   book_nbr    String
   chapter_nbr String
   phrase_nbr  String

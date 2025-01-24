@@ -16,7 +16,7 @@ export const useTextStore = defineStore('textStore', () => {
   watch(
     () => route.params.textId,
     (newId, oldId) => {
-      if (oldId !== newId) changeId(newId);
+      if (oldId !== newId) changeId(newId as string);
     },
   );
   watch(
@@ -35,6 +35,13 @@ export const useTextStore = defineStore('textStore', () => {
 
   const text = computedAsync(() => {
     if (!textId.value) return null;
+
+    if (textId.value === 'new')
+      return Promise.resolve({
+        name: 'New text',
+        source: { language: 'Greek', content: '' },
+        translation: { language: 'English', content: '' },
+      });
 
     return httpStore.get<TextWithRelations>(`/api/text/${textId.value}`);
   });
