@@ -1,5 +1,6 @@
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 
+import { arrayRenderers } from './array';
 import { controlRenderers } from './controls';
 import { layoutRenderers } from './layouts';
 
@@ -7,7 +8,7 @@ export const customRenderers = [
   controlRenderers,
   layoutRenderers,
   // ...complexRenderers,
-  // ...arrayRenderers,
+  ...arrayRenderers,
   // ...labelRenderers,
 ].flat();
 

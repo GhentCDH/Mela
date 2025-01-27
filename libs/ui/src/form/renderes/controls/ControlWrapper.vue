@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="[
-      {
-        'w-full': fullWidth,
-      },
-      styles.control.wrapper,
-    ]"
-  >
+  <div :class="[styles.control.wrapper]">
     <label
       v-if="visible"
       :id="id"
@@ -82,11 +75,6 @@ export default defineComponent({
       required: false as const,
       type: Boolean,
       default: false,
-    },
-    fullWidth: {
-      required: false as const,
-      type: Boolean,
-      default: true,
     },
     isTouched: {
       required: false as const,

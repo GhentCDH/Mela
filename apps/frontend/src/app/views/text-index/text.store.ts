@@ -4,7 +4,10 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import type { TextWithRelations } from '@ghentcdh/mela/generated/types';
+import type {
+  TextContentWithRelations,
+  TextWithRelations,
+} from '@ghentcdh/mela/generated/types';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
@@ -16,7 +19,7 @@ export const useTextStore = defineStore('textStore', () => {
   watch(
     () => route.params.textId,
     (newId, oldId) => {
-      if (oldId !== newId) changeId(newId);
+      if (oldId !== newId) changeId(newId as string);
     },
   );
   watch(
@@ -36,8 +39,59 @@ export const useTextStore = defineStore('textStore', () => {
   const text = computedAsync(() => {
     if (!textId.value) return null;
 
-    return httpStore.get<TextWithRelations>(`/api/text/${textId.value}`);
+    if (textId.value === 'new')
+      return Promise.resolve({
+        name: '',
+        textContent: [
+          {
+            language: 'Greek',
+            content: '',
+            text_type: 'SOURCE',
+          },
+          {
+            language: 'English',
+            content: '',
+            text_type: 'TRANSLATION',
+          },
+        ],
+      } as unknown as Partial<TextWithRelations>);
+
+    return httpStore
+      .get<Partial<TextWithRelations>>(`/api/text/${textId.value}`)
+      .then((text) => {
+        text.textContent = [
+          text.textContent?.find((t) => t.text_type === 'SOURCE') ??
+            ({
+              language: 'Greek',
+              content: '',
+              text_type: 'SOURCE',
+            } as TextContentWithRelations),
+          text.textContent?.find((t) => t.text_type === 'TRANSLATION') ??
+            ({
+              language: 'English',
+              content: '',
+              text_type: 'TRANSLATION',
+            } as TextContentWithRelations),
+        ];
+        return text;
+      });
   });
+
+  const saveOrUpdate = (text: Partial<TextWithRelations>) => {
+    if (textId.value === 'new') {
+      return httpStore
+        .post<TextWithRelations>('/api/text', text)
+        .then((text) => {
+          changeId(text.id);
+          return text;
+        });
+    } else {
+      return httpStore.patch<TextWithRelations>(
+        `/api/text/${textId.value}`,
+        text,
+      );
+    }
+  };
 
   const uploadExcel = (file: File) => {
     return httpStore.postFile<TextWithRelations>(
@@ -46,5 +100,5 @@ export const useTextStore = defineStore('textStore', () => {
     );
   };
 
-  return { text, textId, uploadExcel };
+  return { text, textId, uploadExcel, saveOrUpdate };
 });

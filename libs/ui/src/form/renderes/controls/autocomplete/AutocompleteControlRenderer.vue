@@ -50,8 +50,8 @@ import { defineComponent, ref } from 'vue';
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
 import type { ResponseData } from '@ghentcdh/tools/form';
 
+import { isAutoCompleteControl } from '../../tester';
 import ControlWrapper from '../ControlWrapper.vue';
-import { isAutoCompleteControl } from '../tester';
 import { useVanillaControlCustom } from '../utils/vanillaControl';
 
 const controlRenderer = defineComponent({

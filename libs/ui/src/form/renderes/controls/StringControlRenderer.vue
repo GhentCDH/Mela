@@ -31,7 +31,7 @@ import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import ControlWrapper from './ControlWrapper.vue';
-import { isStringFormat } from './tester';
+import { isStringFormat } from '../tester';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({

@@ -1,6 +1,7 @@
+import type { Styles } from '@jsonforms/vue-vanilla';
 import { defaultStyles, mergeStyles } from '@jsonforms/vue-vanilla';
 
-export const myStyles = mergeStyles(defaultStyles, {
+const mergedStyles = mergeStyles(defaultStyles, {
   group: {
     root: 'group',
     label: 'text-primary text-lg font-bold',
@@ -9,11 +10,10 @@ export const myStyles = mergeStyles(defaultStyles, {
   verticalLayout: {
     root: 'flex flex-col gap-x-2',
     item: 'w-full',
-    // item: 'flex flex-col gap-x-2',
   },
   horizontalLayout: {
     root: 'flex flex-row gap-x-2',
-    // item: 'flex flex-row gap-x-2',
+    item: 'w-full',
   },
   control: {
     root: 'form-control w-full',
@@ -23,4 +23,16 @@ export const myStyles = mergeStyles(defaultStyles, {
     input: 'input',
     description: 'form-control--description label text-xs text-gray-500',
   },
-});
+}) as Styles;
+
+export type MyStyles = Styles & {
+  fixedArrayList: { root: string; item: string };
+};
+
+export const myStyles: MyStyles = {
+  ...mergedStyles,
+  fixedArrayList: {
+    root: 'flex flex-row gap-x-2',
+    item: 'w-full',
+  },
+} as const;

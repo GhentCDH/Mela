@@ -19,7 +19,7 @@ import MdEditor from '@toast-ui/editor';
 import { defineComponent, onMounted } from 'vue';
 
 import ControlWrapper from './ControlWrapper.vue';
-import { isMarkdownControl } from './tester';
+import { isMarkdownControl } from '../tester';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 import '@toast-ui/editor/dist/toastui-editor.css';

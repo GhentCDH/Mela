@@ -1,4 +1,5 @@
 import { Builder } from './builder';
+import type { LayoutBuilder } from './layout.builder';
 
 export const ControlType = {
   number: 'number',
@@ -7,6 +8,7 @@ export const ControlType = {
   autocomplete: 'autocomplete',
   textArea: 'textArea',
   markdown: 'markdown',
+  fixedArray: 'fixedArray',
 } as const;
 
 export interface TextAreaOptions extends ControlOption {
@@ -28,6 +30,8 @@ export interface ControlOption {
   readonly?: boolean;
   label?: string;
   styles?: Partial<any>;
+  elements?: any;
+  elementLabelProp?: string;
 }
 
 export type ControlTypes = {
@@ -37,7 +41,16 @@ export type ControlTypes = {
 };
 
 export class ControlBuilder extends Builder<ControlTypes> {
-  private options: ControlOption | undefined;
+  private options: ControlOption = {
+    format: 'Control',
+    styles: {
+      control: {
+        wrapper: 'w-full',
+      },
+    },
+  };
+
+  private _detail?: LayoutBuilder;
 
   private constructor(
     private readonly scope: string,
@@ -52,6 +65,25 @@ export class ControlBuilder extends Builder<ControlTypes> {
 
   static scope(scope: string): ControlBuilder {
     return new ControlBuilder(scope);
+  }
+
+  detail(layoutBuilder: LayoutBuilder, label?: string): ControlBuilder {
+    this._detail = layoutBuilder;
+    this.options = {
+      ...(this.options ?? {}),
+      elementLabelProp: label,
+    };
+    return this;
+  }
+
+  detailFixed(layoutBuilder: LayoutBuilder, label?: string): ControlBuilder {
+    this._detail = layoutBuilder;
+    this.options = {
+      ...(this.options ?? {}),
+      format: ControlType.fixedArray,
+      elementLabelProp: label,
+    };
+    return this;
   }
 
   label(label: string): ControlBuilder {
@@ -111,7 +143,10 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return {
       type: this.type,
       scope: this.scope,
-      options: this.options,
+      options: {
+        ...this.options,
+        detail: this._detail ? this._detail?.build() : undefined,
+      },
     } as ControlTypes;
   }
 }

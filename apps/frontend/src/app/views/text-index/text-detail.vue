@@ -1,31 +1,26 @@
 <template>
   <div
     v-if="store.text"
-    class="max-w-screen-lg m-auto"
+    class="max-w-screen-lg m-auto p-2"
   >
-    <div>Upload file</div>
-    <div class="flex gap-2">
-      <input
-        type="file"
-        class="file-input file-input-bordered file-input-sm w-full max-w-xs"
-        :accept="allowedFileTypes"
-        @change="onFilePicked"
-      >
-      <Btn
-        :outline="true"
-        :disabled="!excellFile"
-        @click="upload"
-      >
-        Upload excel
-      </Btn>
-    </div>
+    <FormComponent
+      id="text-detail"
+      v-model="formData"
+      :schema="formSchema.form.schema"
+      :uischema="formSchema.form.uiSchema"
+      :events="events"
+      @valid="onValid($event)"
+      @change="onChange"
+    />
   </div>
 </template>
 <script setup lang="ts">
-import { textParseFileTypes } from '@mela/text/shared';
+import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { Btn } from '@ghentcdh/ui';
+import type { StepperEvent, StepperEventListener } from '@ghentcdh/ui';
+import { FormComponent } from '@ghentcdh/ui';
 
 import { useTextStore } from './text.store';
 
@@ -42,5 +37,34 @@ const onFilePicked = (event: Event) => {
 };
 const upload = () => {
   store.uploadExcel(excellFile.value);
+};
+
+const formSchema = TextFormSchema.schema;
+const formData = ref(store.text);
+
+const valid = ref(false);
+const emits = defineEmits(['submit', 'clear', 'closeModal']);
+
+const onValid = (v: boolean) => {
+  valid.value = v;
+};
+
+const router = useRouter();
+
+const changeStepper = (event: StepperEventListener, data: StepperEvent) => {
+  console.log(event, 'change', data);
+  console.log(formData.value);
+
+  if (data.activeStep === 1 || data.activeStep === 2) {
+    store.saveOrUpdate(formData.value);
+  }
+};
+
+const events = {
+  stepper: changeStepper,
+};
+
+const onChange = (data: any) => {
+  formData.value = data;
 };
 </script>

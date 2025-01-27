@@ -7,7 +7,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   async list(request: RequestDto): Promise<Entity[]> {
     return this.prismaModel.findMany({
       where: this.buildWhere(request.filter),
-      include: this.include(),
+      include: this.includeList(),
       take: request.pageSize,
       skip: request.offset,
       orderBy: this.buildSort(request),
@@ -31,7 +31,16 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * Used in list function
    * @protected
    */
-  protected include(): Record<string, true> {
+  protected includeList(): Record<string, true> {
+    return {};
+  }
+
+  /**
+   * Fields to be included in creation
+   * Used in list function
+   * @protected
+   */
+  protected includeLDetail(): Record<string, true> {
     return {};
   }
 
@@ -65,23 +74,38 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
     return {};
   }
 
+  protected async connectCreate(dto: CreateDto): Promise<Partial<CreateDto>> {
+    return this.connect(dto);
+  }
+
+  protected async connectUpdate(
+    id: string,
+    dto: CreateDto,
+  ): Promise<Partial<CreateDto>> {
+    return this.connect(dto);
+  }
+
   async findOne(id: string): Promise<Entity> {
-    return this.prismaModel.findUnique({ where: { id } });
+    return this.prismaModel.findUnique({
+      where: { id },
+      include: this.includeLDetail(),
+    });
   }
 
   async create(dto: CreateDto): Promise<Entity> {
-    const connect = await this.connect(dto);
+    const connect = await this.connectCreate(dto);
     return this.prismaModel.create({
       data: { ...dto, ...connect },
     });
   }
 
   async update(id: string, dto: CreateDto): Promise<Entity> {
+    const connect = await this.connectUpdate(id, dto);
     return this.prismaModel.update({
       where: {
         id,
       },
-      data: dto,
+      data: { ...dto, ...connect },
     });
   }
 

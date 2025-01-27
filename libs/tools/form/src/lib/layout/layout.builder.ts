@@ -32,10 +32,10 @@ export class LayoutBuilder extends Builder<LayoutType> {
     return new LayoutBuilder('HorizontalLayout');
   }
 
-  static stepper(showNavButtons = false) {
+  static stepper(hideNavButtons = false) {
     return new LayoutBuilder('Categorization', {
       variant: 'stepper',
-      showNavButtons: showNavButtons,
+      showNavButtons: !hideNavButtons,
     });
   }
 

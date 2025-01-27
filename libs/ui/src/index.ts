@@ -11,4 +11,5 @@ export * from './table/table.model';
 export * from './table/table.store';
 
 export * from './form/form.store';
+export * from './form/renderes/layouts/stepper.store';
 export * from './const';
