@@ -3,7 +3,6 @@
     <control-wrapper
       v-bind="controlWrapper"
       :styles="styles"
-      :full-width="false"
     >
       <input
         :id="control.id + '-input'"

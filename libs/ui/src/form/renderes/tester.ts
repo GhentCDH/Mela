@@ -27,3 +27,7 @@ export const isMarkdownControl = and(
   uiTypeIs('Control'),
   optionIs('format', ControlType.markdown),
 );
+export const isFixedArray = and(
+  schemaTypeIs('array'),
+  optionIs('format', ControlType.fixedArray),
+);

@@ -15,16 +15,53 @@ export class TextRepositoryService extends AbstractRepository<
     super(prisma.text);
   }
 
-  protected override include(): Record<string, true> {
+  protected override includeList(): Record<string, true> {
     return { author: true };
   }
 
-  protected override async connect(
+  protected override includeLDetail(): Record<string, true> {
+    return { author: true, textContent: true };
+  }
+
+  protected override async connectCreate(
     dto: CreateTextDto,
   ): Promise<Partial<CreateTextDto>> {
     return {
       author: await this.createOrConnectAuthor(dto),
+      textContent: { create: dto.textContent },
     };
+  }
+
+  protected override async connectUpdate(
+    id: string,
+    dto: CreateTextDto,
+  ): Promise<Partial<CreateTextDto>> {
+    return {
+      author: await this.createOrConnectAuthor(dto),
+      textContent: { connect: await this.createOrConnectTextContent(id, dto) },
+    };
+  }
+
+  private async createOrConnectTextContent(
+    text_id: string,
+    dto: CreateTextDto,
+  ) {
+    const createOrUpdate = await Promise.all(
+      dto.textContent.map((textContent) => {
+        return this.prisma.textContent.upsert({
+          where: { id: textContent.id ?? '' },
+          create: {
+            ...textContent,
+            text_id,
+          },
+          update: {
+            ...textContent,
+          },
+        });
+      }),
+    );
+
+    return createOrUpdate.map((c) => ({ id: c.id }));
   }
 
   private async createOrConnectAuthor(dto: CreateTextDto) {
@@ -35,13 +72,15 @@ export class TextRepositoryService extends AbstractRepository<
     }
 
     const { name } = dto.author;
-
     return {
-      connect: await this.prisma.author.upsert({
-        where: { name },
-        update: {},
-        create: { name },
-      }),
+      connectOrCreate: {
+        where: {
+          name,
+        },
+        create: {
+          name,
+        },
+      },
     };
   }
 }

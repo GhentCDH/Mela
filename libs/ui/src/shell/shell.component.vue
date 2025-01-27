@@ -6,7 +6,7 @@
       type="checkbox"
       class="drawer-toggle"
     >
-    <div class="drawer-content flex flex-col">
+    <div class="drawer-content flex flex-col h-[100VH]">
       <nav class="navbar bg-primary text-primary-content w-full">
         <div class="navbar-start">
           <label
@@ -37,7 +37,7 @@
         </div>
         <div class="navbar-end" />
       </nav>
-      <div class="p-2 bg-white">
+      <div class="p-2 bg-white mb-1 mr-1 flex-1 shadow">
         <slot />
       </div>
     </div>

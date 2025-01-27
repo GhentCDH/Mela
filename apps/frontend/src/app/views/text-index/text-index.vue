@@ -5,9 +5,7 @@ import { useRouter } from 'vue-router';
 
 import type { Text } from '@ghentcdh/mela/generated/types';
 import type { TableAction } from '@ghentcdh/ui';
-import { Btn, IconEnum, useFormStore } from '@ghentcdh/ui';
-
-import TableComponent from '../../../../../../libs/ui/src/table/table.component.vue';
+import { Btn, IconEnum, TableComponent, useFormStore } from '@ghentcdh/ui';
 
 const formId = 'text-index';
 const urlSchema = '/api/text/schema';

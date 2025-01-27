@@ -9,25 +9,21 @@ import {
 import {
   CategoryBuilder,
   ControlBuilder,
-  GroupBuilder,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
   createSchema,
-} from '@ghentcdh/tools/form';
+} from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema
 
-const textStep = LayoutBuilder.horizontal().addControls(
-  GroupBuilder.label('Source').addControls(
-    ControlBuilder.scope('#/properties/source/properties/language'),
-    ControlBuilder.scope('#/properties/source/properties/content').markdown(),
-  ),
-  GroupBuilder.label('Translation').addControls(
-    ControlBuilder.scope('#/properties/translation/properties/language'),
-    ControlBuilder.scope(
-      '#/properties/translation/properties/content',
-    ).markdown(),
+const textContentStep = LayoutBuilder.horizontal().addControls(
+  ControlBuilder.scope('#/properties/textContent').detailFixed(
+    LayoutBuilder.vertical().addControls(
+      ControlBuilder.scope('#/properties/text_type'),
+      ControlBuilder.scope('#/properties/language'),
+      ControlBuilder.scope('#/properties/content').markdown(),
+    ),
   ),
 );
 
@@ -49,7 +45,9 @@ const detailStep = LayoutBuilder.vertical().addControls(
 const uiSchema = LayoutBuilder.stepper()
   .addControls(
     CategoryBuilder.label('Details').addControls(detailStep),
-    CategoryBuilder.label('Text').addControls(textStep),
+    CategoryBuilder.label('Text').addControls(textContentStep),
+    CategoryBuilder.label('Link'),
+    CategoryBuilder.label('Annotate'),
   )
   .build();
 
@@ -82,6 +80,14 @@ const filterSchema = LayoutBuilder.vertical()
   )
   .build();
 
+export const TextContentDtoSchema = TextContentSchema.pick({
+  text_type: true,
+  content: true,
+  language: true,
+}).extend({ id: z.string().optional() });
+
+export type TextContentDto = z.infer<typeof TextContentDtoSchema>;
+
 const dtoSchema = TextSchema.pick({
   name: true,
   year: true,
@@ -89,16 +95,7 @@ const dtoSchema = TextSchema.pick({
   author: AuthorSchema.extend({
     id: z.string().optional(),
   }),
-  source: TextContentSchema.pick({ content: true }).extend({
-    language: z.string().default('Greek'),
-  }),
-  translation: TextContentSchema.pick({
-    content: true,
-  })
-    .extend({
-      language: z.string().default('English'),
-    })
-    .optional(),
+  textContent: z.array(TextContentDtoSchema),
 });
 
 export const TextFormSchema = createSchema({

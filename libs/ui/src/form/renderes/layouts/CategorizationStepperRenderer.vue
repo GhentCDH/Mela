@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 h-full border">
     <div class="steps">
       <template
         v-for="(category, index) in visibleCategories"
@@ -7,20 +7,20 @@
       >
         <button
           v-if="category.value.visible"
-          :class="['step', { 'step-primary': index <= selected }]"
+          :class="['step', { 'step-primary': index < selected }]"
           :disabled="!category.value.enabled"
-          @click="selectCategory(index)"
+          @click="changeStep(index + 1)"
         >
           <label>{{ category.value.label }}</label>
         </button>
       </template>
     </div>
 
-    <div :class="styles.categorization.panel">
+    <div :class="[styles.categorization.panel, 'h-full flex-1 overflow-auto']">
       <DispatchRenderer
-        v-if="visibleCategories[selected]"
+        v-if="visibleCategories[selected - 1]"
         :schema="layout.schema"
-        :uischema="visibleCategories[selected].value.uischema"
+        :uischema="visibleCategories[selected - 1].value.uischema"
         :path="layout.path"
         :enabled="layout.enabled"
         :renderers="layout.renderers"
@@ -30,32 +30,44 @@
 
     <footer
       v-if="appliedOptions?.showNavButtons"
-      class="flex justify-end gap-2"
+      class="flex justify-end gap-2 p-2 border border-x-0 border-b-0"
       :class="styles.categorization.stepperFooter"
     >
       <div
-        v-if="selected > 0"
+        v-if="selected > 1"
         :class="styles.categorization.stepperButtonBack"
       >
         <Btn
           :disabled="!visibleCategories[selected - 1].value.enabled"
           :outline="true"
-          @click="selectCategory(selected - 1)"
+          @click="back"
         >
           {{ 'Back' }}
         </Btn>
       </div>
 
       <div
-        v-if="selected + 1 < visibleCategories.length"
+        v-if="selected < visibleCategories.length"
         :class="styles.categorization.stepperButtonNext"
       >
         <Btn
-          :disabled="!visibleCategories[selected + 1].value.enabled"
+          :disabled="!visibleCategories[selected].value.enabled"
           :color="Color.primary"
-          @click="selectCategory(selected + 1)"
+          @click="next"
         >
           {{ 'Next' }}
+        </Btn>
+      </div>
+      <div
+        v-if="selected === visibleCategories.length"
+        :class="styles.categorization.stepperButtonNext"
+      >
+        <Btn
+          :disabled="!visibleCategories[selected - 1].value.enabled"
+          :color="Color.primary"
+          @click="submit"
+        >
+          {{ 'Submit' }}
         </Btn>
       </div>
     </footer>
@@ -79,8 +91,9 @@ import {
 } from '@jsonforms/vue';
 import { useVanillaLayout } from '@jsonforms/vue-vanilla';
 import { defineComponent } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
+import { useStepperStore } from './stepper.store';
 import Btn from '../../../button/btn.vue';
 import { Color } from '../../../const/colors';
 
@@ -94,17 +107,17 @@ const layoutRenderer = defineComponent({
     ...rendererProps<Layout>(),
   },
   setup(props: RendererProps<Layout>) {
+    const layout = useVanillaLayout(useJsonFormsCategorization(props));
     return {
-      ...useVanillaLayout(useJsonFormsCategorization(props)),
+      ...layout,
       router: useRouter(),
-    };
-  },
-  data() {
-    return {
-      selected: 0,
+      stepperStore: useStepperStore(),
     };
   },
   computed: {
+    selected() {
+      return this.stepperStore.activeStep;
+    },
     Color() {
       return Color;
     },
@@ -112,23 +125,18 @@ const layoutRenderer = defineComponent({
       return this.categories.filter((category) => category.value.visible);
     },
   },
-  mounted() {
-    const stepQuery = useRoute()?.query?.step;
-    if (stepQuery) {
-      const step = parseInt(stepQuery as string) - 1;
-      if (step > 0 && step < this.categories.length) {
-        this.selected = step;
-      }
-    }
-  },
   methods: {
-    selectCategory(index: number) {
-      this.selected = index;
-
-      this.router?.replace({
-        query: { step: index + 1 },
-      });
-      console.log('----' + 'select category', index);
+    next() {
+      this.stepperStore.next();
+    },
+    back() {
+      this.stepperStore.previous();
+    },
+    submit() {
+      this.stepperStore.submit();
+    },
+    changeStep(step: number) {
+      this.stepperStore.changeStep(step);
     },
   },
 });

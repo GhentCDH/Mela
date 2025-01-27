@@ -1,13 +1,14 @@
 <template>
   <div
     v-if="store.text"
-    class="max-w-screen-lg m-auto"
+    class="max-w-screen-lg m-auto p-2"
   >
     <FormComponent
       id="text-detail"
       v-model="formData"
       :schema="formSchema.form.schema"
       :uischema="formSchema.form.uiSchema"
+      :events="events"
       @valid="onValid($event)"
       @change="onChange"
     />
@@ -16,9 +17,12 @@
 <script setup lang="ts">
 import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+import type { StepperEvent, StepperEventListener } from '@ghentcdh/ui';
+import { FormComponent } from '@ghentcdh/ui';
 
 import { useTextStore } from './text.store';
-import FormComponent from '../../../../../../libs/ui/src/form/form.component.vue';
 
 const store = useTextStore();
 
@@ -45,9 +49,19 @@ const onValid = (v: boolean) => {
   valid.value = v;
 };
 
-const onClear = () => {
-  formData.value = store.text;
-  emits('clear');
+const router = useRouter();
+
+const changeStepper = (event: StepperEventListener, data: StepperEvent) => {
+  console.log(event, 'change', data);
+  console.log(formData.value);
+
+  if (data.activeStep === 1 || data.activeStep === 2) {
+    store.saveOrUpdate(formData.value);
+  }
+};
+
+const events = {
+  stepper: changeStepper,
 };
 
 const onChange = (data: any) => {

@@ -38,8 +38,8 @@ model Text {
   author      Author        @relation(fields: [author_id], references: [id])
   author_id   String
   year        Int
+  textContent TextContent[]
   Phrase      Phrase[]
-  TextContent TextContent[]
 }
 
 enum TextType {
@@ -48,12 +48,12 @@ enum TextType {
 }
 
 model TextContent {
-  id       String   @id @default(uuid())
-  text     Text     @relation(fields: [text_id], references: [id])
-  text_id  String
-  textType TextType
-  language String
-  content  String   @db.Text
+  id        String   @id @default(uuid())
+  text      Text     @relation(fields: [text_id], references: [id])
+  text_id   String
+  text_type TextType
+  language  String
+  content   String   @db.Text
 }
 
 model Phrase {
