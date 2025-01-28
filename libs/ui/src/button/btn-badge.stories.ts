@@ -35,7 +35,7 @@ const All: StoryFn = (args) => ({
     };
   },
   template: `
-  <table>
+  <table class="table">
     <thead>
       <th></th>
       <template v-for="icon in icons" :key="icon">
