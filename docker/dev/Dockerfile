@@ -1,19 +1,21 @@
-ARG NODE_VERSION=20
+ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-slim AS node-dev
 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 # INSTALL dependencies
-RUN apt-get update -qq && \
-    apt-get install -qq -y \
-        openssh-client && \
-#        curl \
-#        apt-transport-https \
-#        gnupg \
-#        openssh-client \
-#        software-properties-common \
-#        git && \
-    apt-get clean && \
-    apt-get autoclean
+#RUN apt-get update -qq && \
+#    apt-get install -qq -y \
+#        openssh-client && \
+##        curl \
+##        apt-transport-https \
+##        gnupg \
+##        openssh-client \
+##        software-properties-common \
+##        git && \
+#    apt-get clean && \
+#    apt-get autoclean
 
 # Add pnpm
 ENV PNPM_HOME="/pnpm"
@@ -29,7 +31,6 @@ WORKDIR /app
 COPY package*.json ./
 COPY pnpm*.json ./
 
-RUN corepack enable
 RUN corepack prepare pnpm --activate
 RUN pnpm install
 
