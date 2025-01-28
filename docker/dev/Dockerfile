@@ -27,13 +27,9 @@ USER app
 WORKDIR /app
 
 COPY package*.json ./
-COPY pnpm*.json ./
+COPY pnpm* ./
 
-RUN corepack enable
-RUN corepack prepare pnpm --activate
-RUN pnpm install
-
-
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Copy source files into application directory
 COPY --chown=app:app . /app
