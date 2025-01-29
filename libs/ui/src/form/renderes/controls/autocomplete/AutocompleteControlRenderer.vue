@@ -9,7 +9,7 @@
         v-model="query"
         autocomplete="off"
         type="text"
-        :class="[styles.control.input, { 'input-error': control.errors }]"
+        :class="inputClass"
         :disabled="!control.enabled"
         :autofocus="appliedOptions.focus"
         :placeholder="appliedOptions.placeholder"
@@ -52,6 +52,7 @@ import type { ResponseData } from '@ghentcdh/tools/form';
 
 import { isAutoCompleteControl } from '../../tester';
 import ControlWrapper from '../ControlWrapper.vue';
+import { inputClasses } from '../utils/style';
 import { useVanillaControlCustom } from '../utils/vanillaControl';
 
 const controlRenderer = defineComponent({
@@ -94,6 +95,11 @@ const controlRenderer = defineComponent({
       selectResult,
       handleChange,
     };
+  },
+  computed: {
+    inputClass(): boolean {
+      return inputClasses(this);
+    },
   },
   watch: {
     'control.data': function (val) {

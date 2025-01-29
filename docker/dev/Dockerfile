@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20
+ARG NODE_VERSION=23
 
 FROM node:${NODE_VERSION}-slim AS node-dev
 
@@ -6,12 +6,6 @@ FROM node:${NODE_VERSION}-slim AS node-dev
 RUN apt-get update -qq && \
     apt-get install -qq -y \
         openssh-client && \
-#        curl \
-#        apt-transport-https \
-#        gnupg \
-#        openssh-client \
-#        software-properties-common \
-#        git && \
     apt-get clean && \
     apt-get autoclean
 
@@ -27,13 +21,9 @@ USER app
 WORKDIR /app
 
 COPY package*.json ./
-COPY pnpm*.json ./
+COPY pnpm* ./
 
-RUN corepack enable
-RUN corepack prepare pnpm --activate
-RUN pnpm install
-
-
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Copy source files into application directory
 COPY --chown=app:app . /app

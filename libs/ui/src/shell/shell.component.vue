@@ -12,21 +12,9 @@
           <label
             for="my-drawer-3"
             aria-label="open sidebar"
-            class="btn btn-square btn-ghost"
+            class="btn btn-square btn-ghost p-1"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            <Icon :icon="IconEnum.Hamburger" />
           </label>
         </div>
         <div class="navbar-center">
@@ -37,7 +25,7 @@
         </div>
         <div class="navbar-end" />
       </nav>
-      <div class="p-2 bg-white mb-1 mr-1 flex-1 shadow">
+      <div class="p-2 bg-white mb-1 mr-1 flex-1 shadow-sm">
         <slot />
       </div>
     </div>
@@ -63,6 +51,7 @@
 
 <script setup lang="ts">
 import type { Menu } from './menu.type';
+import { Icon, IconEnum } from '../icons';
 import Toast from '../toast/toast.vue';
 
 const baseUrl = import.meta.env.BASE_URL;

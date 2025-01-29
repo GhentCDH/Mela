@@ -8,7 +8,7 @@
       autocomplete="off"
       type="number"
       :step="step"
-      :class="[styles.control.input]"
+      :class="inputClass"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
@@ -31,6 +31,7 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
 import ControlWrapper from './ControlWrapper.vue';
+import { inputClasses } from './utils/style';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
@@ -50,6 +51,9 @@ const controlRenderer = defineComponent({
     step(): number {
       const options: any = this.appliedOptions;
       return options.step ?? 0.1;
+    },
+    inputClass(): boolean {
+      return inputClasses(this);
     },
   },
 });

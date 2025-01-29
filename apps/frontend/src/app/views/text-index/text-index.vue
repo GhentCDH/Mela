@@ -5,7 +5,13 @@ import { useRouter } from 'vue-router';
 
 import type { Text } from '@ghentcdh/mela/generated/types';
 import type { TableAction } from '@ghentcdh/ui';
-import { Btn, IconEnum, TableComponent, useFormStore } from '@ghentcdh/ui';
+import {
+  Btn,
+  Card,
+  IconEnum,
+  TableComponent,
+  useFormStore,
+} from '@ghentcdh/ui';
 
 const formId = 'text-index';
 const urlSchema = '/api/text/schema';
@@ -52,22 +58,17 @@ const deleteFn = (data: { id: string }) => {
         Add text
       </Btn>
     </div>
-    <div
-      v-if="formSchema.table"
-      class="card w-full xs border-2"
-    >
-      <div class="p-4">
-        <TableComponent
-          v-if="formSchema.uri"
-          :id="`form_table_${formId}`"
-          :layout="formSchema.table"
-          :filter-layout="formSchema.filter"
-          :uri="formSchema.uri"
-          :actions="tableActions"
-          @edit="edit"
-          @delete="deleteFn"
-        />
-      </div>
-    </div>
+    <Card v-if="formSchema.table">
+      <TableComponent
+        v-if="formSchema.uri"
+        :id="`form_table_${formId}`"
+        :layout="formSchema.table"
+        :filter-layout="formSchema.filter"
+        :uri="formSchema.uri"
+        :actions="tableActions"
+        @edit="edit"
+        @delete="deleteFn"
+      />
+    </Card>
   </div>
 </template>

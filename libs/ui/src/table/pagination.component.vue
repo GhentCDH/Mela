@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 
 import { Btn } from '../button';
+import { Color } from '../const/colors';
 import { Size } from '../const/size';
 
 const props = defineProps({
@@ -142,17 +143,22 @@ updatePages();
 <template>
   <div class="flex gap-2">
     <div class="flex flex-1 justify-center items-center">
-      <div class="join">
+      <div class="flex gap-1">
         <Btn
           v-for="page in pages"
           :key="page.activePage"
           :disabled="page.disabled?.()"
           :square="true"
           :size="Size.xs"
+          :color="
+            page.activePage < 1
+              ? Color.blank
+              : page.activePage === props.currentPage
+                ? Color.primary
+                : Color.secondary
+          "
           :class="[
-            'join-item btn btn-outline  btn-xs',
             {
-              'btn-active': page.activePage === props.currentPage,
               hidden: page.hide?.(),
             },
           ]"

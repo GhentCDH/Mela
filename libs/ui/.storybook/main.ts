@@ -6,7 +6,7 @@ const config: StorybookConfig = {
   framework: {
     name: '@storybook/vue3-vite',
     options: {
-      open: false,
+      docgen: 'vue-component-meta',
       builder: {
         viteConfigPath: 'vite.config.ts',
       },

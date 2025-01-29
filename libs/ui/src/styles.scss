@@ -1,14 +1,1 @@
-@use './form/styles.scss' as *;
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-h1 {
-  @apply text-4xl font-bold pt-2 ;
-}
-
-h2 {
-  @apply text-3xl font-bold;
-}
+@use './_scss/index' as *;

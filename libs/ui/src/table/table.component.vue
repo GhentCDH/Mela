@@ -16,6 +16,7 @@ import type { TableAction } from './table.model';
 import { useTableStore } from './table.store';
 import Btn from '../button/btn.vue';
 import { IconEnum } from '../icons';
+import Table from './table.vue';
 
 const properties = defineProps<{
   id: string;
@@ -52,6 +53,7 @@ const edit = (data: unknown) => {
 };
 
 const deleteFn = (data: unknown) => {
+  console.log('__delete', data);
   emit('delete', data);
 };
 
@@ -83,6 +85,28 @@ const displayColumns = computed(() => {
 const onChangeFilters = (filters: any) => {
   store.updateFilters(filters);
 };
+
+const onUpdatePage = (page: number) => {
+  store.updatePage(page);
+};
+const onSort = (id: string) => {
+  store.sort(id);
+};
+
+const sort = computed(() => {
+  return {
+    sortColumn: store.sortColumn,
+    sortDirection: store.sortDirection,
+  };
+});
+
+const page = computed(() => {
+  return {
+    count: store.data?.request.count,
+    pageSize: store.data?.request.pageSize,
+    page: store.data?.request.page,
+  };
+});
 </script>
 
 <template>
@@ -98,82 +122,17 @@ const onChangeFilters = (filters: any) => {
       />
     </div>
     <div>
-      <table class="table w-full">
-        <thead>
-          <tr>
-            <th
-              v-for="column in displayColumns"
-              :key="column.scope"
-            >
-              <SortHeader
-                :store-id="id"
-                :column="column"
-              />
-            </th>
-            <th v-if="actions">
-              actions
-            </th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="store.loading">
-            <td
-              :colspan="displayColumns.length + 1"
-              class="text-center"
-            >
-              <span class="loading loading-bars loading-xs" />
-            </td>
-          </tr>
-          <tr
-            v-for="data in store.data?.data"
-            :key="data.id"
-          >
-            <td
-              v-for="column in displayColumns"
-              :key="column.scope"
-            >
-              <component
-                :is="column.component"
-                :v-bind="column"
-                :data="data"
-                :column="column"
-              />
-            </td>
-            <td v-if="actions">
-              <button
-                v-for="action of actions"
-                :key="action.label"
-                class="btn btn-outline btn-sm p-1"
-                type="button"
-                @click="action.action(data)"
-              >
-                {{ action.label }}
-              </button>
-            </td>
-            <td>
-              <span class="flex gap-2">
-                <Btn
-                  :icon="IconEnum.Edit"
-                  :outline="true"
-                  @click="edit(data)"
-                />
-                <Btn
-                  :icon="IconEnum.Delete"
-                  :outline="true"
-                  @click="deleteFn(data)"
-                />
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <hr class="pb-4">
-      <PaginationComponent
-        :total-items="store.data?.request.count"
-        :items-per-page="store.data?.request.pageSize"
-        :current-page="store.data?.request.page"
-        @update-page="store.updatePage"
+      <Table
+        :display-columns="displayColumns"
+        :sort="sort"
+        :page="page"
+        :loading="store.loading"
+        :data="store.data?.data"
+        :actions="actions"
+        @update-page="onUpdatePage"
+        @delete="deleteFn"
+        @edit="edit"
+        @sort="onSort"
       />
     </div>
   </div>

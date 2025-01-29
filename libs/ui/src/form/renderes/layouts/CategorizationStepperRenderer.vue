@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col gap-2 h-full border">
-    <div class="steps">
+  <Card class="flex flex-col gap-2 h-full">
+    <div class="steps w-full">
       <template
         v-for="(category, index) in visibleCategories"
         :key="`tab-${index}`"
@@ -28,10 +28,9 @@
       />
     </div>
 
-    <footer
+    <template
       v-if="appliedOptions?.showNavButtons"
-      class="flex justify-end gap-2 p-2 border border-x-0 border-b-0"
-      :class="styles.categorization.stepperFooter"
+      #actions
     >
       <div
         v-if="selected > 1"
@@ -70,8 +69,8 @@
           {{ 'Submit' }}
         </Btn>
       </div>
-    </footer>
-  </div>
+    </template>
+  </Card>
 </template>
 
 <script lang="ts">
@@ -95,12 +94,14 @@ import { useRouter } from 'vue-router';
 
 import { useStepperStore } from './stepper.store';
 import Btn from '../../../button/btn.vue';
+import Card from '../../../card/card.vue';
 import { Color } from '../../../const/colors';
 
 const layoutRenderer = defineComponent({
   name: 'CategorizationStepperRenderer',
   components: {
     Btn,
+    Card,
     DispatchRenderer,
   },
   props: {

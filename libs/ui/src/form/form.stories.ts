@@ -2,6 +2,7 @@ import type { Meta, StoryFn } from '@storybook/vue3';
 
 import { ControlBuilder, LayoutBuilder } from '@ghentcdh/tools/form';
 
+import { OwnerWithRelationsFormDetail } from './demo/owner';
 import FormComponent from './form.component.vue';
 
 export default {
@@ -21,54 +22,34 @@ const Template: StoryFn = (args) => ({
 export const Default = Template.bind({});
 Default.args = {
   id: 'default-form',
-  schema: {
-    type: 'object',
-    properties: {
-      // examples
-      stringControl: {
-        type: 'string',
-        maxLength: 5,
-      },
-      smallControl: {
-        type: 'number',
-      },
-      numberControl: {
-        type: 'number',
-      },
-      integerControl: {
-        type: 'number',
-      },
-      booleanControl: {
-        type: 'boolean',
-      },
-      textAreaControl: {
-        type: 'number',
-      },
-    },
-    required: ['stringControl'],
-  },
+  schema: OwnerWithRelationsFormDetail,
   uischema: LayoutBuilder.vertical()
     .addControls(
       LayoutBuilder.horizontal().addControls(
-        ControlBuilder.scope('#/properties/stringControl'),
+        ControlBuilder.scope('#/properties/name'),
+        ControlBuilder.scope('#/properties/firstname'),
       ),
       LayoutBuilder.horizontal().addControls(
-        ControlBuilder.scope('#/properties/numberControl'),
-        ControlBuilder.scope('#/properties/integerControl'),
+        ControlBuilder.scope('#/properties/age').width('xs'),
+        ControlBuilder.scope('#/properties/total'),
+        ControlBuilder.scope('#/properties/boolean'),
+      ),
+      LayoutBuilder.horizontal()
+        .addControls
+        // ControlBuilder.scope('#/properties/comment').textArea(),
+        (),
+      LayoutBuilder.horizontal().addControls(
+        ControlBuilder.scope('#/properties/autocomplete').autocomplete({}),
       ),
       LayoutBuilder.horizontal().addControls(
-        ControlBuilder.scope('#/properties/booleanControl'),
-      ),
-      LayoutBuilder.horizontal().addControls(
-        ControlBuilder.scope('#/properties/textAreaControl').textArea(),
-      ),
-      LayoutBuilder.horizontal().addControls(
-        ControlBuilder.scope('#/properties/autocomplete').autocomplete({
-          uri: '',
-          uriDetail: '',
-          field: { id: '', label: '' },
-        }),
+        ControlBuilder.scope('#/properties/emails').detail(
+          LayoutBuilder.horizontal().addControls(
+            ControlBuilder.scope('#/properties/email'),
+          ),
+        ),
       ),
     )
     .build(),
 };
+
+// TODO with different sizes

@@ -1,12 +1,12 @@
 <template>
   <button
-    class="flex"
-    @click="sort"
+    class="flex items-center"
+    @click="onSort"
   >
-    <span class="items-center flex-grow pr-2"> {{ column.label }}</span>
+    <span class="flex-grow pr-2"> {{ column.label }}</span>
     <div class="h-4 w-4">
       <Icon
-        v-if="store.sortColumn === sortId"
+        v-if="sortColumn === sortId"
         :icon="sortIcon"
       />
     </div>
@@ -18,22 +18,23 @@ import { computed } from 'vue';
 import type { ColumnDef } from '@ghentcdh/tools/form';
 
 import type { IconDef } from '../../icons';
-import { Icon } from '../../icons';
-import { useTableStore } from '../table.store';
+import { Icon, IconEnum } from '../../icons';
 
-const { column, storeId } = defineProps<{
+const props = defineProps<{
   column: ColumnDef;
-  storeId: string;
+  sortColumn?: string;
+  sortDirection?: 'asc' | 'desc';
 }>();
-const store = useTableStore(storeId);
 
 const sortIcon = computed<IconDef>(() =>
-  store.sortDirection === 'asc' ? 'BarsArrowUp' : 'BarsArrowDown',
+  props.sortDirection === 'asc' ? IconEnum.BarsArrowUp : IconEnum.BarsArrowDown,
 );
 
-const sortId = computed(() => column.options?.sortId ?? column.id);
+const sortId = computed(() => props.column.options?.sortId ?? props.column.id);
 
-const sort = () => {
-  store.sort(sortId.value);
+const onSort = () => {
+  emits('sort', sortId.value);
 };
+
+const emits = defineEmits<{ sort: [column: string] }>();
 </script>

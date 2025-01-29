@@ -7,6 +7,8 @@ import { useFormStore } from './form.store';
 import TableComponent from '../table/table.component.vue';
 import type { TableAction } from '../table/table.model';
 import ModalForm from './modal/modal-form.vue';
+import Card from '../card/card.vue';
+import { IconEnum } from '../icons';
 
 type Data = {
   [key: string]: any;
@@ -80,7 +82,7 @@ const onCloseModal = () => {
         :modal-title="formData.id ? updateTitle : createTitle"
         button-label="Add new record"
         button-save-label="Save"
-        icon="Plus"
+        :icon="IconEnum.Plus"
         :schema="formSchema.form.schema"
         :uischema="formSchema.form.uiSchema"
         @close-modal="onCloseModal"
@@ -89,22 +91,17 @@ const onCloseModal = () => {
     </div>
   </div>
 
-  <div
-    v-if="formSchema.table"
-    class="card w-full xs border-2"
-  >
-    <div class="p-4">
-      <TableComponent
-        v-if="formSchema.uri"
-        :id="`form_table_${id}`"
-        :layout="formSchema.table"
-        :filter-layout="formSchema.filter"
-        :uri="dataUri ?? formSchema.uri"
-        :reload="reload"
-        :actions="tableActions"
-        @edit="edit"
-        @delete="deleteFn"
-      />
-    </div>
-  </div>
+  <Card v-if="formSchema.table">
+    <TableComponent
+      v-if="formSchema.uri"
+      :id="`form_table_${id}`"
+      :layout="formSchema.table"
+      :filter-layout="formSchema.filter"
+      :uri="dataUri ?? formSchema.uri"
+      :reload="reload"
+      :actions="tableActions"
+      @edit="edit"
+      @delete="deleteFn"
+    />
+  </Card>
 </template>
