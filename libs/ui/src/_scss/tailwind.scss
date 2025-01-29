@@ -12,6 +12,10 @@
   --ugent-inactive-gray: #B4B4B4
 }
 
+@theme{
+  --font-display: "PannoTextMedium", Arial, sans-serif;
+}
+
 @plugin "daisyui/theme" {
   name: "ugent";
   default: true;
