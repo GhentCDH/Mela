@@ -3,10 +3,13 @@ import { type Preview, setup } from '@storybook/vue3';
 import { createPinia } from 'pinia';
 import { type App } from 'vue';
 
+import { ClickOutside } from '../src/directives/click-outside.directive';
+
 const pinia = createPinia();
 
 setup((app: App) => {
   app.use(pinia);
+  app.directive('click-outside', ClickOutside);
 });
 
 const preview: Preview = {
