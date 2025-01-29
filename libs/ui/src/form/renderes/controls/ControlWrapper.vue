@@ -6,9 +6,7 @@
     >
       {{ label }} <span v-if="showAsterisk">*</span>
     </legend>
-    <label class="fieldset-label">
-      <slot />
-    </label>
+    <slot />
     <p :class="['fieldset-label h-4', { 'text-error': showErrors }]">
       {{ showErrors ? errors : showDescription ? description : null }}
     </p>
@@ -94,7 +92,7 @@ export default defineComponent({
       return this.required; //&& !this.appliedOptions?.hideRequiredAsterisk;
     },
     showErrors(): boolean {
-      return showErrors(this);
+      return showErrors(this.isTouched, this.isFocused, this.errors);
     },
   },
 });

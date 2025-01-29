@@ -3,38 +3,42 @@
     v-bind="controlWrapper"
     :styles="styles"
   >
-    <div class="dropdown dropdown-open w-full">
-      <input
-        :id="control.id + '-input'"
-        v-model="query"
-        autocomplete="off"
-        type="text"
-        :class="inputClass"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
-        @focus="onFocus"
-        @blur="onBlur"
-      >
-      <ul
-        v-if="results.length"
-        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-      >
-        <li
-          v-for="result in results"
-          :key="result[field.id]"
-        >
-          <button
-            class="w-full"
-            type="button"
-            @click="selectResult(result)"
-          >
-            {{ result[field.label] }}
-          </button>
-        </li>
-      </ul>
-    </div>
+    <input
+      :id="control.id + '-input'"
+      v-model="query"
+      autocomplete="off"
+      type="text"
+      :class="inputClass"
+      :disabled="!control.enabled"
+      :autofocus="appliedOptions.focus"
+      :placeholder="appliedOptions.placeholder"
+      @focus="onFocus"
+      @blur="onBlur"
+    >
   </control-wrapper>
+  <div v-click-outside="() => (results = [])">
+    <ul
+      v-if="results.length"
+      :class="[
+        `bg-base-100 w-52 shadow -mt-5
+        absolute`,
+      ]"
+    >
+      <li
+        v-for="(result, index) in results"
+        :key="result[field.id]"
+      >
+        <button
+          class="w-full h-8 border-b-1 border-gray-200 border-x-0 border-t-0 px-4 py-2 text-left hover:bg-primary-content cursor-pointer"
+          type="button"
+          @click="selectResult(result)"
+          @blur="leaveResult(index)"
+        >
+          {{ result[field.label] }}
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -69,21 +73,28 @@ const controlRenderer = defineComponent({
       (target) => target.value ?? undefined,
     );
 
-    const results = ref([]);
-    const query = ref('');
-    const selectValue = ref(false);
-
+    const results = ref<any[]>([]);
     const field = control.appliedOptions.value.field;
+    const initialValue = control.control.value.data ?? undefined;
+
+    const query = ref(initialValue?.[field.label] ?? '');
+    const open = ref(false);
+    const selectValue = ref(false);
 
     const selectResult = (result: any) => {
       selectValue.value = true;
-
       handleChange(result);
     };
 
     const handleChange = (result: any) => {
       const { path } = control.control.value;
       control.handleChange(path, result);
+    };
+    const close = () => {
+      open.value = false;
+    };
+    const leaveResult = (index: number) => {
+      if (results.value?.length === index + 1) results.value = [];
     };
 
     return {
@@ -94,18 +105,25 @@ const controlRenderer = defineComponent({
       field,
       selectResult,
       handleChange,
+      open,
+      close,
+      leaveResult,
     };
   },
   computed: {
-    inputClass(): boolean {
-      return inputClasses(this);
+    inputClass() {
+      return inputClasses(
+        this.styles,
+        this.isFocused,
+        this.isTouched,
+        this.controlWrapper?.errors,
+      );
     },
   },
   watch: {
     'control.data': function (val) {
       // If there is no id the query is running
       if (val && !val[this.field.id]) return;
-
       this.selectValue = true;
       this.results = [];
       this.query = val?.[this.field.label] ?? '';
@@ -117,7 +135,8 @@ const controlRenderer = defineComponent({
         return;
       }
 
-      // TODO check an option to allow new values
+      this.open = true;
+      //Option to allow new values
       this.handleChange({ [this.field.label]: query });
 
       const { uri } = this.appliedOptions;

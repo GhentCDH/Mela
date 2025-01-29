@@ -5,19 +5,21 @@
       :styles="styles"
       :hide-label="true"
     >
-      <input
-        :id="control.id + '-input'"
-        type="checkbox"
-        :class="['checkbox']"
-        :value="control.data"
-        :disabled="!control.enabled"
-        :autofocus="appliedOptions.focus"
-        :placeholder="appliedOptions.placeholder"
-        @change="onChange"
-        @focus="onFocus"
-        @blur="onBlur"
-      >
-      <span class="font-bold text-black"> {{ control.label }}</span>
+      <label class="fieldset-label">
+        <input
+          :id="control.id + '-input'"
+          type="checkbox"
+          :class="['checkbox']"
+          :value="control.data"
+          :disabled="!control.enabled"
+          :autofocus="appliedOptions.focus"
+          :placeholder="appliedOptions.placeholder"
+          @change="onChange"
+          @focus="onFocus"
+          @blur="onBlur"
+        >
+        <span class="font-bold text-black"> {{ control.label }}</span>
+      </label>
     </control-wrapper>
   </div>
 </template>

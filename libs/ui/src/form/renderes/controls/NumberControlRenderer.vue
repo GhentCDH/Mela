@@ -52,8 +52,13 @@ const controlRenderer = defineComponent({
       const options: any = this.appliedOptions;
       return options.step ?? 0.1;
     },
-    inputClass(): boolean {
-      return inputClasses(this);
+    inputClass() {
+      return inputClasses(
+        this.styles,
+        this.isFocused,
+        this.isTouched,
+        this.controlWrapper?.errors,
+      );
     },
   },
 });

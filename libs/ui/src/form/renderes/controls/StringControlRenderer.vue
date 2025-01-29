@@ -50,8 +50,13 @@ const controlRenderer = defineComponent({
     );
   },
   computed: {
-    inputClass(): boolean {
-      return inputClasses(this);
+    inputClass() {
+      return inputClasses(
+        this.styles,
+        this.isFocused,
+        this.isTouched,
+        this.controlWrapper?.errors,
+      );
     },
   },
 });
