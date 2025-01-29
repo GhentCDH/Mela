@@ -3873,8 +3873,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromedriver@132.0.1:
-    resolution: {integrity: sha512-M3XyeyOdYfEiw3plMeEvF/iMwluOH9+8K5mJwFmxllFBPfHvDGX1Oeys3GNzMyhqQ1lJbRX7B6bp+323LLd5lg==}
+  chromedriver@132.0.2:
+    resolution: {integrity: sha512-aywIWYggkAwdFN5zkyYHXUyUBJt2hFMweS3XU0XINIdfOG386z+sqAlExB4P1A10cSz+SO5gxcCgxd8UJNBvgg==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -13303,7 +13303,7 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromedriver@132.0.1:
+  chromedriver@132.0.2:
     dependencies:
       '@testim/chrome-version': 1.1.4
       axios: 1.7.9
@@ -15894,7 +15894,7 @@ snapshots:
     dependencies:
       jwk-to-pem: 2.0.7
     optionalDependencies:
-      chromedriver: 132.0.1
+      chromedriver: 132.0.2
     transitivePeerDependencies:
       - debug
       - supports-color
