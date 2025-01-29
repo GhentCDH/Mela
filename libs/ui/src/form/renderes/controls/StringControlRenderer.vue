@@ -6,7 +6,7 @@
     <input
       :id="control.id + '-input'"
       type="text"
-      :class="[styles.control.input]"
+      :class="inputClass"
       :value="control.data"
       :disabled="!control.enabled"
       :autofocus="appliedOptions.focus"
@@ -32,6 +32,7 @@ import { defineComponent } from 'vue';
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import ControlWrapper from './ControlWrapper.vue';
 import { isStringFormat } from '../tester';
+import { inputClasses } from './utils/style';
 import { useVanillaControlCustom } from './utils/vanillaControl';
 
 const controlRenderer = defineComponent({
@@ -47,6 +48,11 @@ const controlRenderer = defineComponent({
       useJsonFormsControl(props),
       (target) => target.value ?? undefined,
     );
+  },
+  computed: {
+    inputClass(): boolean {
+      return inputClasses(this);
+    },
   },
 });
 

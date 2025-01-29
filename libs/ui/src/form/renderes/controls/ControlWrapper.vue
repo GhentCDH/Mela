@@ -1,30 +1,18 @@
 <template>
-  <div :class="[styles.control.wrapper]">
-    <label
-      v-if="visible"
-      :id="id"
-      :for="id + '-input'"
-      :class="[
-        styles.control.root,
-        {
-          'form-field-error': showErrors,
-        },
-      ]"
+  <fieldset class="fieldset">
+    <legend
+      v-if="!hideLabel"
+      class="fieldset-legend"
     >
-      <div :class="[styles.control.label]">
-        {{ label }}
-        <span v-if="showAsterisk">*</span>
-      </div>
-      <div class="form-control--content">
-        <slot />
-      </div>
+      {{ label }} <span v-if="showAsterisk">*</span>
+    </legend>
+    <label class="fieldset-label">
+      <slot />
     </label>
-    <div :class="[styles.control.description]">
-      <span>
-        {{ showErrors ? errors : showDescription ? description : null }}
-      </span>
-    </div>
-  </div>
+    <p :class="['fieldset-label h-4', { 'text-error': showErrors }]">
+      {{ showErrors ? errors : showDescription ? description : null }}
+    </p>
+  </fieldset>
 </template>
 
 <script lang="ts">
@@ -33,6 +21,8 @@ import type { Styles } from '@jsonforms/vue-vanilla';
 import type { Options } from '@vitejs/plugin-vue';
 import type { PropType } from 'vue';
 import { defineComponent } from 'vue';
+
+import { showErrors } from './utils/style';
 
 export default defineComponent({
   name: 'ControlWrapper',
@@ -81,6 +71,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    hideLabel: {
+      required: false as const,
+      type: Boolean,
+      default: false,
+    },
     styles: {
       required: true,
       type: Object as PropType<Styles>,
@@ -99,7 +94,7 @@ export default defineComponent({
       return this.required; //&& !this.appliedOptions?.hideRequiredAsterisk;
     },
     showErrors(): boolean {
-      return !!(this.isTouched && this.errors);
+      return showErrors(this);
     },
   },
 });

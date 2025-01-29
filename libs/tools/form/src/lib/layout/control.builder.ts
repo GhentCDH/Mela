@@ -124,14 +124,20 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  width(width: 'small') {
-    const sizes = { small: 'w-24' };
+  width(width: 'xs' | 'sm' | 'md' | 'lg' | 'xl'): ControlBuilder {
+    const sizes = {
+      xs: 'w-12',
+      sm: 'w-24',
+      md: 'w-36',
+      lg: 'w-48',
+      xl: 'w-64',
+    };
     this.options = {
       ...this.options,
       styles: {
         ...this.options?.styles,
         control: {
-          wrapper: sizes[width] ?? sizes.small,
+          wrapper: sizes[width] ?? sizes.sm,
         },
       },
     };

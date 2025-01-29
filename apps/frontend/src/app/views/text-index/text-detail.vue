@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="store.text"
-    class="max-w-screen-lg m-auto p-2"
-  >
+  <Card v-if="store.text">
     <FormComponent
       id="text-detail"
       v-model="formData"
@@ -12,14 +9,14 @@
       @valid="onValid($event)"
       @change="onChange"
     />
-  </div>
+  </Card>
 </template>
 <script setup lang="ts">
 import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import type { StepperEvent, StepperEventListener } from '@ghentcdh/ui';
+import type { Card, StepperEvent, StepperEventListener } from '@ghentcdh/ui';
 import { FormComponent } from '@ghentcdh/ui';
 
 import { useTextStore } from './text.store';

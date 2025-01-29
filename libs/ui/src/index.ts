@@ -15,3 +15,5 @@ export * from './form/renderes/layouts/stepper.store';
 export * from './const';
 
 import './styles.scss';
+
+export { default as Card } from './card/card.vue';

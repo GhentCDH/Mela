@@ -1,8 +1,9 @@
 <template>
-  <div class="pointer checkbox-wrapper items-center">
+  <div class="flex justify-around flex-col h-full">
     <control-wrapper
       v-bind="controlWrapper"
       :styles="styles"
+      :hide-label="true"
     >
       <input
         :id="control.id + '-input'"
@@ -16,6 +17,7 @@
         @focus="onFocus"
         @blur="onBlur"
       >
+      <span class="font-bold text-black"> {{ control.label }}</span>
     </control-wrapper>
   </div>
 </template>

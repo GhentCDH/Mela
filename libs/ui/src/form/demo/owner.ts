@@ -5,6 +5,11 @@ export const OwnerWithRelationsFormDetail = {
     createdAt: { type: 'string', format: 'date-time' },
     name: { type: 'string' },
     firstname: { type: 'string' },
+    age: { type: 'integer' },
+    total: { type: 'number' },
+    boolean: { type: 'boolean' },
+    comment: { type: 'string' },
+    autocomplete: { type: 'string' },
     emails: {
       type: 'array',
       items: {
@@ -19,6 +24,6 @@ export const OwnerWithRelationsFormDetail = {
       },
     },
   },
-  required: [],
+  required: ['name'],
   additionalProperties: false,
 };
