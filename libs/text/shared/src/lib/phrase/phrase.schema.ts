@@ -11,16 +11,16 @@ import {
 
 // TODO add autocomplete for textschema
 
-const uiSchema = LayoutBuilder.vertical()
+const uiSchema = LayoutBuilder.vertical<Phrase>()
   .addControls(
     LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/book_nbr'),
-      ControlBuilder.scope('#/properties/chapter_nbr'),
-      ControlBuilder.scope('#/properties/phrase_nbr'),
+      ControlBuilder.properties('book_nbr'),
+      ControlBuilder.properties('chapter_nbr'),
+      ControlBuilder.properties('phrase_nbr'),
     ),
     LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/source_text').textArea(),
-      ControlBuilder.scope('#/properties/translation').textArea(),
+      ControlBuilder.properties('source_text').textArea(),
+      ControlBuilder.properties('translation').textArea(),
     ),
   )
   .build();

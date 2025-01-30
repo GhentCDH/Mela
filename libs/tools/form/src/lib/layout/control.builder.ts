@@ -67,27 +67,11 @@ export class ControlBuilder<
     super(type);
   }
 
-  /**
-   * @deprecated use asObject instead
-   * @param scope
-   */
-  static object<TYPE>(scope: string): ControlBuilder<TYPE> {
-    return new ControlBuilder<TYPE>(scope, 'Object');
-  }
-
   static asObject<TYPE>(property: keyof TYPE): ControlBuilder<TYPE> {
     return new ControlBuilder<TYPE>(
       `#/properties/${property as string}`,
       'Object',
     );
-  }
-
-  /**
-   * @deprecated use asObject instead, or properties
-   * @param scope
-   */
-  static scope<TYPE>(scope: string): ControlBuilder<TYPE> {
-    return new ControlBuilder<TYPE>(scope);
   }
 
   static properties<TYPE>(property: keyof TYPE): ControlBuilder<TYPE> {
