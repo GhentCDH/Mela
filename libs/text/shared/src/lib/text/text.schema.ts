@@ -18,13 +18,13 @@ import {
 // TODO add autocomplete for textschema
 
 const textContentStep = LayoutBuilder.horizontal().addControls(
-  ControlBuilder.scope('#/properties/textContent').detailFixed(
-    LayoutBuilder.vertical().addControls(
-      ControlBuilder.scope('#/properties/text_type'),
-      ControlBuilder.scope('#/properties/language'),
-      ControlBuilder.scope('#/properties/content').markdown(),
-    ),
-  ),
+  ControlBuilder.properties('textContent')
+    .detailFixed(
+      LayoutBuilder.vertical().addControls(
+        ControlBuilder.properties('content').markdown(),
+      ),
+    )
+    .labelKey('text_type'),
 );
 
 const detailStep = LayoutBuilder.vertical().addControls(
@@ -38,7 +38,7 @@ const detailStep = LayoutBuilder.vertical().addControls(
         label: 'name',
       },
     }),
-    ControlBuilder.scope('#/properties/year').width('small'),
+    ControlBuilder.scope('#/properties/year').width('sm'),
   ),
 );
 

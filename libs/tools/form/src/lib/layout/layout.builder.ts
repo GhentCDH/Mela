@@ -4,7 +4,7 @@ import type { ControlBuilder, ControlTypes } from './control.builder';
 import type { GroupBuilder } from './group.builder';
 import type { TextCellBuilder } from '../table/builder';
 
-export type ElementBuilder =
+export type ElementBuilder<TYPE> =
   | ControlBuilder
   | LayoutBuilder
   | TextCellBuilder
@@ -16,7 +16,7 @@ export type LayoutType = {
   elements: Array<ControlTypes | LayoutType>;
 };
 
-export class LayoutBuilder extends Builder<LayoutType> {
+export class LayoutBuilder<TYPE = any> extends Builder<LayoutType> {
   private elements: Array<ElementBuilder> = [];
   private options: any;
 
@@ -47,7 +47,7 @@ export class LayoutBuilder extends Builder<LayoutType> {
     return new LayoutBuilder('VerticalLayout');
   }
 
-  addControl(control: ElementBuilder) {
+  addControl(control: ElementBuilder<TYPE>) {
     this.elements.push(control);
     return this;
   }

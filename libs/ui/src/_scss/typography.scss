@@ -26,5 +26,13 @@
     &:hover {
       @apply no-underline;
     }
+
+    &.btn {
+      @apply no-underline;
+    }
+
+    .menu & {
+      @apply text-neutral no-underline;
+    }
   }
 }

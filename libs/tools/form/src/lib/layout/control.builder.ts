@@ -67,6 +67,10 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return new ControlBuilder(scope);
   }
 
+  static properties(property: string): ControlBuilder {
+    return new ControlBuilder(`#/properties/${property}`);
+  }
+
   detail(layoutBuilder: LayoutBuilder, label?: string): ControlBuilder {
     this._detail = layoutBuilder;
     this.options = {
@@ -86,10 +90,10 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  label(label: string): ControlBuilder {
+  labelKey(labelKey: string): ControlBuilder {
     this.options = {
       ...(this.options ?? {}),
-      label: label,
+      labelKey: labelKey,
     };
     return this;
   }

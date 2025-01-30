@@ -3,7 +3,10 @@
     v-if="control.visible"
     :class="styles.arrayList.root"
   >
-    <legend :class="styles.arrayList.legend">
+    <legend
+      v-if="!labelKey"
+      :class="styles.arrayList.legend"
+    >
       <label :class="styles.arrayList.label">
         {{ control.label }}
       </label>
@@ -14,14 +17,23 @@
         :key="`${control.path}-${index}`"
         :class="styles.fixedArrayList.item"
       >
-        <dispatch-renderer
-          :schema="control.schema"
-          :uischema="childUiSchema"
-          :path="composePaths(control.path, `${index}`)"
-          :enabled="control.enabled"
-          :renderers="control.renderers"
-          :cells="control.cells"
-        />
+        <fieldset class="fieldset">
+          <legend
+            v-if="labelKey"
+            :class="styles.arrayList.legend"
+          >
+            {{ element[labelKey]?.toLowerCase() }}
+          </legend>
+
+          <dispatch-renderer
+            :schema="control.schema"
+            :uischema="childUiSchema"
+            :path="composePaths(control.path, `${index}`)"
+            :enabled="control.enabled"
+            :renderers="control.renderers"
+            :cells="control.cells"
+          />
+        </fieldset>
       </div>
     </div>
     <div
@@ -82,16 +94,16 @@ const controlRenderer = defineComponent({
         this.control.label,
       );
     },
+    labelKey(): string {
+      const key = this.uischema?.options?.labelKey;
+      if (!key) return null;
+
+      return key;
+    },
   },
   methods: {
     composePaths,
     createDefaultValue,
-    addButtonClick() {
-      this.addItem(
-        this.control.path,
-        createDefaultValue(this.control.schema, this.control.rootSchema),
-      )();
-    },
   },
 });
 
