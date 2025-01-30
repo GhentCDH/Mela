@@ -1,4 +1,5 @@
 import { PhraseForm } from '@ghentcdh/mela/generated/forms';
+import type { Phrase } from '@ghentcdh/mela/generated/types';
 import { PhraseSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
@@ -10,32 +11,29 @@ import {
 
 // TODO add autocomplete for textschema
 
-const uiSchema = LayoutBuilder.vertical()
+const uiSchema = LayoutBuilder.vertical<Phrase>()
   .addControls(
     LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/mela_id'),
-      ControlBuilder.scope('#/properties/book_nbr'),
-      ControlBuilder.scope('#/properties/chapter_nbr'),
-      ControlBuilder.scope('#/properties/phrase_nbr'),
+      ControlBuilder.properties('book_nbr'),
+      ControlBuilder.properties('chapter_nbr'),
+      ControlBuilder.properties('phrase_nbr'),
     ),
     LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/source_text').textArea(),
-      ControlBuilder.scope('#/properties/translation').textArea(),
+      ControlBuilder.properties('source_text').textArea(),
+      ControlBuilder.properties('translation').textArea(),
     ),
   )
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Phrase>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/mela_id'),
-    TextCellBuilder.scope('#/properties/phrase_nbr'),
-    TextCellBuilder.scope('#/properties/source_text'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('phrase_nbr'),
+    TextCellBuilder.properties('source_text'),
   )
   .build();
 
 const dtoSchema = PhraseSchema.pick({
-  mela_id: true,
   book_nbr: true,
   chapter_nbr: true,
   phrase_nbr: true,

@@ -15,10 +15,14 @@ const mergedStyles = mergeStyles(defaultStyles, {
     root: 'flex flex-row gap-x-2',
     item: 'w-full',
   },
+  arrayList: {
+    root: 'fieldset',
+    legend: 'fieldset-legend text-xl capitalize',
+  },
   control: {
-    root: 'form-control w-full',
-    wrapper: 'flex flex-col',
-    label: 'text-md font-semibold justify-start gap-2',
+    root: 'fieldset',
+    wrapper: 'fieldset',
+    label: 'fieldset-legend',
     error: '',
     input: 'input',
     description: 'form-control--description label text-xs text-gray-500',

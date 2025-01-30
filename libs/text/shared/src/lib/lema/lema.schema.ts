@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { LemaForm } from '@ghentcdh/mela/generated/forms';
+import type { Lema } from '@ghentcdh/mela/generated/types';
 import { LemaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
@@ -10,11 +11,11 @@ import {
   createSchema,
 } from '@ghentcdh/tools/form';
 
-const uiSchema = LayoutBuilder.vertical()
+const uiSchema = LayoutBuilder.vertical<Lema>()
   .addControls(
-    ControlBuilder.scope('#/properties/word'),
-    ControlBuilder.scope('#/properties/link'),
-    ControlBuilder.object('#/properties/speech').autocomplete({
+    ControlBuilder.properties('word'),
+    ControlBuilder.properties('link'),
+    ControlBuilder.asObject('speech').autocomplete({
       uri: '/api/speech?filter=name:',
       uriDetail: '/api/speech',
       field: {
@@ -22,27 +23,25 @@ const uiSchema = LayoutBuilder.vertical()
         label: 'name',
       },
     }),
-    LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/grammatical'),
-      ControlBuilder.scope('#/properties/comparative'),
-      ControlBuilder.scope('#/properties/superlative'),
-      ControlBuilder.scope('#/properties/participle'),
+    LayoutBuilder.horizontal<Lema>().addControls(
+      ControlBuilder.properties('grammatical'),
+      ControlBuilder.properties('comparative'),
+      ControlBuilder.properties('superlative'),
+      ControlBuilder.properties('participle'),
     ),
   )
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Lema>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/word'),
-    TextCellBuilder.scope('#/properties/speech')
-      .key('name')
-      .setSortId('speech.name'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('word'),
+    TextCellBuilder.properties('speech').key('name').setSortId('speech.name'),
   )
   .build();
 
-const filterSchema = LayoutBuilder.vertical()
-  .addControls(ControlBuilder.scope('#/properties/word'))
+const filterSchema = LayoutBuilder.vertical<Lema>()
+  .addControls(ControlBuilder.properties('word'))
   .build();
 
 const dtoSchema = LemaSchema.pick({

@@ -17,7 +17,7 @@ export type TextCellType = {
   options?: KeyValueOption;
 };
 
-export class TextCellBuilder extends Builder<TextCellType> {
+export class TextCellBuilder<TYPE> extends Builder<TextCellType> {
   private options: KeyValueOption | TextCellOption | undefined;
 
   private constructor(
@@ -27,11 +27,11 @@ export class TextCellBuilder extends Builder<TextCellType> {
     super(type);
   }
 
-  static scope(scope: string): TextCellBuilder {
-    return new TextCellBuilder(scope);
+  static properties<TYPE>(property: keyof TYPE): TextCellBuilder<TYPE> {
+    return new TextCellBuilder<TYPE>(`#/properties/${property as string}`);
   }
 
-  key(key: string): TextCellBuilder {
+  key(key: string): TextCellBuilder<TYPE> {
     this.options = {
       format: 'keyValue',
       key: key,
@@ -39,7 +39,7 @@ export class TextCellBuilder extends Builder<TextCellType> {
     return this;
   }
 
-  setSortId(sortId: string): TextCellBuilder {
+  setSortId(sortId: string): TextCellBuilder<TYPE> {
     this.options = {
       ...(this.options ?? { format: 'TextCell' }),
       sortId: sortId,
@@ -56,23 +56,23 @@ export class TextCellBuilder extends Builder<TextCellType> {
   }
 }
 
-export class TableBuilder {
-  private builder: LayoutBuilder;
+export class TableBuilder<TYPE> {
+  private builder: LayoutBuilder<TYPE>;
 
   private constructor() {
     this.builder = LayoutBuilder.table();
   }
 
-  static init() {
-    return new TableBuilder();
+  static init<TYPE>() {
+    return new TableBuilder<TYPE>();
   }
 
-  addControl(control: TextCellBuilder) {
+  addControl(control: TextCellBuilder<TYPE>) {
     this.builder.addControls(control);
     return this;
   }
 
-  addControls(...controls: Array<TextCellBuilder>) {
+  addControls(...controls: Array<TextCellBuilder<TYPE>>) {
     this.builder.addControls(...controls);
     return this;
   }

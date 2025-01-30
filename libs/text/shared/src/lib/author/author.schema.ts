@@ -1,4 +1,5 @@
 import { AuthorForm } from '@ghentcdh/mela/generated/forms';
+import type { Author } from '@ghentcdh/mela/generated/types';
 import { AuthorSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
@@ -8,19 +9,19 @@ import {
   createSchema,
 } from '@ghentcdh/tools/form';
 
-const uiSchema = LayoutBuilder.vertical()
-  .addControls(ControlBuilder.scope('#/properties/name'))
+const uiSchema = LayoutBuilder.vertical<Author>()
+  .addControls(ControlBuilder.properties('name'))
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Author>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/name'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('name'),
   )
   .build();
 
-const filterSchema = LayoutBuilder.vertical()
-  .addControls(ControlBuilder.scope('#/properties/name'))
+const filterSchema = LayoutBuilder.vertical<Author>()
+  .addControls(ControlBuilder.properties('name'))
   .build();
 
 const dtoSchema = AuthorSchema.pick({

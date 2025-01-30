@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { TextForm } from '@ghentcdh/mela/generated/forms';
+import type { Text, TextContent } from '@ghentcdh/mela/generated/types';
 import {
   AuthorSchema,
   TextContentSchema,
@@ -17,20 +18,20 @@ import {
 
 // TODO add autocomplete for textschema
 
-const textContentStep = LayoutBuilder.horizontal().addControls(
-  ControlBuilder.scope('#/properties/textContent').detailFixed(
-    LayoutBuilder.vertical().addControls(
-      ControlBuilder.scope('#/properties/text_type'),
-      ControlBuilder.scope('#/properties/language'),
-      ControlBuilder.scope('#/properties/content').markdown(),
-    ),
-  ),
+const textContentStep = LayoutBuilder.horizontal<Text>().addControls(
+  ControlBuilder.properties('textContent')
+    .detailFixed(
+      LayoutBuilder.vertical<TextContent>().addControls(
+        ControlBuilder.properties('content').markdown(),
+      ),
+    )
+    .labelKey('text_type'),
 );
 
 const detailStep = LayoutBuilder.vertical().addControls(
-  LayoutBuilder.horizontal().addControls(
-    ControlBuilder.scope('#/properties/name'),
-    ControlBuilder.object('#/properties/author').autocomplete({
+  LayoutBuilder.horizontal<Text>().addControls(
+    ControlBuilder.properties('name'),
+    ControlBuilder.asObject('author').autocomplete({
       uri: '/api/author?filter=name:',
       uriDetail: '/api/author/',
       field: {
@@ -38,7 +39,7 @@ const detailStep = LayoutBuilder.vertical().addControls(
         label: 'name',
       },
     }),
-    ControlBuilder.scope('#/properties/year').width('small'),
+    ControlBuilder.properties('year').width('sm'),
   ),
 );
 
@@ -51,21 +52,19 @@ const uiSchema = LayoutBuilder.stepper()
   )
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Text>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/name'),
-    TextCellBuilder.scope('#/properties/year'),
-    TextCellBuilder.scope('#/properties/author')
-      .key('name')
-      .setSortId('author.name'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('name'),
+    TextCellBuilder.properties('year'),
+    TextCellBuilder.properties('author').key('name').setSortId('author.name'),
   )
   .build();
 
 const filterSchema = LayoutBuilder.vertical()
   .addControls(
-    LayoutBuilder.horizontal().addControls(
-      ControlBuilder.scope('#/properties/name'),
+    LayoutBuilder.horizontal<Text>().addControls(
+      ControlBuilder.properties('name'),
       // TODO autocomplete
       // ControlBuilder.object('#/properties/author').autocomplete({
       //   uri: '/api/author?name=',
@@ -75,7 +74,7 @@ const filterSchema = LayoutBuilder.vertical()
       //     label: 'name',
       //   },
       // }),
-      ControlBuilder.scope('#/properties/year'),
+      ControlBuilder.properties('year'),
     ),
   )
   .build();

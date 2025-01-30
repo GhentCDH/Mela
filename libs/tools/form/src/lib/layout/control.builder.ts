@@ -15,6 +15,10 @@ export interface TextAreaOptions extends ControlOption {
   format: 'textArea';
 }
 
+export interface DetailOptions extends ControlOption {
+  format: 'fixedArray';
+}
+
 export interface AutocompleteOptions extends ControlOption {
   format: 'autocomplete';
   uri: string;
@@ -32,15 +36,19 @@ export interface ControlOption {
   styles?: Partial<any>;
   elements?: any;
   elementLabelProp?: string;
+  labelKey?: string;
 }
 
 export type ControlTypes = {
   type: 'Control' | 'Object' | 'TextCell';
   scope: string;
-  options?: TextAreaOptions | AutocompleteOptions;
+  options?: TextAreaOptions | AutocompleteOptions | DetailOptions;
 };
 
-export class ControlBuilder extends Builder<ControlTypes> {
+export class ControlBuilder<
+  TYPE,
+  KEY = keyof TYPE,
+> extends Builder<ControlTypes> {
   private options: ControlOption = {
     format: 'Control',
     styles: {
@@ -50,7 +58,7 @@ export class ControlBuilder extends Builder<ControlTypes> {
     },
   };
 
-  private _detail?: LayoutBuilder;
+  private _detail?: LayoutBuilder<any>;
 
   private constructor(
     private readonly scope: string,
@@ -59,15 +67,18 @@ export class ControlBuilder extends Builder<ControlTypes> {
     super(type);
   }
 
-  static object(scope: string) {
-    return new ControlBuilder(scope, 'Object');
+  static asObject<TYPE>(property: keyof TYPE): ControlBuilder<TYPE> {
+    return new ControlBuilder<TYPE>(
+      `#/properties/${property as string}`,
+      'Object',
+    );
   }
 
-  static scope(scope: string): ControlBuilder {
-    return new ControlBuilder(scope);
+  static properties<TYPE>(property: keyof TYPE): ControlBuilder<TYPE> {
+    return new ControlBuilder<TYPE>(`#/properties/${property as string}`);
   }
 
-  detail(layoutBuilder: LayoutBuilder, label?: string): ControlBuilder {
+  detail<TYPE>(layoutBuilder: LayoutBuilder<TYPE>, label?: string) {
     this._detail = layoutBuilder;
     this.options = {
       ...(this.options ?? {}),
@@ -76,7 +87,7 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  detailFixed(layoutBuilder: LayoutBuilder, label?: string): ControlBuilder {
+  detailFixed<TYPE>(layoutBuilder: LayoutBuilder<TYPE>, label?: string) {
     this._detail = layoutBuilder;
     this.options = {
       ...(this.options ?? {}),
@@ -86,15 +97,15 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  label(label: string): ControlBuilder {
+  labelKey(labelKey: string) {
     this.options = {
       ...(this.options ?? {}),
-      label: label,
+      labelKey: labelKey,
     };
     return this;
   }
 
-  readonly(): ControlBuilder {
+  readonly(): ControlBuilder<TYPE> {
     this.options = {
       format: ControlType.string,
       readonly: true,
@@ -102,13 +113,13 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  markdown(): ControlBuilder {
+  markdown(): ControlBuilder<TYPE> {
     this.options = { format: ControlType.markdown };
 
     return this;
   }
 
-  textArea(options?: Omit<TextAreaOptions, 'format'>): ControlBuilder {
+  textArea(options?: Omit<TextAreaOptions, 'format'>) {
     this.options = {
       format: ControlType.textArea,
       ...(options ?? {}),
@@ -116,7 +127,7 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  autocomplete(options: Omit<AutocompleteOptions, 'format'>): ControlBuilder {
+  autocomplete(options: Omit<AutocompleteOptions, 'format'>) {
     this.options = {
       format: ControlType.autocomplete,
       ...options,
@@ -124,7 +135,7 @@ export class ControlBuilder extends Builder<ControlTypes> {
     return this;
   }
 
-  width(width: 'xs' | 'sm' | 'md' | 'lg' | 'xl'): ControlBuilder {
+  width(width: 'xs' | 'sm' | 'md' | 'lg' | 'xl') {
     const sizes = {
       xs: 'w-12',
       sm: 'w-24',
