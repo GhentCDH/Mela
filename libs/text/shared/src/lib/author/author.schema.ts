@@ -1,4 +1,5 @@
 import { AuthorForm } from '@ghentcdh/mela/generated/forms';
+import type { Author} from '@ghentcdh/mela/generated/types';
 import { AuthorSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
@@ -12,10 +13,10 @@ const uiSchema = LayoutBuilder.vertical()
   .addControls(ControlBuilder.scope('#/properties/name'))
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Author>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/name'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('name'),
   )
   .build();
 

@@ -1,23 +1,22 @@
-import { Builder } from './builder';
+import { BuilderWithElements } from './builder';
 import type { CategoryBuilder } from './category.builder';
 import type { ControlBuilder, ControlTypes } from './control.builder';
 import type { GroupBuilder } from './group.builder';
 import type { TextCellBuilder } from '../table/builder';
 
 export type ElementBuilder<TYPE> =
-  | ControlBuilder
-  | LayoutBuilder
-  | TextCellBuilder
-  | CategoryBuilder
-  | GroupBuilder;
+  | ControlBuilder<TYPE>
+  | LayoutBuilder<TYPE>
+  | CategoryBuilder<TYPE>
+  | GroupBuilder<TYPE>
+  | TextCellBuilder<TYPE>;
 
 export type LayoutType = {
   type: 'HorizontalLayout' | 'VerticalLayout';
   elements: Array<ControlTypes | LayoutType>;
 };
 
-export class LayoutBuilder<TYPE = any> extends Builder<LayoutType> {
-  private elements: Array<ElementBuilder> = [];
+export class LayoutBuilder<TYPE> extends BuilderWithElements<LayoutType, TYPE> {
   private options: any;
 
   protected constructor(
@@ -28,8 +27,8 @@ export class LayoutBuilder<TYPE = any> extends Builder<LayoutType> {
     this.options = options;
   }
 
-  static horizontal() {
-    return new LayoutBuilder('HorizontalLayout');
+  static horizontal<TYPE>() {
+    return new LayoutBuilder<TYPE>('HorizontalLayout');
   }
 
   static stepper(hideNavButtons = false) {
@@ -43,24 +42,14 @@ export class LayoutBuilder<TYPE = any> extends Builder<LayoutType> {
     return new LayoutBuilder('table');
   }
 
-  static vertical() {
-    return new LayoutBuilder('VerticalLayout');
-  }
-
-  addControl(control: ElementBuilder<TYPE>) {
-    this.elements.push(control);
-    return this;
-  }
-
-  addControls(...controls: Array<ElementBuilder>) {
-    this.elements.push(...controls);
-    return this;
+  static vertical<TYPE>() {
+    return new LayoutBuilder<TYPE>('VerticalLayout');
   }
 
   override build(): LayoutType {
     return {
       type: this.type,
-      elements: this.elements.map((e) => e.build()),
+      elements: this.buildElements(),
       options: this.options,
     } as LayoutType;
   }

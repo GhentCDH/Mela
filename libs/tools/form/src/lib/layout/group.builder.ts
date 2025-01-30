@@ -1,15 +1,16 @@
-import { Builder } from './builder';
+import { BuilderWithElements } from './builder';
 import type { ElementBuilder } from './layout.builder';
 
-export type GroupType = {
+export type GroupType<TYPE> = {
   type: 'Group';
   label: string;
-  elements?: ElementBuilder[];
+  elements?: ElementBuilder<TYPE>[];
 };
 
-export class GroupBuilder extends Builder<GroupType> {
-  private elements: Array<ElementBuilder> = [];
-
+export class GroupBuilder<TYPE> extends BuilderWithElements<
+  GroupType<TYPE>,
+  TYPE
+> {
   private constructor(private readonly label: string) {
     super(label);
   }
@@ -18,21 +19,11 @@ export class GroupBuilder extends Builder<GroupType> {
     return new GroupBuilder(label);
   }
 
-  addControl(control: ElementBuilder) {
-    this.elements.push(control);
-    return this;
-  }
-
-  addControls(...controls: Array<ElementBuilder>) {
-    this.elements.push(...controls);
-    return this;
-  }
-
-  override build(): GroupType {
+  override build(): GroupType<TYPE> {
     return {
       type: 'Group',
       label: this.label,
-      elements: this.elements.map((e) => e.build()),
-    } as unknown as GroupType;
+      elements: this.buildElements(),
+    } as unknown as GroupType<TYPE>;
   }
 }

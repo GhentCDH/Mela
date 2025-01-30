@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { LemaForm } from '@ghentcdh/mela/generated/forms';
+import type { Lema} from '@ghentcdh/mela/generated/types';
 import { LemaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
@@ -31,13 +32,11 @@ const uiSchema = LayoutBuilder.vertical()
   )
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Lema>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/word'),
-    TextCellBuilder.scope('#/properties/speech')
-      .key('name')
-      .setSortId('speech.name'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('word'),
+    TextCellBuilder.properties('speech').key('name').setSortId('speech.name'),
   )
   .build();
 

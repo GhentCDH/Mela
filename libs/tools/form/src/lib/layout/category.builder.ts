@@ -1,23 +1,25 @@
-import { Builder } from './builder';
+import { BuilderWithElements } from './builder';
 import type { ElementBuilder } from './layout.builder';
 
 type Rule = {
   effect: 'SHOW';
   condition: any;
 };
-export type CategoryType = {
+export type CategoryType<TYPE> = {
   type: 'Category';
   label: string;
-  elements?: ElementBuilder[];
+  elements?: ElementBuilder<TYPE>[];
   rule?: Rule;
 };
 
-export class CategoryBuilder extends Builder<CategoryType> {
+export class CategoryBuilder<TYPE> extends BuilderWithElements<
+  CategoryType<TYPE>,
+  TYPE
+> {
   private rule: Rule = {
     effect: 'SHOW',
     condition: {},
   };
-  private elements: Array<ElementBuilder> = [];
 
   private constructor(private readonly label: string) {
     super(label);
@@ -27,22 +29,12 @@ export class CategoryBuilder extends Builder<CategoryType> {
     return new CategoryBuilder(label);
   }
 
-  addControl(control: ElementBuilder) {
-    this.elements.push(control);
-    return this;
-  }
-
-  addControls(...controls: Array<ElementBuilder>) {
-    this.elements.push(...controls);
-    return this;
-  }
-
-  override build(): CategoryType {
+  override build(): CategoryType<TYPE> {
     return {
       type: 'Category',
       label: this.label,
       rule: this.rule,
-      elements: this.elements.map((e) => e.build()),
-    } as unknown as CategoryType;
+      elements: this.buildElements(),
+    } as unknown as CategoryType<TYPE>;
   }
 }

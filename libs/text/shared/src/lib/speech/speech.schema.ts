@@ -1,4 +1,5 @@
 import { SpeechForm } from '@ghentcdh/mela/generated/forms';
+import type { Speech} from '@ghentcdh/mela/generated/types';
 import { SpeechSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
@@ -12,10 +13,10 @@ const uiSchema = LayoutBuilder.vertical()
   .addControls(ControlBuilder.scope('#/properties/name'))
   .build();
 
-const tableSchema = TableBuilder.init()
+const tableSchema = TableBuilder.init<Speech>()
   .addControls(
-    TextCellBuilder.scope('#/properties/id'),
-    TextCellBuilder.scope('#/properties/name'),
+    TextCellBuilder.properties('id'),
+    TextCellBuilder.properties('name'),
   )
   .build();
 
