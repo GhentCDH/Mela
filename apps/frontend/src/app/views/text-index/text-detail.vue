@@ -6,6 +6,7 @@
       :schema="formSchema.form.schema"
       :uischema="formSchema.form.uiSchema"
       :events="events"
+      :renderers="TextControls"
       @valid="onValid($event)"
       @change="onChange"
     />
@@ -19,6 +20,7 @@ import { useRouter } from 'vue-router';
 import type { StepperEvent, StepperEventListener } from '@ghentcdh/ui';
 import { FormComponent } from '@ghentcdh/ui';
 
+import { TextControls } from './controls';
 import { useTextStore } from './text.store';
 
 const store = useTextStore();
@@ -40,7 +42,6 @@ const formSchema = TextFormSchema.schema;
 const formData = ref(store.text);
 
 const valid = ref(false);
-const emits = defineEmits(['submit', 'clear', 'closeModal']);
 
 const onValid = (v: boolean) => {
   valid.value = v;

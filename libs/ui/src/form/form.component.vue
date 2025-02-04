@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/vue';
 import { provide, ref, watch } from 'vue';
 
@@ -16,14 +17,21 @@ export type SubmitFormEvent = {
   valid: boolean;
 };
 
-const properties = defineProps<{
-  id: string;
-  schema: any;
-  uischema: any;
-  events?: {
-    stepper?: StepperEventListener;
-  };
-}>();
+const properties = withDefaults(
+  defineProps<{
+    id: string;
+    schema: any;
+    uischema: any;
+    renderers?: JsonFormsRendererRegistryEntry[];
+    events?: {
+      stepper?: StepperEventListener;
+    };
+  }>(),
+  {
+    renderers: [],
+    events: {},
+  },
+);
 
 const formData = defineModel({});
 const emits = defineEmits(['valid', 'change', 'submit']);
@@ -57,7 +65,10 @@ watch(
 const styles = myStyles;
 
 provide('styles', myStyles);
-const renderers = Object.freeze(tailwindRenderers);
+const renderers = Object.freeze([
+  ...properties.renderers,
+  ...tailwindRenderers,
+]);
 </script>
 
 <template>

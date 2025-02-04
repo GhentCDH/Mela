@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
 import { TextForm } from '@ghentcdh/mela/generated/forms';
-import type { Text, TextContent } from '@ghentcdh/mela/generated/types';
+import type {
+  Text,
+  TextContent,
+  TextWithRelations,
+} from '@ghentcdh/mela/generated/types';
 import {
   AuthorSchema,
   TextContentSchema,
@@ -17,19 +21,26 @@ import {
 } from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema
+const textIdentifyStep =
+  LayoutBuilder.horizontal<TextWithRelations>().addControls(
+    ControlBuilder.asCustom('textContent', 'identify_text_blocks'),
+  );
 
-const textContentStep = LayoutBuilder.horizontal<Text>().addControls(
-  ControlBuilder.properties('textContent')
-    .detailFixed(
-      LayoutBuilder.vertical<TextContent>().addControls(
-        ControlBuilder.properties('content').markdown(),
-      ),
-    )
-    .labelKey('text_type'),
-);
+console.log(textIdentifyStep.build());
 
-const detailStep = LayoutBuilder.vertical().addControls(
-  LayoutBuilder.horizontal<Text>().addControls(
+const textContentStep =
+  LayoutBuilder.horizontal<TextWithRelations>().addControls(
+    ControlBuilder.properties('textContent')
+      .detailFixed(
+        LayoutBuilder.vertical<TextContent>().addControls(
+          ControlBuilder.properties('content').markdown(),
+        ),
+      )
+      .labelKey('text_type'),
+  );
+
+const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
+  LayoutBuilder.horizontal<TextWithRelations>().addControls(
     ControlBuilder.properties('name'),
     ControlBuilder.asObject('author').autocomplete({
       uri: '/api/author?filter=name:',
@@ -47,6 +58,7 @@ const uiSchema = LayoutBuilder.stepper()
   .addControls(
     CategoryBuilder.label('Details').addControls(detailStep),
     CategoryBuilder.label('Text').addControls(textContentStep),
+    CategoryBuilder.label('Identify').addControls(textIdentifyStep),
     CategoryBuilder.label('Link'),
     CategoryBuilder.label('Annotate'),
   )

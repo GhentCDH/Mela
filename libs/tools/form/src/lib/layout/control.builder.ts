@@ -9,6 +9,7 @@ export const ControlType = {
   textArea: 'textArea',
   markdown: 'markdown',
   fixedArray: 'fixedArray',
+  custom: 'custom',
 } as const;
 
 export interface TextAreaOptions extends ControlOption {
@@ -76,6 +77,19 @@ export class ControlBuilder<
 
   static properties<TYPE>(property: keyof TYPE): ControlBuilder<TYPE> {
     return new ControlBuilder<TYPE>(`#/properties/${property as string}`);
+  }
+
+  static asCustom<TYPE>(
+    property: keyof TYPE,
+    type: string,
+  ): ControlBuilder<TYPE> {
+    const builder = new ControlBuilder<TYPE>(
+      `#/properties/${property as string}`,
+    );
+
+    builder.options = { format: ControlType.custom, type };
+
+    return builder;
   }
 
   detail<TYPE>(layoutBuilder: LayoutBuilder<TYPE>, label?: string) {
