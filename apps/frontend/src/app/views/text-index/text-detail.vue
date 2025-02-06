@@ -10,7 +10,6 @@
       @valid="onValid($event)"
       @change="onChange"
     />
-    {{ store.text }}
   </div>
 </template>
 <script setup lang="ts">
