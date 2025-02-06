@@ -23,6 +23,7 @@ services:
     volumes:
       - ./libs:/app/libs
       - ./apps:/app/apps
+      - ./link:/app/link
       - ./prisma:/app/prisma
       - /app/generated
       - /app/node_modules

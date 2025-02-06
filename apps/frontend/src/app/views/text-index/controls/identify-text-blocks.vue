@@ -1,10 +1,10 @@
 <template>
-  <ControlWrapper
-    v-bind="controlWrapper"
-    :styles="styles"
-  >
-    {{ sourceText.content }}---
-  </ControlWrapper>
+  <control-wrapper v-bind="controlWrapper" :styles="styles" :hideLabel="true">
+    <IdentifyAndTranslate
+      :sourceText="sourceText"
+      :translatedText="translatedText"
+    />
+  </control-wrapper>
 </template>
 
 <script lang="ts">
@@ -19,29 +19,32 @@ import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
+import AnnotateTextComponent from './annotate-text/annotate-text.vue';
 import {
   ControlWrapper,
-  inputClasses,
   isCustomControl,
+  Select,
   useVanillaControlCustom,
 } from '@ghentcdh/ui';
+import IdentifyAndTranslate from './annotate-text/identify-and-translate.vue';
 
 const controlRenderer = defineComponent({
   name: 'IdentifyTextBlocks',
   components: {
+    IdentifyAndTranslate,
     ControlWrapper,
+    AnnotateTextComponent,
+    Select,
   },
   props: {
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    console.log(props.cells);
-    console.table(props.cells);
-    console.log(useJsonFormsControl(props).control.value);
-    return useVanillaControlCustom(
+    const controls = useVanillaControlCustom(
       useJsonFormsControl(props),
       (target) => target.value ?? undefined,
     );
+    return controls;
   },
   computed: {
     sourceText() {
@@ -49,12 +52,9 @@ const controlRenderer = defineComponent({
         (d: TextContent) => d.text_type === 'SOURCE',
       );
     },
-    inputClass() {
-      return inputClasses(
-        this.styles,
-        this.isFocused,
-        this.isTouched,
-        this.controlWrapper?.errors,
+    translatedText() {
+      return this.control.data?.find(
+        (d: TextContent) => d.text_type === 'TRANSLATION',
       );
     },
   },

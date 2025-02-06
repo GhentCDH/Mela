@@ -29,7 +29,7 @@ The first time, and each time you adjust the prisma configuration run
 Check the configuration in the `.env` variables file and run Docker compose:
 
 ```sh
-docker compose -f docker-compose.dev.yml up --build    
+docker compose -f docker-compose.dev.yml up --build --watch
 ```
 
 The app is served on: [http://localhost](http://localhost:4000)

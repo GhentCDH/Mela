@@ -59,7 +59,7 @@ export const useTextStore = defineStore('textStore', () => {
     return httpStore
       .get<Partial<TextWithRelations>>(`/api/text/${textId.value}`)
       .then((text) => {
-        text.textContent = [
+        const textContent = [
           text.textContent?.find((t) => t.text_type === 'SOURCE') ??
             ({
               language: 'Greek',
@@ -73,7 +73,7 @@ export const useTextStore = defineStore('textStore', () => {
               text_type: 'TRANSLATION',
             } as TextContentWithRelations),
         ];
-        return text;
+        return { ...text, textContent };
       });
   });
 

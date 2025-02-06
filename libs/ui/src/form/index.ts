@@ -7,3 +7,5 @@ export { default as FormWithTableCompnent } from './form-with-table.component.vu
 export { default as FormWithActions } from './form-with-actions.component.vue';
 
 export { default as FormComponent } from './form.component.vue';
+
+export * from './standalone';

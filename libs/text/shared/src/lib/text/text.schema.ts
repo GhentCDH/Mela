@@ -14,10 +14,10 @@ import {
 import {
   CategoryBuilder,
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema
@@ -59,7 +59,6 @@ const uiSchema = LayoutBuilder.stepper()
     CategoryBuilder.label('Details').addControls(detailStep),
     CategoryBuilder.label('Text').addControls(textContentStep),
     CategoryBuilder.label('Identify').addControls(textIdentifyStep),
-    CategoryBuilder.label('Link'),
     CategoryBuilder.label('Annotate'),
   )
   .build();
