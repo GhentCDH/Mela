@@ -1,8 +1,12 @@
 <template>
-  <control-wrapper v-bind="controlWrapper" :styles="styles" :hideLabel="true">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+    :hide-label="true"
+  >
     <IdentifyAndTranslate
-      :sourceText="sourceText"
-      :translatedText="translatedText"
+      :source-text="sourceText"
+      :translated-text="translatedText"
     />
   </control-wrapper>
 </template>
@@ -19,13 +23,13 @@ import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
-import AnnotateTextComponent from './annotate-text/annotate-text.vue';
 import {
   ControlWrapper,
-  isCustomControl,
   Select,
+  isCustomControl,
   useVanillaControlCustom,
 } from '@ghentcdh/ui';
+
 import IdentifyAndTranslate from './annotate-text/identify-and-translate.vue';
 
 const controlRenderer = defineComponent({
@@ -33,7 +37,6 @@ const controlRenderer = defineComponent({
   components: {
     IdentifyAndTranslate,
     ControlWrapper,
-    AnnotateTextComponent,
     Select,
   },
   props: {

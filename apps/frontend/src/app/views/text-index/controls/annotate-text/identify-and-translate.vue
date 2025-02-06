@@ -1,26 +1,33 @@
 <template>
   <div class="flex gap-3 items-center">
     <Btn
-      :color="Color.secondary"
       v-if="!createMode"
-      @click="changeToCreateMode()"
+      :color="Color.secondary"
       :disabled="!!store.selectedAnnotation"
+      @click="changeToCreateMode()"
     >
       Create new text blocks
     </Btn>
-    <div v-if="createMode" class="w-72 block">
+    <div
+      v-if="createMode"
+      class="w-72 block"
+    >
       <Select
+        v-model="annotationType"
         label="Text block type"
         :options="annotationTypes"
-        v-model="annotationType"
       />
     </div>
-    <Btn :color="Color.secondary" v-if="createMode" @click="createMode = false">
+    <Btn
+      v-if="createMode"
+      :color="Color.secondary"
+      @click="createMode = false"
+    >
       Confirm new blocks
     </Btn>
   </div>
 
-  <hr />
+  <hr>
   <div class="flex">
     <div
       :class="[
@@ -57,45 +64,60 @@
             :color="Color.secondary"
             :icon="IconEnum.Close"
             @click="onSelectAnnotation({ annotation: null }, true)"
-          >
-          </Btn>
+          />
         </div>
         <Select
+          v-model="annotationType"
           label="Annotation type"
           :options="annotationTypes"
-          v-model="annotationType"
           @change="changeType"
         />
         <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-          <input type="radio" name="my-accordion-2" checked="checked" />
-          <div class="collapse-title font-semibold">Transcriptions</div>
+          <input
+            type="radio"
+            name="my-accordion-2"
+            checked="checked"
+          >
+          <div class="collapse-title font-semibold">
+            Transcriptions
+          </div>
           <div class="collapse-content text-sm">
-            <div class="font-bold">Original</div>
+            <div class="font-bold">
+              Original
+            </div>
             {{ store.selectedAnnotation.transcription.source }}
 
-            <div class="font-bold mt-2">Translated</div>
+            <div class="font-bold mt-2">
+              Translated
+            </div>
             {{ store.selectedAnnotation.transcription.translation }}
           </div>
         </div>
       </template>
-      <div class="border-2" v-html="content"></div>
+      <div
+        class="border-2"
+        v-html="content"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { Btn, Color, IconEnum, Select } from '@ghentcdh/ui';
-import { IdentifyColor, IdentifyColorMap } from '../identify.color';
-import { MelaAnnotation } from './w3c/mela_annotation';
-import { DictionaryDemo } from './dictionary';
+import type {
+  CreateAnnotationState} from '@ghentcdh/vue-component-annotated-text';
 import {
-  AnnotatedText,
-  CreateAnnotationState,
+  AnnotatedText
 } from '@ghentcdh/vue-component-annotated-text';
+
+import { IdentifyColor, IdentifyColorMap } from '../identify.color';
+import { DictionaryDemo } from './dictionary';
 import { useAnnotationStore } from './w3c/annotation.store';
+import type { MelaAnnotation } from './w3c/mela_annotation';
 
 type Properties = {
   sourceText: TextContent;

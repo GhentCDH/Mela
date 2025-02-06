@@ -1,6 +1,9 @@
 <template>
   <fieldset :class="styles.control.wrapper">
-    <legend v-if="!hideLabel" :class="styles.control.label">
+    <legend
+      v-if="!hideLabel"
+      :class="styles.control.label"
+    >
       {{ label }} <span v-if="showAsterisk">*</span>
     </legend>
     <slot />
@@ -14,8 +17,8 @@
 import { isDescriptionHidden } from '@jsonforms/core';
 import { computed } from 'vue';
 
-import { showErrors as _showErrors } from '../utils/style';
 import { ControlWrapperProperties } from './properties';
+import { showErrors as _showErrors } from '../utils/style';
 
 // TODO check what is used?
 const properties = defineProps(ControlWrapperProperties);

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { W3CAnnotationSchema } from './types';
 
 export const AnnotationPageSchema = z.object({

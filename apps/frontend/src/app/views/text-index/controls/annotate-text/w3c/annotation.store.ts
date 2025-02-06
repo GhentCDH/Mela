@@ -1,14 +1,17 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { AnnotationPage } from './annotation.collection';
-import {
+
+import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
+
+import type { AnnotationPage } from './annotation.collection';
+import type {
   MelaAnnotation,
-  TranslatedAnnotation,
+  TranslatedAnnotation} from './mela_annotation';
+import {
   TranslatedAnnotationInstance,
 } from './mela_annotation';
-import { Annotation } from '@ghentcdh/vue-component-annotated-text';
 import { parseAnnotation } from './parse';
-import { AnnotationMetadataType } from './types';
+import type { AnnotationMetadataType } from './types';
 import { splitTextInLines } from './utils/lines';
 
 const filterAnnotations = (

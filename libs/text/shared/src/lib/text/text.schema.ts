@@ -14,10 +14,10 @@ import {
 import {
   CategoryBuilder,
   ControlBuilder,
-  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
+  createSchema,
 } from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema

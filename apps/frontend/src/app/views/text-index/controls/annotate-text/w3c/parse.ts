@@ -1,8 +1,10 @@
-import { Annotation } from '@ghentcdh/vue-component-annotated-text';
-import {
+import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
+
+import type {
   AnnotationMetadataType,
+  W3CAnnotation} from './types';
+import {
   TextualBodySchema,
-  W3CAnnotation,
   W3CAnnotationSchema,
 } from './types';
 

@@ -1,5 +1,6 @@
-import { PropType } from 'vue';
 import type { Styles } from '@jsonforms/vue-vanilla';
+import type { PropType } from 'vue';
+
 import { myStyles } from '../styles';
 
 const createProperties = (properties: {} = {}) => {

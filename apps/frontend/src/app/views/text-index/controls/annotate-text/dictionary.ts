@@ -1,4 +1,4 @@
-import { W3CAnnotation } from './w3c/types';
+import type { W3CAnnotation } from './w3c/types';
 
 const _DictionaryDemo: W3CAnnotation[] = [
   {

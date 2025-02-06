@@ -1,4 +1,4 @@
-import { MelaAnnotation } from './w3c/types';
+import type { MelaAnnotation } from './w3c/types';
 
 const _demoOriginal = [
   {
