@@ -1,3 +1,4 @@
+import { AnnotationSchema } from '@ghentcdh/mela/generated/types';
 import { z } from 'zod';
 
 export const AnnotationMetadataTypes = z.enum([
@@ -10,6 +11,7 @@ export const AnnotationMetadataTypes = z.enum([
 export type AnnotationMetadataType = z.infer<typeof AnnotationMetadataTypes>;
 export const Languages = z.enum(['gr', 'en']);
 export type Language = z.infer<typeof Languages>;
+
 export const AnnotationTypeBody = z.object({
   type: z.enum(['AnnotationType']).default('AnnotationType'),
   textType: AnnotationMetadataTypes,
@@ -37,11 +39,11 @@ export const TextTargetSchema = z.object({
   selector: TextPositionSelectorSchema,
 });
 
-export const W3CAnnotationSchema = z.object({
-  id: z.string(),
-  '@context': z.string(),
-  motivation: z.enum(['classifying', 'tagging']).default('classifying'),
+export const MelaAnnotationSchema = AnnotationSchema.omit({
+  body: true,
+  target: true,
+}).extend({
+  '@context': z.string().default('http://www.w3.org/ns/anno.jsonld'),
   body: z.array(AnnotationTypeBody.or(TextualBodySchema)),
   target: z.array(TextTargetSchema),
 });
-export type W3CAnnotation = z.infer<typeof W3CAnnotationSchema>;

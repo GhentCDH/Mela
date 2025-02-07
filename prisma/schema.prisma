@@ -39,7 +39,8 @@ model Text {
   author_id   String
   year        Int
   textContent TextContent[]
-  Phrase      Phrase[]
+  phrase      Phrase[]
+  annotations Annotation[]
 }
 
 enum TextType {
@@ -54,6 +55,20 @@ model TextContent {
   text_type TextType
   language  String
   content   String   @db.Text
+}
+
+enum MotivationEnum {
+  classifying
+  tagging
+}
+
+model Annotation {
+  is String @id @default(uuid())
+  body Json
+  target Json
+  motivation MotivationEnum
+  text      Text     @relation(fields: [text_id], references: [id])
+  text_id   String
 }
 
 model Phrase {
