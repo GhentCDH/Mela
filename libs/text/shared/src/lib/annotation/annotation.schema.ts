@@ -39,11 +39,42 @@ export const TextTargetSchema = z.object({
   selector: TextPositionSelectorSchema,
 });
 
+export const AnnotationContext = z
+  .enum(['http://www.w3.org/ns/anno.jsonld'])
+  .default('http://www.w3.org/ns/anno.jsonld');
+
 export const MelaAnnotationSchema = AnnotationSchema.omit({
   body: true,
   target: true,
+  id: true,
 }).extend({
-  '@context': z.string().default('http://www.w3.org/ns/anno.jsonld'),
   body: z.array(AnnotationTypeBody.or(TextualBodySchema)),
   target: z.array(TextTargetSchema),
 });
+
+export const MelaAnnotationReturnSchema = MelaAnnotationSchema.extend({
+  id: z.string(),
+  '@context': AnnotationContext,
+});
+
+export const MelaAnnotationPage = z
+  .object({
+    '@context': AnnotationContext,
+    type: z.enum(['AnnotationPage']).default('AnnotationPage'),
+    items: z.array(AnnotationSchema),
+  })
+  .transform((data) => {
+    return {
+      ...data,
+      items: data.items.map((item) => MelaAnnotationReturnSchema.parse(item)),
+    };
+  });
+
+export const W3CAnnotationSchema = z.object({
+  id: z.string(),
+  '@context': z.string(),
+  motivation: z.enum(['classifying', 'tagging']).default('classifying'),
+  body: z.array(AnnotationTypeBody.or(TextualBodySchema)),
+  target: z.array(TextTargetSchema),
+});
+export type W3CAnnotation = z.infer<typeof W3CAnnotationSchema>;

@@ -18,6 +18,7 @@ import { TextRepositoryService } from './text/text-repository.service';
 import { TextController } from './text/text.controller';
 import { AnnotationController } from './annotation/annotation.controller';
 import { AnnotationRepository } from './annotation/annotation-repository.service';
+import { AnnotationTextController } from './annotation/annotaton-text.controller';
 
 @Module({
   imports: [PrismaModule],
@@ -30,6 +31,7 @@ import { AnnotationRepository } from './annotation/annotation-repository.service
     LemaController,
     SpeechController,
     AnnotationController,
+    AnnotationTextController,
   ],
   providers: [
     AuthorRepository,

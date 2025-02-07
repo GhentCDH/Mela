@@ -2,30 +2,31 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
-
-import type { AnnotationPage } from './annotation.collection';
-import type {
-  MelaAnnotation,
-  TranslatedAnnotation} from './mela_annotation';
+import type { TranslatedAnnotation } from './mela_annotation';
 import {
+  MelaAnnotation,
   TranslatedAnnotationInstance,
 } from './mela_annotation';
 import { parseAnnotation } from './parse';
-import type { AnnotationMetadataType } from './types';
+import type { AnnotationMetadataType } from '@mela/text/shared';
 import { splitTextInLines } from './utils/lines';
+import { useTextRepository } from '../../../../../repository/text.repository';
+import { computedAsync } from '@vueuse/core';
 
 const filterAnnotations = (
   annotations: TranslatedAnnotation[],
   mapper: (d: TranslatedAnnotation) => MelaAnnotation | null,
 ): MelaAnnotation[] => {
-  return annotations.map(mapper).filter((a) => !!a);
+  return (annotations ?? []).map(mapper).filter((a) => !!a);
 };
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
     const sourceText = ref<string>('');
-    const annotations = ref<TranslatedAnnotation[]>([]);
+    const textId = ref<string>(null);
+    // const annotations = ref<TranslatedAnnotation[]>([]);
     const selectedAnnotation = ref<TranslatedAnnotation | null>(null);
+    const textRepository = useTextRepository();
 
     const sourceLines = computed(() => splitTextInLines(sourceText.value));
     const sourceAnnotations = computed(() =>
@@ -47,17 +48,27 @@ export const useAnnotationStore = (id: string) =>
         : translatedAnnotations.value,
     );
 
+    const annotations = computedAsync(async () => {
+      const id = textId.value;
+      if (!id) return [];
+
+      const _sourceText = sourceText.value;
+      const _translatedText = translatedText.value;
+      const annotations = await textRepository.getAnnotations(id);
+
+      return annotations.items.map((i) =>
+        TranslatedAnnotationInstance.parse(i, _sourceText, _translatedText),
+      );
+    });
+
     const init = (
       _sourceText: string,
       _translatedText: string,
-      annotationPage: AnnotationPage,
+      _textId: string,
     ) => {
       sourceText.value = _sourceText;
       translatedText.value = _translatedText;
-      // TODO check if all annotations are still valid!
-      annotations.value = annotationPage.items.map((i) =>
-        TranslatedAnnotationInstance.parse(i, _sourceText, _translatedText),
-      );
+      textId.value = _textId;
     };
 
     const createAnnotation = (

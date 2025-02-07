@@ -13,7 +13,7 @@ export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
   const router = useRouter();
 
-  const textId = ref(route.params.textId);
+  const textId = ref(route.params.textId as string);
   const phraseId = ref(route.params.phraseId);
 
   watch(

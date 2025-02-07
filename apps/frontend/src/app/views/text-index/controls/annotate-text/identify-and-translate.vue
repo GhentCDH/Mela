@@ -8,26 +8,19 @@
     >
       Create new text blocks
     </Btn>
-    <div
-      v-if="createMode"
-      class="w-72 block"
-    >
+    <div v-if="createMode" class="w-72 block">
       <Select
         v-model="annotationType"
         label="Text block type"
         :options="annotationTypes"
       />
     </div>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="createMode = false"
-    >
+    <Btn v-if="createMode" :color="Color.secondary" @click="createMode = false">
       Confirm new blocks
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex">
     <div
       :class="[
@@ -73,31 +66,18 @@
           @change="changeType"
         />
         <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-          <input
-            type="radio"
-            name="my-accordion-2"
-            checked="checked"
-          >
-          <div class="collapse-title font-semibold">
-            Transcriptions
-          </div>
+          <input type="radio" name="my-accordion-2" checked="checked" />
+          <div class="collapse-title font-semibold">Transcriptions</div>
           <div class="collapse-content text-sm">
-            <div class="font-bold">
-              Original
-            </div>
+            <div class="font-bold">Original</div>
             {{ store.selectedAnnotation.transcription.source }}
 
-            <div class="font-bold mt-2">
-              Translated
-            </div>
+            <div class="font-bold mt-2">Translated</div>
             {{ store.selectedAnnotation.transcription.translation }}
           </div>
         </div>
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -108,16 +88,13 @@ import { computed, ref } from 'vue';
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { Btn, Color, IconEnum, Select } from '@ghentcdh/ui';
-import type {
-  CreateAnnotationState} from '@ghentcdh/vue-component-annotated-text';
-import {
-  AnnotatedText
-} from '@ghentcdh/vue-component-annotated-text';
+import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text';
+import { AnnotatedText } from '@ghentcdh/vue-component-annotated-text';
 
-import { IdentifyColor, IdentifyColorMap } from '../identify.color';
-import { DictionaryDemo } from './dictionary';
 import { useAnnotationStore } from './w3c/annotation.store';
 import type { MelaAnnotation } from './w3c/mela_annotation';
+import { useTextStore } from '../../text.store';
+import { IdentifyColor } from '../identify.color';
 
 type Properties = {
   sourceText: TextContent;
@@ -130,6 +107,7 @@ const annotationTypes = IdentifyColor;
 const annotationType = ref(IdentifyColor[0]);
 const createMode = ref(false);
 const editMode = ref(false);
+const textStore = useTextStore();
 
 // TODO add id
 const store = useAnnotationStore('id')();
@@ -137,7 +115,7 @@ const store = useAnnotationStore('id')();
 store.init(
   properties.sourceText.content,
   properties.translatedText.content,
-  DictionaryDemo,
+  textStore.textId,
 );
 
 const changeToCreateMode = () => {

@@ -1,0 +1,46 @@
+{
+  "id": "mela/annotation/3526e470-a3dc-44f2-ade8-8fcc614c1cc2",
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "body": [
+    {
+      "type": "AnnotationType",
+      "textType": "phrase"
+    },
+    {
+      "type": "TextualBody",
+      "format": "text",
+      "language": "en",
+      "value": "Tit. (transl): Indispensable, to-be-adhered-to norms of the linguistic habit of the users of Attic selected by the most learned monk Maximos Planoudes."
+    },
+    {
+      "type": "TextualBody",
+      "format": "text",
+      "language": "gr",
+      "value": "Tit. Παρατηρήματα ἀναγκαῖα τῶν Ἀττικῶν συνηθείας ἐκλεγέντα, παρὰ τοῦ λογιωτάτου μοναχοῦ κυροῦ Μαξίμου τοῦ Πλανούδη:-"
+    }
+  ],
+  "target": [
+    {
+      "source": "mela/text/954d9ec8-920b-4749-a7f4-d526e297837e",
+      "textDirection": "ltr",
+      "type": "Text",
+      "processingLanguage": "gr",
+      "selector": {
+        "type": "TextPositionSelector",
+        "start": 0,
+        "end": 116
+      }
+    },
+    {
+      "source": "mela/text/954d9ec8-920b-4749-a7f4-d526e297837e",
+      "textDirection": "ltr",
+      "type": "Text",
+      "processingLanguage": "en",
+      "selector": {
+        "type": "TextPositionSelector",
+        "start": 0,
+        "end": 150
+      }
+    }
+  ]
+}
