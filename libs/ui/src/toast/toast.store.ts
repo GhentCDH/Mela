@@ -16,7 +16,6 @@ export const useNotificationStore = defineStore('toastStore', () => {
       type,
     };
 
-    console.log('add notification', notification);
     notifications.value.push(notification);
 
     removeNotificationAfterDuration(notification);

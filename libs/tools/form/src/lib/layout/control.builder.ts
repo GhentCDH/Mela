@@ -87,7 +87,10 @@ export class ControlBuilder<
       `#/properties/${property as string}`,
     );
 
-    builder.options = { format: ControlType.custom, type };
+    builder.options = {
+      format: ControlType.custom,
+      type,
+    } as unknown as ControlOption;
 
     return builder;
   }

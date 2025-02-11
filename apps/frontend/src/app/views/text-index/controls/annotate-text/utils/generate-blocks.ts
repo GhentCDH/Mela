@@ -1,8 +1,6 @@
-import { parseAnnotationFromText } from '../parse';
-import {
-  TranslatedAnnotation,
-  TranslatedAnnotationInstance,
-} from '../mela_annotation';
+import type { TranslatedAnnotation } from './mela_annotation';
+import { TranslatedAnnotationInstance } from './mela_annotation';
+import { parseAnnotationFromText } from './parse';
 
 export const generateAnnotationBlocks = (
   sourceText: string,
@@ -13,7 +11,7 @@ export const generateAnnotationBlocks = (
 
   // TODO define if this is really the end of a phrase
   const phrase = paragraphs
-    .map((text, index) => text.split('\.'))
+    .map((text, index) => text.split('.'))
     .flat()
     .filter((a) => a.length > 0);
 

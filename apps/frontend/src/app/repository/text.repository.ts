@@ -1,10 +1,12 @@
-import { TextFormSchema, W3CAnnotation } from '@mela/text/shared';
+import type { MotivationEnumType } from '@mela/generated/types';
+import type { W3CAnnotation } from '@mela/text/shared';
+import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
 import { RequestSchema } from '@ghentcdh/tools/form';
-import { MotivationEnumType } from '@mela/generated/types';
+
 
 export const useTextRepository = defineStore('textRepository', () => {
   const httpStore = useHttpStore();
@@ -12,7 +14,7 @@ export const useTextRepository = defineStore('textRepository', () => {
   const getDataUri = (textId: string, ...suffix: string[]) => {
     return [TextFormSchema.schema.uri, textId, ...suffix].join('/');
   };
-  const getAnnotationUri = (textId: string, suffix: string = '') => {
+  const getAnnotationUri = (textId: string, suffix = '') => {
     return getDataUri(textId, 'annotation', ...suffix);
   };
 

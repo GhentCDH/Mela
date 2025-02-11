@@ -81,3 +81,9 @@ export const W3CAnnotationSchema = z.object({
   target: z.array(TextTargetSchema),
 });
 export type W3CAnnotation = z.infer<typeof W3CAnnotationSchema>;
+
+export const AnnotationFormSchema = {
+  schema: {
+    uri: '/api/annotation',
+  },
+};

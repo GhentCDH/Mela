@@ -26,8 +26,6 @@ const textIdentifyStep =
     ControlBuilder.asCustom('textContent', 'identify_text_blocks'),
   );
 
-console.log(textIdentifyStep.build());
-
 const textContentStep =
   LayoutBuilder.horizontal<TextWithRelations>().addControls(
     ControlBuilder.properties('textContent')

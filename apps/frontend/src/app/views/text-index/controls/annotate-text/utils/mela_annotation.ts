@@ -1,12 +1,13 @@
-import {
+import type {
   AnnotationMetadataType,
-  AnnotationTypeBody,
   Language,
+  TextualBody,
+  W3CAnnotation} from '@mela/text/shared';
+import {
+  AnnotationTypeBody,
   TextPositionSelectorSchema,
   TextTargetSchema,
-  TextualBody,
   TextualBodySchema,
-  W3CAnnotation,
   W3CAnnotationSchema,
 } from '@mela/text/shared';
 
@@ -96,11 +97,14 @@ export class TranslatedAnnotationInstance {
     });
 
     const body = this.annotation.body.filter(
-      (a) => a.type === 'AnnotationType',
+      (a) => a.type !== 'AnnotationType',
     );
+
     body.push(annotationType);
 
     this.annotation.body = body;
+
+    return this;
   }
 
   private createSource() {
@@ -109,6 +113,7 @@ export class TranslatedAnnotationInstance {
 
   private createTranslation() {
     this.translation = transformAnnotation(this.annotation, this.type, 'en');
+    if (!this.translation) return;
   }
 
   private createTranscription() {
@@ -154,6 +159,7 @@ export class TranslatedAnnotationInstance {
     this.translation.start = start;
     this.translation.end = end;
     this.transcription.translation = translation;
+    console.log(start, end);
     return this;
   }
 
@@ -172,8 +178,6 @@ export class TranslatedAnnotationInstance {
   }
 
   private updateSelector(language: Language, start: number, end: number) {
-    if (language !== 'gr') return;
-
     const textTarget = TextTargetSchema.parse({
       source: this.annotation.target[0].source,
       textDirection: 'ltr',
@@ -185,7 +189,7 @@ export class TranslatedAnnotationInstance {
     });
 
     const target = this.annotation.target.filter(
-      (a) => a.type === 'Text' && a.processingLanguage === language,
+      (a) => !(a.type === 'Text' && a.processingLanguage === language),
     );
     target.push(textTarget);
     this.annotation.target = target;
@@ -198,10 +202,9 @@ export class TranslatedAnnotationInstance {
     });
 
     const body = this.annotation.body.filter(
-      (a) => a.type === 'TextualBody' && a.language === language,
+      (a) => !(a.type === 'TextualBody' && a.language === language),
     );
     body.push(textualBody);
-
     this.annotation.body = body;
   }
 }

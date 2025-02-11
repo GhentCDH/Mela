@@ -1,10 +1,11 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Controller, UsePipes } from '@nestjs/common';
+import { Controller, Delete, Param, Patch, UsePipes } from '@nestjs/common';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { AnnotationDto } from '@ghentcdh/mela/generated/dtos';
 
 import { AnnotationRepository } from './annotation-repository.service';
-import { CreateAnnotationDto } from './dto';
+import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -17,38 +18,19 @@ export class AnnotationController extends AbstractController<
     super(repository);
   }
 
-  // @Get()
-  // @ApiCreatedResponse({
-  //   type: ListAnnotationDto,
-  // })
-  // override async list(@Query() params: RequestDto): Promise<ListAnnotationDto> {
-  //   return super.list(params);
-  // }
+  @Delete(':id')
+  override delete(@Param('id') id: string): Promise<AnnotationDto> {
+    return super.delete(id);
+  }
 
-  // @Get('/:id')
-  // @ApiCreatedResponse({
-  //   type: AnnotationDto,
-  // })
-  // override async findOne(@Param('id') id: string): Promise<AnnotationDto> {
-  //   return super.findOne(id);
-  // }
-  //
-  // @Patch('/:id')
-  // @ApiResponse({
-  //   type: AnnotationDto,
-  // })
-  // override async update(
-  //   @Param('id') id: string,
-  //   @Body() dto: CreateAnnotationDto,
-  // ): Promise<AnnotationDto> {
-  //   return super.update(id, dto);
-  // }
-  //
-  // @Delete('/:id')
-  // @ApiResponse({
-  //   type: AnnotationDto,
-  // })
-  // override async delete(@Param('id') id: string): Promise<AnnotationDto> {
-  //   return super.delete(id);
-  // }
+  @Patch(':id')
+  @ApiCreatedResponse({
+    type: MelaAnnotationPageDto,
+  })
+  override async update(
+    @Param('id') id: string,
+    dto: CreateAnnotationDto,
+  ): Promise<AnnotationDto> {
+    return super.update(id, dto);
+  }
 }

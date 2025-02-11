@@ -8,26 +8,37 @@
     >
       Create new text blocks
     </Btn>
-    <div v-if="createMode" class="w-72 block">
+    <div
+      v-if="createMode"
+      class="w-72 block"
+    >
       <SelectComponent
         v-model="annotationType"
         label="Text block type"
         :options="annotationTypes"
       />
     </div>
-    <Btn v-if="createMode" :color="Color.secondary" @click="confirmTextBlocks">
+    <Btn
+      v-if="createMode"
+      :color="Color.secondary"
+      @click="confirmTextBlocks"
+    >
       Confirm new blocks
     </Btn>
-    <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
+    <Btn
+      v-if="createMode"
+      :color="Color.secondary"
+      @click="generateBlocks"
+    >
       Auto generate text blocks
     </Btn>
   </div>
 
-  <hr />
-  <div class="flex">
+  <hr>
+  <div class="flex gap-3">
     <div
       :class="[
-        `grid gap-2`,
+        `grid gap-2 flex-1`,
         { 'grid-cols-1': createMode, 'grid-cols-2': !createMode },
       ]"
     >
@@ -36,6 +47,7 @@
           :lines="store.sourceLines"
           :annotations="store.sourceAnnotations"
           :allow-create="createMode"
+          :selected-annotations="selectedAnnotations"
           @annotation-click="onSelectAnnotation($event, true)"
           @annotation-create-begin="annotationCreate($event, 'start')"
           @annotation-create-end="annotationCreate($event, 'end')"
@@ -53,34 +65,68 @@
         />
       </div>
     </div>
-    <div v-if="!createMode">
+    <div
+      v-if="!createMode"
+      class="w-full max-w-sm"
+    >
       <template v-if="store.selectedAnnotation">
-        <div class="flex justify-end">
-          <Btn
-            :color="Color.secondary"
-            :icon="IconEnum.Close"
-            @click="onSelectAnnotation({ annotation: null }, true)"
+        <Card>
+          <template #title>
+            <div class="w-full flex justify-end">
+              <Btn
+                :color="Color.secondary"
+                :icon="IconEnum.Close"
+                @click="onSelectAnnotation({ annotation: null }, true)"
+              />
+            </div>
+          </template>
+          <SelectComponent
+            v-model="annotationType"
+            label="Annotation type"
+            :options="annotationTypes"
+            @change="changeType"
           />
-        </div>
-        <SelectComponent
-          v-model="annotationType"
-          label="Annotation type"
-          :options="annotationTypes"
-          @change="changeType"
-        />
-        <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-          <input type="radio" name="my-accordion-2" checked="checked" />
-          <div class="collapse-title font-semibold">Transcriptions</div>
-          <div class="collapse-content text-sm">
-            <div class="font-bold">Original</div>
-            {{ store.selectedAnnotation.transcription.source }}
+          <div
+            class="collapse collapse-arrow bg-base-100 border border-base-300"
+          >
+            <input
+              type="radio"
+              name="my-accordion-2"
+              checked="checked"
+            >
+            <div class="collapse-title font-semibold">
+              Transcriptions
+            </div>
+            <div class="collapse-content text-sm">
+              <div class="font-bold">
+                Original
+              </div>
+              {{ store.selectedAnnotation.transcription.source }}
 
-            <div class="font-bold mt-2">Translated</div>
-            {{ store.selectedAnnotation.transcription.translation }}
+              <div class="font-bold mt-2">
+                Translated
+              </div>
+              {{ store.selectedAnnotation.transcription.translation }}
+            </div>
           </div>
-        </div>
+
+          <template #actions>
+            <Btn
+              :color="Color.error"
+              @click="deleteActiveAnnotation"
+            >
+              Delete
+            </Btn>
+            <Btn @click="saveActiveAnnotation">
+              Save
+            </Btn>
+          </template>
+        </Card>
       </template>
-      <div class="border-2" v-html="content" />
+      <div
+        class="border-2"
+        v-html="content"
+      />
     </div>
   </div>
 </template>
@@ -90,12 +136,12 @@ import { computed, ref } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
-import { Btn, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
+import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text';
 import { AnnotatedText } from '@ghentcdh/vue-component-annotated-text';
 
-import { useAnnotationStore } from './w3c/annotation.store';
-import type { MelaAnnotation } from './w3c/mela_annotation';
+import { useAnnotationStore } from './utils/annotation.store';
+import type { MelaAnnotation } from './utils/mela_annotation';
 import { useTextStore } from '../../text.store';
 import { IdentifyColor, IdentifyColorMap } from '../identify.color';
 
@@ -111,6 +157,9 @@ const annotationType = ref(IdentifyColor[0]);
 const createMode = ref(false);
 const editMode = ref(false);
 const textStore = useTextStore();
+const selectedAnnotations = computed(() =>
+  store.selectedAnnotation ? [store.selectedAnnotation.id] : [],
+);
 
 // TODO add id
 const store = useAnnotationStore('id')();
@@ -157,10 +206,7 @@ const translateCreate = (
 };
 
 const changeType = () => {
-  if (!store.selectedAnnotation) {
-    return;
-  }
-  store.selectedAnnotation.changeType(annotationType.value.id);
+  store.changeType(annotationType.value.id);
 };
 
 // TODO if you click somewhere else also deselect the annotation
@@ -201,6 +247,14 @@ const confirmTextBlocks = () => {
   store.createNewAnnotations();
 };
 
+const deleteActiveAnnotation = () => {
+  // TODO add confirm modal
+  store.deleteActiveAnnotation();
+};
+
+const saveActiveAnnotation = () => {
+  store.saveActiveAnnotation();
+};
 // showAllTranslations();
 
 const MD = () => {
