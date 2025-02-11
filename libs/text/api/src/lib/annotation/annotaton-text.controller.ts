@@ -1,5 +1,8 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { MelaAnnotationPage } from '@mela/text/shared';
+import {
+  MelaAnnotationPage,
+  MelaAnnotationPageSchema,
+} from '@mela/text/shared';
 import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
@@ -26,7 +29,7 @@ export class AnnotationTextController {
       this.repository.count(params.filter),
     ]);
 
-    return MelaAnnotationPage.parse({
+    return MelaAnnotationPageSchema.parse({
       items: data,
     }) as unknown as MelaAnnotationPage;
   }

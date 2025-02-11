@@ -58,7 +58,7 @@ export const MelaAnnotationReturnSchema = MelaAnnotationSchema.extend({
   '@context': AnnotationContext,
 });
 
-export const MelaAnnotationPage = z
+export const MelaAnnotationPageSchema = z
   .object({
     '@context': AnnotationContext,
     type: z.enum(['AnnotationPage']).default('AnnotationPage'),
@@ -70,6 +70,7 @@ export const MelaAnnotationPage = z
       items: data.items.map((item) => MelaAnnotationReturnSchema.parse(item)),
     };
   });
+export type MelaAnnotationPage = z.infer<typeof MelaAnnotationPageSchema>;
 
 export const W3CAnnotationSchema = z.object({
   id: z.string(),

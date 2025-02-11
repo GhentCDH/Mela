@@ -18,6 +18,9 @@
     <Btn v-if="createMode" :color="Color.secondary" @click="createMode = false">
       Confirm new blocks
     </Btn>
+    <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
+      Auto generate text blocks
+    </Btn>
   </div>
 
   <hr />
@@ -187,6 +190,10 @@ const onSelectAnnotation = (
   const type = selected.type;
   annotationType.value = IdentifyColor.find((i) => i.id === type);
   editMode.value = true;
+};
+
+const generateBlocks = () => {
+  store.autoGenerateBlocks();
 };
 
 // showAllTranslations();

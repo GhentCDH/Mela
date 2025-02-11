@@ -5,15 +5,11 @@ import { computed, ref } from 'vue';
 
 import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
 
-import type {
-  MelaAnnotation, TranslatedAnnotation } from './mela_annotation';
-import {
-  TranslatedAnnotationInstance,
-} from './mela_annotation';
+import type { MelaAnnotation, TranslatedAnnotation } from './mela_annotation';
+import { TranslatedAnnotationInstance } from './mela_annotation';
 import { parseAnnotation } from './parse';
 import { splitTextInLines } from './utils/lines';
 import { useTextRepository } from '../../../../../repository/text.repository';
-
 
 const filterAnnotations = (
   annotations: TranslatedAnnotation[],
@@ -120,6 +116,8 @@ export const useAnnotationStore = (id: string) =>
       return selectedAnnotation.value;
     };
 
+    const autoGenerateBlocks = () => {};
+
     return {
       init,
       sourceLines,
@@ -132,5 +130,6 @@ export const useAnnotationStore = (id: string) =>
       updateTranslation,
       selectAnnotation,
       selectedAnnotation,
+      autoGenerateBlocks,
     };
   });

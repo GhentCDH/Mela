@@ -54,12 +54,12 @@
       "@ghentcdh/ui": [
         "libs/ui/src/index.ts"
       ],
-      "@ghentcdh/vue-component-annotated-text/style.css": [
-        "link/vue_component_annotated_text/src/style/style.scss"
-      ],
-      "@ghentcdh/vue-component-annotated-text": [
-        "link/vue_component_annotated_text/src/index.ts"
-      ],
+//      "@ghentcdh/vue-component-annotated-text/style.css": [
+//        "link/vue_component_annotated_text/src/style/style.scss"
+//      ],
+//      "@ghentcdh/vue-component-annotated-text": [
+//        "link/vue_component_annotated_text/src/index.ts"
+//      ],
       "@mela/text/api": [
         "libs/text/api/src/index.ts"
       ],
