@@ -9,7 +9,7 @@
       Create new text blocks
     </Btn>
     <div v-if="createMode" class="w-72 block">
-      <Select
+      <SelectComponent
         v-model="annotationType"
         label="Text block type"
         :options="annotationTypes"
@@ -59,7 +59,7 @@
             @click="onSelectAnnotation({ annotation: null }, true)"
           />
         </div>
-        <Select
+        <SelectComponent
           v-model="annotationType"
           label="Annotation type"
           :options="annotationTypes"
@@ -87,14 +87,14 @@ import { computed, ref } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
-import { Btn, Color, IconEnum, Select } from '@ghentcdh/ui';
+import { Btn, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text';
 import { AnnotatedText } from '@ghentcdh/vue-component-annotated-text';
 
 import { useAnnotationStore } from './w3c/annotation.store';
 import type { MelaAnnotation } from './w3c/mela_annotation';
 import { useTextStore } from '../../text.store';
-import { IdentifyColor } from '../identify.color';
+import { IdentifyColor, IdentifyColorMap } from '../identify.color';
 
 type Properties = {
   sourceText: TextContent;

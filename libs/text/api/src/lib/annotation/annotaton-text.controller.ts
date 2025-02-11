@@ -1,11 +1,12 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { MelaAnnotationPage } from '@mela/text/shared';
 import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
+
 import { RequestDto } from '@ghentcdh/tools/form/api';
 
-import { MelaAnnotationPageDto } from './dto';
 import { AnnotationRepository } from './annotation-repository.service';
-import { MelaAnnotationPage } from '@mela/text/shared';
+import { MelaAnnotationPageDto } from './dto';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/annotation')

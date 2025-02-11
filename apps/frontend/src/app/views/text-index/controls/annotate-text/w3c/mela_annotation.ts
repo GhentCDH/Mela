@@ -1,15 +1,17 @@
-import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
-
-import {
+import type {
   AnnotationMetadataType,
-  AnnotationTypeBody,
   Language,
+  TextualBody,
+  W3CAnnotation} from '@mela/text/shared';
+import {
+  AnnotationTypeBody,
   TextPositionSelectorSchema,
   TextTargetSchema,
-  TextualBody,
-  TextualBodySchema,
-  W3CAnnotation,
+  TextualBodySchema
 } from '@mela/text/shared';
+
+import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
+
 
 import { IdentifyColorMap } from '../../identify.color';
 

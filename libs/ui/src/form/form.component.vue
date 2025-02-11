@@ -28,12 +28,12 @@ const properties = withDefaults(
     };
   }>(),
   {
-    renderers: [],
-    events: {},
+    renderers: [] as JsonFormsRendererRegistryEntry[],
+    events: {} as any,
   },
 );
 
-const formData = defineModel({});
+const formData = defineModel<any>({});
 const emits = defineEmits(['valid', 'change', 'submit']);
 const valid = ref(false);
 

@@ -1,7 +1,8 @@
-import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
 
 import type { AnnotationMetadataType, W3CAnnotation } from '@mela/text/shared';
 import { TextualBodySchema, W3CAnnotationSchema } from '@mela/text/shared';
+
+import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
 
 export const parseAnnotation = (
   text: string,

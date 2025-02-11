@@ -1,17 +1,19 @@
+import type { AnnotationMetadataType } from '@mela/text/shared';
+import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
-import type { TranslatedAnnotation } from './mela_annotation';
+
+import type {
+  MelaAnnotation, TranslatedAnnotation } from './mela_annotation';
 import {
-  MelaAnnotation,
   TranslatedAnnotationInstance,
 } from './mela_annotation';
 import { parseAnnotation } from './parse';
-import type { AnnotationMetadataType } from '@mela/text/shared';
 import { splitTextInLines } from './utils/lines';
 import { useTextRepository } from '../../../../../repository/text.repository';
-import { computedAsync } from '@vueuse/core';
+
 
 const filterAnnotations = (
   annotations: TranslatedAnnotation[],

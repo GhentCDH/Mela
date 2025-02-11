@@ -1,6 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
-import { createResponseData } from '@ghentcdh/tools/form/api';
 import { MelaAnnotationPage, MelaAnnotationSchema } from '@mela/text/shared';
+
+import { createResponseData } from '@ghentcdh/tools/form/api';
 
 export class CreateAnnotationDto extends createZodDto(MelaAnnotationSchema) {}
 

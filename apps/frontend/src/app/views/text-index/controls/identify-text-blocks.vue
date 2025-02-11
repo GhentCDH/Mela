@@ -25,7 +25,6 @@ import { defineComponent } from 'vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 import {
   ControlWrapper,
-  Select,
   isCustomControl,
   useVanillaControlCustom,
 } from '@ghentcdh/ui';
@@ -37,7 +36,6 @@ const controlRenderer = defineComponent({
   components: {
     IdentifyAndTranslate,
     ControlWrapper,
-    Select,
   },
   props: {
     ...rendererProps<ControlElement>(),

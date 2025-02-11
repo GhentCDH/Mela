@@ -3,7 +3,7 @@ import type { PropType } from 'vue';
 
 import { myStyles } from '../styles';
 
-const createProperties = (properties: {} = {}) => {
+const createProperties = (properties: any = {}) => {
   return {
     id: {
       required: false as const,

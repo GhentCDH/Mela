@@ -1,5 +1,6 @@
-import { AnnotationSchema } from '@ghentcdh/mela/generated/types';
 import { z } from 'zod';
+
+import { AnnotationSchema } from '@ghentcdh/mela/generated/types';
 
 export const AnnotationMetadataTypes = z.enum([
   'title',
