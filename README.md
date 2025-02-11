@@ -1,3 +1,5 @@
+[![Build](https://github.com/GhentCDH/Mela/actions/workflows/merge-request.yml/badge.svg)](https://github.com/GhentCDH/Mela/actions/workflows/merge-request.yml)
+
 # MELA. The meaning of language
 
 A text tagging and translation platform developed for the research
