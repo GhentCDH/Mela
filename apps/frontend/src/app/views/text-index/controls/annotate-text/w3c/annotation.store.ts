@@ -10,6 +10,9 @@ import { TranslatedAnnotationInstance } from './mela_annotation';
 import { parseAnnotation } from './parse';
 import { splitTextInLines } from './utils/lines';
 import { useTextRepository } from '../../../../../repository/text.repository';
+import { generateAnnotationBlocks } from './utils/generate-blocks';
+import { pick } from 'lodash-es';
+import { useNotificationStore } from '@ghentcdh/ui';
 
 const filterAnnotations = (
   annotations: TranslatedAnnotation[],
@@ -20,6 +23,8 @@ const filterAnnotations = (
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
+    const loading = ref(true);
+    const notificationStore = useNotificationStore();
     const sourceText = ref<string>('');
     const textId = ref<string>(null);
     // const annotations = ref<TranslatedAnnotation[]>([]);
@@ -52,11 +57,17 @@ export const useAnnotationStore = (id: string) =>
 
       const _sourceText = sourceText.value;
       const _translatedText = translatedText.value;
-      const annotations = await textRepository.getAnnotations(id);
+      const annotations = await textRepository.getAnnotations(
+        id,
+        'classifying',
+      );
 
-      return annotations.items.map((i) =>
+      const result = annotations.items.map((i) =>
         TranslatedAnnotationInstance.parse(i, _sourceText, _translatedText),
       );
+
+      loading.value = false;
+      return result;
     });
 
     const init = (
@@ -76,11 +87,34 @@ export const useAnnotationStore = (id: string) =>
       annotations.value = [
         ...annotations.value,
         TranslatedAnnotationInstance.parse(
-          parseAnnotation(sourceText.value, annotation, type),
+          parseAnnotation(
+            sourceText.value,
+            pick(annotation, ['start', 'end']),
+            type,
+          ),
           sourceText.value,
           translatedText.value,
         ),
       ];
+    };
+
+    const createNewAnnotations = async () => {
+      const newAnnotations = annotations.value.filter((a) => a.isNew);
+      if (newAnnotations.length === 0) return;
+      loading.value = true;
+      await Promise.all(
+        newAnnotations.map((a) =>
+          textRepository.createAnnotation(textId.value, a.asW3CAnnotation()),
+        ),
+      )
+        .catch(() => {
+          notificationStore.error('Failed to save annotations');
+        })
+        .then(() => {
+          notificationStore.info('Annotations saved');
+        });
+
+      textId.value = textId.value;
     };
 
     // Update the translation by selection
@@ -116,7 +150,13 @@ export const useAnnotationStore = (id: string) =>
       return selectedAnnotation.value;
     };
 
-    const autoGenerateBlocks = () => {};
+    const autoGenerateBlocks = () => {
+      annotations.value = generateAnnotationBlocks(
+        sourceText.value,
+        translatedText.value,
+        annotations.value,
+      );
+    };
 
     return {
       init,
@@ -131,5 +171,6 @@ export const useAnnotationStore = (id: string) =>
       selectAnnotation,
       selectedAnnotation,
       autoGenerateBlocks,
+      createNewAnnotations,
     };
   });

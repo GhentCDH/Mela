@@ -1,17 +1,16 @@
-import type {
-  AnnotationMetadataType,
-  Language,
-  TextualBody,
-  W3CAnnotation} from '@mela/text/shared';
 import {
+  AnnotationMetadataType,
   AnnotationTypeBody,
+  Language,
   TextPositionSelectorSchema,
   TextTargetSchema,
-  TextualBodySchema
+  TextualBody,
+  TextualBodySchema,
+  W3CAnnotation,
+  W3CAnnotationSchema,
 } from '@mela/text/shared';
 
 import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
-
 
 import { IdentifyColorMap } from '../../identify.color';
 
@@ -57,6 +56,7 @@ export class TranslatedAnnotationInstance {
   translation: MelaAnnotation | undefined;
   transcription: { source: string; translation: string };
   type: AnnotationMetadataType;
+  isNew: boolean;
 
   private constructor(
     private readonly annotation: W3CAnnotation,
@@ -67,6 +67,7 @@ export class TranslatedAnnotationInstance {
     this.createSource();
     this.createTranslation();
     this.createTranscription();
+    this.isNew = annotation.id.startsWith('new');
   }
 
   public get id() {
@@ -156,9 +157,18 @@ export class TranslatedAnnotationInstance {
     return this;
   }
 
-  createW3CAnnotation() {
+  asW3CAnnotation() {
+    const w3CAnnotation = W3CAnnotationSchema.parse(this.annotation);
+
     // TODO render it again ...
-    return this.annotation;
+    if (this.isNew) {
+      w3CAnnotation.id = null;
+    }
+    return w3CAnnotation;
+  }
+
+  equals() {
+    return [this.source.start, this.source.end, this.type].join('-');
   }
 
   private updateSelector(language: Language, start: number, end: number) {

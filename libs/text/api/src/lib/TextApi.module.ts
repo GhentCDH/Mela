@@ -24,7 +24,6 @@ import { TextController } from './text/text.controller';
   imports: [PrismaModule],
   controllers: [
     AuthorController,
-    TextController,
     PhraseController,
     PhraseTextController,
     RegisterController,
@@ -32,6 +31,8 @@ import { TextController } from './text/text.controller';
     SpeechController,
     AnnotationController,
     AnnotationTextController,
+
+    TextController,
   ],
   providers: [
     AuthorRepository,

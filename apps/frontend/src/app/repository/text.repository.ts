@@ -1,24 +1,36 @@
-import { TextFormSchema } from '@mela/text/shared';
+import { TextFormSchema, W3CAnnotation } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
 import { RequestSchema } from '@ghentcdh/tools/form';
+import { MotivationEnumType } from '@mela/generated/types';
 
 export const useTextRepository = defineStore('textRepository', () => {
   const httpStore = useHttpStore();
 
-  const getDataUri = (textId: string, suffix: string) => {
-    return `${TextFormSchema.schema.uri}/${textId}/${suffix}`;
+  const getDataUri = (textId: string, ...suffix: string[]) => {
+    return [TextFormSchema.schema.uri, textId, ...suffix].join('/');
+  };
+  const getAnnotationUri = (textId: string, suffix: string = '') => {
+    return getDataUri(textId, 'annotation', ...suffix);
   };
 
-  const getAnnotations = (textId: string): Promise<MelaAnnotationPage> => {
-    return httpStore.get(getDataUri(textId, 'annotation'), {
+  const getAnnotations = (
+    textId: string,
+    motivation: MotivationEnumType,
+  ): Promise<MelaAnnotationPage> => {
+    return httpStore.get(getAnnotationUri(textId), {
       queryParams: RequestSchema.parse({
         pageSize: 10000,
+        filter: `motivation:${motivation}:equals`,
       }),
     });
   };
 
-  return { getDataUri, getAnnotations };
+  const createAnnotation = (textId: string, annotation: W3CAnnotation) => {
+    return httpStore.post(getAnnotationUri(textId), annotation);
+  };
+
+  return { getDataUri, getAnnotations, createAnnotation };
 });

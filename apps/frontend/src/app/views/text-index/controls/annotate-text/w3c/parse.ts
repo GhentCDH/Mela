@@ -25,7 +25,7 @@ export const parseAnnotation = (
 
   return W3CAnnotationSchema.parse({
     // The W3C Annotation model
-    id: annotation.id ?? uuidv4(),
+    id: annotation.id ?? `new-${uuidv4()}`,
     '@context': 'http://www.w3.org/ns/anno.jsonld',
     body: [
       { type: 'AnnotationType', textType: textType },

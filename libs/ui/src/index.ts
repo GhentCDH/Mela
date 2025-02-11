@@ -15,3 +15,4 @@ import './styles.scss';
 export { default as Card } from './card/card.vue';
 
 export * from './directives/click-outside.directive';
+export * from './toast';

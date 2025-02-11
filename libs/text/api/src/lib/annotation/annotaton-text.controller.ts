@@ -3,18 +3,30 @@ import {
   MelaAnnotationPage,
   MelaAnnotationPageSchema,
 } from '@mela/text/shared';
-import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { AnnotationRepository } from './annotation-repository.service';
-import { MelaAnnotationPageDto } from './dto';
+import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
+import { TextRepositoryService } from '../text/text-repository.service';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/annotation')
 export class AnnotationTextController {
-  constructor(private readonly repository: AnnotationRepository) {}
+  constructor(
+    private readonly repository: AnnotationRepository,
+    private readonly textRepository: TextRepositoryService,
+  ) {}
 
   @Get()
   @ApiCreatedResponse({
@@ -24,6 +36,8 @@ export class AnnotationTextController {
     @Param('textId') textId: string,
     @Query() params: RequestDto,
   ): Promise<MelaAnnotationPage> {
+    params.filter.push(`text.id:${textId}:equals`);
+
     const [data, count] = await Promise.all([
       this.repository.list(params),
       this.repository.count(params.filter),
@@ -32,5 +46,22 @@ export class AnnotationTextController {
     return MelaAnnotationPageSchema.parse({
       items: data,
     }) as unknown as MelaAnnotationPage;
+  }
+
+  @Post()
+  @ApiCreatedResponse({
+    type: MelaAnnotationPageDto,
+  })
+  async create(
+    @Param('textId') textId: string,
+    @Body() dto: CreateAnnotationDto,
+  ): Promise<MelaAnnotationPageDto> {
+    const text = await this.textRepository.findOne(textId);
+    if (!text) {
+      throw new Error('Text not found');
+    }
+    (dto as any).text_id = textId;
+
+    return this.repository.create(dto);
   }
 }

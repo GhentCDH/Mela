@@ -48,6 +48,7 @@ export const MelaAnnotationSchema = AnnotationSchema.omit({
   body: true,
   target: true,
   id: true,
+  text_id: true,
 }).extend({
   body: z.array(AnnotationTypeBody.or(TextualBodySchema)),
   target: z.array(TextTargetSchema),

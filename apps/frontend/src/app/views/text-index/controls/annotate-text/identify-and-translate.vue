@@ -15,7 +15,7 @@
         :options="annotationTypes"
       />
     </div>
-    <Btn v-if="createMode" :color="Color.secondary" @click="createMode = false">
+    <Btn v-if="createMode" :color="Color.secondary" @click="confirmTextBlocks">
       Confirm new blocks
     </Btn>
     <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
@@ -188,12 +188,17 @@ const onSelectAnnotation = (
 
   const selected = store.selectAnnotation(annotation?.id);
   const type = selected.type;
-  annotationType.value = IdentifyColor.find((i) => i.id === type);
+  annotationType.value = IdentifyColor.find((i) => i.id === type)!;
   editMode.value = true;
 };
 
 const generateBlocks = () => {
   store.autoGenerateBlocks();
+};
+
+const confirmTextBlocks = () => {
+  createMode.value = false;
+  store.createNewAnnotations();
 };
 
 // showAllTranslations();

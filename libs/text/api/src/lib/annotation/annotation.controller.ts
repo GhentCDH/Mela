@@ -1,6 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { Controller, UsePipes } from '@nestjs/common';
 
 import { AnnotationDto } from '@ghentcdh/mela/generated/dtos';
 
@@ -25,16 +24,6 @@ export class AnnotationController extends AbstractController<
   // override async list(@Query() params: RequestDto): Promise<ListAnnotationDto> {
   //   return super.list(params);
   // }
-
-  @Post()
-  @ApiCreatedResponse({
-    type: AnnotationDto,
-  })
-  override async create(
-    @Body() dto: CreateAnnotationDto,
-  ): Promise<AnnotationDto> {
-    return super.create(dto);
-  }
 
   // @Get('/:id')
   // @ApiCreatedResponse({
