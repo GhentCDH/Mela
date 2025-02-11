@@ -27,7 +27,7 @@ export class LayoutBuilder<TYPE> extends BuilderWithElements<LayoutType, TYPE> {
     this.options = options;
   }
 
-  static horizontal<TYPE>() {
+  static horizontal<TYPE>(): LayoutBuilder<TYPE> {
     return new LayoutBuilder<TYPE>('HorizontalLayout');
   }
 
@@ -42,7 +42,7 @@ export class LayoutBuilder<TYPE> extends BuilderWithElements<LayoutType, TYPE> {
     return new LayoutBuilder('table');
   }
 
-  static vertical<TYPE>() {
+  static vertical<TYPE>(): LayoutBuilder<TYPE> {
     return new LayoutBuilder<TYPE>('VerticalLayout');
   }
 

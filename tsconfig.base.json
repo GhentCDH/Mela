@@ -39,6 +39,9 @@
       "@ghentcdh/tools/form": [
         "libs/tools/form/src/index.ts"
       ],
+      "@ghentcdh/tools/form/api": [
+        "libs/tools/form-api/src/index.ts"
+      ],
       "@ghentcdh/tools/health/api": [
         "libs/tools/health/api/src/index.ts"
       ],
@@ -50,9 +53,6 @@
       ],
       "@ghentcdh/ui": [
         "libs/ui/src/index.ts"
-      ],
-      "@ghentcdh/tools/form/api": [
-        "libs/tools/form-api/src/index.ts"
       ],
       "@mela/text/api": [
         "libs/text/api/src/index.ts"

@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 
 import { PrismaModule } from '@ghentcdh/mela/generated/prisma';
 
+import { AnnotationRepository } from './annotation/annotation-repository.service';
+import { AnnotationController } from './annotation/annotation.controller';
+import { AnnotationTextController } from './annotation/annotaton-text.controller';
 import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
 import { LemaRepository } from './lema/lema-repository.service';
@@ -21,12 +24,15 @@ import { TextController } from './text/text.controller';
   imports: [PrismaModule],
   controllers: [
     AuthorController,
-    TextController,
     PhraseController,
     PhraseTextController,
     RegisterController,
     LemaController,
     SpeechController,
+    AnnotationController,
+    AnnotationTextController,
+
+    TextController,
   ],
   providers: [
     AuthorRepository,
@@ -36,6 +42,7 @@ import { TextController } from './text/text.controller';
     RegisterRepository,
     LemaRepository,
     SpeechRepository,
+    AnnotationRepository,
   ],
   exports: [AuthorRepository, TextRepositoryService, PhraseRepository],
 })

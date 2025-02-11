@@ -31,3 +31,10 @@ export const isFixedArray = and(
   schemaTypeIs('array'),
   optionIs('format', ControlType.fixedArray),
 );
+
+export const isCustomControl = (customType: string) => {
+  return and(
+    optionIs('format', ControlType.custom),
+    optionIs('type', customType),
+  );
+};

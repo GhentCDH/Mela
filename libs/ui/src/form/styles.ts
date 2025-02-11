@@ -25,6 +25,7 @@ const mergedStyles = mergeStyles(defaultStyles, {
     label: 'fieldset-legend',
     error: '',
     input: 'input',
+    select: 'select',
     description: 'form-control--description label text-xs text-gray-500',
   },
 }) as Styles;

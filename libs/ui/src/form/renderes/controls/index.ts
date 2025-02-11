@@ -26,6 +26,9 @@ export { default as IntegerControlRenderer } from './IntegerControlRenderer.vue'
 export { default as BooleanControlRenderer } from './BooleanControlRenderer.vue';
 export { default as markdownControlRenderer } from './MarkdownControlRenderer.vue';
 
+export * from './utils/style';
+export * from './utils/vanillaControl';
+
 export const controlRenderers = [
   // First custom renderers on format
   markdownControlRenderer,
@@ -43,4 +46,4 @@ export const controlRenderers = [
   stringControlRendererEntry,
   numberControlRendererEntry,
   integerControlRendererEntry,
-];
+] as const;

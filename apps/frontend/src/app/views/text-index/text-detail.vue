@@ -6,6 +6,7 @@
       :schema="formSchema.form.schema"
       :uischema="formSchema.form.uiSchema"
       :events="events"
+      :renderers="TextControls"
       @valid="onValid($event)"
       @change="onChange"
     />
@@ -13,12 +14,13 @@
 </template>
 <script setup lang="ts">
 import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import type { StepperEvent, StepperEventListener } from '@ghentcdh/ui';
 import { FormComponent } from '@ghentcdh/ui';
 
+import { TextControls } from './controls';
 import { useTextStore } from './text.store';
 
 const store = useTextStore();
@@ -40,7 +42,6 @@ const formSchema = TextFormSchema.schema;
 const formData = ref(store.text);
 
 const valid = ref(false);
-const emits = defineEmits(['submit', 'clear', 'closeModal']);
 
 const onValid = (v: boolean) => {
   valid.value = v;
@@ -49,9 +50,6 @@ const onValid = (v: boolean) => {
 const router = useRouter();
 
 const changeStepper = (event: StepperEventListener, data: StepperEvent) => {
-  console.log(event, 'change', data);
-  console.log(formData.value);
-
   if (data.activeStep === 1 || data.activeStep === 2) {
     store.saveOrUpdate(formData.value);
   }
@@ -64,4 +62,11 @@ const events = {
 const onChange = (data: any) => {
   formData.value = data;
 };
+
+watch(
+  () => store.text,
+  () => {
+    formData.value = store.text;
+  },
+);
 </script>
