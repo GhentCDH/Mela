@@ -13,6 +13,21 @@ PaginationComponent
 const itemsPerPage = 20;
 </script>
 
+<PaginationComponent
+:totalItems="20"
+:itemsPerPage="5"
+:currentPage="1" />
+
+```vue
+<PaginationComponent 
+   :totalItems="20" 
+   :itemsPerPage="5" 
+   :currentPage="1" 
+   @update-page="updatePage"
+   @update-page-size="updatePageSize"
+/>
+```
+
 ## Default
 <PaginationComponent 
    :totalItems="itemsPerPage * 5" 
