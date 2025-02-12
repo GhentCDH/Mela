@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import PaginationButton, { PageProps } from './pagination-button.component.vue';
+import type { PageProps } from './pagination-button.component.vue';
+import PaginationButton from './pagination-button.component.vue';
 
 const props = defineProps({
   totalItems: { type: Number, default: 0 },
@@ -116,8 +117,14 @@ const goToPage = (page: number) => {
           :disabled="currentPage === 1"
           @update-page="goToPage"
         />
-        <template v-for="page in pageNumbers" :key="page.page">
-          <PaginationButton v-bind="page" @update-page="goToPage" />
+        <template
+          v-for="page in pageNumbers"
+          :key="page.page"
+        >
+          <PaginationButton
+            v-bind="page"
+            @update-page="goToPage"
+          />
         </template>
 
         <PaginationButton
@@ -140,6 +147,8 @@ const goToPage = (page: number) => {
         />
       </div>
     </div>
-    <div class="text-sm">page {{ currentPage }} of {{ totalPages }}</div>
+    <div class="text-sm">
+      page {{ currentPage }} of {{ totalPages }}
+    </div>
   </div>
 </template>

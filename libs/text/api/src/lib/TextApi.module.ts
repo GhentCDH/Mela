@@ -1,4 +1,6 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 import { PrismaModule } from '@ghentcdh/mela/generated/prisma';
 
@@ -19,8 +21,6 @@ import { SpeechController } from './speech/speech.controller';
 import { TextImportService } from './text/text-import.service';
 import { TextRepositoryService } from './text/text-repository.service';
 import { TextController } from './text/text.controller';
-import { ConfigModule } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [PrismaModule, HttpModule, ConfigModule],

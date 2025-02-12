@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { Btn } from '../button';
 import { Color } from '../const/colors';
 import { Size } from '../const/size';
-import { computed } from 'vue';
 
 export interface PageProps {
   currentPage: number;

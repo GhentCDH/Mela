@@ -25,6 +25,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 import { TextWithRelationsDto } from '@ghentcdh/mela/generated/dtos';
 import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 import { RequestDto } from '@ghentcdh/tools/form/api';
@@ -34,7 +35,6 @@ import { TextUploadDto } from './file-upload.dto';
 import { TextImportService } from './text-import.service';
 import { TextRepositoryService } from './text-repository.service';
 import { AbstractController } from '../shared/controller';
-import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text')

@@ -17,13 +17,13 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';
 import { AbstractController } from '../shared/controller';
-import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('author')
