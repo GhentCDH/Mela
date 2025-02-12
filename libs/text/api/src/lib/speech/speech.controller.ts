@@ -17,13 +17,13 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 import { SpeechDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { CreateSpeechDto, ListSpeechDto } from './dto';
 import { SpeechRepository } from './speech-repository.service';
 import { AbstractController } from '../shared/controller';
-import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('speech')

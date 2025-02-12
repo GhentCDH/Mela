@@ -15,12 +15,12 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { AnnotationRepository } from './annotation-repository.service';
 import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
 import { TextRepositoryService } from '../text/text-repository.service';
-import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/annotation')

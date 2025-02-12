@@ -39,7 +39,6 @@ const edit = (data: unknown) => {
 };
 
 const deleteFn = (data: unknown) => {
-  console.log('delete', data);
   emits('delete', data);
 };
 
@@ -130,7 +129,7 @@ const components = {
   </table>
   <template v-if="page">
     <PaginationComponent
-      class="border border-gray-300 border-t pt-4 border-x-0 border-b-0"
+      class="border-gray-300 border-t pt-4 border-x-0 border-b-0"
       :total-items="page.count"
       :items-per-page="page.pageSize"
       :current-page="page.page"
