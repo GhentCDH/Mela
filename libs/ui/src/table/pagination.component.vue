@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 
-import { Btn } from '../button';
-import { Color } from '../const/colors';
-import { Size } from '../const/size';
+import PaginationButton, { PageProps } from './pagination-button.component.vue';
 
 const props = defineProps({
   totalItems: { type: Number, default: 0 },
@@ -13,16 +11,12 @@ const props = defineProps({
 
 const emit = defineEmits(['updatePage', 'updatePageSize']);
 
-const totalPages = ref(Math.ceil(props.totalItems / props.itemsPerPage));
-const pages = ref<
-  {
-    page: () => number;
-    label: string;
-    activePage: number;
-    hide?: () => boolean;
-    disabled?: () => boolean;
-  }[]
->([]);
+const totalPages = computed(() => {
+  let total = Math.ceil(props.totalItems / props.itemsPerPage);
+
+  if (total < 1) return 1;
+  return total;
+});
 
 const MIN_PAGES = 6;
 const MIN_PAGES_HALF = MIN_PAGES / 2;
@@ -37,7 +31,7 @@ const hideRange = computed(() => {
 
   let min = props.currentPage - MIN_PAGES_HALF;
 
-  if (min < 1) {
+  if (min <= 1) {
     min = 1;
   } else if (min + MIN_PAGES > totalPages.value) {
     min = totalPages.value - MIN_PAGES;
@@ -51,125 +45,101 @@ const hideRange = computed(() => {
   };
 });
 
-const hidePage = (page: number) => {
-  if (totalPages.value <= MIN_PAGES) {
-    return false;
-  }
+const createDummyPage = (current: number) => {
+  return {
+    label: `...`,
+    currentPage: current,
+    page: -10,
+    disabled: true,
+    neverActive: true,
+  } as PageProps;
+};
 
-  if (page === 1 || page === totalPages.value || page === props.currentPage) {
-    return false;
-  }
+const pageNumbers = computed(() => {
+  let total = totalPages.value;
 
+  if (total < 1) total = 1;
+
+  const current = props.currentPage;
+  const pages: PageProps[] = [];
   const { min, max } = hideRange.value;
 
-  return min > page || page > max;
-};
+  Array.from({ length: total }, (_, i) => {
+    const page = i + 1;
 
-const updatePages = () => {
-  pages.value = [
-    {
-      page: () => 1,
-      label: `<<`,
-      activePage: -2,
-      disabled: () => props.currentPage === 1,
-    },
-    {
-      page: () => props.currentPage - 1,
-      label: `<`,
-      activePage: -1,
-      disabled: () => props.currentPage === 1,
-    },
-    {
-      page: () => props.currentPage - 1,
-      label: 1,
-      activePage: 1,
-    },
-    {
-      page: () => props.currentPage - 1,
-      label: `...`,
-      activePage: -10,
-      disabled: () => true,
-      hide: () => hideRange.value.min < 3,
-    },
-    Array.from({ length: totalPages.value - 2 }, (_, i) => {
-      const page = i + 2;
+    if (page !== 1 && page !== total) {
+      if (page > max) return;
+      if (page < min) return;
+    }
 
-      return {
-        page: () => page,
-        label: `${page}`,
-        activePage: page,
-        hide: () => hidePage(page),
-      };
-    }),
-    {
-      page: () => props.currentPage - 1,
-      label: `...`,
-      activePage: -11,
-      disabled: () => true,
-      hide: () => hideRange.value.max >= totalPages.value - 1,
-    },
-    {
-      page: () => totalPages.value,
-      label: `${totalPages.value}`,
-      activePage: totalPages.value,
-      hide: () => totalPages.value < 2,
-    },
-    {
-      page: () => props.currentPage + 1,
-      label: `>`,
-      activePage: -3,
-      disabled: () => props.currentPage === totalPages.value,
-    },
-    {
-      page: () => props.totalItems,
-      label: `>>`,
-      activePage: -4,
-      disabled: () => props.currentPage === totalPages.value,
-    },
-  ].flat();
-};
+    if (page === total && total > 1 && max < total) {
+      pages.push(createDummyPage(current));
+    }
+    pages.push({
+      label: `${page}`,
+      totalPages: total,
+      currentPage: current,
+      page: page,
+    } as PageProps);
 
-watch([() => props.totalItems, () => props.itemsPerPage], () => {
-  totalPages.value = Math.ceil(props.totalItems / props.itemsPerPage);
-  updatePages();
+    if (page === 1 && total > 1 && min > 1) {
+      pages.push(createDummyPage(current));
+    }
+  });
+
+  return pages;
 });
 
-const goToPage = (page: () => number) => {
-  emit('updatePage', page());
+const goToPage = (page: number) => {
+  emit('updatePage', page);
 };
-
-updatePages();
 </script>
 <template>
   <div class="flex gap-2">
     <div class="flex flex-1 justify-center items-center">
       <div class="flex gap-1">
-        <Btn
-          v-for="page in pages"
-          :key="page.activePage"
-          :disabled="page.disabled?.()"
-          :square="true"
-          :size="Size.xs"
-          :color="
-            page.activePage < 1
-              ? Color.blank
-              : page.activePage === props.currentPage
-                ? Color.primary
-                : Color.secondary
-          "
-          :class="[
-            {
-              hidden: page.hide?.(),
-            },
-          ]"
-          @click="goToPage(page.page)"
-        >
-          {{ page.label }}
-        </Btn>
+        <PaginationButton
+          v-bind="props"
+          :page="1"
+          label="<<"
+          :current-page="currentPage"
+          :never-active="true"
+          :disabled="currentPage === 1"
+          @update-page="goToPage"
+        />
+        <PaginationButton
+          v-bind="props"
+          :page="currentPage - 1"
+          label="<"
+          :current-page="currentPage"
+          :never-active="true"
+          :disabled="currentPage === 1"
+          @update-page="goToPage"
+        />
+        <template v-for="page in pageNumbers" :key="page.page">
+          <PaginationButton v-bind="page" @update-page="goToPage" />
+        </template>
+
+        <PaginationButton
+          v-bind="props"
+          :page="currentPage + 1"
+          label=">"
+          :current-page="currentPage"
+          :never-active="true"
+          :disabled="props.currentPage === totalPages"
+          @update-page="goToPage"
+        />
+        <PaginationButton
+          v-bind="props"
+          :page="totalPages"
+          label=">>"
+          :current-page="currentPage"
+          :never-active="true"
+          :disabled="props.currentPage === totalPages"
+          @update-page="goToPage"
+        />
       </div>
     </div>
-    <div class="text-sm">
-      page {{ currentPage }} of {{ totalPages }}
-    </div>
+    <div class="text-sm">page {{ currentPage }} of {{ totalPages }}</div>
   </div>
 </template>
