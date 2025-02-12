@@ -1,6 +1,6 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
 import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form/api';
@@ -11,6 +11,7 @@ import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/phrase')
+@ApiBearerAuth()
 export class PhraseTextController extends AbstractController<
   PhraseDto,
   CreatePhraseDto

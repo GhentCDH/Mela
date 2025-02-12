@@ -8,9 +8,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 import { SpeechDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form/api';
@@ -18,9 +23,12 @@ import { RequestDto } from '@ghentcdh/tools/form/api';
 import { CreateSpeechDto, ListSpeechDto } from './dto';
 import { SpeechRepository } from './speech-repository.service';
 import { AbstractController } from '../shared/controller';
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('speech')
+@ApiBearerAuth()
+@UseGuards(GhentCdhGuard)
 export class SpeechController extends AbstractController<
   SpeechDto,
   CreateSpeechDto

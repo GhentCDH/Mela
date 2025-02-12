@@ -12,11 +12,13 @@ import {
   Query,
   UnprocessableEntityException,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
@@ -32,9 +34,12 @@ import { TextUploadDto } from './file-upload.dto';
 import { TextImportService } from './text-import.service';
 import { TextRepositoryService } from './text-repository.service';
 import { AbstractController } from '../shared/controller';
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text')
+@ApiBearerAuth()
+@UseGuards(GhentCdhGuard)
 export class TextController extends AbstractController<
   TextWithRelations,
   CreateTextDto

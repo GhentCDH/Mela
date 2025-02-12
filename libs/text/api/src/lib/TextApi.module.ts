@@ -19,9 +19,11 @@ import { SpeechController } from './speech/speech.controller';
 import { TextImportService } from './text/text-import.service';
 import { TextRepositoryService } from './text/text-repository.service';
 import { TextController } from './text/text.controller';
+import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, HttpModule, ConfigModule],
   controllers: [
     AuthorController,
     PhraseController,

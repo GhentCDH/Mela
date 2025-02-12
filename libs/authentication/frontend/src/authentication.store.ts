@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, shallowRef } from 'vue';
+import { ref, shallowRef, watch } from 'vue';
 
 import { KeycloakAdapter } from './keycloak.adapter';
 
@@ -10,10 +10,13 @@ export const useAuthenticationStore = defineStore(AUTH_STORE_NAME, () => {
 
   const keycloackAdapter = ref<KeycloakAdapter>();
 
+  // create a promise initeDone
+  const initDone = ref(false);
+
   KeycloakAdapter.init().then((adapter) => {
     isAuthenticated.value = adapter.isAuthenticated;
     keycloackAdapter.value = adapter;
-
+    initDone.value = true;
     return adapter;
   });
 
@@ -26,6 +29,18 @@ export const useAuthenticationStore = defineStore(AUTH_STORE_NAME, () => {
     user: () => keycloackAdapter.value?.userInfo,
     isAuthenticated: () => keycloackAdapter.value?.isAuthenticated,
     logout,
-    updateToken: () => keycloackAdapter.value?.updateToken(),
+    updateToken: async () => {
+      if (!initDone.value) {
+        await new Promise<void>((resolve) => {
+          const unwatch = watch(initDone, (newValue) => {
+            if (newValue) {
+              unwatch();
+              resolve();
+            }
+          });
+        });
+      }
+      return keycloackAdapter.value?.updateToken();
+    },
   };
 });

@@ -8,9 +8,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 import { LemaDto } from '@ghentcdh/mela/generated/dtos';
 import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
@@ -19,9 +24,12 @@ import { RequestDto } from '@ghentcdh/tools/form/api';
 import { CreateLemaDto, ListLemaDto } from './dto';
 import { LemaRepository } from './lema-repository.service';
 import { AbstractController } from '../shared/controller';
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('lema')
+@ApiBearerAuth()
+@UseGuards(GhentCdhGuard)
 export class LemaController extends AbstractController<
   LemaWithRelations,
   CreateLemaDto

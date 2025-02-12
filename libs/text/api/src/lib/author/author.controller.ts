@@ -8,9 +8,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form/api';
@@ -18,9 +23,12 @@ import { RequestDto } from '@ghentcdh/tools/form/api';
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';
 import { AbstractController } from '../shared/controller';
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('author')
+@ApiBearerAuth()
+@UseGuards(GhentCdhGuard)
 export class AuthorController extends AbstractController<
   AuthorDto,
   CreateAuthorDto

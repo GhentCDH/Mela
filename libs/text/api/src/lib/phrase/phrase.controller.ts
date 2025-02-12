@@ -8,9 +8,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
 import { RequestDto } from '@ghentcdh/tools/form/api';
@@ -18,9 +23,12 @@ import { RequestDto } from '@ghentcdh/tools/form/api';
 import { CreatePhraseDto, ListPhraseDto } from './dto';
 import { PhraseRepository } from './phrase.repository';
 import { AbstractController } from '../shared/controller';
+import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 
 @UsePipes(ZodValidationPipe)
 @Controller('phrase')
+@ApiBearerAuth()
+@UseGuards(GhentCdhGuard)
 export class PhraseController extends AbstractController<
   PhraseDto,
   CreatePhraseDto
