@@ -12,6 +12,7 @@
     }
   },
   "tags": [
+    "scope:feature",
     "scope:api"],
   "targets": {
     "build": {
