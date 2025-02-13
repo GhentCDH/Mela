@@ -20,12 +20,13 @@ function generateDirectoryObject(dir, exclude) {
   const items = [];
 
   const files = fs.readdirSync(dirPath);
+  let hasIndex = false;
   files.forEach((file) => {
     const filePath = path.join(dirPath, file);
     const stat = fs.statSync(filePath);
 
     // eslint-disable-next-line no-console
-    console.log(exclude, file, exclude.indexOf(file));
+    console.log(exclude, dir, file, exclude.indexOf(file));
 
     if (exclude.indexOf(file) !== -1) return;
 
@@ -33,8 +34,12 @@ function generateDirectoryObject(dir, exclude) {
       const fileName = file.substring(0, file.lastIndexOf('.'));
 
       if (!file.endsWith('.md')) return;
-      if (file === 'index.md') return;
+      if (file === 'index.md') {
+        hasIndex = true;
+        return;
+      }
       items.push({
+        collapsed: true,
         text: formatText(fileName),
         link: `/${dir}/${fileName}`,
       });
@@ -46,12 +51,13 @@ function generateDirectoryObject(dir, exclude) {
   });
 
   const dirName = path.basename(dirPath);
+  console.log(dirName, items);
   return {
     text: formatText(dirName),
     children: items,
     items: items,
     collapsed: true,
-    link: items.length === 0 ? `/${dir}` : '',
+    link: items.length === 0 ? `/${dir}` : hasIndex ? `/${dir}/index.md` : '',
   };
 }
 
@@ -66,3 +72,14 @@ function createMenu(dir, exclude = []) {
 createMenu('tools');
 createMenu('components');
 createMenu('api', ['_media', 'globals.md']);
+
+const copyReadme = (from, to) => {
+  const fromPath = path.join(docsPath, from, 'README.md');
+  const toPath = path.join(docsPath, to, 'index.md');
+
+  // Search for the readme files ...
+
+  fs.copyFileSync(fromPath, toPath);
+};
+
+copyReadme('libs/ui', 'components/ui');
