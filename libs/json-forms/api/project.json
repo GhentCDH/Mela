@@ -1,7 +1,7 @@
 {
-  "name": "tools-form",
+  "name": "json-forms-api",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/tools/form/src",
+  "sourceRoot": "libs/json-forms/api/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -12,23 +12,17 @@
     }
   },
   "tags": [
-    "scope:tool",
-    "scope:shared"
-  ],
+    "scope:api"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/tools/form",
-        "main": "libs/tools/form/src/index.ts",
-        "packageJson": "libs/tools/form/package.json",
-        "tsConfig": "libs/tools/form/tsconfig.lib.json",
-        "assets": [
-          "libs/tools/form/*.md"
-        ]
+        "outputPath": "dist/libs/json-forms/api",
+        "tsConfig": "libs/json-forms/api/tsconfig.lib.json",
+        "packageJson": "libs/json-forms/api/package.json",
+        "main": "libs/json-forms/api/src/index.ts",
+        "assets": ["libs/json-forms/api/*.md"]
       }
     },
     "nx-release-publish": {

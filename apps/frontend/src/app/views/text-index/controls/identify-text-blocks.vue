@@ -22,12 +22,9 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
+import { isCustomControl } from '@ghentcdh/json-forms/vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
-import {
-  ControlWrapper,
-  isCustomControl,
-  useVanillaControlCustom,
-} from '@ghentcdh/ui';
+import { ControlWrapper, useVanillaControlCustom } from '@ghentcdh/ui';
 
 import IdentifyAndTranslate from './annotate-text/identify-and-translate.vue';
 

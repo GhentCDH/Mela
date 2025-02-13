@@ -14,7 +14,7 @@
 import { PhraseFormSchema } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import { FormWithTableCompnent } from '@ghentcdh/ui';
+import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
 
 import { usePhraseRepository } from '../../../repository/phrase.repository';
 import { useTextStore } from '../text.store';

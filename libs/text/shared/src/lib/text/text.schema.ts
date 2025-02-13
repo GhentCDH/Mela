@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+import {
+  CategoryBuilder,
+  ControlBuilder,
+  LayoutBuilder,
+  TableBuilder,
+  TextCellBuilder,
+  createSchema,
+} from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
 import { TextForm } from '@ghentcdh/mela/generated/forms';
 import type {
   Text,
@@ -11,14 +19,6 @@ import {
   TextContentSchema,
   TextSchema,
 } from '@ghentcdh/mela/generated/types';
-import {
-  CategoryBuilder,
-  ControlBuilder,
-  LayoutBuilder,
-  TableBuilder,
-  TextCellBuilder,
-  createSchema,
-} from '@ghentcdh/tools/form'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema
 const textIdentifyStep =

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import type { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import FormComponent from './form.component.vue';

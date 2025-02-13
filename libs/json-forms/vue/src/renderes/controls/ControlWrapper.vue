@@ -1,6 +1,9 @@
 <template>
   <fieldset :class="styles.control.wrapper">
-    <legend v-if="!hideLabel" :class="styles.control.label">
+    <legend
+      v-if="!hideLabel"
+      :class="styles.control.label"
+    >
       {{ label }} <span v-if="showAsterisk">*</span>
     </legend>
     <slot />

@@ -1,5 +1,8 @@
 <template>
-  <control-wrapper v-bind="controlWrapper" :styles="styles">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <input
       :id="control.id + '-input'"
       v-model="query"
@@ -11,7 +14,7 @@
       :placeholder="appliedOptions.placeholder"
       @focus="onFocus"
       @blur="onBlur"
-    />
+    >
   </control-wrapper>
   <div v-click-outside="() => (results = [])">
     <ul
@@ -21,7 +24,10 @@
         absolute`,
       ]"
     >
-      <li v-for="(result, index) in results" :key="result[field.id]">
+      <li
+        v-for="(result, index) in results"
+        :key="result[field.id]"
+      >
         <button
           class="w-full h-8 border-b-1 border-gray-200 border-x-0 border-t-0 px-4 py-2 text-left hover:bg-primary-content cursor-pointer"
           type="button"
@@ -46,12 +52,11 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent, ref } from 'vue';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import type { ResponseData } from '@ghentcdh/tools/form';
+import type { ResponseData } from '@ghentcdh/json-forms/core';
+import { inputClasses, useVanillaControlCustom } from '@ghentcdh/ui';
 
 import { isAutoCompleteControl } from '../../tester';
 import ControlWrapper from '../ControlWrapper.vue';
-import { inputClasses } from '@ghentcdh/ui';
-import { useVanillaControlCustom } from '@ghentcdh/ui';
 
 const controlRenderer = defineComponent({
   name: 'AutocompleteControlRenderer',

@@ -1,6 +1,6 @@
 import type { Styles } from '@jsonforms/vue-vanilla';
 
-import type { MyStyles } from '@ghentcdh/ui';
+import type { MyStyles } from '../styles';
 
 export const showErrors = (
   isTouched: boolean,

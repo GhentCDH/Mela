@@ -18,8 +18,8 @@ import {
 } from '@nestjs/swagger';
 
 import { GhentCdhGuard } from '@ghentcdh/authentication/api';
+import { RequestDto } from '@ghentcdh/json-forms/api';
 import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { CreatePhraseDto, ListPhraseDto } from './dto';
 import { PhraseRepository } from './phrase.repository';

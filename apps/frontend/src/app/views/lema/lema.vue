@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LemaFormSchema } from '@mela/text/shared';
 
-import { FormWithTableCompnent } from '@ghentcdh/ui';
+import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
 
 const formId = 'register';
 </script>

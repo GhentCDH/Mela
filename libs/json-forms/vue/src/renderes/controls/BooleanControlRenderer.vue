@@ -17,7 +17,7 @@
           @change="onChange"
           @focus="onFocus"
           @blur="onBlur"
-        />
+        >
         <span class="font-bold text-black"> {{ control.label }}</span>
       </label>
     </control-wrapper>
@@ -34,8 +34,9 @@ import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
-import ControlWrapper from './ControlWrapper.vue';
 import { useVanillaControlCustom } from '@ghentcdh/ui';
+
+import ControlWrapper from './ControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'BooleanControlRenderer',

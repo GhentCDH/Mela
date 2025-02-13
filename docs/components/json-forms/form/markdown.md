@@ -8,7 +8,7 @@ FormComponent
 } from "@ghentcdh/json-forms/vue";
 import { ref } from 'vue';
 
-import { ControlBuilder, LayoutBuilder } from '@ghentcdh/tools/form';
+import { ControlBuilder, LayoutBuilder } from '@ghentcdh/json-forms/core';
 
 const uischema = LayoutBuilder.vertical()
     .addControls(

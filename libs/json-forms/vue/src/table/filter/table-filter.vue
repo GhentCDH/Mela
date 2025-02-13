@@ -14,7 +14,11 @@
         <template #modal-actions />
       </modal-form>
       <template v-if="filters.length">
-        <Btn :size="Size.xs" :outline="true" @click="onResetFilters">
+        <Btn
+          :size="Size.xs"
+          :outline="true"
+          @click="onResetFilters"
+        >
           Reset all filters
         </Btn>
       </template>
@@ -35,7 +39,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import type { Filter, JsonFormsLayout } from '@ghentcdh/tools/form';
+import type { Filter, JsonFormsLayout } from '@ghentcdh/json-forms/core';
 import { Btn, BtnBadge, IconEnum, Size } from '@ghentcdh/ui';
 
 import ModalForm from '../../modal/modal-form.vue';

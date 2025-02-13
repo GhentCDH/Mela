@@ -8,7 +8,11 @@
       @focus="onFocus"
       @blur="onBlur"
     >
-      <option v-for="option in options" :key="option[valueKey]" :value="option">
+      <option
+        v-for="option in options"
+        :key="option[valueKey]"
+        :value="option"
+      >
         {{ option[labelKey] }}
       </option>
     </select>

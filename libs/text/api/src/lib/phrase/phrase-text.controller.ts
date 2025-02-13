@@ -2,8 +2,8 @@ import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
+import { RequestDto } from '@ghentcdh/json-forms/api';
 import { PhraseDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { CreatePhraseDto, ListPhraseDto } from './dto';
 import { PhraseRepository } from './phrase.repository';

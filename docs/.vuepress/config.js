@@ -22,8 +22,8 @@ export default defineUserConfig({
           '@ghentcdh/ui': fileURLToPath(
             new URL('../../libs/ui/src/index.ts', import.meta.url),
           ),
-          '@ghentcdh/tools/form': fileURLToPath(
-            new URL('../../libs/tools/form/src/index.ts', import.meta.url),
+          '@ghentcdh/json-forms/core': fileURLToPath(
+            new URL('../../libs/json-forms/form/src/index.ts', import.meta.url),
           ),
           '@ghentcdh/tools/logging/frontend': fileURLToPath(
             new URL(

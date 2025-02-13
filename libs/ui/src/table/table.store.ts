@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { extractFilters, RequestSchema } from '@ghentcdh/tools/form';
+import { RequestSchema, extractFilters } from '@ghentcdh/json-forms/core';
 
 type RequestData = any;
 

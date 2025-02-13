@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, shallowRef, watch } from 'vue';
 
-import type { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
 import type { TableAction } from '@ghentcdh/ui';
 import { Card, IconEnum } from '@ghentcdh/ui';
 

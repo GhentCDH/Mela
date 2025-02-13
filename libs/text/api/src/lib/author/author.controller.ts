@@ -18,8 +18,8 @@ import {
 } from '@nestjs/swagger';
 
 import { GhentCdhGuard } from '@ghentcdh/authentication/api';
+import { RequestDto } from '@ghentcdh/json-forms/api';
 import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';

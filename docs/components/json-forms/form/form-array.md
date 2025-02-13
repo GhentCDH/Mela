@@ -10,7 +10,7 @@ FormComponent
 
 import { ref } from 'vue';
 
-import { ControlBuilder, LayoutBuilder } from '@ghentcdh/tools/form';
+import { ControlBuilder, LayoutBuilder } from '@ghentcdh/json-forms/core';
 
 
 const formData =  new ref({

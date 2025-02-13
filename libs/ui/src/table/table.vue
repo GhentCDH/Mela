@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ColumnDef } from '@ghentcdh/tools/form';
+import type { ColumnDef } from '@ghentcdh/json-forms/core';
 
 import TextCell from './cells/text.cell.vue';
 import type { DisplayColumn, TableAction } from './table.model';
@@ -58,21 +58,39 @@ const components = {
   <table class="table w-full">
     <thead>
       <tr>
-        <th v-for="column in displayColumns" :key="column.scope">
-          <SortHeader :column="column" v-bind="sort" @sort="onSort" />
+        <th
+          v-for="column in displayColumns"
+          :key="column.scope"
+        >
+          <SortHeader
+            :column="column"
+            v-bind="sort"
+            @sort="onSort"
+          />
         </th>
-        <th v-if="actions">actions</th>
+        <th v-if="actions">
+          actions
+        </th>
         <th />
       </tr>
     </thead>
     <tbody>
       <tr v-if="loading">
-        <td :colspan="displayColumns.length + 1" class="text-center">
+        <td
+          :colspan="displayColumns.length + 1"
+          class="text-center"
+        >
           <span class="loading loading-bars loading-xs" />
         </td>
       </tr>
-      <tr v-for="item in data" :key="item.id">
-        <td v-for="column in displayColumns" :key="column.scope">
+      <tr
+        v-for="item in data"
+        :key="item.id"
+      >
+        <td
+          v-for="column in displayColumns"
+          :key="column.scope"
+        >
           <component
             :is="column.component"
             :v-bind="column"
@@ -93,7 +111,11 @@ const components = {
         </td>
         <td>
           <span class="flex gap-2">
-            <Btn :icon="IconEnum.Edit" :outline="true" @click="edit(item)" />
+            <Btn
+              :icon="IconEnum.Edit"
+              :outline="true"
+              @click="edit(item)"
+            />
             <Btn
               :icon="IconEnum.Delete"
               :outline="true"

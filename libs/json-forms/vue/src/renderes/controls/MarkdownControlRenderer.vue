@@ -1,5 +1,8 @@
 <template>
-  <control-wrapper v-bind="controlWrapper" :styles="styles">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <div :id="mdId" />
   </control-wrapper>
 </template>
@@ -15,9 +18,10 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import MdEditor from '@toast-ui/editor';
 import { defineComponent, onMounted } from 'vue';
 
+import { useVanillaControlCustom } from '@ghentcdh/ui';
+
 import ControlWrapper from './ControlWrapper.vue';
 import { isMarkdownControl } from '../tester';
-import { useVanillaControlCustom } from '@ghentcdh/ui';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
 

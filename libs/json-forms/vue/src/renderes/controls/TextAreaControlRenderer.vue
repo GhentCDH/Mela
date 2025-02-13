@@ -27,9 +27,10 @@ import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
+import { useVanillaControlCustom } from '@ghentcdh/ui';
+
 import ControlWrapper from './ControlWrapper.vue';
 import { isTextAreaControl } from '../tester';
-import { useVanillaControlCustom } from '@ghentcdh/ui';
 
 const controlRenderer = defineComponent({
   name: 'TextAreaControlRenderer',

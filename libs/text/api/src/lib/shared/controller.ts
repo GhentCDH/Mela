@@ -10,8 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 
-import type { ResponseData } from '@ghentcdh/tools/form';
-import type { RequestDto } from '@ghentcdh/tools/form/api';
+import type { ResponseData } from '@ghentcdh/json-forms/core';
+import type { RequestDto } from '@ghentcdh/json-forms/api';
 
 import type { AbstractRepository } from './repository.service';
 

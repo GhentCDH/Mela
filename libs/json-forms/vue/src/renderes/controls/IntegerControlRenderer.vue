@@ -1,5 +1,8 @@
 <template>
-  <control-wrapper v-bind="controlWrapper" :styles="styles">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <input
       :id="control.id + '-input'"
       autocomplete="off"
@@ -13,7 +16,7 @@
       @change="onChange"
       @focus="onFocus"
       @blur="onBlur"
-    />
+    >
   </control-wrapper>
 </template>
 
@@ -27,9 +30,9 @@ import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
+import { inputClasses , useVanillaControlCustom } from '@ghentcdh/ui';
+
 import ControlWrapper from './ControlWrapper.vue';
-import { inputClasses } from '@ghentcdh/ui';
-import { useVanillaControlCustom } from '@ghentcdh/ui';
 
 const controlRenderer = defineComponent({
   name: 'IntegerControlRenderer',

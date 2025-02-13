@@ -3,15 +3,10 @@ import { TextFormSchema } from '@mela/text/shared';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { TableComponent, useFormStore } from '@ghentcdh/json-forms/vue';
 import type { Text } from '@ghentcdh/mela/generated/types';
 import type { TableAction } from '@ghentcdh/ui';
-import {
-  Btn,
-  Card,
-  IconEnum,
-  TableComponent,
-  useFormStore,
-} from '@ghentcdh/ui';
+import { Btn, Card, IconEnum } from '@ghentcdh/ui';
 
 const formId = 'text-index';
 const urlSchema = '/api/text/schema';

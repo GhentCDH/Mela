@@ -1,4 +1,4 @@
-import type { ColumnDef } from '@ghentcdh/tools/form';
+import type { ColumnDef } from '@ghentcdh/json-forms/core';
 
 export type TableAction = {
   label: string;

@@ -1,13 +1,13 @@
-import { RegisterForm } from '@ghentcdh/mela/generated/forms';
-import type { Register } from '@ghentcdh/mela/generated/types';
-import { RegisterSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
   createSchema,
-} from '@ghentcdh/tools/form';
+} from '@ghentcdh/json-forms/core';
+import { RegisterForm } from '@ghentcdh/mela/generated/forms';
+import type { Register } from '@ghentcdh/mela/generated/types';
+import { RegisterSchema } from '@ghentcdh/mela/generated/types';
 
 const uiSchema = LayoutBuilder.vertical<Register>()
   .addControls(ControlBuilder.properties('name'))
