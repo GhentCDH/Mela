@@ -2,6 +2,7 @@ import { viteBundler } from '@vuepress/bundler-vite';
 import { defaultTheme } from '@vuepress/theme-default';
 import { defineUserConfig } from 'vuepress';
 import componentsSideBar from '../components/typedoc_sidebar.json';
+import toolsSideBar from '../tools/typedoc_sidebar.json';
 import { fileURLToPath } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -53,14 +54,12 @@ export default defineUserConfig({
       },
     ],
     sidebar: [
-      {
-        text: 'components',
-        children: componentsSideBar,
-      },
+      componentsSideBar,
+      toolsSideBar,
       // {
       //   text: 'api',
       //   children: apiSideBar1,
       // },
-    ],
+    ].flat(),
   }),
 });

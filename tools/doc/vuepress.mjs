@@ -63,5 +63,6 @@ function createMenu(dir, exclude = []) {
   writeSidebarFile(dirPath, items.items);
 }
 
+createMenu('tools');
 createMenu('components');
 createMenu('api', ['_media', 'globals.md']);
