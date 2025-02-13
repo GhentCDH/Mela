@@ -58,7 +58,8 @@ storybook-static
 /link/
 
 /docs/.vuepress/*
-!/docs/.vuepress/theme/*
+/docs/**/README.md
+!/docs/.vuepress/theme
 !/docs/.vuepress/config.js
 !/docs/.vuepress/client.js
 /test_coverage

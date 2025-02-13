@@ -7,6 +7,10 @@ import { fileURLToPath } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineUserConfig({
+  title: 'GhentCDH',
+  lastUpdated: true,
+  cleanUrls: true,
+  metaChunk: true,
   bundler: viteBundler({
     viteOptions: {
       plugins: [tailwindcss()],
@@ -38,14 +42,14 @@ export default defineUserConfig({
   // postcss: {
   //   plugins: [require('@tailwindcss/postcss'), require('autoprefixer')],
   // },
-  title: 'GhentCDH',
   theme: defaultTheme({
     docsRepo: 'https://github.com/GhentCDH/Mela',
     docsBranch: 'master',
     docsDir: 'docs',
-    editLinkPattern: ':repo/tree/:branch/:path',
+    // editLinkPattern: ':repo/tree/:branch/:path',
     lastUpdated: true,
     colorMode: 'light',
+    socialLinks: [{ icon: 'github', link: 'https://github.com/GhentCDH/Mela' }],
     // colorModeSwitch: false,
     navbar: [
       {

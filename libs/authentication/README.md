@@ -1,3 +1,7 @@
+---
+title: Authentication
+---
+
 # Use the GhentCDH keycloak libraries for authentication
 
 ## Install the libraries
