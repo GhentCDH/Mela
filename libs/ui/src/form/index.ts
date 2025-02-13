@@ -1,11 +1,5 @@
-export * from './form.store';
-export * from './renderes/layouts/stepper.store';
-export * from './renderes/controls';
-export * from './renderes/tester';
-
-export { default as FormWithTableCompnent } from './form-with-table.component.vue';
-export { default as FormWithActions } from './form-with-actions.component.vue';
-
-export { default as FormComponent } from './form.component.vue';
-
-export * from './standalone';
+export { default as SelectComponent } from './SelectComponent.vue';
+export { default as ControlWrapper } from './core/ControlWrapper.vue';
+export * from './core/styles';
+export * from './core/utils/style';
+export * from './core/utils/vanillaControl';

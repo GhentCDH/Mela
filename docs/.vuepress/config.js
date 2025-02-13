@@ -16,6 +16,9 @@ export default defineUserConfig({
       plugins: [tailwindcss()],
       resolve: {
         alias: {
+          '@ghentcdh/json-forms/vue': fileURLToPath(
+            new URL('../../libs/json-forms/vue/src/index.ts', import.meta.url),
+          ),
           '@ghentcdh/ui': fileURLToPath(
             new URL('../../libs/ui/src/index.ts', import.meta.url),
           ),
