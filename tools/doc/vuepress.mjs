@@ -20,12 +20,13 @@ function generateDirectoryObject(dir, exclude) {
   const items = [];
 
   const files = fs.readdirSync(dirPath);
+  let indexFile = '';
   files.forEach((file) => {
     const filePath = path.join(dirPath, file);
     const stat = fs.statSync(filePath);
 
     // eslint-disable-next-line no-console
-    console.log(exclude, file, exclude.indexOf(file));
+    console.log(exclude, dir, file, exclude.indexOf(file));
 
     if (exclude.indexOf(file) !== -1) return;
 
@@ -33,11 +34,21 @@ function generateDirectoryObject(dir, exclude) {
       const fileName = file.substring(0, file.lastIndexOf('.'));
 
       if (!file.endsWith('.md')) return;
-      if (file === 'index.md') return;
-      items.push({
-        text: formatText(fileName),
-        link: `/${dir}/${fileName}`,
-      });
+      if (file === 'index.md') {
+        indexFile = 'index.md';
+        return;
+      }
+      if (file === 'README.md') {
+        indexFile = 'README.md';
+        return;
+      }
+
+      items.push(`/${dir}/${fileName}`);
+      // items.push({
+      //   collapsed: true,
+      //   text: formatText(fileName),
+      //   link: `/${dir}/${fileName}`,
+      // });
     }
 
     if (stat.isDirectory()) {
@@ -51,7 +62,7 @@ function generateDirectoryObject(dir, exclude) {
     children: items,
     items: items,
     collapsed: true,
-    link: items.length === 0 ? `/${dir}` : '',
+    link: indexFile ? `/${dir}/${indexFile}` : '',
   };
 }
 
@@ -63,5 +74,48 @@ function createMenu(dir, exclude = []) {
   writeSidebarFile(dirPath, items.items);
 }
 
+const searchMdFiles = (dir, depth, currentDepth) => {
+  let mdFiles = [];
+  const files = fs.readdirSync(dir);
+
+  if (depth <= currentDepth) return mdFiles;
+
+  files.forEach((file) => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    if (stat.isDirectory()) {
+      mdFiles = mdFiles.concat(
+        searchMdFiles(filePath, depth, currentDepth + 1),
+      );
+    } else if (file.endsWith('.md')) {
+      mdFiles.push(filePath);
+    }
+  });
+  return mdFiles;
+};
+
+const copyReadme = (from, to, depth = Number.MAX_SAFE_INTEGER) => {
+  // Search for the readme files ...
+  const searchFiles = searchMdFiles(path.join(from), depth, 0);
+  const toDir = path.join(docsPath, to);
+
+  searchFiles.forEach((file) => {
+    const toFile = file.replace(from, toDir);
+    const dir = path.dirname(toFile);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+    if (file.endsWith('README.md')) {
+      console.log(`Copying ${file} to ${toFile}`);
+      fs.copyFileSync(file, toFile);
+    }
+  });
+};
+
+copyReadme('libs/ui', 'components/ui');
+copyReadme('libs/authentication', 'tools/authentication', 1);
+copyReadme('libs/tools/health', 'tools/health');
+copyReadme('libs/tools/logging', 'tools/logging');
+
+createMenu('tools');
 createMenu('components');
 createMenu('api', ['_media', 'globals.md']);

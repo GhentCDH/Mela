@@ -4,15 +4,9 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import type {
-  RequestDtoNoOffset,
-  ResponseUnknown} from '@ghentcdh/tools/form';
-import {
-  RequestSchema,
-  extractFilters,
-} from '@ghentcdh/tools/form';
+import { RequestSchema, extractFilters } from '@ghentcdh/json-forms/core';
 
-type RequestData = RequestDtoNoOffset;
+type RequestData = any;
 
 // TODO add sorting
 
@@ -42,7 +36,7 @@ export const useTableStore = (name) =>
       }
 
       const response = await httpStore
-        .get<ResponseUnknown>(uri.value, {
+        .get<any>(uri.value, {
           queryParams: requestData.value,
         })
         .catch((error) => {

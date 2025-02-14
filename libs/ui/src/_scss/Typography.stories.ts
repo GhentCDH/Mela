@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/vue3';
 
-import Style from './style.vue';
+import Style from './style';
 
 export default {
   title: 'Styles',

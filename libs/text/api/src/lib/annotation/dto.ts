@@ -4,7 +4,7 @@ import {
   MelaAnnotationSchema,
 } from '@mela/text/shared';
 
-import { createResponseData } from '@ghentcdh/tools/form/api';
+import { createResponseData } from '@ghentcdh/json-forms/api';
 
 export class CreateAnnotationDto extends createZodDto(MelaAnnotationSchema) {}
 

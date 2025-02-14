@@ -4,9 +4,8 @@ import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
+import { RequestSchema } from '@ghentcdh/json-forms/core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
-import { RequestSchema } from '@ghentcdh/tools/form';
-
 
 export const useTextRepository = defineStore('textRepository', () => {
   const httpStore = useHttpStore();

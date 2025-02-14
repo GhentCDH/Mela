@@ -7,11 +7,4 @@
     "scope:ui"
   ],
   "// targets": "to see all targets run: nx show project ui --web",
-  "targets": {
-    "storybook": {
-      "options": {
-        "port": 4400
-      }
-    }
-  }
 }

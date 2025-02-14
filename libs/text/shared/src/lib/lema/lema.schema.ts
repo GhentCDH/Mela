@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
-import { LemaForm } from '@ghentcdh/mela/generated/forms';
-import type { Lema } from '@ghentcdh/mela/generated/types';
-import { LemaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
 import {
   ControlBuilder,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
   createSchema,
-} from '@ghentcdh/tools/form';
+} from '@ghentcdh/json-forms/core';
+import { LemaForm } from '@ghentcdh/mela/generated/forms';
+import type { Lema } from '@ghentcdh/mela/generated/types';
+import { LemaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
 
 const uiSchema = LayoutBuilder.vertical<Lema>()
   .addControls(

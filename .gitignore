@@ -58,7 +58,8 @@ storybook-static
 /link/
 
 /docs/.vuepress/*
-!/docs/.vuepress/theme/*
+/docs/**/README.md
+!/docs/.vuepress/theme
 !/docs/.vuepress/config.js
 !/docs/.vuepress/client.js
 /test_coverage
@@ -66,3 +67,4 @@ storybook-static
 /docs/assets
 /docs/api/*
 /docs/components/typedoc_sidebar.json
+/docs/tools/typedoc_sidebar.json

@@ -18,8 +18,8 @@ import {
 } from '@nestjs/swagger';
 
 import { GhentCdhGuard } from '@ghentcdh/authentication/api';
+import { RequestDto } from '@ghentcdh/json-forms/api';
 import { SpeechDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { CreateSpeechDto, ListSpeechDto } from './dto';
 import { SpeechRepository } from './speech-repository.service';

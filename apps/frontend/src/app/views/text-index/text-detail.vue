@@ -17,8 +17,11 @@ import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import type { StepperEvent, StepperEventListener } from '@ghentcdh/ui';
-import { FormComponent } from '@ghentcdh/ui';
+import type {
+  StepperEvent,
+  StepperEventListener,
+} from '@ghentcdh/json-forms/vue';
+import { FormComponent } from '@ghentcdh/json-forms/vue';
 
 import { TextControls } from './controls';
 import { useTextStore } from './text.store';

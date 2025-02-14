@@ -24,6 +24,15 @@
       "@ghentcdh/authentication/frontend": [
         "libs/authentication/frontend/src/index.ts"
       ],
+      "@ghentcdh/json-forms/api": [
+        "libs/json-forms/api/src/index.ts"
+      ],
+      "@ghentcdh/json-forms/core": [
+        "libs/json-forms/core/src/index.ts"
+      ],
+      "@ghentcdh/json-forms/vue": [
+        "libs/json-forms/vue/src/index.ts"
+      ],
       "@ghentcdh/mela/generated/dtos": [
         "generated/types/dtos/index.ts"
       ],
@@ -35,12 +44,6 @@
       ],
       "@ghentcdh/mela/generated/types": [
         "generated/types/index.ts"
-      ],
-      "@ghentcdh/tools/form": [
-        "libs/tools/form/src/index.ts"
-      ],
-      "@ghentcdh/tools/form/api": [
-        "libs/tools/form-api/src/index.ts"
       ],
       "@ghentcdh/tools/health/api": [
         "libs/tools/health/api/src/index.ts"

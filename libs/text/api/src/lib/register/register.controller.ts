@@ -18,8 +18,8 @@ import {
 } from '@nestjs/swagger';
 
 import { GhentCdhGuard } from '@ghentcdh/authentication/api';
+import { RequestDto } from '@ghentcdh/json-forms/api';
 import { RegisterDto } from '@ghentcdh/mela/generated/dtos';
-import { RequestDto } from '@ghentcdh/tools/form/api';
 
 import { CreateRegisterDto, ListRegisterDto } from './dto';
 import { RegisterRepository } from './register-repository.service';

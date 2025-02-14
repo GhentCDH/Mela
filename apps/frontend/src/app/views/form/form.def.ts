@@ -5,7 +5,7 @@ import {
   SpeechFormSchema,
 } from '@mela/text/shared';
 
-import type { FormSchemaModel } from '@ghentcdh/tools/form';
+import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
 
 type FormDef = {
   formId: string;

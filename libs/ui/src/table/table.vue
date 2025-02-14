@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import type { ColumnDef } from '@ghentcdh/tools/form';
+import type { ColumnDef } from '@ghentcdh/json-forms/core';
 
 import TextCell from './cells/text.cell.vue';
-import type { TableAction } from './table.model';
+import type { DisplayColumn, TableAction } from './table.model';
 import Btn from '../button/btn.vue';
 import { IconEnum } from '../icons';
 import SortHeader from './header/sort.header.vue';
 import PaginationComponent from './pagination.component.vue';
 
-export type DisplayColumn = ColumnDef & { component: any };
 const properties = defineProps<{
   loading?: boolean;
   actions?: TableAction[];

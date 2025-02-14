@@ -2,7 +2,7 @@ import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { RequestSchema } from '@ghentcdh/tools/form';
+import { RequestSchema } from '@ghentcdh/json-forms/core';
 
 export const usePhraseRepository = defineStore('phraseRepository', () => {
   const httpStore = useHttpStore();

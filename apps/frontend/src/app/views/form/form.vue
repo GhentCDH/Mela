@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { FormWithTableCompnent } from '@ghentcdh/ui';
+import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
 
 import type { FormKey } from './form.def';
 import { FormDictionary } from './form.def';
