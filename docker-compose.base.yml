@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
   nx-app-base-dev:
     restart: always
     build:
@@ -21,6 +22,7 @@ services:
           path: tsconfig.base.json
           target: /app/tsconfig.base.json
     volumes:
+      - ./docs:/app/docs
       - ./libs:/app/libs
       - ./apps:/app/apps
       - ./link:/app/link

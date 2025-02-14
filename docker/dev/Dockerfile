@@ -35,6 +35,15 @@ WORKDIR /app
 #RUN npx prisma migrate status
 #RUN pnpm run generate:zod
 
+# Docs development
+FROM node-dev AS node-docs
+
+WORKDIR /app
+
+#CMD SLEEP INFINITY
+CMD  pnpm run docs:dev --port 2000
+
+
 # Frontend development
 FROM node-dev AS node-fe-dev
 

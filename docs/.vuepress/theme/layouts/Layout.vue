@@ -9,19 +9,8 @@ import '../styles/style.scss';
 
 <style lang="css">
 @import 'tailwindcss';
-@import '../../../../libs/ui/src/styles.scss';
 
-:root {
-  --ugent-corporate-blue: #1e64c8;
-  --ugent-corporate-blue-light: #e9f0fa;
-  --ugent-corporate-yellow: #ffd200;
-  --ugent-corporate-yellow-light: #fffae5;
-  --ugent-corporate-text-black: #202020;
-  --ugent-corporate-text-gray: #646464;
-  --ugent-border-gray: #cccccc;
-  --ugent-border-gray-light: #dddddd;
-  --ugent-inactive-gray: #b4b4b4;
-}
+@use '../styles/style.scss' as *;
 
 @theme {
   --font-display: 'PannoTextMedium', Arial, sans-serif;
