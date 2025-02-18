@@ -21,7 +21,6 @@ import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import type { MouseEventPayload } from '@ghentcdh/vue-component-annotated-text';
 import { AnnotatedText } from '@ghentcdh/vue-component-annotated-text';
 import '@ghentcdh/vue-component-annotated-text/style.css';
-
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { filterAnnotationsForText } from './utils/filter';
