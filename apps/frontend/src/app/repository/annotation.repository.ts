@@ -1,7 +1,7 @@
-import type { W3CAnnotation } from '@mela/text/shared';
 import { AnnotationFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
 
 export const useAnnotationRepository = defineStore(

@@ -27,11 +27,6 @@ const routes = [
         name: 'text-index-preview',
         component: () => import('./app/views/text-index/text-preview.vue'),
       },
-      {
-        path: 'phrase',
-        name: 'text-index-phrase',
-        component: () => import('./app/views/text-index/phrase/phrase.vue'),
-      },
     ],
   },
 ];

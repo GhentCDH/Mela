@@ -1,19 +1,18 @@
 import type { WorkSheet } from 'xlsx';
 import { z } from 'zod';
 
-import type { Phrase } from '@ghentcdh/mela/generated/types';
-import { PhraseSchema } from '@ghentcdh/mela/generated/types';
-
 import { parseSheet } from './utils';
 
-export const PhraseImportSchema = PhraseSchema.pick({
-  phrase_nbr: true,
-  source_text: true,
-  translation: true,
-}).extend({
-  chapter_nbr: z.string().default('1'),
-  book_nbr: z.string().default('1'),
-});
+export const PhraseImportSchema = z.object();
+
+// PhraseSchema.pick({
+//   phrase_nbr: true,
+//   source_text: true,
+//   translation: true,
+// }).extend({
+//   chapter_nbr: z.string().default('1'),
+//   book_nbr: z.string().default('1'),
+// });
 
 type PhraseImport = z.infer<typeof PhraseImportSchema>;
 
@@ -28,7 +27,7 @@ export const parsePhrases = (textId: string, sheet: WorkSheet) => {
     return {
       ...data,
       text_id: textId,
-    } as Phrase;
+    } as any;
   });
   const phrases = parseSheet(sheet, PhraseDictionary, schema);
 

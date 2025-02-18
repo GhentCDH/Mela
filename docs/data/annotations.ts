@@ -37,7 +37,7 @@ const annotations = [
       {
         type: 'TextualBody',
         purpose: 'tagging',
-        value: 'Person',
+        value: 'title',
       },
       {
         type: 'TextualBody',
@@ -61,6 +61,36 @@ const annotations = [
           type: 'TextPositionSelector',
           start: 15,
           end: 149,
+        },
+      },
+    ],
+  },
+  {
+    '@context': 'http://www.w3.org/ns/anno.jsonld',
+    id: 'anno-2',
+    type: 'Annotation',
+    body: [
+      {
+        type: 'TextualBody',
+        purpose: 'tagging',
+        value: 'paragraph',
+      },
+    ],
+    target: [
+      {
+        source: source1.uri,
+        selector: {
+          type: 'TextPositionSelector',
+          start: 120,
+          end: 360,
+        },
+      },
+      {
+        source: source2.uri,
+        selector: {
+          type: 'TextPositionSelector',
+          start: 160,
+          end: 632,
         },
       },
     ],

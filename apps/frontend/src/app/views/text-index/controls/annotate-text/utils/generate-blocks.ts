@@ -1,13 +1,24 @@
-import type { TranslatedAnnotation } from './mela_annotation';
-import { TranslatedAnnotationInstance } from './mela_annotation';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findSourceInTargets } from '@ghentcdh/annotations/core';
+import type { TextContent } from '@ghentcdh/mela/generated/types';
+
 import { parseAnnotationFromText } from './parse';
 
-export const generateAnnotationBlocks = (
-  sourceText: string,
-  translatedText: string,
-  originalAnnotations: TranslatedAnnotation[],
-) => {
-  const paragraphs = sourceText.split('\n').filter((a) => a.length > 0);
+const getEqualIdentifier = (sourceUri: string, annotation: W3CAnnotation) => {
+  const target = findSourceInTargets(sourceUri)(annotation) as any;
+
+  if (!target) return null;
+
+  return [target.source.start, target.source.end, target.type].join('-');
+};
+
+export const generateW3CAnnotationBlocks = (
+  textContent: TextContent,
+  originalAnnotations: W3CAnnotation[],
+): W3CAnnotation[] => {
+  const paragraphs = textContent.content
+    .split('\n')
+    .filter((a) => a.length > 0);
 
   // TODO define if this is really the end of a phrase
   const phrase = paragraphs
@@ -15,28 +26,22 @@ export const generateAnnotationBlocks = (
     .flat()
     .filter((a) => a.length > 0);
 
-  //
+  const originalEquals = originalAnnotations
+    .map((a) => getEqualIdentifier(textContent.uri, a))
+    .filter((a) => !!a);
 
-  const originalEquals = originalAnnotations.map((a) => a.equals());
-
-  const generatedAnnotations = [
+  const generatedAnnotations: W3CAnnotation[] = [
     paragraphs.map((annotation) =>
-      TranslatedAnnotationInstance.parse(
-        parseAnnotationFromText(sourceText, annotation, 'paragraph'),
-        sourceText,
-        translatedText,
-      ),
+      parseAnnotationFromText(textContent, annotation, 'paragraph'),
     ),
     phrase.map((annotation) =>
-      TranslatedAnnotationInstance.parse(
-        parseAnnotationFromText(sourceText, annotation, 'phrase'),
-        sourceText,
-        translatedText,
-      ),
+      parseAnnotationFromText(textContent, annotation, 'phrase'),
     ),
   ]
     .flat()
-    .filter((a) => !originalEquals.includes(a.equals()));
+    .filter(
+      (a) => !originalEquals.includes(getEqualIdentifier(textContent.uri, a)),
+    );
 
-  return [originalAnnotations, generatedAnnotations].flat();
+  return [originalAnnotations, generatedAnnotations].flat() as W3CAnnotation[];
 };

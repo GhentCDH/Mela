@@ -1,8 +1,8 @@
 import type { MotivationEnumType } from '@mela/generated/types';
-import type { W3CAnnotation } from '@mela/text/shared';
 import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useHttpStore } from '@ghentcdh/authentication/frontend';
 import { RequestSchema } from '@ghentcdh/json-forms/core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';

@@ -1,1 +1,1 @@
-export type { Annotation } from '@ghentcdh/vue-component-annotated-text';
+export type { Annotation as TextAnnotation } from '@ghentcdh/vue-component-annotated-text';

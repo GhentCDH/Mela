@@ -11,7 +11,7 @@
       }
     }
   },
-  "tags": [],
+  "tags": ["scope:shared"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",

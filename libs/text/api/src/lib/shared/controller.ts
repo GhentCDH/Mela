@@ -9,6 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ZodSchema } from 'zod';
 
 import type { RequestDto } from '@ghentcdh/json-forms/api';
 import type { ResponseData } from '@ghentcdh/json-forms/core';
@@ -49,10 +50,20 @@ export class AbstractController<Entity, CreateDto = Entity> {
 
   @Get('/:id')
   protected async findOne(@Param('id') id: string): Promise<Entity> {
-    const find = await this.repository.findOne(id);
+    return this.findOneAndParse(id);
+  }
 
+  protected async findOneAndParse(
+    id: string,
+    schema?: ZodSchema,
+  ): Promise<Entity> {
+    console.log('find one and parse');
+    const find = await this.repository.findOne(id);
+    console.log(find);
     if (!find)
       throw new HttpException('Entity not found', HttpStatus.NOT_FOUND);
+
+    if (schema) return schema.parse(find);
 
     return find;
   }
