@@ -8,33 +8,22 @@
     >
       Create new text blocks
     </Btn>
-    <div
-      v-if="createMode"
-      class="w-72 block"
-    >
+    <div v-if="createMode" class="w-72 block">
       <SelectComponent
         v-model="annotationType"
         label="Text block type"
         :options="annotationTypes"
       />
     </div>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="confirmTextBlocks"
-    >
+    <Btn v-if="createMode" :color="Color.secondary" @click="confirmTextBlocks">
       Confirm new blocks
     </Btn>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="generateBlocks"
-    >
+    <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
       Auto generate text blocks
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <div
       :class="[
@@ -52,13 +41,10 @@
           :cols="sources.length"
           @on-event="eventHandler"
         />
-        <hr>
+        <hr />
       </div>
     </div>
-    <div
-      v-if="!createMode"
-      class="w-full max-w-sm"
-    >
+    <div v-if="!createMode" class="w-full max-w-sm">
       <template v-if="store.selectedAnnotation">
         <Card>
           <template #title>
@@ -77,22 +63,14 @@
           />
 
           <template #actions>
-            <Btn
-              :color="Color.error"
-              @click="deleteActiveAnnotation"
-            >
+            <Btn :color="Color.error" @click="deleteActiveAnnotation">
               Delete
             </Btn>
-            <Btn @click="saveActiveAnnotation">
-              Save
-            </Btn>
+            <Btn @click="saveActiveAnnotation"> Save</Btn>
           </template>
         </Card>
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -106,14 +84,12 @@ import {
   SourceTextSchema,
   findTagging,
 } from '@ghentcdh/annotations/core';
-import {
-  GhentCdhAnnotations,
-} from '@ghentcdh/annotations/vue';
+import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
-
-  AnnotationEventType} from '@ghentcdh/annotations/vue';
+  AnnotationEventType,
+} from '@ghentcdh/annotations/vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
@@ -199,7 +175,6 @@ const eventHandler = (
       onSelectAnnotation(payload.annotationId, isSourceTarget);
       break;
     case 'create--end':
-      console.log(payload);
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
@@ -219,36 +194,6 @@ const eventHandler = (
 const changeToCreateMode = () => {
   createMode.value = true;
   store.selectAnnotation(null);
-};
-
-const annotationCreate = (
-  event: CreateAnnotationState,
-  type: 'start' | 'end' | 'updating',
-) => {
-  if (type === 'start') {
-    event.init({ color: IdentifyColorMap[annotationType.value.id] });
-    // activeAnnotation.value = event.annotation;
-  } else if (type === 'end') {
-    const annotation = event.getAnnotation();
-    store.createAnnotation(annotation, annotationType.value.id);
-  }
-};
-
-const translateCreate = (
-  event: CreateAnnotationState,
-  type: 'start' | 'end' | 'updating',
-) => {
-  if (!store.selectedAnnotation) {
-    return;
-  }
-
-  if (type === 'start') {
-    event.init({ color: IdentifyColorMap[annotationType.value.id] });
-    // activeAnnotation.value = event.annotation;
-  } else if (type === 'end') {
-    const annotation = event.getAnnotation();
-    store.updateTranslation(annotation);
-  }
 };
 
 // TODO if you click somewhere else also deselect the annotation
