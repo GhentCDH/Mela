@@ -46,29 +46,10 @@
     </div>
     <div v-if="!createMode" class="w-full max-w-sm">
       <template v-if="store.selectedAnnotation">
-        <Card>
-          <template #title>
-            <div class="w-full flex justify-end">
-              <Btn
-                :color="Color.secondary"
-                :icon="IconEnum.Close"
-                @click="onSelectAnnotation(null, true)"
-              />
-            </div>
-          </template>
-
-          <ActiveTranslationAnnotation
-            :annotation="store.selectedAnnotation"
-            :store-id="storeId"
-          />
-
-          <template #actions>
-            <Btn :color="Color.error" @click="deleteActiveAnnotation">
-              Delete
-            </Btn>
-            <Btn @click="saveActiveAnnotation"> Save </Btn>
-          </template>
-        </Card>
+        <ActiveTranslationAnnotation
+          :annotation="store.selectedAnnotation"
+          :store-id="storeId"
+        />
       </template>
       <div class="border-2" v-html="content" />
     </div>
@@ -227,16 +208,6 @@ const confirmTextBlocks = () => {
   createMode.value = false;
   store.createNewAnnotations();
 };
-
-const deleteActiveAnnotation = () => {
-  // TODO add confirm modal
-  store.deleteActiveAnnotation();
-};
-
-const saveActiveAnnotation = () => {
-  store.saveActiveAnnotation();
-};
-// showAllTranslations();
 
 const MD = () => {
   const parse = (text: string) => {
