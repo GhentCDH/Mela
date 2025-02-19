@@ -89,7 +89,7 @@ import type {
   AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
-import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
+import { Btn, Color, SelectComponent } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { useAnnotationStore } from './utils/annotation.store';

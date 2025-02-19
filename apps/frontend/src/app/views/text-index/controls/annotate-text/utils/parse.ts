@@ -3,13 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { Annotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
-  findTagging,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
   TextualBodySchema,
+  W3CAnnotationSchema,
+  findTagging,
   updateBody,
   updateSelector,
-  W3CAnnotationSchema,
 } from '@ghentcdh/annotations/core';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 
