@@ -8,33 +8,22 @@
     >
       Create new text blocks
     </Btn>
-    <div
-      v-if="createMode"
-      class="w-72 block"
-    >
+    <div v-if="createMode" class="w-72 block">
       <SelectComponent
         v-model="annotationType"
         label="Text block type"
         :options="annotationTypes"
       />
     </div>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="confirmTextBlocks"
-    >
+    <Btn v-if="createMode" :color="Color.secondary" @click="confirmTextBlocks">
       Confirm new blocks
     </Btn>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="generateBlocks"
-    >
+    <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
       Auto generate text blocks
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <div
       :class="[
@@ -52,13 +41,10 @@
           :cols="sources.length"
           @on-event="eventHandler"
         />
-        <hr>
+        <hr />
       </div>
     </div>
-    <div
-      v-if="!createMode"
-      class="w-full max-w-sm"
-    >
+    <div v-if="!createMode" class="w-full max-w-sm">
       <template v-if="store.selectedAnnotation">
         <Card>
           <template #title>
@@ -77,22 +63,14 @@
           />
 
           <template #actions>
-            <Btn
-              :color="Color.error"
-              @click="deleteActiveAnnotation"
-            >
+            <Btn :color="Color.error" @click="deleteActiveAnnotation">
               Delete
             </Btn>
-            <Btn @click="saveActiveAnnotation">
-              Save
-            </Btn>
+            <Btn @click="saveActiveAnnotation"> Save </Btn>
           </template>
         </Card>
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -187,6 +165,7 @@ const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
 ) => {
+  console.log(e, payload);
   const isSourceTarget = payload.target === properties.sourceText.uri;
   switch (e) {
     case 'click-annotation':

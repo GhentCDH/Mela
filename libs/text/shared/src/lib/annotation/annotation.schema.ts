@@ -6,7 +6,8 @@ import {
 } from '@ghentcdh/annotations/core';
 import type {
   AnnotationBody,
-  AnnotationTarget} from '@ghentcdh/mela/generated/types';
+  AnnotationTarget,
+} from '@ghentcdh/mela/generated/types';
 import {
   AnnotationBodySchema,
   AnnotationSchema,
@@ -47,19 +48,21 @@ export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
   return { ...value, source };
 };
 
-export const MelaAnnotationReturnSchema = MelaAnnotationSchema.extend({
-  '@context': AnnotationContext,
-  annotationBody: z.array(AnnotationBodySchema).optional(),
-  annotationTarget: z.array(AnnotationTargetSchema).optional(),
-}).transform((data) => {
-  return {
-    ...data,
-    body: data.annotationBody?.map(mapAnnotationPart),
-    target: data.annotationTarget?.map(mapAnnotationPart),
-    mapAnnotationTarget: undefined,
-    mapAnnotationBody: undefined,
-  };
-});
+export const MelaAnnotationReturnSchema = AnnotationSchema.pick({ id: true })
+  .extend({
+    '@context': AnnotationContext,
+    annotationBody: z.array(AnnotationBodySchema).optional(),
+    annotationTarget: z.array(AnnotationTargetSchema).optional(),
+  })
+  .transform((data) => {
+    return {
+      ...data,
+      body: data.annotationBody?.map(mapAnnotationPart),
+      target: data.annotationTarget?.map(mapAnnotationPart),
+      mapAnnotationTarget: undefined,
+      mapAnnotationBody: undefined,
+    };
+  });
 
 export const MelaAnnotationPageSchema = z
   .object({
