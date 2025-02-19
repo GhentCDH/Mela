@@ -1,18 +1,16 @@
-import type {
-  Annotation,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   filterAnnotations,
-  findTextPositionSelector
+  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 
-import type { AnnotationConfig } from '../../model/properties';
+import type { AnnotationConfig, TextAnnotation } from '../../model';
 
 export const transformAnnotation = (
   annotation: W3CAnnotation,
   sourceUri: string,
   config: AnnotationConfig,
-): Annotation => {
+): TextAnnotation => {
   const selector = findTextPositionSelector(sourceUri)(annotation)?.selector;
 
   if (!selector) return null;
@@ -23,7 +21,7 @@ export const transformAnnotation = (
     end: selector.end,
     target: config?.mapTarget?.(annotation, sourceUri) ?? 'text',
     color: config?.mapColor?.(annotation, sourceUri) ?? undefined,
-  } as Annotation;
+  } as TextAnnotation;
 };
 
 export const filterAnnotationsForText = (
