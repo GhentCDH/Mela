@@ -17,7 +17,7 @@ export const findBodyType = <B extends W3CAnnotationBody>(
 ) => {
   return (annotation: W3CAnnotation): B | undefined => {
     return getBody(annotation).find(
-      (b) => b.type === type && validator(b),
+      (b: any) => b.type === type && validator(b),
     ) as unknown as B;
   };
 };
@@ -33,7 +33,7 @@ export const isSameBody = (
   body1: W3CAnnotationBody,
   body2: W3CAnnotationBody,
 ) => {
-  if (!hasSameFields(body1, body2, ['source', 'type'])) return false;
+  if (!hasSameFields<any>(body1, body2, ['source', 'type'])) return false;
 
   return true;
 };

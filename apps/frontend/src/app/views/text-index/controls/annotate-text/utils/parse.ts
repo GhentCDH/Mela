@@ -3,13 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { Annotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
+  findTagging,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
   TextualBodySchema,
-  W3CAnnotationSchema,
-  findTagging,
   updateBody,
   updateSelector,
+  W3CAnnotationSchema,
 } from '@ghentcdh/annotations/core';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 
@@ -92,8 +92,8 @@ export type EditableAnnotation = {
   getId: () => string;
   getType: () => string;
   getAnnotation: () => W3CAnnotation;
-  getSource: () => TextContent;
-  getTarget: () => TextContent;
+  getSource: () => TextContentDto;
+  getTarget: () => TextContentDto;
   updatePurpose: (textType: AnnotationMetadataType) => W3CAnnotation;
   updateTranslation: (annotationToUpdate: AnnotationUpdate) => W3CAnnotation;
   updateSource: (annotationToUpdate: AnnotationUpdate) => W3CAnnotation;

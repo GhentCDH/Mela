@@ -33,7 +33,7 @@ export const findTargetType = <B extends W3CAnnotationTarget>(
 ) => {
   return (annotation: W3CAnnotation): B | undefined => {
     return getTarget(annotation).find(
-      (b) => b.type === type && validator(b),
+      (b: any) => b.type === type && validator(b),
     ) as unknown as B;
   };
 };
