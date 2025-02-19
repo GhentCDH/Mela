@@ -35,7 +35,7 @@ export const useAnnotationStore = (id: string) =>
     const annotationRepository = useAnnotationRepository();
 
     const w3cAnnotations = ref<W3CAnnotation[]>([]);
-    const annotations = computedAsync(async () => {
+    const _annotations = computedAsync(async () => {
       const id = textId.value;
       if (!id) return [];
 
@@ -68,8 +68,8 @@ export const useAnnotationStore = (id: string) =>
       annotation: TextAnnotation,
       type: AnnotationMetadataType,
     ) => {
-      annotations.value = [
-        ...annotations.value,
+      w3cAnnotations.value = [
+        ...w3cAnnotations.value,
         parseAnnotation(
           sourceTextContent.value,
           pick(annotation, ['start', 'end']),

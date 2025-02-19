@@ -99,6 +99,7 @@ export const TextContentDtoSchema = TextContentSchema.pick({
   .transform((data) => {
     return { ...data, uri: getTextContentUri(data) };
   });
+export type TextContentDto = z.infer<typeof TextContentDtoSchema>;
 
 const dtoSchema = TextSchema.pick({
   name: true,

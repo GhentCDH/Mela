@@ -4,7 +4,16 @@ import {
   W3CAnnotationBodySchema,
   W3CAnnotationTargetSchema,
 } from '@ghentcdh/annotations/core';
-import { AnnotationSchema } from '@ghentcdh/mela/generated/types';
+import type {
+  AnnotationBody,
+  AnnotationTarget} from '@ghentcdh/mela/generated/types';
+import {
+  AnnotationBodySchema,
+  AnnotationSchema,
+  AnnotationTargetSchema,
+} from '@ghentcdh/mela/generated/types';
+
+import { getTextContentUri } from '../utils/uri';
 
 export const AnnotationMetadataTypes = z.enum([
   'title',
@@ -31,16 +40,32 @@ export const MelaAnnotationSchema = AnnotationSchema.omit({
   target: z.array(W3CAnnotationTargetSchema),
 });
 
+export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
+  const value = JSON.parse(data.value);
+  let source = undefined;
+  if (data.source_id) source = getTextContentUri({ id: data.source_id });
+  return { ...value, source };
+};
+
 export const MelaAnnotationReturnSchema = MelaAnnotationSchema.extend({
-  id: z.string(),
   '@context': AnnotationContext,
+  annotationBody: z.array(AnnotationBodySchema).optional(),
+  annotationTarget: z.array(AnnotationTargetSchema).optional(),
+}).transform((data) => {
+  return {
+    ...data,
+    body: data.annotationBody?.map(mapAnnotationPart),
+    target: data.annotationTarget?.map(mapAnnotationPart),
+    mapAnnotationTarget: undefined,
+    mapAnnotationBody: undefined,
+  };
 });
 
 export const MelaAnnotationPageSchema = z
   .object({
     '@context': AnnotationContext,
     type: z.enum(['AnnotationPage']).default('AnnotationPage'),
-    items: z.array(AnnotationSchema),
+    items: z.array(MelaAnnotationReturnSchema),
   })
   .transform((data) => {
     return {

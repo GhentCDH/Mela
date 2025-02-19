@@ -47,7 +47,6 @@ const edit = (data: unknown) => {
 };
 
 const deleteFn = (data: unknown) => {
-  console.log('__delete', data);
   emit('delete', data);
 };
 
@@ -105,10 +104,7 @@ const page = computed(() => {
 
 <template>
   <div>
-    <div
-      v-if="filterLayout"
-      class="mb-2"
-    >
+    <div v-if="filterLayout" class="mb-2">
       <TableFilter
         :layout="filterLayout"
         :filters="store.filters"

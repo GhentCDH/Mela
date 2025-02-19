@@ -57,9 +57,7 @@ export class AbstractController<Entity, CreateDto = Entity> {
     id: string,
     schema?: ZodSchema,
   ): Promise<Entity> {
-    console.log('find one and parse');
     const find = await this.repository.findOne(id);
-    console.log(find);
     if (!find)
       throw new HttpException('Entity not found', HttpStatus.NOT_FOUND);
 

@@ -1,6 +1,5 @@
 <template>
   <div class="annotation-container">
-    {{ actions }}
     <AnnotatedText
       :lines="lines"
       :annotations="annotationsForText"

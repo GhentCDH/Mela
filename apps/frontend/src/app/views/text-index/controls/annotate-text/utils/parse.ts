@@ -1,9 +1,7 @@
-import type { AnnotationMetadataType } from '@mela/text/shared';
+import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 
-import type {
-  Annotation,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { Annotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   TextTargetSchema,
   TextualBodyClassifyingSchema,
@@ -103,11 +101,9 @@ export type EditableAnnotation = {
 
 export const editableAnnotation = (
   annotation: W3CAnnotation,
-  source: TextContent,
-  translation: TextContent,
+  source: TextContentDto,
+  translation: TextContentDto,
 ): EditableAnnotation => {
-  console.log(findTagging(annotation)?.value);
-
   return {
     getId: () => annotation.id,
     getType: () => findTagging(annotation)?.value ?? 'phrase',

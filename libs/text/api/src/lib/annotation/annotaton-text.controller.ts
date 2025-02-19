@@ -10,12 +10,10 @@ import {
   Param,
   Post,
   Query,
-  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
-import { GhentCdhGuard } from '@ghentcdh/authentication/api';
 import { RequestDto } from '@ghentcdh/json-forms/api';
 
 import { AnnotationRepository } from './annotation-repository.service';
@@ -25,7 +23,7 @@ import { TextRepositoryService } from '../text/text-repository.service';
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/annotation')
 @ApiBearerAuth()
-@UseGuards(GhentCdhGuard)
+// @UseGuards(GhentCdhGuard)
 export class AnnotationTextController {
   constructor(
     private readonly repository: AnnotationRepository,
@@ -46,7 +44,6 @@ export class AnnotationTextController {
       this.repository.list(params),
       this.repository.count(params.filter),
     ]);
-
     return MelaAnnotationPageSchema.parse({
       items: data,
     }) as unknown as MelaAnnotationPage;

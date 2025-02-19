@@ -1,19 +1,26 @@
+import type { TextContentDto } from '@mela/text/shared';
+
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findSourceInTargets } from '@ghentcdh/annotations/core';
-import type { TextContent } from '@ghentcdh/mela/generated/types';
+import {
+  findTagging,
+  findTextPositionSelector,
+} from '@ghentcdh/annotations/core';
 
 import { parseAnnotationFromText } from './parse';
 
 const getEqualIdentifier = (sourceUri: string, annotation: W3CAnnotation) => {
-  const target = findSourceInTargets(sourceUri)(annotation) as any;
+  const target = findTextPositionSelector(sourceUri)(annotation) as any;
 
   if (!target) return null;
 
-  return [target.source.start, target.source.end, target.type].join('-');
+  const tag = findTagging(annotation)?.value;
+  return [target.selector.start, target.selector.end, target.type, tag].join(
+    '-',
+  );
 };
 
 export const generateW3CAnnotationBlocks = (
-  textContent: TextContent,
+  textContent: TextContentDto,
   originalAnnotations: W3CAnnotation[],
 ): W3CAnnotation[] => {
   const paragraphs = textContent.content
