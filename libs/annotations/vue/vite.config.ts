@@ -7,7 +7,6 @@ import dts from 'vite-plugin-dts';
 
 import * as path from 'path';
 
-
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../../node_modules/.vite/libs/annotations/vue',
@@ -40,7 +39,7 @@ export default defineConfig({
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
-      formats: ['es'],
+      formats: ['es', 'cjs'],
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
