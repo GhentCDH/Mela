@@ -2,6 +2,20 @@ version: '4'
 
 services:
 
+  docs:
+    container_name: mela.app.docs
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base-dev
+    build:
+      target: node-docs
+    depends_on:
+      database_app:
+        condition: service_healthy
+        restart: true
+    ports:
+      - "2000:2000"
+
   frontend:
     container_name: mela.app.frontend
     extends:

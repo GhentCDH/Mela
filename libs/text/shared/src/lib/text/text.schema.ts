@@ -20,6 +20,8 @@ import {
   TextSchema,
 } from '@ghentcdh/mela/generated/types';
 
+import { getTextContentUri } from '../utils/uri';
+
 // TODO add autocomplete for textschema
 const textIdentifyStep =
   LayoutBuilder.horizontal<TextWithRelations>().addControls(
@@ -92,8 +94,11 @@ export const TextContentDtoSchema = TextContentSchema.pick({
   text_type: true,
   content: true,
   language: true,
-}).extend({ id: z.string().optional() });
-
+})
+  .extend({ id: z.string().optional() })
+  .transform((data) => {
+    return { ...data, uri: getTextContentUri(data) };
+  });
 export type TextContentDto = z.infer<typeof TextContentDtoSchema>;
 
 const dtoSchema = TextSchema.pick({

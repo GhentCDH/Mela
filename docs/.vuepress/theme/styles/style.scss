@@ -1,6 +1,14 @@
 //@use '../../../link/vue_component_annotated_text/src/style/style' as *;
-//@use '@ghentcdh/vue-component-annotated-text/style.css' as *;
+@use '@ghentcdh/vue-component-annotated-text/style.css' as *;
 @use '../../../../libs/ui/src/styles' as *;
 
 @source "../../../../libs";
 @source "../../../components";
+
+
+.custom-page--full-width {
+
+  .vp-page [vp-content] {
+    max-width: 100%;
+  }
+}

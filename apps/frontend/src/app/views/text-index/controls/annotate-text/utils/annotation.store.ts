@@ -2,16 +2,16 @@ import type { AnnotationMetadataType } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { pick } from 'lodash-es';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
+import type { TextAnnotation, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { useNotificationStore } from '@ghentcdh/ui';
-import type { Annotation } from '@ghentcdh/vue-component-annotated-text';
 
-import { generateAnnotationBlocks } from './generate-blocks';
-import { splitTextInLines } from './lines';
+import { generateW3CAnnotationBlocks } from './generate-blocks';
 import type { MelaAnnotation, TranslatedAnnotation } from './mela_annotation';
-import { TranslatedAnnotationInstance } from './mela_annotation';
-import { parseAnnotation } from './parse';
+import type { EditableAnnotation } from './parse';
+import { PREFIX_NEW, editableAnnotation, parseAnnotation } from './parse';
 import { ReloadRef } from './reload';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
@@ -28,90 +28,65 @@ export const useAnnotationStore = (id: string) =>
     const reload = ReloadRef();
     const loading = ref(true);
     const notificationStore = useNotificationStore();
-    const sourceText = ref<string>('');
     const textId = ref<string>(null);
     // const annotations = ref<TranslatedAnnotation[]>([]);
-    const selectedAnnotation = ref<TranslatedAnnotation | null>(null);
+    const selectedAnnotation = ref<EditableAnnotation | null>(null);
     const textRepository = useTextRepository();
     const annotationRepository = useAnnotationRepository();
 
-    const sourceLines = computed(() => splitTextInLines(sourceText.value));
-    const sourceAnnotations = computed(() =>
-      filterAnnotations(annotations.value, (d) => d.source),
-    );
-
-    const translatedText = ref<string>('');
-    const translatedLines = computed(() =>
-      splitTextInLines(translatedText.value),
-    );
-    const translatedAnnotations = computed(() =>
-      filterAnnotations(annotations.value, (d) => d.translation),
-    );
-
-    const selectedTranslationsAnnotations = computed(() =>
-      selectedAnnotation?.value
-        ? selectedAnnotation.value.translation
-          ? [selectedAnnotation.value.translation]
-          : []
-        : translatedAnnotations.value,
-    );
-
-    const annotations = computedAsync(async () => {
+    const w3cAnnotations = ref<W3CAnnotation[]>([]);
+    const _annotations = computedAsync(async () => {
       const id = textId.value;
       if (!id) return [];
 
       const r = reload.watchReload.value;
-
-      const _sourceText = sourceText.value;
-      const _translatedText = translatedText.value;
       const annotations = await textRepository.getAnnotations(
         id,
         'classifying',
       );
 
-      const result = annotations.items.map((i) =>
-        TranslatedAnnotationInstance.parse(i, _sourceText, _translatedText),
-      );
+      w3cAnnotations.value = annotations.items;
 
       loading.value = false;
-      return result;
+      return annotations.items;
     });
 
+    const sourceTextContent = ref<TextContent>();
+    const transtlationTextContent = ref<TextContent>();
+
     const init = (
-      _sourceText: string,
-      _translatedText: string,
+      _sourceText: TextContent,
+      _translatedText: TextContent,
       _textId: string,
     ) => {
-      sourceText.value = _sourceText;
-      translatedText.value = _translatedText;
+      sourceTextContent.value = _sourceText;
+      transtlationTextContent.value = _translatedText;
       textId.value = _textId;
     };
 
     const createAnnotation = (
-      annotation: Annotation,
+      annotation: TextAnnotation,
       type: AnnotationMetadataType,
     ) => {
-      annotations.value = [
-        ...annotations.value,
-        TranslatedAnnotationInstance.parse(
-          parseAnnotation(
-            sourceText.value,
-            pick(annotation, ['start', 'end']),
-            type,
-          ),
-          sourceText.value,
-          translatedText.value,
+      w3cAnnotations.value = [
+        ...w3cAnnotations.value,
+        parseAnnotation(
+          sourceTextContent.value,
+          pick(annotation, ['start', 'end']),
+          type,
         ),
       ];
     };
 
     const createNewAnnotations = async () => {
-      const newAnnotations = annotations.value.filter((a) => a.isNew);
+      const newAnnotations = w3cAnnotations.value.filter((a) =>
+        a.id.startsWith(PREFIX_NEW),
+      );
       if (newAnnotations.length === 0) return;
       loading.value = true;
       await Promise.all(
         newAnnotations.map((a) =>
-          textRepository.createAnnotation(textId.value, a.asW3CAnnotation()),
+          textRepository.createAnnotation(textId.value, a),
         ),
       )
         .then(() => {
@@ -125,11 +100,8 @@ export const useAnnotationStore = (id: string) =>
     };
 
     // Update the translation by selection
-    const updateTranslation = (annotation: Annotation) => {
-      const update = selectedAnnotation.value.translate(
-        annotation.start,
-        annotation.end,
-      );
+    const updateTranslation = (annotation: TextAnnotation) => {
+      const update = selectedAnnotation.value.updateTranslation(annotation);
       updateAnnotationList(update);
     };
 
@@ -138,20 +110,18 @@ export const useAnnotationStore = (id: string) =>
         return;
       }
 
-      const update = selectedAnnotation.value.changeType(annotationType);
+      const update = selectedAnnotation.value.updatePurpose(annotationType);
+
       updateAnnotationList(update);
     };
     // Update the translation by selection
-    const updateAnnotation = (annotation: Annotation, text: string) => {
-      const update = selectedAnnotation.value.update(
-        annotation.start,
-        annotation.end,
-      );
+    const updateAnnotation = (annotation: TextAnnotation, text: string) => {
+      const update = selectedAnnotation.value.updateSource(annotation);
       updateAnnotationList(update);
     };
 
-    const updateAnnotationList = (annotation: TranslatedAnnotation) => {
-      annotations.value = annotations.value.map((a) =>
+    const updateAnnotationList = (annotation: W3CAnnotation) => {
+      w3cAnnotations.value = w3cAnnotations.value.map((a) =>
         a.id === annotation.id ? annotation : a,
       );
     };
@@ -161,18 +131,22 @@ export const useAnnotationStore = (id: string) =>
       if (!id) {
         // TODO  showAllTranslations();
         selectedAnnotation.value = null;
-        return;
+        return null;
       }
-      selectedAnnotation.value = annotations.value.find((a) => a.id === id);
 
+      const annotation = w3cAnnotations.value.find((a) => a.id === id);
+      selectedAnnotation.value = editableAnnotation(
+        annotation,
+        sourceTextContent.value,
+        transtlationTextContent.value,
+      );
       return selectedAnnotation.value;
     };
 
     const autoGenerateBlocks = () => {
-      annotations.value = generateAnnotationBlocks(
-        sourceText.value,
-        translatedText.value,
-        annotations.value,
+      w3cAnnotations.value = generateW3CAnnotationBlocks(
+        sourceTextContent.value,
+        w3cAnnotations.value,
       );
     };
 
@@ -182,7 +156,7 @@ export const useAnnotationStore = (id: string) =>
 
       loading.value = true;
       await annotationRepository
-        .deleteAnnotation(selectedAnnotation.value.id)
+        .deleteAnnotation(selectedAnnotation.value.getId())
         .then(() => {
           notificationStore.info('Annotation deleted');
         })
@@ -198,7 +172,7 @@ export const useAnnotationStore = (id: string) =>
       if (!annotation) return;
 
       await annotationRepository
-        .patchAnnotation(annotation.id, annotation.asW3CAnnotation())
+        .patchAnnotation(annotation.getId(), annotation.getAnnotation())
         .then(() => {
           notificationStore.info('Annotation saved');
           reload.reload();
@@ -215,11 +189,7 @@ export const useAnnotationStore = (id: string) =>
 
     return {
       init,
-      sourceLines,
-      translatedLines,
-      sourceAnnotations,
-      translatedAnnotations,
-      selectedTranslationsAnnotations,
+      annotations: w3cAnnotations,
       createAnnotation,
       updateAnnotation,
       updateTranslation,

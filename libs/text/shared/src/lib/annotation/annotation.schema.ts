@@ -1,6 +1,20 @@
 import { z } from 'zod';
 
-import { AnnotationSchema } from '@ghentcdh/mela/generated/types';
+import {
+  W3CAnnotationBodySchema,
+  W3CAnnotationTargetSchema,
+} from '@ghentcdh/annotations/core';
+import type {
+  AnnotationBody,
+  AnnotationTarget,
+} from '@ghentcdh/mela/generated/types';
+import {
+  AnnotationBodySchema,
+  AnnotationSchema,
+  AnnotationTargetSchema,
+} from '@ghentcdh/mela/generated/types';
+
+import { getTextContentUri } from '../utils/uri';
 
 export const AnnotationMetadataTypes = z.enum([
   'title',
@@ -13,33 +27,6 @@ export type AnnotationMetadataType = z.infer<typeof AnnotationMetadataTypes>;
 export const Languages = z.enum(['gr', 'en']);
 export type Language = z.infer<typeof Languages>;
 
-export const AnnotationTypeBody = z.object({
-  type: z.enum(['AnnotationType']).default('AnnotationType'),
-  textType: AnnotationMetadataTypes,
-});
-
-export const TextualBodySchema = z.object({
-  type: z.enum(['TextualBody']).default('TextualBody'),
-  format: z.enum(['text']).default('text'),
-  language: Languages,
-  value: z.string(),
-});
-export type TextualBody = z.infer<typeof TextualBodySchema>;
-
-export const TextPositionSelectorSchema = z.object({
-  type: z.enum(['TextPositionSelector']).default('TextPositionSelector'),
-  start: z.number(),
-  end: z.number(),
-});
-
-export const TextTargetSchema = z.object({
-  source: z.string(),
-  textDirection: z.enum(['ltr', 'rtl']),
-  type: z.enum(['Text']).default('Text'),
-  processingLanguage: Languages,
-  selector: TextPositionSelectorSchema,
-});
-
 export const AnnotationContext = z
   .enum(['http://www.w3.org/ns/anno.jsonld'])
   .default('http://www.w3.org/ns/anno.jsonld');
@@ -50,20 +37,38 @@ export const MelaAnnotationSchema = AnnotationSchema.omit({
   id: true,
   text_id: true,
 }).extend({
-  body: z.array(AnnotationTypeBody.or(TextualBodySchema)),
-  target: z.array(TextTargetSchema),
+  body: z.array(W3CAnnotationBodySchema),
+  target: z.array(W3CAnnotationTargetSchema),
 });
 
-export const MelaAnnotationReturnSchema = MelaAnnotationSchema.extend({
-  id: z.string(),
-  '@context': AnnotationContext,
-});
+export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
+  const value = JSON.parse(data.value);
+  let source = undefined;
+  if (data.source_id) source = getTextContentUri({ id: data.source_id });
+  return { ...value, source };
+};
+
+export const MelaAnnotationReturnSchema = AnnotationSchema.pick({ id: true })
+  .extend({
+    '@context': AnnotationContext,
+    annotationBody: z.array(AnnotationBodySchema).optional(),
+    annotationTarget: z.array(AnnotationTargetSchema).optional(),
+  })
+  .transform((data) => {
+    return {
+      ...data,
+      body: data.annotationBody?.map(mapAnnotationPart),
+      target: data.annotationTarget?.map(mapAnnotationPart),
+      mapAnnotationTarget: undefined,
+      mapAnnotationBody: undefined,
+    };
+  });
 
 export const MelaAnnotationPageSchema = z
   .object({
     '@context': AnnotationContext,
     type: z.enum(['AnnotationPage']).default('AnnotationPage'),
-    items: z.array(AnnotationSchema),
+    items: z.array(MelaAnnotationReturnSchema),
   })
   .transform((data) => {
     return {
@@ -72,15 +77,6 @@ export const MelaAnnotationPageSchema = z
     };
   });
 export type MelaAnnotationPage = z.infer<typeof MelaAnnotationPageSchema>;
-
-export const W3CAnnotationSchema = z.object({
-  id: z.string(),
-  '@context': z.string(),
-  motivation: z.enum(['classifying', 'tagging']).default('classifying'),
-  body: z.array(AnnotationTypeBody.or(TextualBodySchema)),
-  target: z.array(TextTargetSchema),
-});
-export type W3CAnnotation = z.infer<typeof W3CAnnotationSchema>;
 
 export const AnnotationFormSchema = {
   schema: {

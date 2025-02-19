@@ -4,10 +4,10 @@ import { read } from 'xlsx';
 
 import { Logger } from '@ghentcdh/tools/logging/api';
 
+import { parseLemas } from './import/lema';
 import { parsePhrases } from './import/sheet1';
 import { TextRepositoryService } from './text-repository.service';
-import { PhraseRepository } from '../phrase/phrase.repository';
-import { parseLemas } from './import/lema';
+// import { PhraseRepository } from '../phrase/phrase.repository';
 import { LemaRepository } from '../lema/lema-repository.service';
 
 const context = 'TextImportService';
@@ -16,7 +16,7 @@ const context = 'TextImportService';
 export class TextImportService {
   constructor(
     private readonly textRepositoryService: TextRepositoryService,
-    private readonly phraseRepository: PhraseRepository,
+    // private readonly phraseRepository: PhraseRepository,
     private readonly lemaRepository: LemaRepository,
   ) {}
 
@@ -48,8 +48,8 @@ export class TextImportService {
     const phrases = parsePhrases(textId, sheet);
 
     Logger.log(context, `parsed success phrases: ${phrases.length}`);
-
-    return this.phraseRepository.createPhrases(phrases);
+    return null;
+    // return this.phraseRepository.createPhrases(phrases);
   }
 
   private async createLema(sheet: WorkSheet) {

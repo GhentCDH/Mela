@@ -1,6 +1,6 @@
-import type { Line } from '@ghentcdh/vue-component-annotated-text';
+import type { TextLine } from '../../model';
 
-export const splitTextInLines = (text: string): Line[] => {
+export const textToLines = (text: string): TextLine[] => {
   const lines = text.split(`\n`);
   let start = 0;
   return lines.map((text, index) => {

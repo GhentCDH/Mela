@@ -39,7 +39,6 @@ model Text {
   author_id   String
   year        Int
   textContent TextContent[]
-  phrase      Phrase[]
   annotations Annotation[]
 }
 
@@ -55,6 +54,8 @@ model TextContent {
   text_type TextType
   language  String
   content   String   @db.Text
+  annotationBody AnnotationBody[]
+  annotationTarget AnnotationTarget[]
 }
 
 enum MotivationEnum {
@@ -69,18 +70,28 @@ model Annotation {
   motivation MotivationEnum
   text      Text     @relation(fields: [text_id], references: [id])
   text_id   String
+  annotationBody AnnotationBody[]
+  annotationTarget AnnotationTarget[]
 }
 
-model Phrase {
-  id          String  @id @default(uuid())
-  book_nbr    String
-  chapter_nbr String
-  phrase_nbr  String
-  text        Text    @relation(fields: [text_id], references: [id])
-  text_id     String
-  source_text String
-  translation String?
+model AnnotationBody {
+  id String @id @default(uuid())
+  value Json
+  annotation Annotation @relation(fields: [annotation_id], references: [id])
+  annotation_id String
+  source TextContent? @relation(fields: [source_id], references: [id])
+  source_id String?
 }
+
+model AnnotationTarget {
+  id String @id @default(uuid())
+  value Json
+  annotation Annotation @relation(fields: [annotation_id], references: [id])
+  annotation_id String
+  source TextContent? @relation(fields: [source_id], references: [id])
+  source_id String
+}
+
 
 model Register {
   id   String @id @default(uuid())

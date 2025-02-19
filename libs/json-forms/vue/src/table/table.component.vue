@@ -47,7 +47,6 @@ const edit = (data: unknown) => {
 };
 
 const deleteFn = (data: unknown) => {
-  console.log('__delete', data);
   emit('delete', data);
 };
 

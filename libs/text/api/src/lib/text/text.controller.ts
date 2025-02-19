@@ -1,6 +1,6 @@
 // eslint-disable @typescript-eslint/consistent-type-imports
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { textParseFileTypes } from '@mela/text/shared';
+import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -75,6 +75,14 @@ export class TextController extends AbstractController<
   })
   override async list(@Query() params: RequestDto): Promise<ListTextDto> {
     return super.list(params);
+  }
+
+  @Get('/:id')
+  @ApiCreatedResponse({
+    type: TextWithRelationsDto,
+  })
+  override async findOne(@Param('id') id: string) {
+    return super.findOneAndParse(id, TextFormSchema.dtoSchema);
   }
 
   @Post()
