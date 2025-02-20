@@ -3,7 +3,7 @@ import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { useHttpStore } from '@ghentcdh/authentication/frontend';
+import { useHttpStore } from '@ghentcdh/authentication-vue';
 import { RequestSchema } from '@ghentcdh/json-forms/core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
 

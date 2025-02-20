@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useHttpStore } from '@ghentcdh/authentication/frontend';
+import { useHttpStore } from '@ghentcdh/authentication-vue';
 import type {
   TextContentWithRelations,
   TextWithRelations,

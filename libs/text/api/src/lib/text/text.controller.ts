@@ -25,7 +25,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { GhentCdhGuard } from '@ghentcdh/authentication/api';
+import { GhentCdhGuard } from '@ghentcdh/authentication-api';
 import { RequestDto } from '@ghentcdh/json-forms/api';
 import { TextWithRelationsDto } from '@ghentcdh/mela/generated/dtos';
 import { TextWithRelations } from '@ghentcdh/mela/generated/types';

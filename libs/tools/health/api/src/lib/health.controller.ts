@@ -8,7 +8,7 @@ import {
   HttpHealthIndicator,
 } from '@nestjs/terminus';
 
-import { KEYCLOACK } from '@ghentcdh/authentication/api';
+import { KEYCLOACK } from '@ghentcdh/authentication-api';
 
 // import {
 //     HealthCheck,

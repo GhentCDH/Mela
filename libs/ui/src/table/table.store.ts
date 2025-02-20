@@ -3,8 +3,8 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useHttpStore } from '@ghentcdh/authentication/frontend';
-import { RequestSchema, extractFilters } from '@ghentcdh/json-forms/core';
+import { useHttpStore } from '@ghentcdh/authentication-vue';
+import { extractFilters, RequestSchema } from '@ghentcdh/json-forms/core';
 
 type RequestData = any;
 

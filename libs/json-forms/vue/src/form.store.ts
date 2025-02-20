@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { useHttpStore } from '@ghentcdh/authentication/frontend';
+import { useHttpStore } from '@ghentcdh/authentication-vue';
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
 import { Debugger } from '@ghentcdh/tools/logging/frontend';
 import { useNotificationStore } from '@ghentcdh/ui';
