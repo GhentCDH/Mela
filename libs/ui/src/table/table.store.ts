@@ -3,8 +3,8 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useHttpStore } from '@ghentcdh/authentication-vue';
-import { extractFilters, RequestSchema } from '@ghentcdh/json-forms/core';
+import { useHttpRequest } from '@ghentcdh/authentication-vue';
+import { RequestSchema, extractFilters } from '@ghentcdh/json-forms/core';
 
 type RequestData = any;
 
@@ -14,10 +14,10 @@ export const useTableStore = (name) =>
   defineStore(`ghentCDH_table_form_${name}`, () => {
     const route = useRoute();
     const router = useRouter();
+    const httpRequest = useHttpRequest();
 
     const requestData = ref<RequestData>(RequestSchema.parse(route.query));
 
-    const httpStore = useHttpStore();
     const reload = ref(Date.now());
     const loading = ref(true);
 
@@ -27,6 +27,8 @@ export const useTableStore = (name) =>
       // Don't remove to listen on reload!
       const r = reload.value;
 
+      console.log(uri);
+
       if (!uri.value) return null;
 
       loading.value = true;
@@ -35,7 +37,7 @@ export const useTableStore = (name) =>
         requestData.value.page = 1;
       }
 
-      const response = await httpStore
+      const response = await httpRequest
         .get<any>(uri.value, {
           queryParams: requestData.value,
         })

@@ -45,12 +45,6 @@
       "@ghentcdh/mela/generated/types": [
         "generated/types/index.ts"
       ],
-      "@ghentcdh/tools/health/api": [
-        "libs/tools/health/api/src/index.ts"
-      ],
-      "@ghentcdh/tools/logging/api": [
-        "libs/tools/logging/api/src/index.ts"
-      ],
       "@ghentcdh/tools/logging/frontend": [
         "libs/tools/logging/frontend/src/index.ts"
       ],

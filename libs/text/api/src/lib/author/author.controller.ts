@@ -17,18 +17,18 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { GhentCdhGuard } from '@ghentcdh/authentication-api';
 import { RequestDto } from '@ghentcdh/json-forms/api';
 import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';
+import { MelaGuard } from '../auth.guard';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('author')
 @ApiBearerAuth()
-@UseGuards(GhentCdhGuard)
+@UseGuards(MelaGuard)
 export class AuthorController extends AbstractController<
   AuthorDto,
   CreateAuthorDto
