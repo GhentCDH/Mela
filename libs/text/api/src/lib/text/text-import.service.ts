@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import type { WorkSheet } from 'xlsx';
 import { read } from 'xlsx';
 
-import { Logger } from '@ghentcdh/tools/logging/api';
+import { Logger } from '@ghentcdh/tools-api';
 
 import { parseLemas } from './import/lema';
 import { parsePhrases } from './import/sheet1';

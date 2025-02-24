@@ -3,12 +3,12 @@ import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { useHttpStore } from '@ghentcdh/authentication-vue';
+import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import { RequestSchema } from '@ghentcdh/json-forms/core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
 
 export const useTextRepository = defineStore('textRepository', () => {
-  const httpStore = useHttpStore();
+  const httpRequest = useHttpRequest();
 
   const getDataUri = (textId: string, ...suffix: string[]) => {
     return [TextFormSchema.schema.uri, textId, ...suffix].join('/');
@@ -21,7 +21,7 @@ export const useTextRepository = defineStore('textRepository', () => {
     textId: string,
     motivation: MotivationEnumType,
   ): Promise<MelaAnnotationPage> => {
-    return httpStore.get(getAnnotationUri(textId), {
+    return httpRequest.get(getAnnotationUri(textId), {
       queryParams: RequestSchema.parse({
         pageSize: 10000,
         filter: `motivation:${motivation}:equals`,
@@ -30,7 +30,7 @@ export const useTextRepository = defineStore('textRepository', () => {
   };
 
   const createAnnotation = (textId: string, annotation: W3CAnnotation) => {
-    return httpStore.post(getAnnotationUri(textId), annotation);
+    return httpRequest.post(getAnnotationUri(textId), annotation);
   };
 
   return { getDataUri, getAnnotations, createAnnotation };

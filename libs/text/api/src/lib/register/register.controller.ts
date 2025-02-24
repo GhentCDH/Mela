@@ -8,7 +8,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -17,7 +16,6 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { GhentCdhGuard } from '@ghentcdh/authentication-api';
 import { RequestDto } from '@ghentcdh/json-forms/api';
 import { RegisterDto } from '@ghentcdh/mela/generated/dtos';
 
@@ -28,7 +26,7 @@ import { AbstractController } from '../shared/controller';
 @UsePipes(ZodValidationPipe)
 @Controller('register')
 @ApiBearerAuth()
-@UseGuards(GhentCdhGuard)
+// @UseGuards(GhentCdhGuard)
 export class RegisterController extends AbstractController<
   RegisterDto,
   CreateRegisterDto

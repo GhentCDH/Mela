@@ -112,9 +112,6 @@ const copyReadme = (from, to, depth = Number.MAX_SAFE_INTEGER) => {
 };
 
 copyReadme('libs/ui', 'components/ui');
-copyReadme('libs/tools/health', 'tools/health');
-copyReadme('libs/tools/logging', 'tools/logging');
 
-createMenu('tools');
 createMenu('components');
 createMenu('api', ['_media', 'globals.md']);

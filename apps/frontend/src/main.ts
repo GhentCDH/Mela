@@ -2,6 +2,7 @@ import './styles.scss';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 
+import { createAuth } from '@ghentcdh/authentication-vue';
 import { ClickOutside } from '@ghentcdh/ui';
 
 import App from './app/App.vue';
@@ -11,6 +12,16 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+
+app.use(
+  createAuth({
+    keycloak: {
+      realm: import.meta.env.VITE_KEYCLOAK_REALM,
+      url: import.meta.env.VITE_KEYCLOAK_HOST,
+      clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
+    },
+  }),
+);
 app.directive('click-outside', ClickOutside);
 
 app.mount('#root');

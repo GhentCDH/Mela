@@ -1,5 +1,8 @@
 <template>
-  <control-wrapper v-bind="controlWrapper" :styles="styles">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <input
       :id="control.id + '-input'"
       v-model="query"
@@ -11,7 +14,7 @@
       :placeholder="appliedOptions.placeholder"
       @focus="onFocus"
       @blur="onBlur"
-    />
+    >
   </control-wrapper>
   <div v-click-outside="() => (results = [])">
     <ul
@@ -21,7 +24,10 @@
         absolute`,
       ]"
     >
-      <li v-for="(result, index) in results" :key="result[field.id]">
+      <li
+        v-for="(result, index) in results"
+        :key="result[field.id]"
+      >
         <button
           class="w-full h-8 border-b-1 border-gray-200 border-x-0 border-t-0 px-4 py-2 text-left hover:bg-primary-content cursor-pointer"
           type="button"
@@ -45,7 +51,7 @@ import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent, ref } from 'vue';
 
-import { useHttpStore } from '@ghentcdh/authentication-vue';
+import { useHttpRequest, useHttpStore  } from '@ghentcdh/authentication-vue';
 import type { ResponseData } from '@ghentcdh/json-forms/core';
 import { inputClasses, useVanillaControlCustom } from '@ghentcdh/ui';
 
@@ -61,6 +67,8 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
+    const httpRequest = useHttpRequest();
+
     const control = useVanillaControlCustom(
       useJsonFormsControl(props),
       (target) => target.value ?? undefined,
@@ -133,11 +141,9 @@ const controlRenderer = defineComponent({
       this.handleChange({ [this.field.label]: query });
 
       const { uri } = this.appliedOptions;
-      useHttpStore()
-        .get<ResponseData<any>>(`${uri}${query}`)
-        .then((data) => {
-          this.results = data.data as [];
-        });
+      httpRequest.get<ResponseData<any>>(`${uri}${query}`).then((data) => {
+        this.results = data.data as [];
+      });
     },
   },
 });

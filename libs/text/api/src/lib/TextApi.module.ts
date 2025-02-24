@@ -28,7 +28,6 @@ import { TextController } from './text/text.controller';
     SpeechController,
     AnnotationController,
     AnnotationTextController,
-
     TextController,
   ],
   providers: [

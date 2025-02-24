@@ -8,7 +8,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { Logger as MyLogger } from '@ghentcdh/tools/logging/api';
+import { Logger as MyLogger } from '@ghentcdh/tools-api';
 
 import { AppModule } from './app/app.module';
 
@@ -22,10 +22,7 @@ async function bootstrapApp() {
   const config = new DocumentBuilder()
     .setTitle('Mela backend')
     .setDescription(
-      `
-        A text tagging and translation platform developed for the research.
-        
-        `,
+      `A text tagging and translation platform developed for the research.`,
     )
     .setExternalDoc(
       'MELA: The MEning of Language - A digital grammar of the Greek taught at schools in late Constantinople',

@@ -17,8 +17,9 @@
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.9",
     "@anatine/zod-openapi": "^2.2.6",
-    "@ghentcdh/authentication-api": "^0.0.0",
-    "@ghentcdh/authentication-vue": "0.0.2-0",
+    "@ghentcdh/authentication-api": "0.0.2-10",
+    "@ghentcdh/authentication-vue": "0.0.2-15",
+    "@ghentcdh/tools-api": "0.0.2-10",
     "@ghentcdh/vue-component-annotated-text": "^0.4.7",
     "@jsonforms/vue": "^3.4.1",
     "@jsonforms/vue-vanilla": "^3.4.1",

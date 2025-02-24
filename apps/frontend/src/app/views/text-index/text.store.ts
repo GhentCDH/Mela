@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useHttpStore } from '@ghentcdh/authentication-vue';
+import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import type {
   TextContentWithRelations,
   TextWithRelations,
@@ -33,8 +33,7 @@ export const useTextStore = defineStore('textStore', () => {
     textId.value = newId;
     return router.push({ params: { id: newId }, query: route.query });
   };
-
-  const httpStore = useHttpStore();
+  const httpRequest = useHttpRequest();
 
   const text = computedAsync(() => {
     if (!textId.value) return null;
@@ -56,7 +55,7 @@ export const useTextStore = defineStore('textStore', () => {
         ],
       } as unknown as Partial<TextWithRelations>);
 
-    return httpStore
+    return httpRequest
       .get<Partial<TextWithRelations>>(`/api/text/${textId.value}`)
       .then((text) => {
         const textContent = [
@@ -79,14 +78,14 @@ export const useTextStore = defineStore('textStore', () => {
 
   const saveOrUpdate = (text: Partial<TextWithRelations>) => {
     if (textId.value === 'new') {
-      return httpStore
+      return httpRequest
         .post<TextWithRelations>('/api/text', text)
         .then((text) => {
           changeId(text.id);
           return text;
         });
     } else {
-      return httpStore.patch<TextWithRelations>(
+      return httpRequest.patch<TextWithRelations>(
         `/api/text/${textId.value}`,
         text,
       );
@@ -94,7 +93,7 @@ export const useTextStore = defineStore('textStore', () => {
   };
 
   const uploadExcel = (file: File) => {
-    return httpStore.postFile<TextWithRelations>(
+    return httpRequest.postFile<TextWithRelations>(
       `/api/text/${textId.value}/upload`,
       file,
     );
