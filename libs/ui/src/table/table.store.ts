@@ -27,8 +27,6 @@ export const useTableStore = (name) =>
       // Don't remove to listen on reload!
       const r = reload.value;
 
-      console.log(uri);
-
       if (!uri.value) return null;
 
       loading.value = true;

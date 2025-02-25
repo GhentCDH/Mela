@@ -48,7 +48,10 @@ export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
   return { ...value, source };
 };
 
-export const MelaAnnotationReturnSchema = AnnotationSchema.pick({ id: true })
+export const MelaAnnotationReturnSchema = AnnotationSchema.pick({
+  id: true,
+  motivation: true,
+})
   .extend({
     '@context': AnnotationContext,
     annotationBody: z.array(AnnotationBodySchema).optional(),

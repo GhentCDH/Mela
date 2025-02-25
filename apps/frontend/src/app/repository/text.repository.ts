@@ -30,6 +30,7 @@ export const useTextRepository = defineStore('textRepository', () => {
   };
 
   const createAnnotation = (textId: string, annotation: W3CAnnotation) => {
+    annotation.id = null;
     return httpRequest.post(getAnnotationUri(textId), annotation);
   };
 
