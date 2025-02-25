@@ -1,5 +1,6 @@
 <template>
   <toast />
+  <ModalWrapper />
   <div class="drawer">
     <input
       id="my-drawer-3"
@@ -52,6 +53,7 @@
 <script setup lang="ts">
 import type { Menu } from './menu.type';
 import { Icon, IconEnum } from '../icons';
+import { ModalWrapper } from '../modal';
 import Toast from '../toast/toast.vue';
 
 const baseUrl = import.meta.env.BASE_URL;

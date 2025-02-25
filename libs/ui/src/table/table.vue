@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ColumnDef } from '@ghentcdh/json-forms/core';
-
 import TextCell from './cells/text.cell.vue';
 import type { DisplayColumn, TableAction } from './table.model';
 import Btn from '../button/btn.vue';
