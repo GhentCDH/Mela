@@ -13,8 +13,8 @@ import { AnnotationDto } from '@ghentcdh/mela/generated/dtos';
 
 import { AnnotationRepository } from './annotation-repository.service';
 import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
-import { AbstractController } from '../shared/controller';
 import { MelaGuard } from '../auth.guard';
+import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('annotation')

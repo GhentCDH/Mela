@@ -1,5 +1,8 @@
 <template>
-  <dialog :id="id" class="modal">
+  <dialog
+    :id="id"
+    class="modal"
+  >
     <div :class="[`modal-box bg-white`, ModalSize[width]]">
       <button
         v-if="!disableClose"
@@ -24,6 +27,7 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
+
 import { Size } from '../const';
 
 // Dictionary of Modal size classes

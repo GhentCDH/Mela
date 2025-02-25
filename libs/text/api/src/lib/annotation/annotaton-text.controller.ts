@@ -19,8 +19,8 @@ import { RequestDto } from '@ghentcdh/json-forms/api';
 
 import { AnnotationRepository } from './annotation-repository.service';
 import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
-import { TextRepositoryService } from '../text/text-repository.service';
 import { MelaGuard } from '../auth.guard';
+import { TextRepositoryService } from '../text/text-repository.service';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/annotation')

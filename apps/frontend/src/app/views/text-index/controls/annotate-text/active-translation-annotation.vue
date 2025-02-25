@@ -16,21 +16,38 @@
       @change="changeType"
     />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
-      <Btn @click="saveActiveAnnotation"> Save</Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteActiveAnnotation"
+      >
+        Delete
+      </Btn>
+      <Btn @click="saveActiveAnnotation">
+        Save
+      </Btn>
     </div>
     <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-      <input type="radio" name="my-accordion-2" :checked="checked" />
-      <div class="collapse-title font-semibold">Transcriptions</div>
+      <input
+        type="radio"
+        name="my-accordion-2"
+        :checked="checked"
+      >
+      <div class="collapse-title font-semibold">
+        Transcriptions
+      </div>
       <div class="collapse-content text-sm">
-        <div class="font-bold">Original</div>
+        <div class="font-bold">
+          Original
+        </div>
         {{ sourceText }}
 
-        <div class="font-bold mt-2">Translated</div>
+        <div class="font-bold mt-2">
+          Translated
+        </div>
         {{ targetText }}
       </div>
     </div>
-    <template #actions></template>
+    <template #actions />
   </Card>
 </template>
 
@@ -50,7 +67,8 @@ import {
 
 import { IdentifyColor } from '../identify.color';
 import { useAnnotationStore } from './utils/annotation.store';
-import { EditableAnnotation, PREFIX_NEW } from './utils/parse';
+import type { EditableAnnotation} from './utils/parse';
+import { PREFIX_NEW } from './utils/parse';
 
 const annotationTypes = IdentifyColor;
 const checked = ref(true);

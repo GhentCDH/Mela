@@ -7,7 +7,10 @@ import { menu } from './configuration/menu';
 </script>
 
 <template>
-  <ShellComponent title="MeLa | Meaning of LAnguage" :menu="menu()">
+  <ShellComponent
+    title="MeLa | Meaning of LAnguage"
+    :menu="menu()"
+  >
     <RouterView />
   </ShellComponent>
 </template>
