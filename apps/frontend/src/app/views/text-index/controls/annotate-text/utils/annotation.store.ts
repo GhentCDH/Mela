@@ -8,10 +8,13 @@ import type { TextAnnotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { useNotificationStore } from '@ghentcdh/ui';
 
-import { generateW3CAnnotationBlocks } from './generate-blocks';
+import {
+  generateW3CAnnotationBlocks,
+  PREFIX_GENERATED,
+} from './generate-blocks';
 import type { MelaAnnotation, TranslatedAnnotation } from './mela_annotation';
 import type { EditableAnnotation } from './parse';
-import { PREFIX_NEW, editableAnnotation, parseAnnotation } from './parse';
+import { editableAnnotation, parseAnnotation } from './parse';
 import { ReloadRef } from './reload';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
@@ -68,21 +71,31 @@ export const useAnnotationStore = (id: string) =>
       annotation: TextAnnotation,
       type: AnnotationMetadataType,
     ) => {
-      w3cAnnotations.value = [
-        ...w3cAnnotations.value,
-        parseAnnotation(
-          sourceTextContent.value,
-          pick(annotation, ['start', 'end']),
-          type,
-        ),
-      ];
+      const newAnnotation = parseAnnotation(
+        sourceTextContent.value,
+        pick(annotation, ['start', 'end']),
+        type,
+      );
+
+      w3cAnnotations.value = [...w3cAnnotations.value, newAnnotation];
+
+      selectAnnotation(newAnnotation.id);
+
+      return newAnnotation;
     };
 
-    const createNewAnnotations = async () => {
+    const cancelGeneratedBLocks = () => {
+      w3cAnnotations.value = w3cAnnotations.value.filter(
+        (a) => !a.id.startsWith(PREFIX_GENERATED),
+      );
+    };
+
+    const saveGeneratedBlocks = async () => {
       const newAnnotations = w3cAnnotations.value.filter((a) =>
-        a.id.startsWith(PREFIX_NEW),
+        a.id.startsWith(PREFIX_GENERATED),
       );
       if (newAnnotations.length === 0) return;
+
       loading.value = true;
       await Promise.all(
         newAnnotations.map((a) =>
@@ -154,7 +167,7 @@ export const useAnnotationStore = (id: string) =>
       const annotation = selectedAnnotation.value;
       if (!annotation) return;
 
-      loading.value = true;
+      if (annotation.getId().startsWith) loading.value = true;
       await annotationRepository
         .deleteAnnotation(selectedAnnotation.value.getId())
         .then(() => {
@@ -165,6 +178,22 @@ export const useAnnotationStore = (id: string) =>
         });
       reload.reload();
       resetSelection();
+    };
+
+    const createActiveAnnotation = async () => {
+      const annotation = selectedAnnotation.value;
+      if (!annotation) return;
+
+      await textRepository
+        .createAnnotation(textId.value, annotation.getAnnotation())
+        .then(() => {
+          notificationStore.info('Annotation created');
+          reload.reload();
+          resetSelection();
+        })
+        .catch(() => {
+          notificationStore.error('Failed to create annotation');
+        });
     };
 
     const saveActiveAnnotation = async () => {
@@ -187,6 +216,23 @@ export const useAnnotationStore = (id: string) =>
       selectedAnnotation.value = null;
     };
 
+    const undoChanges = () => {
+      if (!selectedAnnotation.value) return;
+
+      if (selectedAnnotation.value.isNew()) {
+        w3cAnnotations.value = w3cAnnotations.value.filter(
+          (a) => a.id !== selectedAnnotation.value.getId(),
+        );
+      } else {
+        w3cAnnotations.value = w3cAnnotations.value.map((a) =>
+          a.id == selectedAnnotation.value.getId()
+            ? selectedAnnotation.value.undoChanges()
+            : a,
+        );
+      }
+      selectAnnotation(null);
+    };
+
     return {
       init,
       annotations: w3cAnnotations,
@@ -196,9 +242,12 @@ export const useAnnotationStore = (id: string) =>
       selectAnnotation,
       selectedAnnotation,
       autoGenerateBlocks,
-      createNewAnnotations,
+      saveGeneratedBlocks,
+      cancelGeneratedBLocks,
+      createActiveAnnotation,
       deleteActiveAnnotation,
       saveActiveAnnotation,
       changeType,
+      undoChanges,
     };
   });

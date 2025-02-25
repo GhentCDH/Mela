@@ -4,7 +4,7 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import { RequestSchema, extractFilters } from '@ghentcdh/json-forms/core';
+import { extractFilters, RequestSchema } from '@ghentcdh/json-forms/core';
 
 type RequestData = any;
 
@@ -26,8 +26,6 @@ export const useTableStore = (name) =>
     const data = computedAsync(async () => {
       // Don't remove to listen on reload!
       const r = reload.value;
-
-      console.log(uri);
 
       if (!uri.value) return null;
 

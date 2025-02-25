@@ -8,6 +8,8 @@ import {
 
 import { parseAnnotationFromText } from './parse';
 
+export const PREFIX_GENERATED = 'generated-';
+
 const getEqualIdentifier = (sourceUri: string, annotation: W3CAnnotation) => {
   const target = findTextPositionSelector(sourceUri)(annotation) as any;
 
@@ -39,10 +41,20 @@ export const generateW3CAnnotationBlocks = (
 
   const generatedAnnotations: W3CAnnotation[] = [
     paragraphs.map((annotation) =>
-      parseAnnotationFromText(textContent, annotation, 'paragraph'),
+      parseAnnotationFromText(
+        textContent,
+        annotation,
+        'paragraph',
+        PREFIX_GENERATED,
+      ),
     ),
     phrase.map((annotation) =>
-      parseAnnotationFromText(textContent, annotation, 'phrase'),
+      parseAnnotationFromText(
+        textContent,
+        annotation,
+        'phrase',
+        PREFIX_GENERATED,
+      ),
     ),
   ]
     .flat()

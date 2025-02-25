@@ -6,35 +6,22 @@
       :disabled="!!store.selectedAnnotation"
       @click="changeToCreateMode()"
     >
-      Create new text blocks
+      Create new text block
     </Btn>
-    <div
-      v-if="createMode"
-      class="w-72 block"
-    >
-      <SelectComponent
-        v-model="annotationType"
-        label="Text block type"
-        :options="annotationTypes"
-      />
-    </div>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="confirmTextBlocks"
-    >
-      Confirm new blocks
-    </Btn>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="generateBlocks"
-    >
+    <Btn v-if="createMode" @click="closeCreateMode"> Close create mode</Btn>
+    <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
       Auto generate text blocks
+    </Btn>
+    <Btn
+      v-if="createMode && generatedBlocks"
+      :color="Color.secondary"
+      @click="saveGeneratedBlocks"
+    >
+      Save generated blocks
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <div
       :class="[
@@ -52,23 +39,17 @@
           :cols="sources.length"
           @on-event="eventHandler"
         />
-        <hr>
+        <hr />
       </div>
     </div>
-    <div
-      v-if="!createMode"
-      class="w-full max-w-sm"
-    >
+    <div class="w-full max-w-sm">
       <template v-if="store.selectedAnnotation">
         <ActiveTranslationAnnotation
           :annotation="store.selectedAnnotation"
           :store-id="storeId"
         />
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -89,13 +70,14 @@ import type {
   AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
-import { Btn, Color, SelectComponent } from '@ghentcdh/ui';
+import { Btn, Color, ModalService } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
 import { IdentifyColor, IdentifyColorMap } from '../identify.color';
 import ActiveTranslationAnnotation from './active-translation-annotation.vue';
+import { ConfirmResult } from '../../../../../../../../libs/ui/src/modal/modal.model';
 
 type Properties = {
   sourceText: TextContent;
@@ -135,6 +117,7 @@ const annotationConfig: AnnotationConfig = {
 const content = computed(() => markdown.parse(properties.sourceText?.content));
 const annotationType = ref(IdentifyColor[0]);
 const createMode = ref(false);
+const generatedBlocks = ref(false);
 const editMode = ref(false);
 const textStore = useTextStore();
 const selectedAnnotations = computed(() => {
@@ -163,7 +146,6 @@ const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
 ) => {
-  console.log(e, payload);
   const isSourceTarget = payload.target === properties.sourceText.uri;
   switch (e) {
     case 'click-annotation':
@@ -219,11 +201,35 @@ const onSelectAnnotation = (
 
 const generateBlocks = () => {
   store.autoGenerateBlocks();
+  generatedBlocks.value = true;
 };
 
-const confirmTextBlocks = () => {
-  createMode.value = false;
-  store.createNewAnnotations();
+const saveGeneratedBlocks = () => {
+  store.saveGeneratedBlocks();
+  generatedBlocks.value = false;
+  closeCreateMode();
+};
+
+const closeCreateMode = () => {
+  if (generatedBlocks.value)
+    ModalService.showConfirm({
+      title: 'Warning',
+      message:
+        'There are generated blocks that are not saved yet. Save them first?',
+      cancelLabel: 'Delete',
+      confirmLabel: 'Save generated blocks',
+      onClose: (result: ConfirmResult) => {
+        if (result.confirmed) store.saveGeneratedBlocks();
+        else store.cancelGeneratedBLocks();
+
+        generatedBlocks.value = false;
+        createMode.value = false;
+      },
+    });
+  else {
+    generatedBlocks.value = false;
+    createMode.value = false;
+  }
 };
 
 const MD = () => {

@@ -30,18 +30,17 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   protected override async connectCreate(
-    id: string,
     dto: CreateAnnotationDto,
   ): Promise<Partial<CreateAnnotationDto>> {
     return {
-      annotationTarget: await this.createOrConnectTarget(id, dto),
-      annotationBody: await this.createOrConnectBody(id, dto),
+      annotationTarget: await this.createOrConnectTarget(null, dto),
+      annotationBody: await this.createOrConnectBody(null, dto),
     };
   }
 
   protected override async connectUpdate(
-    id: string,
-    dto: CreateAnnotationDto,
+    id: string | null,
+    dto: CreateAnnotationDto | null,
   ): Promise<Partial<CreateAnnotationDto>> {
     return {
       annotationTarget: await this.createOrConnectTarget(id, dto),
@@ -53,11 +52,12 @@ export class AnnotationRepository extends AbstractRepository<
     annotation_id: string,
     dto: CreateAnnotationDto,
   ) {
-    await this.prisma.annotationTarget.deleteMany({
-      where: {
-        annotation_id,
-      },
-    });
+    if (annotation_id)
+      await this.prisma.annotationTarget.deleteMany({
+        where: {
+          annotation_id,
+        },
+      });
 
     return { create: dto.annotationTarget };
   }
@@ -66,12 +66,21 @@ export class AnnotationRepository extends AbstractRepository<
     annotation_id: string,
     dto: CreateAnnotationDto,
   ) {
-    await this.prisma.annotationBody.deleteMany({
-      where: {
-        annotation_id,
-      },
-    });
+    if (annotation_id)
+      await this.prisma.annotationBody.deleteMany({
+        where: {
+          annotation_id,
+        },
+      });
 
     return { create: dto.annotationBody };
+  }
+
+  override async delete(id: string): Promise<Annotation> {
+    return this.prisma.annotation.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

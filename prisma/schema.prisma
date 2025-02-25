@@ -77,7 +77,7 @@ model Annotation {
 model AnnotationBody {
   id String @id @default(uuid())
   value Json
-  annotation Annotation @relation(fields: [annotation_id], references: [id])
+  annotation Annotation @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
   source TextContent? @relation(fields: [source_id], references: [id])
   source_id String?
@@ -86,7 +86,7 @@ model AnnotationBody {
 model AnnotationTarget {
   id String @id @default(uuid())
   value Json
-  annotation Annotation @relation(fields: [annotation_id], references: [id])
+  annotation Annotation @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
   source TextContent? @relation(fields: [source_id], references: [id])
   source_id String

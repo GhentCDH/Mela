@@ -1,5 +1,12 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Controller, Delete, Param, Patch, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
 import { AnnotationDto } from '@ghentcdh/mela/generated/dtos';
@@ -7,11 +14,12 @@ import { AnnotationDto } from '@ghentcdh/mela/generated/dtos';
 import { AnnotationRepository } from './annotation-repository.service';
 import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
 import { AbstractController } from '../shared/controller';
+import { MelaGuard } from '../auth.guard';
 
 @UsePipes(ZodValidationPipe)
 @Controller('annotation')
 @ApiBearerAuth()
-// @UseGuards(GhentCdhGuard)
+@UseGuards(MelaGuard)
 export class AnnotationController extends AbstractController<
   AnnotationDto,
   CreateAnnotationDto
