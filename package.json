@@ -2,11 +2,6 @@
   "name": "@mela/source",
   "version": "0.0.0",
   "license": "MIT",
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "scripts": {
     "commitlint": "commit",
     "docs:build:vuepress": "vuepress build docs ",
