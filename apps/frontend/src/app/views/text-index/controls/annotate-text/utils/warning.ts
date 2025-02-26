@@ -1,5 +1,7 @@
-import { ConfirmResult, ModalService } from '@ghentcdh/ui';
-import { AnnotationStore } from './annotation.store';
+import type { ConfirmResult} from '@ghentcdh/ui';
+import { ModalService } from '@ghentcdh/ui';
+
+import type { AnnotationStore } from './annotation.store';
 
 export const changeAnnotationSelection = (
   store: AnnotationStore,

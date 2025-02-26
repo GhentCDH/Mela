@@ -9,8 +9,8 @@ import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { useNotificationStore } from '@ghentcdh/ui';
 
 import {
-  generateW3CAnnotationBlocks,
   PREFIX_GENERATED,
+  generateW3CAnnotationBlocks,
 } from './generate-blocks';
 import type { EditableAnnotation } from './parse';
 import { editableAnnotation, parseAnnotation } from './parse';

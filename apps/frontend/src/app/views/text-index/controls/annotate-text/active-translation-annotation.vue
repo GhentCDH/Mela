@@ -16,17 +16,34 @@
       @change="changeType"
     />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
-      <Btn @click="saveActiveAnnotation"> Save</Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteActiveAnnotation"
+      >
+        Delete
+      </Btn>
+      <Btn @click="saveActiveAnnotation">
+        Save
+      </Btn>
     </div>
     <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-      <input type="radio" name="my-accordion-2" :checked="checked" />
-      <div class="collapse-title font-semibold">Transcriptions</div>
+      <input
+        type="radio"
+        name="my-accordion-2"
+        :checked="checked"
+      >
+      <div class="collapse-title font-semibold">
+        Transcriptions
+      </div>
       <div class="collapse-content text-sm">
-        <div class="font-bold">Original</div>
+        <div class="font-bold">
+          Original
+        </div>
         {{ sourceText }}
 
-        <div class="font-bold mt-2">Translated</div>
+        <div class="font-bold mt-2">
+          Translated
+        </div>
         {{ targetText }}
       </div>
     </div>
@@ -49,7 +66,8 @@ import {
 } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
-import { AnnotationStore, useAnnotationStore } from './utils/annotation.store';
+import type { AnnotationStore} from './utils/annotation.store';
+import { useAnnotationStore } from './utils/annotation.store';
 import type { EditableAnnotation } from './utils/parse';
 import { changeAnnotationSelection } from './utils/warning';
 
