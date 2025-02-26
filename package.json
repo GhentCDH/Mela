@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "license": "MIT",
   "config": {
-  "commitizen": {
-    "path": "cz-conventional-changelog"
-  }
-},
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "scripts": {
-    "cz": "cz",
+    "commitlint": "commit",
     "docs:build:vuepress": "vuepress build docs ",
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs",
     "docs:build": "pnpm run build &&  pnpm run  docs:build:menu && pnpm run   docs:build:vuepress",
@@ -24,6 +24,7 @@
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.9",
     "@anatine/zod-openapi": "^2.2.6",
+    "@commitlint/prompt-cli": "^19.7.1",
     "@ghentcdh/authentication-api": "0.0.2-10",
     "@ghentcdh/authentication-vue": "0.0.2-15",
     "@ghentcdh/tools-api": "0.0.2-10",
@@ -66,6 +67,8 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@eslint/js": "^9.17.0",
     "@jsonforms/core": "^3.4.1",
     "@nestjs/schematics": "^10.2.3",
