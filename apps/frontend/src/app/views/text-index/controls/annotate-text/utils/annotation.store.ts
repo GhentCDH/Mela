@@ -9,9 +9,10 @@ import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { useNotificationStore } from '@ghentcdh/ui';
 
 import {
-  PREFIX_GENERATED,
   generateW3CAnnotationBlocks,
+  PREFIX_GENERATED,
 } from './generate-blocks';
+import type {  ExampleMetadata } from './parse';
 import type { EditableAnnotation } from './parse';
 import { editableAnnotation, parseAnnotation } from './parse';
 import { ReloadRef } from './reload';
@@ -107,6 +108,10 @@ export const useAnnotationStore = (id: string) =>
     // Update the translation by selection
     const updateTranslation = (annotation: TextAnnotation) => {
       const update = selectedAnnotation.value.updateTranslation(annotation);
+      updateAnnotationList(update);
+    };
+    const updateExample = (metadata: ExampleMetadata) => {
+      const update = selectedAnnotation.value.updateExampleMetaData(metadata);
       updateAnnotationList(update);
     };
 
@@ -241,6 +246,8 @@ export const useAnnotationStore = (id: string) =>
       saveActiveAnnotation,
       changeType,
       undoChanges,
+      updateExample,
+
     } as unknown as AnnotationStore;
   });
 

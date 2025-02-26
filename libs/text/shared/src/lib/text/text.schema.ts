@@ -3,10 +3,10 @@ import { z } from 'zod';
 import {
   CategoryBuilder,
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
 import { TextForm } from '@ghentcdh/mela/generated/forms';
 import type {
@@ -21,6 +21,7 @@ import {
 } from '@ghentcdh/mela/generated/types';
 
 import { getTextContentUri } from '../utils/uri';
+import { AuthorFormSchema } from '../author/author.schema';
 
 // TODO add autocomplete for textschema
 const textIdentifyStep =
@@ -43,7 +44,7 @@ const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
   LayoutBuilder.horizontal<TextWithRelations>().addControls(
     ControlBuilder.properties('name'),
     ControlBuilder.asObject('author').autocomplete({
-      uri: '/api/author?filter=name:',
+      uri: `${AuthorFormSchema.schema.uri}?filter=name`,
       field: {
         id: 'id',
         label: 'name',
@@ -57,8 +58,7 @@ const uiSchema = LayoutBuilder.stepper()
   .addControls(
     CategoryBuilder.label('Details').addControls(detailStep),
     CategoryBuilder.label('Text').addControls(textContentStep),
-    CategoryBuilder.label('Identify').addControls(textIdentifyStep),
-    CategoryBuilder.label('Annotate'),
+    CategoryBuilder.label('Annotate').addControls(textIdentifyStep),
   )
   .build();
 

@@ -15,38 +15,30 @@
       :options="annotationTypes"
       @change="changeType"
     />
-    <div class="flex gap-2 justify-end pb-4">
-      <Btn
-        :color="Color.error"
-        @click="deleteActiveAnnotation"
-      >
-        Delete
-      </Btn>
-      <Btn @click="saveActiveAnnotation">
-        Save
-      </Btn>
-    </div>
-    <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-      <input
-        type="radio"
-        name="my-accordion-2"
-        :checked="checked"
-      >
-      <div class="collapse-title font-semibold">
-        Transcriptions
-      </div>
-      <div class="collapse-content text-sm">
-        <div class="font-bold">
-          Original
-        </div>
-        {{ sourceText }}
 
-        <div class="font-bold mt-2">
-          Translated
-        </div>
-        {{ targetText }}
-      </div>
+    <AddExample
+      v-if="annotationType?.id === 'example'"
+      :annotation="annotation"
+      :store-id="storeId"
+    />
+    <div class="flex gap-2 justify-end pb-4">
+      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
+      <Btn @click="saveActiveAnnotation"> Save</Btn>
     </div>
+
+    <template v-if="annotationType?.id !== 'example'">
+      <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+        <input type="radio" name="my-accordion-2" :checked="checked" />
+        <div class="collapse-title font-semibold">Transcriptions</div>
+        <div class="collapse-content text-sm">
+          <div class="font-bold">Original</div>
+          {{ sourceText }}
+
+          <div class="font-bold mt-2">Translated</div>
+          {{ targetText }}
+        </div>
+      </div>
+    </template>
     <template #actions />
   </Card>
 </template>

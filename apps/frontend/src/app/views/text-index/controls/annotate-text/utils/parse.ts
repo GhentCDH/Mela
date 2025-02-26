@@ -1,15 +1,19 @@
-import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import {
+  AnnotationMetadataType,
+  ExampleDto,
+  TextContentDto,
+} from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { Annotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
+  findTagging,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
   TextualBodySchema,
-  W3CAnnotationSchema,
-  findTagging,
   updateBody,
   updateSelector,
+  W3CAnnotationSchema,
 } from '@ghentcdh/annotations/core';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 
@@ -91,6 +95,21 @@ const updateTextSelection = (
   return updatedAnnotation;
 };
 
+export type ExampleMetadata = Pick<ExampleDto, 'register'>;
+
+const updateExampleMetaData = (
+  sourceUri: string,
+  w3CAnnotation: W3CAnnotation,
+  metaData: ExampleMetadata,
+) => {
+  const updatedAnnotation = w3CAnnotation;
+  // let updatedAnnotation = updateSelector(
+  //   w3CAnnotation,
+  //   createTarget(sourceUri, language, annotation),
+  // );
+  return updatedAnnotation;
+};
+
 export type EditableAnnotation = {
   isNew: () => boolean;
   hasChanges: () => boolean;
@@ -103,6 +122,7 @@ export type EditableAnnotation = {
   updateTranslation: (annotationToUpdate: AnnotationUpdate) => W3CAnnotation;
   updateSource: (annotationToUpdate: AnnotationUpdate) => W3CAnnotation;
   undoChanges: () => W3CAnnotation;
+  updateExampleMetaData: (metaData: ExampleMetadata) => W3CAnnotation;
 };
 
 export const editableAnnotation = (
@@ -110,6 +130,8 @@ export const editableAnnotation = (
   source: TextContentDto,
   translation: TextContentDto,
 ): EditableAnnotation => {
+  // TODO add some validation if type = example then body should not be able to translate
+
   const originalAnnotation = W3CAnnotationSchema.parse(annotation);
   let hasChanges = false;
   const undoChanges = () => {
@@ -145,18 +167,22 @@ export const editableAnnotation = (
     updateSource: (annotationToUpdate: AnnotationUpdate) => {
       hasChanges = true;
       return updateTextSelection(
-        translation.uri,
+        source.uri,
         annotation,
         annotationToUpdate,
         source.content,
         source.language,
       );
     },
+    updateExampleMetaData: (metaData: ExampleMetadata) => {
+      hasChanges = true;
+      return updateExampleMetaData(source.uri, annotation, metaData);
+    },
   };
 };
 
 export const parseAnnotation = (
-  text: TextContent,
+  text: TextContentDto,
   annotation: Pick<Annotation, 'start' | 'end'> & { id?: string },
   textType: AnnotationMetadataType,
   prefix = PREFIX_NEW,

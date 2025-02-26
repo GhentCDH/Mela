@@ -48,13 +48,13 @@ enum TextType {
 }
 
 model TextContent {
-  id        String   @id @default(uuid())
-  text      Text     @relation(fields: [text_id], references: [id])
-  text_id   String
-  text_type TextType
-  language  String
-  content   String   @db.Text
-  annotationBody AnnotationBody[]
+  id               String             @id @default(uuid())
+  text             Text               @relation(fields: [text_id], references: [id])
+  text_id          String
+  text_type        TextType
+  language         String
+  content          String             @db.Text
+  annotationBody   AnnotationBody[]
   annotationTarget AnnotationTarget[]
 }
 
@@ -64,38 +64,49 @@ enum MotivationEnum {
 }
 
 model Annotation {
-  id String @id @default(uuid())
-  body Json
-  target Json
-  motivation MotivationEnum
-  text      Text     @relation(fields: [text_id], references: [id])
-  text_id   String
-  annotationBody AnnotationBody[]
+  id               String             @id @default(uuid())
+  body             Json
+  target           Json
+  motivation       MotivationEnum
+  text             Text               @relation(fields: [text_id], references: [id])
+  text_id          String
+  annotationBody   AnnotationBody[]
   annotationTarget AnnotationTarget[]
 }
 
 model AnnotationBody {
-  id String @id @default(uuid())
-  value Json
-  annotation Annotation @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
+  id            String       @id @default(uuid())
+  value         Json
+  annotation    Annotation   @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
-  source TextContent? @relation(fields: [source_id], references: [id])
-  source_id String?
+  source        TextContent? @relation(fields: [source_id], references: [id])
+  source_id     String?
+  example       Example?     @relation(fields: [example_id], references: [id], onDelete: Cascade)
+  example_id    String?
 }
 
 model AnnotationTarget {
-  id String @id @default(uuid())
-  value Json
-  annotation Annotation @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
+  id            String       @id @default(uuid())
+  value         Json
+  annotation    Annotation   @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
-  source TextContent? @relation(fields: [source_id], references: [id])
-  source_id String
+  source        TextContent? @relation(fields: [source_id], references: [id])
+  source_id     String
 }
 
+model Example {
+  id             String           @id @default(uuid())
+  name           String
+  register       Register         @relation(fields: [register_id], references: [id])
+  register_id    String
+  // Lema Lema[]
+  AnnotationBody AnnotationBody[]
+}
 
 model Register {
-  id   String @id @default(uuid())
-  name String @unique
+  id       String    @id @default(uuid())
+  name     String    @unique
+  examples Example[]
 }
 
 model Speech {

@@ -22,7 +22,9 @@ export const AnnotationMetadataTypes = z.enum([
   'phrase',
   'paragraph',
   'no-link', // This text is not lined yet to some of the source part
+  'example',
 ]);
+
 export type AnnotationMetadataType = z.infer<typeof AnnotationMetadataTypes>;
 export const Languages = z.enum(['gr', 'en']);
 export type Language = z.infer<typeof Languages>;

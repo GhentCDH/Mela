@@ -5,3 +5,4 @@ export * from './lib/register/register.schema';
 export * from './lib/text/text.schema';
 export * from './lib/annotation/annotation.schema';
 export * from './lib/utils/uri';
+export * from './lib/example/example.schema';

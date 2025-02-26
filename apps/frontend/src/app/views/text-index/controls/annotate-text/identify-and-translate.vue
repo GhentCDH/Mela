@@ -1,28 +1,27 @@
 <template>
   <div class="flex gap-3 items-center">
     <Btn
-      v-if="!createMode"
       :color="Color.secondary"
-      :disabled="!!store.selectedAnnotation"
+      :disabled="!!store.selectedAnnotation || isCreateMode"
       @click="changeToCreateMode()"
     >
       Create new text block
     </Btn>
     <Btn
-      v-if="createMode"
-      @click="closeCreateMode"
-    >
-      Close create mode
-    </Btn>
-    <Btn
-      v-if="createMode"
       :color="Color.secondary"
-      @click="generateBlocks"
+      :disabled="!!store.selectedAnnotation || isCreateMode"
+      @click="changeCreateExample()"
     >
-      Auto generate text blocks
+      Create example
     </Btn>
+    <template v-if="mode === 'create'">
+      <Btn @click="closeCreateMode"> Close create mode</Btn>
+      <Btn :color="Color.secondary" @click="generateBlocks">
+        Auto generate text blocks
+      </Btn>
+    </template>
     <Btn
-      v-if="createMode && generatedBlocks"
+      v-if="mode === 'create' && generatedBlocks"
       :color="Color.secondary"
       @click="saveGeneratedBlocks"
     >
@@ -30,27 +29,18 @@
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
-    <div
-      :class="[
-        `grid gap-2 flex-1`,
-        { 'grid-cols-1': createMode, 'grid-cols-2': !createMode },
-      ]"
-    >
-      <div class="flex-1 col-span-2">
-        <GhentCdhAnnotations
-          :config="annotationConfig"
-          :sources="sources"
-          :annotations="store.annotations"
-          :annotation-actions="annotationActions"
-          :selected-annotations="selectedAnnotations"
-          :cols="sources.length"
-          @on-event="eventHandler"
-        />
-        <hr>
-      </div>
-    </div>
+    <GhentCdhAnnotations
+      :config="annotationConfig"
+      :sources="sources"
+      :annotations="store.annotations"
+      :annotation-actions="annotationActions"
+      :selected-annotations="selectedAnnotations"
+      :cols="sources.length"
+      @on-event="eventHandler"
+    />
+
     <div class="w-full max-w-sm">
       <template v-if="store.selectedAnnotation">
         <ActiveTranslationAnnotation
@@ -58,10 +48,7 @@
           :store-id="storeId"
         />
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -86,7 +73,7 @@ import { Btn, Color, ModalService } from '@ghentcdh/ui';
 import type { ConfirmResult } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import type { AnnotationStore} from './utils/annotation.store';
+import type { AnnotationStore } from './utils/annotation.store';
 import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
 import { IdentifyColor, IdentifyColorMap } from '../identify.color';
@@ -130,9 +117,13 @@ const annotationConfig: AnnotationConfig = {
 
 const content = computed(() => markdown.parse(properties.sourceText?.content));
 const annotationType = ref(IdentifyColor[0]);
-const createMode = ref(false);
+
+type MODES = 'create' | 'create-example' | 'edit';
+const CREATE_MODES: MODES[] = ['create', 'create-example'];
+const mode = ref<MODES | null>(null);
+const isCreateMode = computed(() => CREATE_MODES.includes(mode.value));
+
 const generatedBlocks = ref(false);
-const editMode = ref(false);
 const textStore = useTextStore();
 const selectedAnnotations = computed(() => {
   const annotations = store.selectedAnnotation
@@ -145,15 +136,18 @@ const selectedAnnotations = computed(() => {
 });
 const annotationActions = computed(() => {
   return {
-    [sources.value[0].uri]: { edit: false, create: createMode.value },
+    [sources.value[0].uri]: {
+      edit: false,
+      create: isCreateMode.value,
+    },
     [sources.value[1].uri]: { edit: false, create: !!store.selectedAnnotation },
   };
 });
 
 // TODO add id
-const storeId = 'id';
+const storeId = 'identify_and_translate';
 const store = useAnnotationStore(storeId)() as AnnotationStore;
-// TODO add the real annotations from the BE
+
 store.init(properties.sourceText, properties.translatedText, textStore.textId);
 
 const eventHandler = (
@@ -172,7 +166,10 @@ const eventHandler = (
       ).getAnnotation();
 
       if (isSourceTarget) {
-        store.createAnnotation(annotation, annotationType.value.id);
+        store.createAnnotation(
+          annotation,
+          mode.value === 'create-example' ? 'example' : 'phrase',
+        );
       } else {
         store.updateTranslation(annotation);
       }
@@ -183,8 +180,13 @@ const eventHandler = (
   }
 };
 
+const changeCreateExample = () => {
+  mode.value = 'create-example';
+  store.selectAnnotation(null);
+};
+
 const changeToCreateMode = () => {
-  createMode.value = true;
+  mode.value = 'create';
   store.selectAnnotation(null);
 };
 
@@ -193,19 +195,13 @@ const onSelectAnnotation = async (annotationId: string | null) => {
   const confirmed = await changeAnnotationSelection(store);
   if (!confirmed.confirmed) return;
 
-  if (createMode.value) {
-    editMode.value = false;
-    return;
-  }
-
-  if (!annotationId) {
-    editMode.value = false;
-    store.selectAnnotation(null);
+  if (isCreateMode.value) {
+    // mode.value = null;
     return;
   }
 
   store.selectAnnotation(annotationId);
-  editMode.value = true;
+  mode.value = annotationId ? 'edit' : null;
 };
 
 const generateBlocks = () => {
@@ -232,12 +228,12 @@ const closeCreateMode = () => {
         else store.cancelGeneratedBLocks();
 
         generatedBlocks.value = false;
-        createMode.value = false;
+        mode.value = null;
       },
     });
   else {
     generatedBlocks.value = false;
-    createMode.value = false;
+    mode.value = null;
   }
 };
 
