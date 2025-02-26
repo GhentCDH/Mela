@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "commitlint": "commit",
     "docs:build:vuepress": "vuepress build docs ",
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs",
     "docs:build": "pnpm run build &&  pnpm run  docs:build:menu && pnpm run   docs:build:vuepress",
@@ -11,12 +12,14 @@
     "generate:schema": "npx prisma generate",
     "generate:zod": "ts-node --project ./tools/tsconfig.tools.json ./tools/prisma/index.ts ",
     "generated:lint": "npx eslint generated/types/** --fix && && npx eslint generated/prisma/** --fix",
-    "generate:prisma": "pnpm run generate:schema && pnpm run generate:zod"
+    "generate:prisma": "pnpm run generate:schema && pnpm run generate:zod",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.9",
     "@anatine/zod-openapi": "^2.2.6",
+    "@commitlint/prompt-cli": "^19.7.1",
     "@ghentcdh/authentication-api": "0.0.2-10",
     "@ghentcdh/authentication-vue": "0.0.2-15",
     "@ghentcdh/tools-api": "0.0.2-10",
@@ -59,6 +62,8 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@eslint/js": "^9.17.0",
     "@jsonforms/core": "^3.4.1",
     "@nestjs/schematics": "^10.2.3",
@@ -111,6 +116,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-vue": "^9.32.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
