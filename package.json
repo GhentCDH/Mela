@@ -2,8 +2,13 @@
   "name": "@mela/source",
   "version": "0.0.0",
   "license": "MIT",
+  "config": {
+  "commitizen": {
+    "path": "cz-conventional-changelog"
+  }
+},
   "scripts": {
-    "commit" : "git add --all && git-cz",
+    "cz": "cz",
     "docs:build:vuepress": "vuepress build docs ",
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs",
     "docs:build": "pnpm run build &&  pnpm run  docs:build:menu && pnpm run   docs:build:vuepress",
