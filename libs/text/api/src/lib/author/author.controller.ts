@@ -8,7 +8,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -22,13 +21,12 @@ import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';
-import { MelaGuard } from '../auth.guard';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('author')
 @ApiBearerAuth()
-@UseGuards(MelaGuard)
+// @UseGuards(MelaGuard)
 export class AuthorController extends AbstractController<
   AuthorDto,
   CreateAuthorDto

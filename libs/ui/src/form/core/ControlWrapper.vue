@@ -17,11 +17,16 @@
 import { isDescriptionHidden } from '@jsonforms/core';
 import { computed } from 'vue';
 
-import { ControlWrapperProperties } from './properties';
+import type { ControlProperties} from './properties';
+import { DefaultControlProperties } from './properties';
 import { showErrors as _showErrors } from './utils/style';
 
 // TODO check what is used?
-const properties = defineProps(ControlWrapperProperties);
+const properties = withDefaults(
+  defineProps<ControlProperties>(),
+  DefaultControlProperties(),
+);
+
 const showDescription = computed(() => {
   return !isDescriptionHidden(
     properties.visible,

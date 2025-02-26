@@ -17,7 +17,6 @@ const uiSchema = LayoutBuilder.vertical<Lema>()
     ControlBuilder.properties('link'),
     ControlBuilder.asObject('speech').autocomplete({
       uri: '/api/speech?filter=name:',
-      uriDetail: '/api/speech',
       field: {
         id: 'id',
         label: 'name',

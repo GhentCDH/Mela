@@ -55,6 +55,7 @@ export const buildFilter = (filters: string[]) => {
     const build = buildFilterKey(key.split('.'), {
       // TODO check if operator is possible
       [operator || 'contains']: value.toLowerCase(),
+      mode: 'insensitive',
     });
 
     filter[build.key] = build.filterObj;
