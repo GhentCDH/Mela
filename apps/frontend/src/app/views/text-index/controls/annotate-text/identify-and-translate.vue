@@ -73,7 +73,7 @@ import { Btn, Color, ModalService } from '@ghentcdh/ui';
 import type { ConfirmResult } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import type { AnnotationStore } from './utils/annotation.store';
+import type { AnnotationStore} from './utils/annotation.store';
 import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
 import { IdentifyColor, IdentifyColorMap } from '../identify.color';
