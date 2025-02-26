@@ -8,17 +8,8 @@
     >
       Create new text block
     </Btn>
-    <Btn
-      v-if="createMode"
-      @click="closeCreateMode"
-    >
-      Close create mode
-    </Btn>
-    <Btn
-      v-if="createMode"
-      :color="Color.secondary"
-      @click="generateBlocks"
-    >
+    <Btn v-if="createMode" @click="closeCreateMode"> Close create mode</Btn>
+    <Btn v-if="createMode" :color="Color.secondary" @click="generateBlocks">
       Auto generate text blocks
     </Btn>
     <Btn
@@ -30,7 +21,7 @@
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <div
       :class="[
@@ -48,7 +39,7 @@
           :cols="sources.length"
           @on-event="eventHandler"
         />
-        <hr>
+        <hr />
       </div>
     </div>
     <div class="w-full max-w-sm">
@@ -58,10 +49,7 @@
           :store-id="storeId"
         />
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -81,19 +69,20 @@ import type {
   AnnotationEventHandlerPayloadData,
   AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
-import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { Btn, Color, ModalService } from '@ghentcdh/ui';
 import type { ConfirmResult } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import { useAnnotationStore } from './utils/annotation.store';
+import { AnnotationStore, useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
 import { IdentifyColor, IdentifyColorMap } from '../identify.color';
 import ActiveTranslationAnnotation from './active-translation-annotation.vue';
+import { TextContentDto } from '@mela/text/shared';
+import { changeAnnotationSelection } from './utils/warning';
 
 type Properties = {
-  sourceText: TextContent;
-  translatedText: TextContent;
+  sourceText: TextContentDto;
+  translatedText: TextContentDto;
 };
 const properties = defineProps<Properties>();
 
@@ -150,7 +139,7 @@ const annotationActions = computed(() => {
 
 // TODO add id
 const storeId = 'id';
-const store = useAnnotationStore(storeId)();
+const store = useAnnotationStore(storeId)() as AnnotationStore;
 // TODO add the real annotations from the BE
 store.init(properties.sourceText, properties.translatedText, textStore.textId);
 
@@ -161,11 +150,8 @@ const eventHandler = (
   const isSourceTarget = payload.target === properties.sourceText.uri;
   switch (e) {
     case 'click-annotation':
-      onSelectAnnotation(null, isSourceTarget);
-      store.selectAnnotation(payload.annotationId);
-      break;
     case 'click-outside':
-      onSelectAnnotation(payload.annotationId, isSourceTarget);
+      onSelectAnnotation(payload.annotationId);
       break;
     case 'create--end':
       const annotation = (
@@ -190,24 +176,22 @@ const changeToCreateMode = () => {
 };
 
 // TODO if you click somewhere else also deselect the annotation
-const onSelectAnnotation = (
-  annotationId: string | null,
-  ignoreEditMode: boolean,
-) => {
-  if (!ignoreEditMode && store.selectedAnnotation) {
-    return;
-  }
+const onSelectAnnotation = async (annotationId: string | null) => {
+  const confirmed = await changeAnnotationSelection(store);
+  if (!confirmed.confirmed) return;
 
   if (createMode.value) {
     editMode.value = false;
     return;
   }
+
   if (!annotationId) {
     editMode.value = false;
     store.selectAnnotation(null);
     return;
   }
 
+  store.selectAnnotation(annotationId);
   editMode.value = true;
 };
 
