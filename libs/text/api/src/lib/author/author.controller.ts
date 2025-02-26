@@ -22,8 +22,8 @@ import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';
-import { AbstractController } from '../shared/controller';
 import { MelaGuard } from '../auth.guard';
+import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('author')
