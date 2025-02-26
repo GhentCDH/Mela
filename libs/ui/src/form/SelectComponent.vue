@@ -22,9 +22,16 @@
 <script lang="ts" setup>
 import ControlWrapper from './core/ControlWrapper.vue';
 import type { ControlEmits } from './core/emits';
-import { SelectControl } from './core/properties';
+import type {
+  SelectControlProperties} from './core/properties';
+import {
+  DefaultSelectProperties
+} from './core/properties';
 
-const properties = defineProps(SelectControl);
+const properties = withDefaults(
+  defineProps<SelectControlProperties>(),
+  DefaultSelectProperties(),
+);
 
 const emit = defineEmits<ControlEmits>();
 const model = defineModel();

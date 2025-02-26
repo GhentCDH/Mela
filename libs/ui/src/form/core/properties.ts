@@ -1,83 +1,71 @@
-import type { Styles } from '@jsonforms/vue-vanilla';
-import type { PropType } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 
+import type { MyStyles} from './styles';
 import { myStyles } from './styles';
 
-const createProperties = (properties: any = {}) => {
-  return {
-    id: {
-      required: false as const,
-      type: String,
-    },
-    description: {
-      required: false as const,
-      type: String,
-      default: undefined,
-    },
-    errors: {
-      required: false as const,
-      type: String,
-      default: undefined,
-    },
-    label: {
-      required: false as const,
-      type: String,
-      default: undefined,
-    },
-    visible: {
-      required: false as const,
-      type: Boolean,
-      default: true,
-    },
-    required: {
-      required: false as const,
-      type: Boolean,
-      default: false,
-    },
-    enabled: {
-      required: false as const,
-      type: Boolean,
-      default: true,
-    },
-    isFocused: {
-      required: false as const,
-      type: Boolean,
-      default: false,
-    },
-    isTouched: {
-      required: false as const,
-      type: Boolean,
-      default: false,
-    },
-    hideLabel: {
-      required: false as const,
-      type: Boolean,
-      default: false,
-    },
-    styles: {
-      required: false as const,
-      type: Object as PropType<Styles>,
-      default: myStyles,
-    },
-    ...properties,
-  } as const;
+
+export type ControlProperties = {
+  id?: string;
+  description?: string;
+  errors?: string;
+  label?: string;
+  visible?: boolean;
+  required?: boolean;
+  enabled?: boolean;
+  isFocused?: boolean;
+  isTouched?: boolean;
+  hideLabel?: boolean;
+  styles?: MyStyles;
 };
 
-export const ControlWrapperProperties = createProperties();
+export const DefaultControlProperties = () => {
+  return {
+    id: uuidv4(),
+    visible: true,
+    required: false,
+    enabled: true,
+    isFocused: false,
+    isTouched: false,
+    hideLabel: false,
+    styles: myStyles,
+  } as ControlProperties;
+};
 
-export const SelectControl = createProperties({
-  options: {
-    required: true as const,
-    type: Object as unknown as Array<any>,
-  },
-  valueKey: {
-    required: false as const,
-    type: String,
-    default: 'id',
-  },
-  labelKey: {
-    required: false as const,
-    type: String,
-    default: 'label',
-  },
-});
+export type ControlWrapperProperties = ControlProperties;
+
+export type SelectControlProperties = ControlProperties & {
+  options: Array<any>;
+  valueKey?: string;
+  labelKey?: string;
+};
+
+export const DefaultSelectProperties = () => {
+  return {
+    ...DefaultControlProperties(),
+    options: [] as any[],
+    valueKey: 'value',
+    labelKey: 'label',
+  };
+};
+
+export type AutoCompleteConfig = {
+  uri: string;
+  skipAuth?: boolean;
+  dataField: string;
+};
+
+export type AutoCompleteProperties = ControlProperties & {
+  config?: AutoCompleteConfig;
+  options?: Array<any>;
+  valueKey?: string;
+  labelKey?: string;
+};
+
+export const DefaultAutoCompleteProperties = () => {
+  return {
+    ...DefaultControlProperties(),
+    options: [] as Array<any>,
+    valueKey: 'value',
+    labelKey: 'label',
+  } as AutoCompleteProperties;
+};

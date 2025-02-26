@@ -23,7 +23,7 @@ export interface DetailOptions extends ControlOption {
 export interface AutocompleteOptions extends ControlOption {
   format: 'autocomplete';
   uri: string;
-  uriDetail: string;
+  dataField?: string;
   field: {
     id: string;
     label: string;
@@ -147,6 +147,7 @@ export class ControlBuilder<
   autocomplete(options: Omit<AutocompleteOptions, 'format'>) {
     this.options = {
       format: ControlType.autocomplete,
+      dataField: 'data',
       ...options,
     };
     return this;

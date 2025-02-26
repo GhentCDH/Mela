@@ -44,7 +44,6 @@ const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
     ControlBuilder.properties('name'),
     ControlBuilder.asObject('author').autocomplete({
       uri: '/api/author?filter=name:',
-      uriDetail: '/api/author/',
       field: {
         id: 'id',
         label: 'name',

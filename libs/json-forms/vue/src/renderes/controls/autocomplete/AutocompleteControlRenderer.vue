@@ -1,44 +1,14 @@
 <template>
-  <control-wrapper
+  <Autocomplete
     v-bind="controlWrapper"
-    :styles="styles"
-  >
-    <input
-      :id="control.id + '-input'"
-      v-model="query"
-      autocomplete="off"
-      type="text"
-      :class="inputClass"
-      :disabled="!control.enabled"
-      :autofocus="appliedOptions.focus"
-      :placeholder="appliedOptions.placeholder"
-      @focus="onFocus"
-      @blur="onBlur"
-    >
-  </control-wrapper>
-  <div v-click-outside="() => (results = [])">
-    <ul
-      v-if="results.length"
-      :class="[
-        `bg-base-100 w-52 shadow -mt-5
-        absolute`,
-      ]"
-    >
-      <li
-        v-for="(result, index) in results"
-        :key="result[field.id]"
-      >
-        <button
-          class="w-full h-8 border-b-1 border-gray-200 border-x-0 border-t-0 px-4 py-2 text-left hover:bg-primary-content cursor-pointer"
-          type="button"
-          @click="selectResult(result)"
-          @blur="leaveResult(index)"
-        >
-          {{ result[field.label] }}
-        </button>
-      </li>
-    </ul>
-  </div>
+    v-model="control.data"
+    :config="appliedOptions"
+    :label-key="field.label"
+    :value-key="field.id"
+    @change="handleChange"
+    @focus="onFocus"
+    @blur="onBlur"
+  />
 </template>
 
 <script lang="ts">
@@ -51,9 +21,7 @@ import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent, ref } from 'vue';
 
-import { useHttpRequest, useHttpStore  } from '@ghentcdh/authentication-vue';
-import type { ResponseData } from '@ghentcdh/json-forms/core';
-import { inputClasses, useVanillaControlCustom } from '@ghentcdh/ui';
+import { Autocomplete, useVanillaControlCustom } from '@ghentcdh/ui';
 
 import { isAutoCompleteControl } from '../../tester';
 import ControlWrapper from '../ControlWrapper.vue';
@@ -61,90 +29,25 @@ import ControlWrapper from '../ControlWrapper.vue';
 const controlRenderer = defineComponent({
   name: 'AutocompleteControlRenderer',
   components: {
-    ControlWrapper,
+    Autocomplete,
   },
   props: {
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    const httpRequest = useHttpRequest();
-
     const control = useVanillaControlCustom(
       useJsonFormsControl(props),
       (target) => target.value ?? undefined,
     );
 
-    const results = ref<any[]>([]);
     const field = control.appliedOptions.value.field;
-    const initialValue = control.control.value.data ?? undefined;
-
-    const query = ref(initialValue?.[field.label] ?? '');
-    const open = ref(false);
-    const selectValue = ref(false);
-
-    const selectResult = (result: any) => {
-      selectValue.value = true;
-      handleChange(result);
-    };
 
     const handleChange = (result: any) => {
       const { path } = control.control.value;
       control.handleChange(path, result);
     };
-    const close = () => {
-      open.value = false;
-    };
-    const leaveResult = (index: number) => {
-      if (results.value?.length === index + 1) results.value = [];
-    };
 
-    return {
-      ...control,
-      results,
-      query,
-      selectValue,
-      field,
-      selectResult,
-      handleChange,
-      open,
-      close,
-      leaveResult,
-    };
-  },
-  computed: {
-    inputClass() {
-      return inputClasses(
-        this.styles,
-        this.isFocused,
-        this.isTouched,
-        this.controlWrapper?.errors,
-      );
-    },
-  },
-  watch: {
-    'control.data': function (val) {
-      // If there is no id the query is running
-      if (val && !val[this.field.id]) return;
-      this.selectValue = true;
-      this.results = [];
-      this.query = val?.[this.field.label] ?? '';
-    },
-    query: function (query) {
-      // If the field is set through the input don't run the query
-      if (this.selectValue) {
-        this.selectValue = false;
-        return;
-      }
-
-      this.open = true;
-      //Option to allow new values
-      this.handleChange({ [this.field.label]: query });
-
-      const { uri } = this.appliedOptions;
-      httpRequest.get<ResponseData<any>>(`${uri}${query}`).then((data) => {
-        this.results = data.data as [];
-      });
-    },
+    return { ...control, field, handleChange };
   },
 });
 
