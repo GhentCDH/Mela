@@ -12,19 +12,11 @@ import {
   PREFIX_GENERATED,
   generateW3CAnnotationBlocks,
 } from './generate-blocks';
-import type { MelaAnnotation, TranslatedAnnotation } from './mela_annotation';
 import type { EditableAnnotation } from './parse';
 import { editableAnnotation, parseAnnotation } from './parse';
 import { ReloadRef } from './reload';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
-
-const filterAnnotations = (
-  annotations: TranslatedAnnotation[],
-  mapper: (d: TranslatedAnnotation) => MelaAnnotation | null,
-): MelaAnnotation[] => {
-  return (annotations ?? []).map(mapper).filter((a) => !!a);
-};
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
@@ -249,5 +241,30 @@ export const useAnnotationStore = (id: string) =>
       saveActiveAnnotation,
       changeType,
       undoChanges,
-    };
+    } as unknown as AnnotationStore;
   });
+
+export type AnnotationStore = {
+  undoChanges: () => void;
+  selectAnnotation: (id: string | undefined | null) => void;
+  changeType: (annotationType: AnnotationMetadataType) => void;
+  deleteActiveAnnotation: () => void;
+  createActiveAnnotation: () => void;
+  saveActiveAnnotation: () => void;
+  selectedAnnotation: EditableAnnotation | null;
+  init: (
+    _sourceText: TextContent,
+    _translatedText: TextContent,
+    _textId: string,
+  ) => void;
+  createAnnotation: (
+    annotation: TextAnnotation,
+    type: AnnotationMetadataType,
+  ) => W3CAnnotation;
+  updateAnnotation: (annotation: TextAnnotation, text: string) => void;
+  updateTranslation: (annotation: TextAnnotation) => void;
+  autoGenerateBlocks: () => void;
+  saveGeneratedBlocks: () => Promise<void>;
+  cancelGeneratedBLocks: () => void;
+  annotations: W3CAnnotation[];
+};

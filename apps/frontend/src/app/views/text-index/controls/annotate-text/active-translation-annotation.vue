@@ -66,9 +66,10 @@ import {
 } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
+import type { AnnotationStore} from './utils/annotation.store';
 import { useAnnotationStore } from './utils/annotation.store';
-import type { EditableAnnotation} from './utils/parse';
-import { PREFIX_NEW } from './utils/parse';
+import type { EditableAnnotation } from './utils/parse';
+import { changeAnnotationSelection } from './utils/warning';
 
 const annotationTypes = IdentifyColor;
 const checked = ref(true);
@@ -81,7 +82,7 @@ type Properties = {
 };
 const properties = defineProps<Properties>();
 
-const store = useAnnotationStore(properties.storeId)();
+const store = useAnnotationStore(properties.storeId)() as AnnotationStore;
 
 const sourceText = computed(() => {
   const annotation = properties.annotation.getAnnotation();
@@ -121,24 +122,6 @@ watch(
 );
 
 const closeAnnotation = () => {
-  if (properties.annotation.isNew()) {
-    ModalService.showConfirm({
-      title: 'Warning',
-      message: 'This action will remove the newly created annotation?',
-      onClose: (result) => {
-        if (result.confirmed) store.undoChanges();
-      },
-    });
-  } else if (properties.annotation.hasChanges()) {
-    ModalService.showConfirm({
-      title: 'Warning',
-      message: 'This action will undo the changes?',
-      onClose: (result) => {
-        if (result.confirmed) store.undoChanges();
-      },
-    });
-  } else {
-    store.selectAnnotation(null);
-  }
+  return changeAnnotationSelection(store);
 };
 </script>
