@@ -6,7 +6,9 @@ import type {
 } from '../model';
 import { hasSameFields } from './target.utils';
 
-export const getBody = (annotation: W3CAnnotation): W3CAnnotationBody[] => {
+export const getBody = (
+  annotation: Pick<W3CAnnotation, 'body'>,
+): W3CAnnotationBody[] => {
   if (!annotation.body) return [];
 
   return Array.isArray(annotation.body) ? annotation.body : [annotation.body];
@@ -15,7 +17,7 @@ export const findBodyType = <B extends W3CAnnotationBody>(
   type: W3CAnnotationBodyType,
   validator: (body: B) => boolean,
 ) => {
-  return (annotation: W3CAnnotation): B | undefined => {
+  return (annotation: Pick<W3CAnnotation, 'body'>): B | undefined => {
     return getBody(annotation).find(
       (b: any) => b.type === type && validator(b),
     ) as unknown as B;

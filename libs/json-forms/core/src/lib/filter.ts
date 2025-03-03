@@ -52,11 +52,18 @@ export const buildFilter = (filters: string[]) => {
 
     if (!key) return;
 
-    const build = buildFilterKey(key.split('.'), {
-      // TODO check if operator is possible
+    const op = operator || 'contains';
+
+    // TODO check if operator is possible
+    const filterObj: Record<string, string> = {
       [operator || 'contains']: value.toLowerCase(),
-      mode: 'insensitive',
-    });
+    };
+
+    if (op === 'contains') {
+      filterObj['mode'] = 'insensitive';
+    }
+
+    const build = buildFilterKey(key.split('.'), filterObj);
 
     filter[build.key] = build.filterObj;
   });

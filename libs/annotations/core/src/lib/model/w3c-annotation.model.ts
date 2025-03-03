@@ -23,19 +23,30 @@ export const TextualBodySchema = z.object({
   value: z.string(),
   source: z.string().optional(),
 });
+export type TextualBody = z.infer<typeof TextualBodySchema>;
+
 export const TextualBodyClassifyingSchema = z.object({
   type: z.enum(['TextualBody']).default('TextualBody'),
   purpose: z.enum(['tagging']).default('tagging'),
   value: z.string(),
 });
-export type TextualBody = z.infer<typeof TextualBodySchema>;
 export type TextualBodyClassifying = z.infer<
   typeof TextualBodyClassifyingSchema
 >;
 
-export const W3CAnnotationBodySchema = AnnotationTypeBody.or(
-  TextualBodySchema,
-).or(TextualBodyClassifyingSchema);
+export const SpecificResourceSchema = z.object({
+  id: z.string().optional(),
+  type: z.enum(['SpecificResource']).default('SpecificResource'),
+  purpose: z.enum(['describing']).default('describing'),
+  source: z.string(),
+  //TODO  Value is not part of the w3c spec, but we need it to store the data for now f.e. the example
+  value: z.any(),
+});
+export type SpecificResource = z.infer<typeof SpecificResourceSchema>;
+
+export const W3CAnnotationBodySchema = AnnotationTypeBody.or(TextualBodySchema)
+  .or(TextualBodyClassifyingSchema)
+  .or(SpecificResourceSchema);
 export type W3CAnnotationBody = z.infer<typeof W3CAnnotationBodySchema>;
 export type W3CAnnotationBodyType = W3CAnnotationBody['type'];
 

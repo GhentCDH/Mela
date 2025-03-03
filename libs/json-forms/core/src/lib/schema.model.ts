@@ -24,6 +24,7 @@ export const createSchema = (props: {
   filterSchema?: JsonSchema;
   // TODO extract dto schema from uischema
   dtoSchema: ZodObject<any>;
+  responseSchema?: ZodObject<any>;
   uri: string;
 }) => {
   const dtoSchema = props.dtoSchema;
@@ -39,6 +40,7 @@ export const createSchema = (props: {
 
   return {
     dtoSchema,
+    responseSchema: props.responseSchema ?? dtoSchema,
     schema: {
       form: {
         uiSchema: props.uiSchema,

@@ -1,24 +1,26 @@
+import { z } from 'zod';
+
 import {
   ControlBuilder,
-  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
+  createSchema,
 } from '@ghentcdh/json-forms/core';
 import { ExampleForm } from '@ghentcdh/mela/generated/forms';
+import type {
+  ExampleWithRelations} from '@ghentcdh/mela/generated/types';
 import {
   ExampleSchema,
-  ExampleWithRelations,
   RegisterSchema,
 } from '@ghentcdh/mela/generated/types';
-import { z } from 'zod';
+
 import { RegisterFormSchema } from '../register/register.schema';
 
 const uiSchema = LayoutBuilder.vertical<ExampleWithRelations>()
   .addControls(
     ControlBuilder.asObject('register').autocomplete({
-      uri: `${RegisterFormSchema.schema.uri}?filter=name`,
-      uriDetail: RegisterFormSchema.schema.uri,
+      uri: `${RegisterFormSchema.schema.uri}?filter=name:`,
       field: {
         id: 'id',
         label: 'name',

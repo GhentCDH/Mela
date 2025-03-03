@@ -1,12 +1,12 @@
-import type { TextContentDto } from '@mela/text/shared';
-
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type {
+  SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
 import {
   findTagging,
-  findTextPositionSelector,
+  findTextPositionSelector
 } from '@ghentcdh/annotations/core';
 
-import { parseAnnotationFromText } from './parse';
+import { createTextSelectionFromText } from './edit/text-selection-annotation';
 
 export const PREFIX_GENERATED = 'generated-';
 
@@ -22,10 +22,13 @@ const getEqualIdentifier = (sourceUri: string, annotation: W3CAnnotation) => {
 };
 
 export const generateW3CAnnotationBlocks = (
-  textContent: TextContentDto,
+  textContent: SourceModel | undefined,
   originalAnnotations: W3CAnnotation[],
 ): W3CAnnotation[] => {
-  const paragraphs = textContent.content
+  if (!textContent) {
+    throw new Error('textContent is undefined');
+  }
+  const paragraphs = textContent.content.text
     .split('\n')
     .filter((a) => a.length > 0);
 
@@ -41,7 +44,7 @@ export const generateW3CAnnotationBlocks = (
 
   const generatedAnnotations: W3CAnnotation[] = [
     paragraphs.map((annotation) =>
-      parseAnnotationFromText(
+      createTextSelectionFromText(
         textContent,
         annotation,
         'paragraph',
@@ -49,7 +52,7 @@ export const generateW3CAnnotationBlocks = (
       ),
     ),
     phrase.map((annotation) =>
-      parseAnnotationFromText(
+      createTextSelectionFromText(
         textContent,
         annotation,
         'phrase',

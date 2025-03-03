@@ -1,26 +1,28 @@
-import type { AnnotationMetadataType } from '@mela/text/shared';
+import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { pick } from 'lodash-es';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import type { TextAnnotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { useNotificationStore } from '@ghentcdh/ui';
 
-import {
-  generateW3CAnnotationBlocks,
-  PREFIX_GENERATED,
-} from './generate-blocks';
-import type {  ExampleMetadata } from './parse';
-import type { EditableAnnotation } from './parse';
+import { PREFIX_GENERATED } from './generate-blocks';
+import type { EditableAnnotation, ExampleMetadata } from './parse';
 import { editableAnnotation, parseAnnotation } from './parse';
 import { ReloadRef } from './reload';
+import { TextWithAnnotations } from './text';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
+    let textWithAnnotations: TextWithAnnotations;
+    const textWithAnnotationsRef = ref<TextWithAnnotations>();
+
+    const sources = computed(() => textWithAnnotationsRef.value?.sources);
+
     const reload = ReloadRef();
     const loading = ref(true);
     const notificationStore = useNotificationStore();
@@ -42,19 +44,29 @@ export const useAnnotationStore = (id: string) =>
       );
 
       w3cAnnotations.value = annotations.items;
+      textWithAnnotations.setAnnotations(annotations.items);
 
       loading.value = false;
       return annotations.items;
     });
 
-    const sourceTextContent = ref<TextContent>();
-    const transtlationTextContent = ref<TextContent>();
+    const sourceTextContent = ref<TextContentDto>();
+    const transtlationTextContent = ref<TextContentDto>();
+
+    const getSource = (sourceId: string): TextContentDto | undefined => {
+      return sources.value.find((s) => s.id === sourceId);
+    };
 
     const init = (
-      _sourceText: TextContent,
-      _translatedText: TextContent,
+      _sourceText: TextContentDto,
+      _translatedText: TextContentDto,
       _textId: string,
     ) => {
+      textWithAnnotations = new TextWithAnnotations([
+        _sourceText,
+        _translatedText,
+      ]);
+      textWithAnnotationsRef.value = textWithAnnotations;
       sourceTextContent.value = _sourceText;
       transtlationTextContent.value = _translatedText;
       textId.value = _textId;
@@ -77,24 +89,12 @@ export const useAnnotationStore = (id: string) =>
       return newAnnotation;
     };
 
-    const cancelGeneratedBLocks = () => {
-      w3cAnnotations.value = w3cAnnotations.value.filter(
-        (a) => !a.id.startsWith(PREFIX_GENERATED),
-      );
-    };
-
-    const saveGeneratedBlocks = async () => {
-      const newAnnotations = w3cAnnotations.value.filter((a) =>
-        a.id.startsWith(PREFIX_GENERATED),
-      );
+    const saveAnnotations = async (newAnnotations: W3CAnnotation[]) => {
       if (newAnnotations.length === 0) return;
 
       loading.value = true;
-      await Promise.all(
-        newAnnotations.map((a) =>
-          textRepository.createAnnotation(textId.value, a),
-        ),
-      )
+      await textRepository
+        .createAnnotations(textId.value, newAnnotations)
         .then(() => {
           notificationStore.info('Annotations saved');
         })
@@ -153,11 +153,12 @@ export const useAnnotationStore = (id: string) =>
       return selectedAnnotation.value;
     };
 
-    const autoGenerateBlocks = () => {
-      w3cAnnotations.value = generateW3CAnnotationBlocks(
-        sourceTextContent.value,
-        w3cAnnotations.value,
-      );
+    const autoGenerateBlocks = (sourceId: string) => {
+      w3cAnnotations.value =
+        textWithAnnotations.autoGenerateAnnotations(sourceId);
+    };
+    const cancelAnnotations = (prefix: string) => {
+      w3cAnnotations.value = textWithAnnotations.cancelAnnotations(prefix);
     };
 
     const deleteActiveAnnotation = async () => {
@@ -231,6 +232,8 @@ export const useAnnotationStore = (id: string) =>
     };
 
     return {
+      sources,
+
       init,
       annotations: w3cAnnotations,
       createAnnotation,
@@ -239,16 +242,18 @@ export const useAnnotationStore = (id: string) =>
       selectAnnotation,
       selectedAnnotation,
       autoGenerateBlocks,
-      saveGeneratedBlocks,
-      cancelGeneratedBLocks,
+      saveGeneratedBlocks: () =>
+        saveAnnotations(
+          textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
+        ),
+      cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
       createActiveAnnotation,
       deleteActiveAnnotation,
       saveActiveAnnotation,
       changeType,
       undoChanges,
       updateExample,
-
-    } as unknown as AnnotationStore;
+    };
   });
 
 export type AnnotationStore = {
@@ -274,4 +279,5 @@ export type AnnotationStore = {
   saveGeneratedBlocks: () => Promise<void>;
   cancelGeneratedBLocks: () => void;
   annotations: W3CAnnotation[];
+  updateExample: (metadata: ExampleMetadata) => void;
 };

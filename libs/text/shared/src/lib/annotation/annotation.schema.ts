@@ -14,7 +14,7 @@ import {
   AnnotationTargetSchema,
 } from '@ghentcdh/mela/generated/types';
 
-import { getTextContentUri } from '../utils/uri';
+import { createUri } from '../utils/uri';
 
 export const AnnotationMetadataTypes = z.enum([
   'title',
@@ -44,9 +44,10 @@ export const MelaAnnotationSchema = AnnotationSchema.omit({
 });
 
 export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
-  const value = JSON.parse(data.value);
-  let source = undefined;
-  if (data.source_id) source = getTextContentUri({ id: data.source_id });
+  const value = JSON.parse(data.value) as any;
+  const { source_type, source_id } = data as any;
+  const source = createUri(source_type)({ id: source_id });
+
   return { ...value, source };
 };
 

@@ -100,6 +100,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   }
 
   async update(id: string, dto: CreateDto): Promise<Entity> {
+    console.log(dto);
     const connect = await this.connectUpdate(id, dto);
     return this.prismaModel.update({
       where: {

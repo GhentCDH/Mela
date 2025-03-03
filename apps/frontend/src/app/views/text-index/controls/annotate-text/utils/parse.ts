@@ -1,22 +1,20 @@
-import {
-  AnnotationMetadataType,
-  ExampleDto,
-  TextContentDto,
-} from '@mela/text/shared';
+import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { Annotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
-  findTagging,
-  TextTargetSchema,
   TextualBodyClassifyingSchema,
-  TextualBodySchema,
+  W3CAnnotationSchema,
+  findTagging,
   updateBody,
   updateSelector,
-  W3CAnnotationSchema,
 } from '@ghentcdh/annotations/core';
 import type { TextContent } from '@ghentcdh/mela/generated/types';
 
+import { createTextualBody } from './edit/body.utils';
+import type { ExampleMetadata} from './edit/edit-metadata';
+import { updateExampleMetaData } from './edit/edit-metadata';
+import { createTextPositionSelector } from './edit/target.utils';
 import { PREFIX_GENERATED } from './generate-blocks';
 
 export const PREFIX_NEW = 'new-';
@@ -30,38 +28,6 @@ export const parseAnnotationFromText = (
   const start = text.content.indexOf(annotation);
   const end = start + annotation.length;
   return parseAnnotation(text, { start, end }, type, prefix);
-};
-
-export const createTarget = (
-  sourceUri: string,
-  language: string,
-  annotation: Pick<Annotation, 'start' | 'end'> & { id?: string },
-) => {
-  return TextTargetSchema.parse({
-    source: sourceUri,
-    textDirection: 'ltr',
-    type: 'Text',
-    processingLanguage: language,
-    selector: {
-      type: 'TextPositionSelector',
-      start: annotation.start,
-      end: annotation.end,
-    },
-  });
-};
-
-export const createBody = (
-  text: string,
-  sourceUri: string,
-  language: string,
-  annotation: Pick<Annotation, 'start' | 'end'> & { id?: string },
-) => {
-  const textValue = text.substring(annotation.start, annotation.end);
-  return TextualBodySchema.parse({
-    language: language,
-    value: textValue,
-    source: sourceUri,
-  });
 };
 
 const updatePurpose = (
@@ -85,28 +51,13 @@ const updateTextSelection = (
 ) => {
   let updatedAnnotation = updateSelector(
     w3CAnnotation,
-    createTarget(sourceUri, language, annotation),
+    createTextPositionSelector(sourceUri, language, annotation),
   );
   updatedAnnotation = updateBody(
     updatedAnnotation,
-    createBody(text, sourceUri, language, annotation),
+    createTextualBody(text, sourceUri, language, annotation),
   );
 
-  return updatedAnnotation;
-};
-
-export type ExampleMetadata = Pick<ExampleDto, 'register'>;
-
-const updateExampleMetaData = (
-  sourceUri: string,
-  w3CAnnotation: W3CAnnotation,
-  metaData: ExampleMetadata,
-) => {
-  const updatedAnnotation = w3CAnnotation;
-  // let updatedAnnotation = updateSelector(
-  //   w3CAnnotation,
-  //   createTarget(sourceUri, language, annotation),
-  // );
   return updatedAnnotation;
 };
 
@@ -176,7 +127,7 @@ export const editableAnnotation = (
     },
     updateExampleMetaData: (metaData: ExampleMetadata) => {
       hasChanges = true;
-      return updateExampleMetaData(source.uri, annotation, metaData);
+      return updateExampleMetaData(annotation, metaData);
     },
   };
 };
@@ -196,8 +147,8 @@ export const parseAnnotation = (
     '@context': 'http://www.w3.org/ns/anno.jsonld',
     body: [
       TextualBodyClassifyingSchema.parse({ value: textType }),
-      createBody(content, sourceUri, language, annotation),
+      createTextualBody(content, sourceUri, language, annotation),
     ],
-    target: [createTarget(sourceUri, language, annotation)],
+    target: [createTextPositionSelector(sourceUri, language, annotation)],
   });
 };

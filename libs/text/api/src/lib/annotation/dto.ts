@@ -2,7 +2,9 @@ import { createZodDto } from '@anatine/zod-nestjs';
 import {
   MelaAnnotationPageSchema,
   MelaAnnotationSchema,
+  getIdFromUri,
   getTextContentIdFromUri,
+  getTypeFromUri,
 } from '@mela/text/shared';
 
 import {
@@ -18,20 +20,33 @@ import {
 } from '@ghentcdh/mela/generated/types';
 
 const mapBody = (body: W3CAnnotationBody): AnnotationBodyWithRelations => {
-  console.log(body);
+  // const source_id = getSourceIdFromUri(uri);
 
   return {
     value: JSON.stringify(body),
-    source_id: getTextContentIdFromUri((body as any).source),
+    // text_content_id: getTextContentIdFromUri(uri),
+    // example_id: getExampleIdFromUri(uri),
+    // source_id,
   } as AnnotationBodyWithRelations;
+};
+
+const getSourceId = (target: W3CAnnotationTarget) => {
+  if (target.source) return getTextContentIdFromUri(target.source);
+
+  return null;
 };
 
 const mapTarget = (
   target: W3CAnnotationTarget,
 ): AnnotationTargetWithRelations => {
+  const uri = target.source;
+  const source_type = getTypeFromUri(uri);
+  const source_id = getIdFromUri(source_type)(uri);
+
   return {
     value: JSON.stringify(target),
-    source_id: getTextContentIdFromUri(target.source),
+    source_id,
+    source_type,
   } as AnnotationTargetWithRelations;
 };
 

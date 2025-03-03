@@ -11,9 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { FormComponent } from '@ghentcdh/json-forms/vue';
 import { ExampleFormSchema } from '@mela/text/shared';
 import { ref } from 'vue';
+
+import { FormComponent } from '@ghentcdh/json-forms/vue';
+
 import { useAnnotationStore } from './utils/annotation.store';
 import type { EditableAnnotation } from './utils/parse';
 
@@ -35,7 +37,7 @@ const onValid = (v: boolean) => {
 
 const onChange = (data: any) => {
   formData.value = data;
-
+  console.log(data);
   store.updateExample(data);
 };
 </script>
