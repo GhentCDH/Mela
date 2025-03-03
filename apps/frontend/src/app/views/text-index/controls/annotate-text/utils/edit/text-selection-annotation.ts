@@ -4,19 +4,20 @@ import { v4 as uuidv4 } from 'uuid';
 import type {
   Annotation,
   SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+  W3CAnnotation,
+} from '@ghentcdh/annotations/core';
 import {
   TextualBodyClassifyingSchema,
-  W3CAnnotationSchema,
   updateBody,
   updateSelector,
+  W3CAnnotationSchema,
 } from '@ghentcdh/annotations/core';
 
 import { createTextualBody } from './body.utils';
 import { createTextPositionSelector } from './target.utils';
-import { PREFIX_NEW } from '../parse';
 
 type AnnotationUpdate = Pick<Annotation, 'start' | 'end'> & { id?: string };
+export const PREFIX_NEW = 'new-';
 
 export const updateTextSelection = (
   sourceUri: string,

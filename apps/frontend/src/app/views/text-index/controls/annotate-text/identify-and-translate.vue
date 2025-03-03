@@ -2,22 +2,20 @@
   <div class="flex gap-3 items-center">
     <Btn
       :color="Color.secondary"
-      :disabled="!!store.selectedAnnotation || isCreateMode"
+      :disabled="!!store.selectedAnnotationId || isCreateMode"
       @click="changeToCreateMode()"
     >
       Create new text block
     </Btn>
     <Btn
       :color="Color.secondary"
-      :disabled="!!store.selectedAnnotation || isCreateMode"
+      :disabled="!!store.selectedAnnotationId || isCreateMode"
       @click="changeCreateExample()"
     >
       Create example
     </Btn>
     <template v-if="mode === 'create'">
-      <Btn @click="closeCreateMode">
-        Close create mode
-      </Btn>
+      <Btn @click="closeCreateMode"> Close create mode</Btn>
       <Btn
         v-for="s in store.sources"
         :key="s.id"
@@ -36,7 +34,7 @@
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <GhentCdhAnnotations
       :config="annotationConfig"
@@ -49,16 +47,17 @@
     />
 
     <div class="w-full max-w-sm">
-      <template v-if="store.selectedAnnotation">
-        <ActiveTranslationAnnotation
-          :annotation="store.selectedAnnotation"
-          :store-id="storeId"
+      <template v-if="store.selectedAnnotationId">
+        <ActiveAnnotation
+          :annotation-id="store.selectedAnnotationId"
+          :text-with-annotations="store.textWithAnnotations"
+          @save-annotation="store.saveOrCreateAnnotation"
+          @delete-annotation="store.deleteAnnotation"
+          @change-annotation="store.reloadFromTextWithAnnotations()"
+          @close-annotation="closeAnnotation"
         />
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -67,12 +66,7 @@
 import type { TextContentDto } from '@mela/text/shared';
 import { computed, ref } from 'vue';
 
-// import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
-import {
-  SourceModelSchema,
-  SourceTextSchema,
-  findTagging,
-} from '@ghentcdh/annotations/core';
+import { findTagging } from '@ghentcdh/annotations/core';
 import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type {
   AnnotationConfig,
@@ -83,12 +77,10 @@ import { Btn, Color, ModalService } from '@ghentcdh/ui';
 import type { ConfirmResult } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import type { AnnotationStore } from './utils/annotation.store';
 import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
-import { IdentifyColor, IdentifyColorMap } from '../identify.color';
-import ActiveTranslationAnnotation from './active-translation-annotation.vue';
-import { changeAnnotationSelection } from './utils/warning';
+import { IdentifyColorMap } from '../identify.color';
+import ActiveAnnotation from './active-annotation.vue';
 
 type Properties = {
   sourceText: TextContentDto;
@@ -119,8 +111,8 @@ const textStore = useTextStore();
 const selectedAnnotations = computed(() => {
   const sources = store.sources;
 
-  const annotations = store.selectedAnnotation
-    ? [store.selectedAnnotation.getId()]
+  const annotations = store.selectedAnnotationId
+    ? [store.selectedAnnotationId]
     : [];
   return {
     [sources[0].uri]: annotations,
@@ -135,7 +127,7 @@ const annotationActions = computed(() => {
       edit: false,
       create: isCreateMode.value,
     },
-    [sources[1].uri]: { edit: false, create: !!store.selectedAnnotation },
+    [sources[1].uri]: { edit: false, create: !!store.selectedAnnotationId },
   };
 });
 
@@ -160,15 +152,11 @@ const eventHandler = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
 
-      if (isSourceTarget) {
-        console.log('create annotation', annotation, mode.value);
-        store.createAnnotation(
-          annotation,
-          mode.value === 'create-example' ? 'example' : 'phrase',
-        );
-      } else {
-        store.updateTranslation(annotation);
-      }
+      store.createAnnotation(
+        properties.sourceText.uri,
+        annotation,
+        mode.value === 'create-example' ? 'example' : 'phrase',
+      );
 
       break;
     default:
@@ -196,7 +184,12 @@ const onSelectAnnotation = async (
     return;
   }
 
-  const confirmed = await changeAnnotationSelection(store);
+  // TODO check if something changed
+  // const confirmed = await changeAnnotationSelection(store, annotationId, () => {
+  //   store.reloadFromTextWithAnnotations();
+  // });
+  const confirmed = { confirmed: true };
+
   if (!confirmed.confirmed) return;
 
   store.selectAnnotation(annotationId);
@@ -234,6 +227,13 @@ const closeCreateMode = () => {
     generatedBlocks.value = false;
     mode.value = null;
   }
+};
+
+const closeAnnotation = () => {
+  store.reloadFromTextWithAnnotations();
+  store.selectAnnotation(null);
+  mode.value = null;
+  return;
 };
 
 const MD = () => {

@@ -1,5 +1,4 @@
-import type {
-  Annotation} from '@ghentcdh/annotations/core';
+import type { Annotation } from '@ghentcdh/annotations/core';
 import {
   SpecificResourceSchema,
   TextualBodySchema,

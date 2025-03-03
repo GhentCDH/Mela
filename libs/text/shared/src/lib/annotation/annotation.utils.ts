@@ -1,11 +1,10 @@
 import type {
   SpecificResource,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
-import {
-  findBodyType
+  W3CAnnotation,
 } from '@ghentcdh/annotations/core';
+import { findBodyType } from '@ghentcdh/annotations/core';
 
-import { isExampleUri } from './annotation.utils';
+import { isExampleUri } from '../utils/uri';
 
 export const isNewExampleUri = (uri: string) => uri.startsWith('new-');
 

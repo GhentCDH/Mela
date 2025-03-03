@@ -1,40 +1,35 @@
-import type { ConfirmResult} from '@ghentcdh/ui';
 import { ModalService } from '@ghentcdh/ui';
-
-import type { AnnotationStore } from './annotation.store';
+import { W3CAnnotation } from '@ghentcdh/annotations/core';
+import { AnnotationTester } from './tester';
 
 export const changeAnnotationSelection = (
-  store: AnnotationStore,
-): Promise<ConfirmResult> => {
-  const annotation = store.selectedAnnotation;
-
-  return new Promise<ConfirmResult>((resolve) => {
-    if (!annotation) {
-      resolve({ confirmed: true });
+  hasChanges: boolean,
+  acvtiveAnnotation: W3CAnnotation,
+): Promise<{ confirmed: boolean; undoChanges: boolean }> => {
+  return new Promise((resolve) => {
+    if (!hasChanges) {
+      resolve({ confirmed: true, undoChanges: false });
       return;
     }
 
-    if (annotation.isNew()) {
+    if (AnnotationTester(acvtiveAnnotation).isNew()) {
       ModalService.showConfirm({
         title: 'Warning',
         message: 'This action will remove the newly created annotation?',
         onClose: (result) => {
-          if (result.confirmed) store.undoChanges();
-          resolve(result);
+          const confirmed = result.confirmed;
+          resolve({ undoChanges: confirmed, confirmed });
         },
       });
-    } else if (annotation.hasChanges()) {
+    } else if (hasChanges) {
       ModalService.showConfirm({
         title: 'Warning',
         message: 'This action will undo the changes?',
         onClose: (result) => {
-          if (result.confirmed) store.undoChanges();
-          resolve(result);
+          const confirmed = result.confirmed;
+          resolve({ undoChanges: confirmed, confirmed });
         },
       });
-    } else {
-      store.selectAnnotation(null);
-      resolve({ confirmed: true });
     }
   });
 };
