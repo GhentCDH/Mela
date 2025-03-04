@@ -16,11 +16,8 @@
 <script setup lang="ts">
 import { computed, effect, ref } from 'vue';
 
-import {
-  type TextualBody,
-  W3CAnnotation,
-  findBodyType,
-} from '@ghentcdh/annotations/core';
+import type { TextualBody, W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findBodyType } from '@ghentcdh/annotations/core';
 import { Btn } from '@ghentcdh/ui';
 
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';

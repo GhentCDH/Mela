@@ -10,7 +10,9 @@
       </div>
     </template>
     <fieldset class="fieldset">
-      <legend class="fieldset-legend">Selected text:</legend>
+      <legend class="fieldset-legend">
+        Selected text:
+      </legend>
       {{ selectedText?.value }}
     </fieldset>
     <SelectComponent
@@ -20,10 +22,20 @@
       @change="changeType"
     />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
-      <Btn @click="saveActiveAnnotation"> Save</Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteActiveAnnotation"
+      >
+        Delete
+      </Btn>
+      <Btn @click="saveActiveAnnotation">
+        Save
+      </Btn>
     </div>
-    <Links :annotation="activeAnnotation" @save-annotation="saveAnnotation" />
+    <Links
+      :annotation="activeAnnotation"
+      @save-annotation="saveAnnotation"
+    />
 
     <template v-if="annotationType?.id !== 'example'">
       <Translation
@@ -40,12 +52,12 @@ import type { AnnotationMetadataType } from '@mela/text/shared';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import {
+import type {
   TextualBody,
-  W3CAnnotation,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
   findBodyType,
-} from '@ghentcdh/annotations/core';
-import { findTagging } from '@ghentcdh/annotations/core';
+ findTagging } from '@ghentcdh/annotations/core';
 import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
