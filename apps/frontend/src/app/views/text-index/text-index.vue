@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { TextFormSchema } from '@mela/text/shared';
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { FormWithTableCompnent, useFormStore } from '@ghentcdh/json-forms/vue';
-import type {
-  Text,
-  TextContentWithRelations,
-} from '@ghentcdh/mela/generated/types';
+import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
+import type { TextContentWithRelations } from '@ghentcdh/mela/generated/types';
 
 const formId = 'text-index';
 const router = useRouter();
@@ -19,9 +15,7 @@ const edit = (data: any) => {
   });
 };
 
-let store = useFormStore(formId);
 const formSchema = TextFormSchema.schema;
-const reload = ref(0);
 
 const initialData = {
   textContent: [
@@ -36,11 +30,6 @@ const initialData = {
       text_type: 'TRANSLATION',
     } as TextContentWithRelations,
   ],
-};
-
-const deleteFn = (data: { id: string }) => {
-  // TODO add warning
-  store.delete(data).then(() => (reload.value = Date.now()));
 };
 </script>
 

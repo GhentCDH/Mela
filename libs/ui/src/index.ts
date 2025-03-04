@@ -17,3 +17,4 @@ export * from './toast';
 
 export * from './modal';
 export * from './utils';
+export * from './menu';
