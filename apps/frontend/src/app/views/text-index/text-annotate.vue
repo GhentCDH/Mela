@@ -11,57 +11,36 @@
         </ul>
       </div>
     </div>
-    <div class="flex-none">
-      <ul class="menu menu-horizontal px-1">
+    <div class="flex-none ml-4">
+      <ul class="menu menu-horizontal">
         <li>
           <details>
             <summary>Elements</summary>
             <ul class="bg-base-100 rounded-t-none p-2">
-              <li
-                v-for="source in textStore.sources"
-                :key="source.id"
-              >
+              <li v-for="source in textStore.sources" :key="source.id">
                 <button @click="generateBlocks(source.id)">
                   Auto generate text blocks:
                   {{ source.text_type }}
                 </button>
               </li>
               <li>
-                <button @click="createAnnotation">
-                  Create annotation
-                </button>
+                <button @click="createAnnotation">Create annotation</button>
               </li>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <details>
-            <summary>Display</summary>
-            <ul class="bg-base-100 rounded-t-none p-2">
-              TODO add display options
-              <li><a>Link 1</a></li>
-              <li><a>Link 2</a></li>
             </ul>
           </details>
         </li>
       </ul>
     </div>
   </div>
-  <div v-if="textStore.text">
+  <div v-if="textStore.text" class="mt-2">
     <annotate-text
       :store-id="storeId"
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div
-    v-if="modeToast"
-    class="toast toast-center"
-  >
-    <div
-      role="alert"
-      class="alert alert-success bg-white"
-    >
+  <div v-if="modeToast" class="toast toast-center">
+    <div role="alert" class="alert alert-success bg-white">
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -71,12 +50,7 @@
         >
           Deny
         </Btn>
-        <Btn
-          v-if="modeToast.save"
-          @click="modeToast.save"
-        >
-          Save
-        </Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
       </div>
     </div>
   </div>
