@@ -20,6 +20,7 @@ import {
   TextSchema,
 } from '@ghentcdh/mela/generated/types';
 
+import { AuthorFormSchema } from '../author/author.schema';
 import { getTextContentUri } from '../utils/uri';
 
 // TODO add autocomplete for textschema
@@ -43,7 +44,7 @@ const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
   LayoutBuilder.horizontal<TextWithRelations>().addControls(
     ControlBuilder.properties('name'),
     ControlBuilder.asObject('author').autocomplete({
-      uri: '/api/author?filter=name:',
+      uri: `${AuthorFormSchema.schema.uri}?filter=name:`,
       field: {
         id: 'id',
         label: 'name',
@@ -57,8 +58,7 @@ const uiSchema = LayoutBuilder.stepper()
   .addControls(
     CategoryBuilder.label('Details').addControls(detailStep),
     CategoryBuilder.label('Text').addControls(textContentStep),
-    CategoryBuilder.label('Identify').addControls(textIdentifyStep),
-    CategoryBuilder.label('Annotate'),
+    CategoryBuilder.label('Annotate').addControls(textIdentifyStep),
   )
   .build();
 
@@ -93,12 +93,17 @@ export const TextContentDtoSchema = TextContentSchema.pick({
   text_type: true,
   content: true,
   language: true,
-})
-  .extend({ id: z.string().optional() })
-  .transform((data) => {
-    return { ...data, uri: getTextContentUri(data) };
-  });
-export type TextContentDto = z.infer<typeof TextContentDtoSchema>;
+}).extend({ id: z.string().optional() });
+
+export const TextContentResponseSchema = TextContentDtoSchema.transform(
+  (data) => {
+    return {
+      ...data,
+      uri: getTextContentUri(data),
+    };
+  },
+);
+export type TextContentDto = z.infer<typeof TextContentResponseSchema>;
 
 const dtoSchema = TextSchema.pick({
   name: true,
@@ -110,9 +115,14 @@ const dtoSchema = TextSchema.pick({
   textContent: z.array(TextContentDtoSchema),
 });
 
+const responseSchema = TextSchema.omit({ textContent: true }).extend({
+  textContent: z.array(TextContentResponseSchema),
+});
+
 export const TextFormSchema = createSchema({
   uiSchema,
   dtoSchema,
+  responseSchema,
   jsonSchema: TextForm,
   uri: '/api/text',
   filterSchema,

@@ -24,6 +24,14 @@ export const useAnnotationRepository = defineStore(
       return httpRequest.patch(getDataUri(annotationId), annotation);
     };
 
-    return { getDataUri, patchAnnotation, deleteAnnotation };
+    const patchAnnotations = (annotations: W3CAnnotation[]) => {
+      return Promise.all(
+        annotations.map((annotation) =>
+          patchAnnotation(annotation.id, annotation),
+        ),
+      );
+    };
+
+    return { getDataUri, patchAnnotation, patchAnnotations, deleteAnnotation };
   },
 );

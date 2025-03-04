@@ -77,6 +77,8 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   override async delete(id: string): Promise<Annotation> {
+    // TODO delete annotation relations
+
     return this.prisma.annotation.delete({
       where: {
         id,

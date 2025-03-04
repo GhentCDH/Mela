@@ -82,7 +82,7 @@ export class TextController extends AbstractController<
     type: TextWithRelationsDto,
   })
   override async findOne(@Param('id') id: string) {
-    return super.findOneAndParse(id, TextFormSchema.dtoSchema);
+    return super.findOneAndParse(id, TextFormSchema.responseSchema);
   }
 
   @Post()

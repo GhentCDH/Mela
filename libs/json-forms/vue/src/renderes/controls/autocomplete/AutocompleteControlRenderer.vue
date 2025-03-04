@@ -24,7 +24,6 @@ import { defineComponent, ref } from 'vue';
 import { Autocomplete, useVanillaControlCustom } from '@ghentcdh/ui';
 
 import { isAutoCompleteControl } from '../../tester';
-import ControlWrapper from '../ControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'AutocompleteControlRenderer',

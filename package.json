@@ -121,6 +121,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "jsdom": "~25.0.1",
+    "jsonc-eslint-parser": "^2.4.0",
     "nx": "20.3.0",
     "postcss": "8.4.49",
     "prettier": "^3.4.2",

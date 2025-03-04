@@ -1,4 +1,5 @@
 import type {
+  TextualBody,
   TextualBodyClassifying,
   W3CAnnotation,
   W3CAnnotationBody,
@@ -6,7 +7,9 @@ import type {
 } from '../model';
 import { hasSameFields } from './target.utils';
 
-export const getBody = (annotation: W3CAnnotation): W3CAnnotationBody[] => {
+export const getBody = (
+  annotation: Pick<W3CAnnotation, 'body'>,
+): W3CAnnotationBody[] => {
   if (!annotation.body) return [];
 
   return Array.isArray(annotation.body) ? annotation.body : [annotation.body];
@@ -15,19 +18,30 @@ export const findBodyType = <B extends W3CAnnotationBody>(
   type: W3CAnnotationBodyType,
   validator: (body: B) => boolean,
 ) => {
-  return (annotation: W3CAnnotation): B | undefined => {
+  return (annotation: Pick<W3CAnnotation, 'body'>): B | undefined => {
     return getBody(annotation).find(
       (b: any) => b.type === type && validator(b),
     ) as unknown as B;
   };
 };
 
-export const findTagging = (annotation: W3CAnnotation) => {
-  return findBodyType<TextualBodyClassifying>(
-    'TextualBody',
-    (body: TextualBodyClassifying) => body.purpose === 'tagging',
-  )(annotation);
-};
+export const findByPurpose =
+  (purpose: string) => (annotation: W3CAnnotation) => {
+    return findBodyType<TextualBodyClassifying>(
+      'TextualBody',
+      (body: TextualBodyClassifying) => body.purpose === purpose,
+    )(annotation);
+  };
+
+export const findTagging = findByPurpose('tagging');
+
+export const findTextualBodyByLanguage =
+  (language: string) => (annotation: W3CAnnotation) => {
+    return findBodyType<TextualBody>(
+      'TextualBody',
+      (body: TextualBody) => body.language === language,
+    )(annotation);
+  };
 
 export const isSameBody = (
   body1: W3CAnnotationBody,

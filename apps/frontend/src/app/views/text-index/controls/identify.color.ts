@@ -5,6 +5,7 @@ const Colors = {
   subtitle: '#FFB74D', // pastel orange
   paragraph: '#4d88ff', // pastel blue
   phrase: '#CAB2D6', // pastel green
+  example: '#4fff66', // pastel yellow
 };
 
 export const IdentifyColorMap = createAnnotationColors(Colors, {
@@ -22,4 +23,5 @@ export const IdentifyColor = [
   { label: 'SubTitle', id: 'subtitle' },
   { label: 'Paragraph', id: 'paragraph' },
   { label: 'Phrase', id: 'phrase' },
+  { label: 'Example', id: 'example' },
 ] as const;
