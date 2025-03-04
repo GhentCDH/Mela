@@ -2,9 +2,7 @@
   <h2>Links</h2>
 
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">
-      Translations
-    </legend>
+    <legend class="fieldset-legend">Translations</legend>
     <ul class="list">
       <li
         v-for="t in translations"
@@ -20,49 +18,35 @@
       </li>
     </ul>
   </fieldset>
-  <fieldset
-    v-if="linkTranslation"
-    class="fieldset"
-  >
-    <legend class="fieldset-legend">
-      Selected translation
-    </legend>
-    <p v-if="!linkedTranslation">
-      Click on an annotation
-    </p>
+  <fieldset v-if="linkTranslation" class="fieldset">
+    <legend class="fieldset-legend">Selected translation</legend>
+    <p v-if="!linkedTranslation">Click on an annotation</p>
     <div v-if="linkedTranslation">
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation">
-          Save translation
-        </Btn>
+        <Btn @click="saveTranslation"> Save translation</Btn>
       </div>
     </div>
   </fieldset>
-  <Btn
-    v-if="!linkTranslation"
-    @click="addLink"
-  >
-    Add translation
-  </Btn>
+  <Btn v-if="!linkTranslation" @click="addLink"> Add translation</Btn>
 </template>
 
 <script setup lang="ts">
 import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
-import type {
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   findAnnotations,
   findByPurpose,
-  findRelatedAnnotation
+  findRelatedAnnotation,
 } from '@ghentcdh/annotations/core';
 import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { createTranslationAnnotation } from '../utils/edit/linked-annotations';
 import { findTextValue } from '../utils/translation';
+import { AnnotationWithRelations } from '../props';
 
 const listenerStore = useAnnotationListenerStore()();
 
@@ -70,7 +54,7 @@ const linkTranslation = ref(false);
 
 type Properties = {
   annotation: W3CAnnotation;
-  annotations: W3CAnnotation[];
+  links: AnnotationWithRelations[];
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
@@ -102,22 +86,19 @@ effect(() => {
 
 const translatedText = computed(() => findTextValue(linkedTranslation.value));
 
-const links = computed(() => {
-  const sourceUri = getAnnotationUri(properties.annotation);
-  return findAnnotations(properties.annotations).findInTargetSource(sourceUri);
-});
-
 const translations = computed(() =>
-  links.value.filter(findByPurpose('translation')).map((link) => {
-    const related = findRelatedAnnotation(
-      properties.annotations,
-      getAnnotationIdFromUri,
-    )(link);
+  properties.links
+    .filter((link) => findByPurpose('translation')(link.annotation))
+    .map((link) => {
+      const translation = link.relations.find(
+        (r) => r.id !== properties.annotation.id,
+      );
 
-    const translation = related.find((r) => r.id !== properties.annotation.id);
-
-    return { link, translation: findTextValue(translation)?.value };
-  }),
+      return {
+        link: link.annotation,
+        translation: findTextValue(translation)?.value,
+      };
+    }),
 );
 
 const addLink = () => {
@@ -143,5 +124,8 @@ const saveTranslation = () => {
   );
 
   emits('saveAnnotation', link);
+
+  linkedTranslation.value = null;
+  linkTranslation.value = false;
 };
 </script>

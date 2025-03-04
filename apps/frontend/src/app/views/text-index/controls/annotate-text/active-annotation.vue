@@ -25,7 +25,7 @@
     </div>
     <Links
       :annotation="activeAnnotation"
-      :annotations="textWithAnnotations.annotations"
+      :links="links"
       @save-annotation="saveAnnotation"
       @delete-annotation="deleteAnnotation"
     />
@@ -55,14 +55,18 @@ import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
 import { changeAnnotationSelection } from './utils/warning';
 import Links from './view/links.vue';
+import { findTextValue } from './utils/translation';
+import { AnnotationWithRelations } from './props';
 
 const annotationTypes = IdentifyColor;
 
 const annotationType = ref<{ label: string; id: string }>(IdentifyColor[0]);
 
 type Properties = {
-  annotationId: string;
+  // annotationId: string;
   textWithAnnotations: TextWithAnnotations;
+  activeAnnotation: W3CAnnotation;
+  links: AnnotationWithRelations[];
 };
 const properties = defineProps<Properties>();
 let originalAnnotation: W3CAnnotation;
@@ -76,7 +80,7 @@ const emits = defineEmits<{
 
 const changeType = () => {
   const annotation = properties.textWithAnnotations.changeType(
-    properties.annotationId,
+    properties.activeAnnotation.id,
     annotationType.value.id as AnnotationMetadataType,
   );
   emits('changeAnnotation', annotation);
@@ -87,13 +91,13 @@ const deleteAnnotation = (annotationId: string) => {
 };
 
 const deleteActiveAnnotation = () => {
-  emits('deleteAnnotation', properties.annotationId);
+  emits('deleteAnnotation', properties.activeAnnotation.id);
   ModalService.showConfirm({
     title: 'Delete annotation',
     message: 'Are you sure to delete this annotation, all links will be lost?',
     onClose: (result) => {
       if (result) {
-        deleteAnnotation(properties.annotationId);
+        deleteAnnotation(properties.activeAnnotation.id);
       }
     },
   });
@@ -101,7 +105,9 @@ const deleteActiveAnnotation = () => {
 
 const saveActiveAnnotation = () => {
   saveAnnotation(
-    properties.textWithAnnotations.getAnnotation(properties.annotationId),
+    properties.textWithAnnotations.getAnnotation(
+      properties.activeAnnotation.id,
+    ),
   );
 };
 
@@ -109,22 +115,12 @@ const saveAnnotation = (annotation: W3CAnnotation) => {
   emits('saveAnnotation', annotation);
 };
 
-const getActiveAnnotation = () => {
-  return properties.textWithAnnotations.getAnnotation(properties.annotationId);
-};
-
-const activeAnnotation = computed(() => getActiveAnnotation());
-const selectedText = computed(() =>
-  findBodyType<TextualBody>(
-    'TextualBody',
-    (body: TextualBody) => !!body.language,
-  )(activeAnnotation.value),
-);
+const selectedText = computed(() => findTextValue(properties.activeAnnotation));
 
 watch(
-  () => ({ text: properties.textWithAnnotations, id: properties.annotationId }),
+  () => properties.activeAnnotation,
   (n) => {
-    const annotation = getActiveAnnotation();
+    const annotation = properties.activeAnnotation;
     const type = findTagging(annotation).value ?? 'phrase';
     originalAnnotation = cloneDeep(annotation);
     annotationType.value =
@@ -133,13 +129,8 @@ watch(
   { immediate: true },
 );
 
-onBeforeUnmount((hook) => {
-  console.log(hook);
-  // alert('1234');
-});
-
 const closeAnnotation = async () => {
-  const activeAnnotation = getActiveAnnotation();
+  const activeAnnotation = properties.activeAnnotation;
   const confirmed = await changeAnnotationSelection(
     !isEqual(activeAnnotation, originalAnnotation),
     activeAnnotation,

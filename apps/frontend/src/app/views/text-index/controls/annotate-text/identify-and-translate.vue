@@ -50,12 +50,13 @@
       <template v-if="store.selectedAnnotationId">
         <ActiveAnnotation
           :annotation-id="store.selectedAnnotationId"
+          :active-annotation="store.activeAnnotation"
+          :links="store.activeAnnotationLinks"
           :text-with-annotations="store.textWithAnnotations"
           @save-annotation="store.saveOrCreateAnnotation"
           @delete-annotation="store.deleteAnnotation"
           @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
-          @change-mode="changeMode"
         />
       </template>
       <div class="border-2" v-html="content" />
@@ -82,8 +83,8 @@ import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
-import type { MODES } from './mode';
-import { CREATE_MODES } from './mode';
+import type { MODES } from './props';
+import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 
 type Properties = {
@@ -144,7 +145,6 @@ const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
 ) => {
-  console.log(payload);
   const isSourceTarget = payload.target === properties.sourceText.uri;
   switch (e) {
     case 'click-annotation':
@@ -183,7 +183,6 @@ const onSelectAnnotation = async (
   annotationId: string | null,
   allowedDuringActiveMode: boolean,
 ) => {
-  console.log('select an annotation', annotationId, mode.value);
   listenerStore.onClickAnnotation(
     store.textWithAnnotations.getAnnotation(annotationId),
   );

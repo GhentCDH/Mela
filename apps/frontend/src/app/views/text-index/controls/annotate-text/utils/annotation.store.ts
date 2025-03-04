@@ -1,9 +1,19 @@
-import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import {
+  AnnotationMetadataType,
+  getAnnotationIdFromUri,
+  getAnnotationUri,
+  TextContentDto,
+} from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import type { TextAnnotation, W3CAnnotation } from '@ghentcdh/annotations/core';
+import {
+  findAnnotations,
+  findRelatedAnnotation,
+  TextAnnotation,
+  W3CAnnotation,
+} from '@ghentcdh/annotations/core';
 import { useNotificationStore } from '@ghentcdh/ui';
 
 import { PREFIX_GENERATED } from './generate-blocks';
@@ -28,6 +38,27 @@ export const useAnnotationStore = (id: string) =>
     const selectedAnnotationId = ref<string | null>(null);
     const textRepository = useTextRepository();
     const annotationRepository = useAnnotationRepository();
+    const activeAnnotation = computed(() =>
+      selectedAnnotationId.value
+        ? textWithAnnotationsRef.value.getAnnotation(selectedAnnotationId.value)
+        : null,
+    );
+    const activeAnnotationLinks = computed(() => {
+      if (!selectedAnnotationId.value) return [];
+
+      const sourceUri = getAnnotationUri({ id: selectedAnnotationId.value });
+
+      const annotations = w3cAnnotations.value;
+      return findAnnotations(w3cAnnotations.value)
+        .findInTargetSource(sourceUri)
+        .map((link) => ({
+          annotation: link,
+          relations: findRelatedAnnotation(
+            annotations,
+            getAnnotationIdFromUri,
+          )(link),
+        }));
+    });
 
     const w3cAnnotations = ref<W3CAnnotation[]>([]);
     const _annotations = computedAsync(async () => {
@@ -192,5 +223,8 @@ export const useAnnotationStore = (id: string) =>
           textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
         ),
       cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
+
+      activeAnnotation,
+      activeAnnotationLinks,
     };
   });
