@@ -61,7 +61,7 @@ export const isSameTarget = (
 ) => {
   if (!hasSameFields(body1, body2, ['source'])) return false;
 
-  return hasSameFields(body1.selector, body2.selector, ['type']);
+  return hasSameFields(body1.selector, body2.selector, ['type'] as any);
 };
 
 export const updateSelector = (

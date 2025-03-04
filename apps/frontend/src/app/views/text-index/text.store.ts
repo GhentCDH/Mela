@@ -1,6 +1,7 @@
+import type { TextContentDto } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
@@ -92,6 +93,27 @@ export const useTextStore = defineStore('textStore', () => {
     }
   };
 
+  const sources = computed(() => {
+    const textContent = text.value?.textContent ?? [];
+
+    const textSource = [
+      textContent.find((t) => t.text_type === 'SOURCE') ??
+        ({
+          language: 'gr',
+          content: '',
+          text_type: 'SOURCE',
+        } as TextContentDto),
+      textContent.find((t) => t.text_type === 'TRANSLATION') ??
+        ({
+          language: 'en',
+          content: '',
+          text_type: 'TRANSLATION',
+        } as TextContentDto),
+    ];
+
+    return textSource as TextContentDto[];
+  });
+
   const uploadExcel = (file: File) => {
     return httpRequest.postFile<TextWithRelations>(
       `/api/text/${textId.value}/upload`,
@@ -99,5 +121,5 @@ export const useTextStore = defineStore('textStore', () => {
     );
   };
 
-  return { text, textId, uploadExcel, saveOrUpdate };
+  return { text, textId, uploadExcel, saveOrUpdate, sources };
 });

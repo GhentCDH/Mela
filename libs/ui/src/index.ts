@@ -16,3 +16,5 @@ export * from './directives/click-outside.directive';
 export * from './toast';
 
 export * from './modal';
+export * from './utils';
+export * from './menu';

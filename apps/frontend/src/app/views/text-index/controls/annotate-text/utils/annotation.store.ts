@@ -1,20 +1,13 @@
-import type {
-  AnnotationMetadataType,
-  TextContentDto} from '@mela/text/shared';
-import {
-  getAnnotationIdFromUri,
-  getAnnotationUri
-} from '@mela/text/shared';
+import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import type {
-  TextAnnotation,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { TextAnnotation, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   findAnnotations,
-  findRelatedAnnotation
+  findRelatedAnnotation,
 } from '@ghentcdh/annotations/core';
 import { useNotificationStore } from '@ghentcdh/ui';
 
@@ -80,21 +73,9 @@ export const useAnnotationStore = (id: string) =>
       return annotations.items;
     });
 
-    const sourceTextContent = ref<TextContentDto>();
-    const transtlationTextContent = ref<TextContentDto>();
-
-    const init = (
-      _sourceText: TextContentDto,
-      _translatedText: TextContentDto,
-      _textId: string,
-    ) => {
-      textWithAnnotations = new TextWithAnnotations([
-        _sourceText,
-        _translatedText,
-      ]);
+    const init = (sources: TextContentDto[], _textId: string) => {
+      textWithAnnotations = new TextWithAnnotations(sources);
       textWithAnnotationsRef.value = textWithAnnotations;
-      sourceTextContent.value = _sourceText;
-      transtlationTextContent.value = _translatedText;
       textId.value = _textId;
     };
 
@@ -229,4 +210,4 @@ export const useAnnotationStore = (id: string) =>
       activeAnnotation,
       activeAnnotationLinks,
     };
-  });
+  })();

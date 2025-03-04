@@ -48,7 +48,6 @@
 </template>
 
 <script setup lang="ts">
-import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';

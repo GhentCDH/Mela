@@ -24,10 +24,6 @@ import { AuthorFormSchema } from '../author/author.schema';
 import { getTextContentUri } from '../utils/uri';
 
 // TODO add autocomplete for textschema
-const textIdentifyStep =
-  LayoutBuilder.horizontal<TextWithRelations>().addControls(
-    ControlBuilder.asCustom('textContent', 'identify_text_blocks'),
-  );
 
 const textContentStep =
   LayoutBuilder.horizontal<TextWithRelations>().addControls(
@@ -54,11 +50,10 @@ const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
   ),
 );
 
-const uiSchema = LayoutBuilder.stepper()
+const uiSchema = LayoutBuilder.vertical()
   .addControls(
-    CategoryBuilder.label('Details').addControls(detailStep),
+    CategoryBuilder.label('Metadata').addControls(detailStep),
     CategoryBuilder.label('Text').addControls(textContentStep),
-    CategoryBuilder.label('Annotate').addControls(textIdentifyStep),
   )
   .build();
 
@@ -116,6 +111,7 @@ const dtoSchema = TextSchema.pick({
 });
 
 const responseSchema = TextSchema.omit({ textContent: true }).extend({
+  author: AuthorSchema,
   textContent: z.array(TextContentResponseSchema),
 });
 

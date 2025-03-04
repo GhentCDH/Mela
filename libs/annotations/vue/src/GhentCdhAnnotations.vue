@@ -28,11 +28,10 @@ import { computed } from 'vue';
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
 import type {
+ AnnotationActions, AnnotationConfig,
   AnnotationEmits,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType,
-} from './model/emits';
-import type { AnnotationActions, AnnotationConfig } from './model/properties';
+  AnnotationEventType } from './model';
 import TextAnnotations from './text/text-annotations.vue';
 import { hasCustomEventListener } from './utils/hasCustomEventListener';
 
