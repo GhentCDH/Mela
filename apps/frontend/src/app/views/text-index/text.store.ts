@@ -1,3 +1,4 @@
+import type { TextContentDto } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
@@ -8,7 +9,6 @@ import type {
   TextContentWithRelations,
   TextWithRelations,
 } from '@ghentcdh/mela/generated/types';
-import { TextContentDto } from '@mela/text/shared';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
@@ -94,7 +94,7 @@ export const useTextStore = defineStore('textStore', () => {
   };
 
   const sources = computed(() => {
-    const textContent = text.value.textContent ?? [];
+    const textContent = text.value?.textContent ?? [];
 
     const textSource = [
       textContent.find((t) => t.text_type === 'SOURCE') ??

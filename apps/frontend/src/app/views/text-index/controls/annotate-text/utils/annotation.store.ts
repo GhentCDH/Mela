@@ -210,4 +210,4 @@ export const useAnnotationStore = (id: string) =>
       activeAnnotation,
       activeAnnotationLinks,
     };
-  });
+  })();

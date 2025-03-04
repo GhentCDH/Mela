@@ -24,10 +24,6 @@ import { AuthorFormSchema } from '../author/author.schema';
 import { getTextContentUri } from '../utils/uri';
 
 // TODO add autocomplete for textschema
-const textIdentifyStep =
-  LayoutBuilder.horizontal<TextWithRelations>().addControls(
-    ControlBuilder.asCustom('textContent', 'identify_text_blocks'),
-  );
 
 const textContentStep =
   LayoutBuilder.horizontal<TextWithRelations>().addControls(

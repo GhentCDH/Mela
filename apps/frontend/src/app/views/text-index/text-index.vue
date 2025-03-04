@@ -3,21 +3,14 @@ import { TextFormSchema } from '@mela/text/shared';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import {
-  FormWithTableCompnent,
-  TableComponent,
-  useFormStore,
-} from '@ghentcdh/json-forms/vue';
-
+import { FormWithTableCompnent, useFormStore } from '@ghentcdh/json-forms/vue';
 import type {
   Text,
   TextContentWithRelations,
 } from '@ghentcdh/mela/generated/types';
 import type { TableAction } from '@ghentcdh/ui';
-import { Btn, Card, IconEnum } from '@ghentcdh/ui';
 
 const formId = 'text-index';
-const urlSchema = '/api/text/schema';
 const router = useRouter();
 
 const tableActions: TableAction[] = [
@@ -64,7 +57,7 @@ const deleteFn = (data: { id: string }) => {
       :create-title="'Create text'"
       :update-title="'Update text'"
       :form-schema="formSchema"
-      :tableActions="tableActions"
+      :table-actions="tableActions"
       :initial-data="initialData"
       table-title="Texts"
     />

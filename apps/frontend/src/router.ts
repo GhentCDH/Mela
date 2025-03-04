@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/text-index/:textId',
     name: 'text-index-view',
-    component: () => import('./app/views/text-index/text-view.vue'),
+    // component: () => import('./app/views/text-index/text-view.vue'),
     children: [
       {
         path: '',

@@ -1,25 +1,4 @@
 <template>
-  <div class="flex gap-3 items-center">
-    <Btn
-      :color="Color.secondary"
-      :disabled="!!store.selectedAnnotationId || isCreateMode"
-      @click="changeToCreateMode()"
-    >
-      Create new text block
-    </Btn>
-    <Btn
-      :color="Color.secondary"
-      :disabled="!!store.selectedAnnotationId || isCreateMode"
-      @click="changeCreateExample()"
-    >
-      Create example
-    </Btn>
-    <template v-if="mode === 'create'">
-      <Btn @click="closeCreateMode"> Close create mode</Btn>
-    </template>
-  </div>
-
-  <hr />
   <div class="flex gap-3">
     <GhentCdhAnnotations
       :config="annotationConfig"
@@ -38,7 +17,7 @@
           :active-annotation="store.activeAnnotation"
           :links="store.activeAnnotationLinks"
           :text-with-annotations="store.textWithAnnotations"
-          @save-annotation="store.saveOrCreateAnnotation"
+          @save-annotation="saveAnnotation"
           @delete-annotation="store.deleteAnnotation"
           @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
@@ -49,30 +28,31 @@
 </template>
 
 <script setup lang="ts">
-import type { TextContentDto } from '@mela/text/shared';
 import { computed, ref } from 'vue';
 
-import { findTagging } from '@ghentcdh/annotations/core';
+import { findTagging, W3CAnnotation } from '@ghentcdh/annotations/core';
 import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
   AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
-import { Btn, Color, ModalService } from '@ghentcdh/ui';
-import type { ConfirmResult } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { useAnnotationStore } from './utils/annotation.store';
-import { useTextStore } from '../../text.store';
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
-import type { MODES } from './props';
 import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
+import { useModeStore } from './store/mode.store';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
+
+const emits = defineEmits<{
+  saveAnnotation: [W3CAnnotation];
+  closeAnnotation: [];
+}>();
 
 const annotationConfig: AnnotationConfig = {
   mapColor: (annotation) => {
@@ -85,8 +65,10 @@ const annotationConfig: AnnotationConfig = {
   },
 };
 
-const mode = ref<MODES | null>(null);
-const isCreateMode = computed(() => CREATE_MODES.includes(mode.value));
+// const mode = ref<MODES | null>(null);
+const isCreateMode = computed(() =>
+  CREATE_MODES.includes(modeStore.activeMode),
+);
 
 const selectedAnnotations = computed(() => {
   const sources = store.sources;
@@ -124,7 +106,8 @@ const annotationActions = computed(() => {
 // TODO add id
 const listenerStore = useAnnotationListenerStore()();
 
-const store = useAnnotationStore(properties.storeId)();
+const store = useAnnotationStore(properties.storeId);
+const modeStore = useModeStore();
 
 const eventHandler = (
   e: AnnotationEventType,
@@ -144,23 +127,13 @@ const eventHandler = (
       store.createAnnotation(
         payload.target,
         annotation,
-        mode.value === 'create-example' ? 'example' : 'phrase',
+        modeStore.activeMode === 'create-annotation' ? 'phrase' : 'example',
       );
 
       break;
     default:
       console.log('event not handled', e);
   }
-};
-
-const changeCreateExample = () => {
-  mode.value = 'create-example';
-  store.selectAnnotation(null);
-};
-
-const changeToCreateMode = () => {
-  mode.value = 'create';
-  store.selectAnnotation(null);
 };
 
 // TODO if you click somewhere else also deselect the annotation
@@ -172,7 +145,7 @@ const onSelectAnnotation = async (
     store.textWithAnnotations.getAnnotation(annotationId),
   );
 
-  if (mode.value) {
+  if (modeStore.activeMode) {
     // mode.value = null;
     return;
   }
@@ -186,36 +159,15 @@ const onSelectAnnotation = async (
   if (!confirmed.confirmed) return;
 
   store.selectAnnotation(annotationId);
-  mode.value = annotationId ? 'edit' : null;
-};
-
-const closeCreateMode = () => {
-  if (generatedBlocks.value)
-    ModalService.showConfirm({
-      title: 'Warning',
-      message:
-        'There are generated blocks that are not saved yet. Save them first?',
-      cancelLabel: 'Delete',
-      confirmLabel: 'Save generated blocks',
-      onClose: (result: ConfirmResult) => {
-        if (result.confirmed) store.saveGeneratedBlocks();
-        else store.cancelGeneratedBLocks();
-
-        generatedBlocks.value = false;
-        mode.value = null;
-      },
-    });
-  else {
-    generatedBlocks.value = false;
-    mode.value = null;
-  }
+  // modeStore.value = annotationId ? 'edit' : null;
 };
 
 const closeAnnotation = () => {
-  store.reloadFromTextWithAnnotations();
-  store.selectAnnotation(null);
-  mode.value = null;
-  return;
+  emits('closeAnnotation');
+};
+
+const saveAnnotation = (annotation: W3CAnnotation) => {
+  emits('saveAnnotation', annotation);
 };
 
 const MD = () => {

@@ -1,8 +1,8 @@
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 
-export type MODES = 'create' | 'create-example' | 'edit';
+export type MODES = 'generate' | 'create-annotation' | 'edit';
 
-export const CREATE_MODES: MODES[] = ['create', 'create-example'];
+export const CREATE_MODES: MODES[] = ['create-annotation', 'create-example'];
 
 export type AnnotationWithRelations = {
   annotation: W3CAnnotation;
