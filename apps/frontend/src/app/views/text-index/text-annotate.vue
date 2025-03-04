@@ -3,7 +3,9 @@
     <div class="flex-1">
       <div class="breadcrumbs text-sm">
         <ul v-if="textStore.text">
-          <li><a>Texts</a></li>
+          <li>
+            <RouterLink :to="{ name: 'text-index' }">Texts</RouterLink>
+          </li>
           <li>{{ textStore.text.name }} ({{ textStore.text.author?.name }})</li>
           <li v-if="modeStore.activeMode">
             {{ modeStore.activeMode }}
@@ -50,7 +52,7 @@
         >
           Deny
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
       </div>
     </div>
   </div>

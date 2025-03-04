@@ -111,6 +111,7 @@ const dtoSchema = TextSchema.pick({
 });
 
 const responseSchema = TextSchema.omit({ textContent: true }).extend({
+  author: AuthorSchema,
   textContent: z.array(TextContentResponseSchema),
 });
 
