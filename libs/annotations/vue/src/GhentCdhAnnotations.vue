@@ -1,6 +1,12 @@
 <template>
-  <div :class="['grid gap-2']" :style="gridColumns">
-    <template v-for="source in sources" :key="source.uri">
+  <div
+    :class="['grid gap-2']"
+    :style="gridColumns"
+  >
+    <template
+      v-for="source in sources"
+      :key="source.uri"
+    >
       <div>
         <text-annotations
           :source="source"
@@ -22,11 +28,10 @@ import { computed } from 'vue';
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
 import type {
+ AnnotationActions, AnnotationConfig,
   AnnotationEmits,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType,
-} from './model';
-import type { AnnotationActions, AnnotationConfig } from './model';
+  AnnotationEventType } from './model';
 import TextAnnotations from './text/text-annotations.vue';
 import { hasCustomEventListener } from './utils/hasCustomEventListener';
 

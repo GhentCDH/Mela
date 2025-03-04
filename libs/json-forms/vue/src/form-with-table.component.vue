@@ -3,12 +3,11 @@ import { onMounted, ref, shallowRef, watch } from 'vue';
 
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
 import type { TableAction } from '@ghentcdh/ui';
-import { Card, IconEnum } from '@ghentcdh/ui';
+import { Card, IconEnum , hasCustomEventListener } from '@ghentcdh/ui';
 
 import { useFormStore } from './form.store';
 import ModalForm from './modal/modal-form.vue';
 import { TableComponent } from './table';
-import { hasCustomEventListener } from '@ghentcdh/ui';
 
 type Data = {
   [key: string]: any;

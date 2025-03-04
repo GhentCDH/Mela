@@ -52,8 +52,8 @@ const deleteFn = (data: { id: string }) => {
       :update-title="'Update text'"
       :form-schema="formSchema"
       :initial-data="initialData"
-      @edit-data="edit"
       table-title="Texts"
+      @edit-data="edit"
     />
   </div>
 </template>
