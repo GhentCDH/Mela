@@ -8,6 +8,7 @@ import { Card, IconEnum } from '@ghentcdh/ui';
 import { useFormStore } from './form.store';
 import ModalForm from './modal/modal-form.vue';
 import { TableComponent } from './table';
+import { hasCustomEventListener } from '@ghentcdh/ui';
 
 type Data = {
   [key: string]: any;
@@ -41,8 +42,18 @@ watch(
 const activeId = shallowRef<string | null>(null);
 
 const modalCompRef = ref(null);
+const emit = defineEmits<{
+  editData: [Data];
+}>();
+
+const hasEdit = hasCustomEventListener('editData');
 
 const edit = (data: Data) => {
+  console.log('edit', hasEdit);
+  if (hasEdit) {
+    emit('editData', data);
+    return;
+  }
   formData.value = data;
   activeId.value = data.id;
   modalCompRef.value?.openModal();
@@ -78,7 +89,7 @@ const onCloseModal = () => {
       <modal-form
         ref="modalCompRef"
         v-model="formData"
-        :modal-title="formData.id ? updateTitle : createTitle"
+        :modal-title="formData.id ? (updateTitle ?? '') : createTitle"
         button-label="Add new record"
         button-save-label="Save"
         :icon="IconEnum.Plus"

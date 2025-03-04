@@ -8,22 +8,16 @@ import type {
   Text,
   TextContentWithRelations,
 } from '@ghentcdh/mela/generated/types';
-import type { TableAction } from '@ghentcdh/ui';
 
 const formId = 'text-index';
 const router = useRouter();
 
-const tableActions: TableAction[] = [
-  {
-    label: 'Annotate',
-    action: (data: Text) => {
-      router.replace({
-        name: 'text-index-annotate',
-        params: { textId: data?.id },
-      });
-    },
-  },
-];
+const edit = (data: any) => {
+  router.replace({
+    name: 'text-index-annotate',
+    params: { textId: data?.id },
+  });
+};
 
 let store = useFormStore(formId);
 const formSchema = TextFormSchema.schema;
@@ -57,8 +51,8 @@ const deleteFn = (data: { id: string }) => {
       :create-title="'Create text'"
       :update-title="'Update text'"
       :form-schema="formSchema"
-      :table-actions="tableActions"
       :initial-data="initialData"
+      @edit-data="edit"
       table-title="Texts"
     />
   </div>
