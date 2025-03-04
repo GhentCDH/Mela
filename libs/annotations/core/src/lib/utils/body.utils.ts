@@ -25,12 +25,15 @@ export const findBodyType = <B extends W3CAnnotationBody>(
   };
 };
 
-export const findTagging = (annotation: W3CAnnotation) => {
-  return findBodyType<TextualBodyClassifying>(
-    'TextualBody',
-    (body: TextualBodyClassifying) => body.purpose === 'tagging',
-  )(annotation);
-};
+export const findByPurpose =
+  (purpose: string) => (annotation: W3CAnnotation) => {
+    return findBodyType<TextualBodyClassifying>(
+      'TextualBody',
+      (body: TextualBodyClassifying) => body.purpose === purpose,
+    )(annotation);
+  };
+
+export const findTagging = findByPurpose('tagging');
 
 export const findTextualBodyByLanguage =
   (language: string) => (annotation: W3CAnnotation) => {

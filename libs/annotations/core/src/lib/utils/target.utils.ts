@@ -76,10 +76,26 @@ export const updateSelector = (
   return annotation;
 };
 
+export const findRelatedAnnotation =
+  (
+    annotations: W3CAnnotation[],
+    getIdFromUri: (uri: string | undefined) => string | undefined,
+  ) =>
+  (annotation: W3CAnnotation): W3CAnnotation[] => {
+    return getTarget(annotation)
+      .map((a) => {
+        const id = getIdFromUri(a.source);
+
+        if (!id) return null;
+
+        return annotations.find((a) => a.id === id);
+      })
+      .filter((a) => !!a);
+  };
+
 export const findAnnotations = (annotations: W3CAnnotation[]) => {
   return {
-    findInTargetSource: (sourceId: string) => {
-      return annotations.filter(hasSourceInTargets(sourceId));
-    },
+    findInTargetSource: (sourceUri: string): W3CAnnotation[] =>
+      annotations.filter(hasSourceInTargets(sourceUri)),
   };
 };

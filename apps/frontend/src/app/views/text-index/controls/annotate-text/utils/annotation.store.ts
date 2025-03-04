@@ -156,7 +156,7 @@ export const useAnnotationStore = (id: string) =>
 
       loading.value = true;
       await annotationRepository
-        .deleteAnnotation(selectedAnnotation.value.getId())
+        .deleteAnnotation(annotationId)
         .then(() => {
           notificationStore.info('Annotation deleted');
         })
@@ -165,7 +165,8 @@ export const useAnnotationStore = (id: string) =>
         });
 
       reload.reload();
-      resetSelection();
+
+      if (annotationId == selectedAnnotationId.value) resetSelection();
     };
 
     const reloadFromTextWithAnnotations = () => {

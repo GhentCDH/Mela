@@ -1,14 +1,18 @@
-import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import {
+  AnnotationMetadataType,
+  getAnnotationUri,
+  TextContentDto,
+} from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
 import {
+  findAnnotations,
+  SourceModel,
   SourceModelSchema,
   SourceTextSchema,
   TextualBodyClassifyingSchema,
-  updateBody
+  updateBody,
+  W3CAnnotation,
 } from '@ghentcdh/annotations/core';
 import type { TextAnnotation } from '@ghentcdh/annotations/vue';
 
@@ -114,5 +118,11 @@ export class TextWithAnnotations {
     );
 
     return annotation;
+  }
+
+  public findTargets(sourceUri: string) {
+    return findAnnotations(this.annotations).findInTargetSource(
+      getAnnotationUri({ id: sourceUri }),
+    );
   }
 }

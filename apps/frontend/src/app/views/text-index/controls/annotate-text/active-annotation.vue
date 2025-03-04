@@ -10,9 +10,7 @@
       </div>
     </template>
     <fieldset class="fieldset">
-      <legend class="fieldset-legend">
-        Selected text:
-      </legend>
+      <legend class="fieldset-legend">Selected text:</legend>
       {{ selectedText?.value }}
     </fieldset>
     <SelectComponent
@@ -22,27 +20,16 @@
       @change="changeType"
     />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn
-        :color="Color.error"
-        @click="deleteActiveAnnotation"
-      >
-        Delete
-      </Btn>
-      <Btn @click="saveActiveAnnotation">
-        Save
-      </Btn>
+      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
+      <Btn @click="saveActiveAnnotation"> Save</Btn>
     </div>
     <Links
       :annotation="activeAnnotation"
       @save-annotation="saveAnnotation"
+      @delete-annotation="deleteAnnotation"
+      :annotations="textWithAnnotations.annotations"
     />
 
-    <template v-if="annotationType?.id !== 'example'">
-      <Translation
-        :annotation="activeAnnotation"
-        :linked-annotations="linkedAnnotations"
-      />
-    </template>
     <template #actions />
   </Card>
 </template>
@@ -52,13 +39,16 @@ import type { AnnotationMetadataType } from '@mela/text/shared';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import type {
-  TextualBody,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { TextualBody, W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findBodyType, findTagging } from '@ghentcdh/annotations/core';
 import {
-  findBodyType,
- findTagging } from '@ghentcdh/annotations/core';
-import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
+  Btn,
+  Card,
+  Color,
+  IconEnum,
+  ModalService,
+  SelectComponent,
+} from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
 import { AnnotationTester } from './utils/tester';
@@ -93,9 +83,21 @@ const changeType = () => {
   emits('changeAnnotation', annotation);
 };
 
+const deleteAnnotation = (annotationId: string) => {
+  emits('deleteAnnotation', annotationId);
+};
+
 const deleteActiveAnnotation = () => {
-  // TODO add confirm modal
   emits('deleteAnnotation', properties.annotationId);
+  ModalService.showConfirm({
+    title: 'Delete annotation',
+    message: 'Are you sure to delete this annotation, all links will be lost?',
+    onClose: (result) => {
+      if (result) {
+        deleteAnnotation(properties.annotationId);
+      }
+    },
+  });
 };
 
 const saveActiveAnnotation = () => {
@@ -113,7 +115,9 @@ const getActiveAnnotation = () => {
 };
 
 const activeAnnotation = computed(() => getActiveAnnotation());
-const linkedAnnotations = computed(() => [activeAnnotation.value]);
+const linkedAnnotations = computed(() =>
+  properties.textWithAnnotations.findTargets(properties.annotationId),
+);
 const selectedText = computed(() =>
   findBodyType<TextualBody>(
     'TextualBody',
