@@ -25,9 +25,9 @@
     </div>
     <Links
       :annotation="activeAnnotation"
+      :annotations="textWithAnnotations.annotations"
       @save-annotation="saveAnnotation"
       @delete-annotation="deleteAnnotation"
-      :annotations="textWithAnnotations.annotations"
     />
 
     <template #actions />
@@ -55,7 +55,6 @@ import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
 import { changeAnnotationSelection } from './utils/warning';
 import Links from './view/links.vue';
-import Translation from './view/translation.vue';
 
 const annotationTypes = IdentifyColor;
 
@@ -115,9 +114,6 @@ const getActiveAnnotation = () => {
 };
 
 const activeAnnotation = computed(() => getActiveAnnotation());
-const linkedAnnotations = computed(() =>
-  properties.textWithAnnotations.findTargets(properties.annotationId),
-);
 const selectedText = computed(() =>
   findBodyType<TextualBody>(
     'TextualBody',

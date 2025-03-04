@@ -15,9 +15,7 @@
       Create example
     </Btn>
     <template v-if="mode === 'create'">
-      <Btn @click="closeCreateMode">
-        Close create mode
-      </Btn>
+      <Btn @click="closeCreateMode"> Close create mode</Btn>
       <Btn
         v-for="s in store.sources"
         :key="s.id"
@@ -36,7 +34,7 @@
     </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <GhentCdhAnnotations
       :config="annotationConfig"
@@ -60,10 +58,7 @@
           @change-mode="changeMode"
         />
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
+      <div class="border-2" v-html="content" />
     </div>
   </div>
 </template>
@@ -134,7 +129,7 @@ const annotationActions = computed(() => {
       edit: false,
       create: isCreateMode.value,
     },
-    [sources[1].uri]: { edit: false, create: !!store.selectedAnnotationId },
+    [sources[1].uri]: { edit: false, create: isCreateMode.value },
   };
 });
 
@@ -149,6 +144,7 @@ const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
 ) => {
+  console.log(payload);
   const isSourceTarget = payload.target === properties.sourceText.uri;
   switch (e) {
     case 'click-annotation':
@@ -161,7 +157,7 @@ const eventHandler = (
       ).getAnnotation();
 
       store.createAnnotation(
-        properties.sourceText.uri,
+        payload.target,
         annotation,
         mode.value === 'create-example' ? 'example' : 'phrase',
       );

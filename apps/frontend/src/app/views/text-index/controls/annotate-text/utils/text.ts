@@ -1,18 +1,20 @@
-import {
+import type {
   AnnotationMetadataType,
-  getAnnotationUri,
-  TextContentDto,
+  TextContentDto} from '@mela/text/shared';
+import {
+  getAnnotationUri
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
-import {
-  findAnnotations,
+import type {
   SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
   SourceModelSchema,
   SourceTextSchema,
   TextualBodyClassifyingSchema,
-  updateBody,
-  W3CAnnotation,
+  findAnnotations,
+  updateBody
 } from '@ghentcdh/annotations/core';
 import type { TextAnnotation } from '@ghentcdh/annotations/vue';
 

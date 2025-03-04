@@ -1,7 +1,8 @@
-import {
-  findBodyType,
+import type {
   TextualBody,
-  W3CAnnotation,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
+  findBodyType
 } from '@ghentcdh/annotations/core';
 
 export const findTextValue = (annotations: W3CAnnotation) => {
