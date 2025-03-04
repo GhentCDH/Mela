@@ -4,7 +4,9 @@
       <div class="breadcrumbs text-sm">
         <ul v-if="textStore.text">
           <li>
-            <RouterLink :to="{ name: 'text-index' }"> Texts</RouterLink>
+            <RouterLink :to="{ name: 'text-index' }">
+              Texts
+            </RouterLink>
           </li>
           <li>{{ textStore.text.name }} ({{ textStore.text.author?.name }})</li>
           <li v-if="modeStore.activeMode">
@@ -14,18 +16,30 @@
       </div>
     </div>
     <div class="flex-none ml-4">
-      <Menu title="Elements" :menu="menuElements" />
+      <Menu
+        title="Elements"
+        :menu="menuElements"
+      />
     </div>
   </div>
-  <div v-if="textStore.text" class="mt-2">
+  <div
+    v-if="textStore.text"
+    class="mt-2"
+  >
     <annotate-text
       :store-id="storeId"
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center">
-    <div role="alert" class="alert alert-success bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center"
+  >
+    <div
+      role="alert"
+      class="alert alert-success bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -35,7 +49,12 @@
         >
           Deny
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save">Save</Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>

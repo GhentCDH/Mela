@@ -4,8 +4,14 @@
       <details open>
         <summary>{{ title }}</summary>
         <ul class="bg-base-100 rounded-t-none p-2">
-          <li v-for="item in menu" :key="item.label">
-            <button v-if="item.onClick" @click="item.onClick">
+          <li
+            v-for="item in menu"
+            :key="item.label"
+          >
+            <button
+              v-if="item.onClick"
+              @click="item.onClick"
+            >
               {{ item.label }}
             </button>
             <RouterLink
