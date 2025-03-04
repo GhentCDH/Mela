@@ -1,18 +1,19 @@
 import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import { pick } from 'lodash-es';
 
-import {
+import type {
   SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
   SourceModelSchema,
   SourceTextSchema,
   TextualBodyClassifyingSchema,
-  updateBody,
-  W3CAnnotation,
+  updateBody
 } from '@ghentcdh/annotations/core';
+import type { TextAnnotation } from '@ghentcdh/annotations/vue';
 
-import { generateW3CAnnotationBlocks } from './generate-blocks';
-import { pick } from 'lodash-es';
-import { TextAnnotation } from '@ghentcdh/annotations/vue';
 import { createTextSelectionAnnotation } from './edit/text-selection-annotation';
+import { generateW3CAnnotationBlocks } from './generate-blocks';
 
 export class TextWithAnnotations {
   private annotations: W3CAnnotation[];

@@ -75,3 +75,11 @@ export const updateSelector = (
 
   return annotation;
 };
+
+export const findAnnotations = (annotations: W3CAnnotation[]) => {
+  return {
+    findInTargetSource: (sourceId: string) => {
+      return annotations.filter(hasSourceInTargets(sourceId));
+    },
+  };
+};

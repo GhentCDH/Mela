@@ -15,7 +15,9 @@
       Create example
     </Btn>
     <template v-if="mode === 'create'">
-      <Btn @click="closeCreateMode"> Close create mode</Btn>
+      <Btn @click="closeCreateMode">
+        Close create mode
+      </Btn>
       <Btn
         v-for="s in store.sources"
         :key="s.id"
@@ -34,7 +36,7 @@
     </Btn>
   </div>
 
-  <hr />
+  <hr>
   <div class="flex gap-3">
     <GhentCdhAnnotations
       :config="annotationConfig"
@@ -55,9 +57,13 @@
           @delete-annotation="store.deleteAnnotation"
           @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
+          @change-mode="changeMode"
         />
       </template>
-      <div class="border-2" v-html="content" />
+      <div
+        class="border-2"
+        v-html="content"
+      />
     </div>
   </div>
 </template>
@@ -81,6 +87,9 @@ import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
+import type { MODES } from './mode';
+import { CREATE_MODES } from './mode';
+import { useAnnotationListenerStore } from './store/annotation-listener.store';
 
 type Properties = {
   sourceText: TextContentDto;
@@ -101,8 +110,6 @@ const annotationConfig: AnnotationConfig = {
 
 const content = computed(() => markdown.parse(properties.sourceText?.content));
 
-type MODES = 'create' | 'create-example' | 'edit';
-const CREATE_MODES: MODES[] = ['create', 'create-example'];
 const mode = ref<MODES | null>(null);
 const isCreateMode = computed(() => CREATE_MODES.includes(mode.value));
 
@@ -134,6 +141,7 @@ const annotationActions = computed(() => {
 // TODO add id
 const storeId = 'identify_and_translate' + Date.now();
 const store = useAnnotationStore(storeId)();
+const listenerStore = useAnnotationListenerStore()();
 
 store.init(properties.sourceText, properties.translatedText, textStore.textId);
 
@@ -179,6 +187,11 @@ const onSelectAnnotation = async (
   annotationId: string | null,
   allowedDuringActiveMode: boolean,
 ) => {
+  console.log('select an annotation', annotationId, mode.value);
+  listenerStore.onClickAnnotation(
+    store.textWithAnnotations.getAnnotation(annotationId),
+  );
+
   if (mode.value) {
     // mode.value = null;
     return;

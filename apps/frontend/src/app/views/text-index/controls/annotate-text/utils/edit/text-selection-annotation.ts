@@ -8,9 +8,9 @@ import type {
 } from '@ghentcdh/annotations/core';
 import {
   TextualBodyClassifyingSchema,
+  W3CAnnotationSchema,
   updateBody,
   updateSelector,
-  W3CAnnotationSchema,
 } from '@ghentcdh/annotations/core';
 
 import { createTextualBody } from './body.utils';

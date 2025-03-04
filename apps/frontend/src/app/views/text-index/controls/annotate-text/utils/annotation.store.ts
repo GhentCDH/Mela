@@ -8,10 +8,10 @@ import { useNotificationStore } from '@ghentcdh/ui';
 
 import { PREFIX_GENERATED } from './generate-blocks';
 import { ReloadRef } from './reload';
+import { AnnotationTester } from './tester';
 import { TextWithAnnotations } from './text';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
-import { AnnotationTester } from './tester';
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
@@ -141,7 +141,7 @@ export const useAnnotationStore = (id: string) =>
     };
 
     const saveOrCreateAnnotation = async (annotation: W3CAnnotation) => {
-      if (AnnotationTester(annotation).isNew()) {
+      if (!annotation.id || AnnotationTester(annotation).isNew()) {
         return createAnnotations([annotation]);
       }
 

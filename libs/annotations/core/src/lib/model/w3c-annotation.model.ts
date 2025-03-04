@@ -27,8 +27,8 @@ export type TextualBody = z.infer<typeof TextualBodySchema>;
 
 export const TextualBodyClassifyingSchema = z.object({
   type: z.enum(['TextualBody']).default('TextualBody'),
-  purpose: z.enum(['tagging']).default('tagging'),
-  value: z.string(),
+  purpose: z.enum(['tagging', 'translation']).default('tagging'),
+  value: z.string().optional(),
 });
 export type TextualBodyClassifying = z.infer<
   typeof TextualBodyClassifyingSchema
@@ -58,10 +58,10 @@ export const TextPositionSelectorSchema = z.object({
 
 export const TextTargetSchema = z.object({
   source: z.string(),
-  textDirection: z.enum(['ltr', 'rtl']),
+  textDirection: z.enum(['ltr', 'rtl']).optional(),
   type: z.enum(['Text']).default('Text'),
   processingLanguage: z.string(),
-  selector: TextPositionSelectorSchema,
+  selector: TextPositionSelectorSchema.optional(),
 });
 
 export const W3CAnnotationTargetSchema = TextTargetSchema;

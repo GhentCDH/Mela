@@ -1,5 +1,6 @@
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { ModalService } from '@ghentcdh/ui';
-import { W3CAnnotation } from '@ghentcdh/annotations/core';
+
 import { AnnotationTester } from './tester';
 
 export const changeAnnotationSelection = (

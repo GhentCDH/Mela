@@ -9,32 +9,27 @@
         />
       </div>
     </template>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Selected text:</legend>
+      {{ selectedText?.value }}
+    </fieldset>
     <SelectComponent
       v-model="annotationType"
       label="Annotation type"
       :options="annotationTypes"
       @change="changeType"
     />
-
-    <AddExample
-      v-if="annotationType?.id === 'example'"
-      :annotation="activeAnnotation"
-    />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
-      <Btn @click="saveActiveAnnotation"> Save</Btn>
+      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete </Btn>
+      <Btn @click="saveActiveAnnotation"> Save </Btn>
     </div>
+    <Links :annotation="activeAnnotation" @save-annotation="saveAnnotation" />
 
     <template v-if="annotationType?.id !== 'example'">
-      <div class="collapse collapse-arrow bg-base-100 border border-base-300">
-        <input type="radio" name="my-accordion-2" :checked="checked" />
-        <div class="collapse-title font-semibold">Transcriptions</div>
-        <div class="collapse-content text-sm">
-          <div class="font-bold">Original</div>
-
-          <div class="font-bold mt-2">Translated</div>
-        </div>
-      </div>
+      <Translation
+        :annotation="activeAnnotation"
+        :linked-annotations="linkedAnnotations"
+      />
     </template>
     <template #actions />
   </Card>
@@ -42,20 +37,28 @@
 
 <script setup lang="ts">
 import type { AnnotationMetadataType } from '@mela/text/shared';
+import { cloneDeep, isEqual } from 'lodash-es';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import { findTagging, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type {
+  type TextualBody,
+  W3CAnnotation,
+  findBodyType,
+  findTextualBodyByLanguage,
+} from '@ghentcdh/annotations/core';
+import { findTagging } from '@ghentcdh/annotations/core';
 import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
 import AddExample from './add-example.vue';
-import { changeAnnotationSelection } from './utils/warning';
-import { TextWithAnnotations } from './utils/text';
+import { MODES } from './mode';
 import { AnnotationTester } from './utils/tester';
-import { cloneDeep, isEqual } from 'lodash-es';
+import type { TextWithAnnotations } from './utils/text';
+import { changeAnnotationSelection } from './utils/warning';
+import Links from './view/links.vue';
+import Translation from './view/translation.vue';
 
 const annotationTypes = IdentifyColor;
-const checked = ref(true);
 
 const annotationType = ref<{ label: string; id: string }>(IdentifyColor[0]);
 
@@ -87,14 +90,27 @@ const deleteActiveAnnotation = () => {
 };
 
 const saveActiveAnnotation = () => {
-  emits(
-    'saveAnnotation',
+  saveAnnotation(
     properties.textWithAnnotations.getAnnotation(properties.annotationId),
   );
 };
+
+const saveAnnotation = (annotation: W3CAnnotation) => {
+  emits('saveAnnotation', annotation);
+};
+
 const getActiveAnnotation = () => {
   return properties.textWithAnnotations.getAnnotation(properties.annotationId);
 };
+
+const activeAnnotation = computed(() => getActiveAnnotation());
+const linkedAnnotations = computed(() => [activeAnnotation.value]);
+const selectedText = computed(() =>
+  findBodyType<TextualBody>(
+    'TextualBody',
+    (body: TextualBody) => !!body.language,
+  )(activeAnnotation.value),
+);
 
 watch(
   () => ({ text: properties.textWithAnnotations, id: properties.annotationId }),

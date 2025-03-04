@@ -1,4 +1,5 @@
 import type {
+  TextualBody,
   TextualBodyClassifying,
   W3CAnnotation,
   W3CAnnotationBody,
@@ -30,6 +31,14 @@ export const findTagging = (annotation: W3CAnnotation) => {
     (body: TextualBodyClassifying) => body.purpose === 'tagging',
   )(annotation);
 };
+
+export const findTextualBodyByLanguage =
+  (language: string) => (annotation: W3CAnnotation) => {
+    return findBodyType<TextualBody>(
+      'TextualBody',
+      (body: TextualBody) => body.language === language,
+    )(annotation);
+  };
 
 export const isSameBody = (
   body1: W3CAnnotationBody,
