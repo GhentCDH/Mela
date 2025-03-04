@@ -15,7 +15,9 @@
       Create example
     </Btn>
     <template v-if="mode === 'create'">
-      <Btn @click="closeCreateMode"> Close create mode</Btn>
+      <Btn @click="closeCreateMode">
+        Close create mode
+      </Btn>
       <Btn
         v-for="s in store.sources"
         :key="s.id"
@@ -34,7 +36,7 @@
     </Btn>
   </div>
 
-  <hr />
+  <hr>
   <div class="flex gap-3">
     <GhentCdhAnnotations
       :config="annotationConfig"
@@ -59,7 +61,10 @@
           @close-annotation="closeAnnotation"
         />
       </template>
-      <div class="border-2" v-html="content" />
+      <div
+        class="border-2"
+        v-html="content"
+      />
     </div>
   </div>
 </template>
