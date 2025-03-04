@@ -19,8 +19,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'text-index-detail',
-        component: () => import('./app/views/text-index/text-detail.vue'),
+        name: 'text-index-annotate',
+        component: () => import('./app/views/text-index/text-annotate.vue'),
       },
       {
         path: 'preview',

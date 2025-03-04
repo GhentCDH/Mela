@@ -15,28 +15,11 @@
       Create example
     </Btn>
     <template v-if="mode === 'create'">
-      <Btn @click="closeCreateMode">
-        Close create mode
-      </Btn>
-      <Btn
-        v-for="s in store.sources"
-        :key="s.id"
-        :color="Color.secondary"
-        @click="generateBlocks(s.id)"
-      >
-        Auto generate text blocks: {{ s.content.processingLanguage }}
-      </Btn>
+      <Btn @click="closeCreateMode"> Close create mode</Btn>
     </template>
-    <Btn
-      v-if="mode === 'create' && generatedBlocks"
-      :color="Color.secondary"
-      @click="saveGeneratedBlocks"
-    >
-      Save generated blocks
-    </Btn>
   </div>
 
-  <hr>
+  <hr />
   <div class="flex gap-3">
     <GhentCdhAnnotations
       :config="annotationConfig"
@@ -48,7 +31,7 @@
       @on-event="eventHandler"
     />
 
-    <div class="w-full max-w-sm">
+    <div class="w-350">
       <template v-if="store.selectedAnnotationId">
         <ActiveAnnotation
           :annotation-id="store.selectedAnnotationId"
@@ -61,10 +44,6 @@
           @close-annotation="closeAnnotation"
         />
       </template>
-      <div
-        class="border-2"
-        v-html="content"
-      />
     </div>
   </div>
 </template>
@@ -92,10 +71,7 @@ import type { MODES } from './props';
 import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 
-type Properties = {
-  sourceText: TextContentDto;
-  translatedText: TextContentDto;
-};
+type Properties = { storeId: string };
 const properties = defineProps<Properties>();
 
 const annotationConfig: AnnotationConfig = {
@@ -109,13 +85,9 @@ const annotationConfig: AnnotationConfig = {
   },
 };
 
-const content = computed(() => markdown.parse(properties.sourceText?.content));
-
 const mode = ref<MODES | null>(null);
 const isCreateMode = computed(() => CREATE_MODES.includes(mode.value));
 
-const generatedBlocks = ref(false);
-const textStore = useTextStore();
 const selectedAnnotations = computed(() => {
   const sources = store.sources;
   const activeAnnotations = new Set();
@@ -150,21 +122,19 @@ const annotationActions = computed(() => {
 });
 
 // TODO add id
-const storeId = 'identify_and_translate' + Date.now();
-const store = useAnnotationStore(storeId)();
 const listenerStore = useAnnotationListenerStore()();
 
-store.init(properties.sourceText, properties.translatedText, textStore.textId);
+const store = useAnnotationStore(properties.storeId)();
 
 const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
 ) => {
-  const isSourceTarget = payload.target === properties.sourceText.uri;
+  // const isSourceTarget = payload.target === properties.sourceText.uri;
   switch (e) {
     case 'click-annotation':
     case 'click-outside':
-      onSelectAnnotation(payload.annotationId, isSourceTarget);
+      onSelectAnnotation(payload.annotationId, false);
       break;
     case 'create--end':
       const annotation = (
@@ -217,17 +187,6 @@ const onSelectAnnotation = async (
 
   store.selectAnnotation(annotationId);
   mode.value = annotationId ? 'edit' : null;
-};
-
-const generateBlocks = (sourceId: string) => {
-  store.autoGenerateBlocks(sourceId);
-  generatedBlocks.value = true;
-};
-
-const saveGeneratedBlocks = () => {
-  store.saveGeneratedBlocks();
-  generatedBlocks.value = false;
-  closeCreateMode();
 };
 
 const closeCreateMode = () => {

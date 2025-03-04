@@ -54,11 +54,10 @@ const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
   ),
 );
 
-const uiSchema = LayoutBuilder.stepper()
+const uiSchema = LayoutBuilder.vertical()
   .addControls(
-    CategoryBuilder.label('Details').addControls(detailStep),
+    CategoryBuilder.label('Metadata').addControls(detailStep),
     CategoryBuilder.label('Text').addControls(textContentStep),
-    CategoryBuilder.label('Annotate').addControls(textIdentifyStep),
   )
   .build();
 
