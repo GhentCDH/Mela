@@ -113,10 +113,20 @@ const generatedBlocks = ref(false);
 const textStore = useTextStore();
 const selectedAnnotations = computed(() => {
   const sources = store.sources;
+  const activeAnnotations = new Set();
 
-  const annotations = store.selectedAnnotationId
-    ? [store.selectedAnnotationId]
-    : [];
+  if (store.selectedAnnotationId) {
+    activeAnnotations.add(store.selectedAnnotationId);
+
+    store.activeAnnotationLinks.forEach((a) => {
+      activeAnnotations.add(a.annotation.id);
+      a.relations.forEach((r) => {
+        activeAnnotations.add(r.id);
+      });
+    });
+  }
+  const annotations = Array.from(activeAnnotations);
+
   return {
     [sources[0].uri]: annotations,
     [sources[1].uri]: annotations,

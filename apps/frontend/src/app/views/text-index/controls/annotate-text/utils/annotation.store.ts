@@ -1,18 +1,20 @@
-import {
+import type {
   AnnotationMetadataType,
+  TextContentDto} from '@mela/text/shared';
+import {
   getAnnotationIdFromUri,
-  getAnnotationUri,
-  TextContentDto,
+  getAnnotationUri
 } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
+import type {
+  TextAnnotation,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
 import {
   findAnnotations,
-  findRelatedAnnotation,
-  TextAnnotation,
-  W3CAnnotation,
+  findRelatedAnnotation
 } from '@ghentcdh/annotations/core';
 import { useNotificationStore } from '@ghentcdh/ui';
 

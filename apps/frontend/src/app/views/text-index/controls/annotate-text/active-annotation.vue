@@ -10,7 +10,9 @@
       </div>
     </template>
     <fieldset class="fieldset">
-      <legend class="fieldset-legend">Selected text:</legend>
+      <legend class="fieldset-legend">
+        Selected text:
+      </legend>
       {{ selectedText?.value }}
     </fieldset>
     <SelectComponent
@@ -20,8 +22,15 @@
       @change="changeType"
     />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
-      <Btn @click="saveActiveAnnotation"> Save</Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteActiveAnnotation"
+      >
+        Delete
+      </Btn>
+      <Btn @click="saveActiveAnnotation">
+        Save
+      </Btn>
     </div>
     <Links
       :annotation="activeAnnotation"
@@ -51,12 +60,12 @@ import {
 } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
+import type { AnnotationWithRelations } from './props';
 import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
+import { findTextValue } from './utils/translation';
 import { changeAnnotationSelection } from './utils/warning';
 import Links from './view/links.vue';
-import { findTextValue } from './utils/translation';
-import { AnnotationWithRelations } from './props';
 
 const annotationTypes = IdentifyColor;
 

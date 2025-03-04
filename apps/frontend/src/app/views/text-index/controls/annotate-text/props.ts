@@ -1,4 +1,4 @@
-import { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 
 export type MODES = 'create' | 'create-example' | 'edit';
 
