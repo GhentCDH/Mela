@@ -5,7 +5,9 @@
         <ul v-if="textStore.text">
           <li><a>Texts</a></li>
           <li>{{ textStore.text.name }} ({{ textStore.text.author?.name }})</li>
-          <li v-if="modeStore.activeMode">{{ modeStore.activeMode }}</li>
+          <li v-if="modeStore.activeMode">
+            {{ modeStore.activeMode }}
+          </li>
         </ul>
       </div>
     </div>
@@ -15,14 +17,19 @@
           <details>
             <summary>Elements</summary>
             <ul class="bg-base-100 rounded-t-none p-2">
-              <li v-for="source in textStore.sources" :key="source.id">
+              <li
+                v-for="source in textStore.sources"
+                :key="source.id"
+              >
                 <button @click="generateBlocks(source.id)">
                   Auto generate text blocks:
                   {{ source.text_type }}
                 </button>
               </li>
               <li>
-                <button @click="createAnnotation">Create annotation</button>
+                <button @click="createAnnotation">
+                  Create annotation
+                </button>
               </li>
             </ul>
           </details>
@@ -47,8 +54,14 @@
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center">
-    <div role="alert" class="alert alert-success bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center"
+  >
+    <div
+      role="alert"
+      class="alert alert-success bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -58,7 +71,12 @@
         >
           Deny
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>
@@ -66,14 +84,14 @@
 <script setup lang="ts">
 import { computed, effect, ref } from 'vue';
 
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import AnnotateText from './controls/annotate-text/annotate-text.vue';
+import type { MODES } from './controls/annotate-text/props';
+import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useAnnotationStore } from './controls/annotate-text/utils/annotation.store';
 import { useTextStore } from './text.store';
-import { useModeStore } from './controls/annotate-text/store/mode.store';
-import { MODES } from './controls/annotate-text/props';
-import { W3CAnnotation } from '@ghentcdh/annotations/core';
 
 const textStore = useTextStore();
 const storeId = 'identify_and_translate' + Date.now();

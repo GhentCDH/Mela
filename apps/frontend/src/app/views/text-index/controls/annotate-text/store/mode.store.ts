@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { MODES } from '../props';
+
 import { ModalService } from '@ghentcdh/ui';
+
+import type { MODES } from '../props';
 
 const warningMessages: Record<MODES, string> = {
   generate:

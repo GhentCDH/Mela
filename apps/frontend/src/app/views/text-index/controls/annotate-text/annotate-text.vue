@@ -28,9 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
-import { findTagging, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findTagging } from '@ghentcdh/annotations/core';
 import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type {
   AnnotationConfig,
@@ -39,12 +40,12 @@ import type {
 } from '@ghentcdh/annotations/vue';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import { useAnnotationStore } from './utils/annotation.store';
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
 import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useModeStore } from './store/mode.store';
+import { useAnnotationStore } from './utils/annotation.store';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
@@ -65,7 +66,6 @@ const annotationConfig: AnnotationConfig = {
   },
 };
 
-// const mode = ref<MODES | null>(null);
 const isCreateMode = computed(() =>
   CREATE_MODES.includes(modeStore.activeMode),
 );
@@ -117,7 +117,7 @@ const eventHandler = (
   switch (e) {
     case 'click-annotation':
     case 'click-outside':
-      onSelectAnnotation(payload.annotationId, false);
+      onSelectAnnotation(payload.annotationId);
       break;
     case 'create--end':
       const annotation = (
@@ -137,10 +137,7 @@ const eventHandler = (
 };
 
 // TODO if you click somewhere else also deselect the annotation
-const onSelectAnnotation = async (
-  annotationId: string | null,
-  allowedDuringActiveMode: boolean,
-) => {
+const onSelectAnnotation = async (annotationId: string | null) => {
   listenerStore.onClickAnnotation(
     store.textWithAnnotations.getAnnotation(annotationId),
   );
