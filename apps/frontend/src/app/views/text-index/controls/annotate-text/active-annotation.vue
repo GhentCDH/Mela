@@ -20,8 +20,8 @@
       @change="changeType"
     />
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete </Btn>
-      <Btn @click="saveActiveAnnotation"> Save </Btn>
+      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
+      <Btn @click="saveActiveAnnotation"> Save</Btn>
     </div>
     <Links :annotation="activeAnnotation" @save-annotation="saveAnnotation" />
 
@@ -40,18 +40,15 @@ import type { AnnotationMetadataType } from '@mela/text/shared';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
-import type {
-  type TextualBody,
+import {
+  TextualBody,
   W3CAnnotation,
   findBodyType,
-  findTextualBodyByLanguage,
 } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
 import { Btn, Card, Color, IconEnum, SelectComponent } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
-import AddExample from './add-example.vue';
-import { MODES } from './mode';
 import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
 import { changeAnnotationSelection } from './utils/warning';
