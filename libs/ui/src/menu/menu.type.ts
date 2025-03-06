@@ -1,10 +1,17 @@
-export type MenuLinkItem = {
-  label: string;
+export type MenuAction = () => void | {
   routerLink: string;
   params?: Record<string, string>;
 };
 
-export type MenuClickItem = {
+export type MenuWithItems = {
   label: string;
-  onClick: () => void;
+  items?: MenuWithItems[];
+  action?: MenuAction;
+  disabled: boolean;
+};
+
+export type Breadcrumb = {
+  label: string;
+  routerLink?: string;
+  params?: Record<string, string>;
 };

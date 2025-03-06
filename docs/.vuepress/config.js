@@ -1,10 +1,11 @@
+import tailwindcss from '@tailwindcss/vite';
 import { viteBundler } from '@vuepress/bundler-vite';
 import { defaultTheme } from '@vuepress/theme-default';
 import { defineUserConfig } from 'vuepress';
+
 import componentsSideBar from '../components/typedoc_sidebar.json';
-import toolsSideBar from '../tools/typedoc_sidebar.json';
+import melaSideBar from '../mela/typedoc_sidebar.json';
 import { fileURLToPath } from 'node:url';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineUserConfig({
   title: 'GhentCDH',
@@ -68,7 +69,7 @@ export default defineUserConfig({
     ],
     sidebar: [
       componentsSideBar,
-      toolsSideBar,
+      melaSideBar,
       // {
       //   text: 'api',
       //   children: apiSideBar1,

@@ -1,37 +1,50 @@
 <template>
-  <ul class="menu menu-horizontal">
-    <li>
-      <details open>
-        <summary>{{ title }}</summary>
-        <ul class="bg-base-100 rounded-t-none p-2">
+  <nav class="navbar bg-base-100 shadow-sm">
+    <div class="flex-1">
+      <div
+        v-if="breadcrumbs"
+        class="breadcrumbs text-sm"
+      >
+        <ul>
           <li
-            v-for="item in menu"
-            :key="item.label"
+            v-for="breadcrumb in breadcrumbs"
+            :key="breadcrumb.label"
           >
-            <button
-              v-if="item.onClick"
-              @click="item.onClick"
-            >
-              {{ item.label }}
-            </button>
             <RouterLink
-              v-if="item.routerLink"
-              :to="{ name: item.routerLink, params: item.params }"
+              v-if="breadcrumb.routerLink"
+              :to="{ name: breadcrumb.routerLink, params: breadcrumb.params }"
             >
-              {{ item.label }}
+              {{ breadcrumb.label }}
             </RouterLink>
+            <template v-else>
+              {{ breadcrumb.label }}
+            </template>
           </li>
         </ul>
-      </details>
-    </li>
-  </ul>
+      </div>
+    </div>
+    <div class="flex grow justify-end px-2">
+      <div class="flex items-stretch">
+        <MenuItem
+          v-for="item in menu"
+          :key="item.label"
+          v-bind="item"
+        />
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script setup lang="ts">
-import type { MenuClickItem, MenuLinkItem } from './menu.type';
+import { ref } from 'vue';
+
+import MenuItem from './menu-item.vue';
+import type { Breadcrumb, MenuWithItems } from './menu.type';
 
 defineProps<{
-  title: string;
-  menu: Array<MenuLinkItem | MenuClickItem>;
+  menu: Array<MenuWithItems>;
+  breadcrumbs?: Array<Breadcrumb>;
 }>();
+
+const open = ref(true);
 </script>

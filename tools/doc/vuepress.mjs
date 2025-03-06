@@ -25,7 +25,7 @@ function generateDirectoryObject(dir, exclude) {
     const filePath = path.join(dirPath, file);
     const stat = fs.statSync(filePath);
 
-    // eslint-disable-next-line no-console
+     
     console.log(exclude, dir, file, exclude.indexOf(file));
 
     if (exclude.indexOf(file) !== -1) return;
@@ -114,4 +114,5 @@ const copyReadme = (from, to, depth = Number.MAX_SAFE_INTEGER) => {
 copyReadme('libs/ui', 'components/ui');
 
 createMenu('components');
+createMenu('mela');
 createMenu('api', ['_media', 'globals.md']);
