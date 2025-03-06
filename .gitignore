@@ -66,5 +66,4 @@ storybook-static
 /docs/internal
 /docs/assets
 /docs/api/*
-/docs/components/typedoc_sidebar.json
-/docs/tools/typedoc_sidebar.json
+/docs/**/typedoc_sidebar.json
