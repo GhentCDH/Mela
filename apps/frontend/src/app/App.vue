@@ -13,12 +13,7 @@ import { useAuthenticate } from './utils';
 
 const auth = useAuthenticate();
 const user = computedAsync(async () => {
-  const user = await auth.getUser();
-
-  console.log(user);
-  console.log(auth.isAuthenticated());
-
-  return user;
+  return await auth.getUser();
 });
 </script>
 
@@ -27,6 +22,7 @@ const user = computedAsync(async () => {
     title="MeLa | Meaning of LAnguage"
     :menu="menu()"
     :user="user"
+    @click="auth.logout"
   >
     <RouterView />
   </ShellComponent>

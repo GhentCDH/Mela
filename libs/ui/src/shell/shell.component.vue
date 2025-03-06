@@ -2,11 +2,7 @@
   <toast />
   <ModalWrapper />
   <div class="drawer">
-    <input
-      id="my-drawer-3"
-      type="checkbox"
-      class="drawer-toggle"
-    >
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content flex flex-col h-[100VH]">
       <nav class="navbar bg-primary text-primary-content w-full">
         <div class="navbar-start">
@@ -19,17 +15,10 @@
           </label>
         </div>
         <div class="navbar-center">
-          <a
-            class="btn btn-ghost text-xl"
-            :href="baseUrl"
-          >{{ title }}</a>
+          <a class="btn btn-ghost text-xl" :href="baseUrl">{{ title }}</a>
         </div>
         <div class="navbar-end">
-          <Submenu
-            v-if="user"
-            v-bind="userMenu"
-            :btn-class="''"
-          />
+          <Submenu v-if="user" v-bind="userMenu" :btn-class="''" />
         </div>
       </nav>
       <div class="p-2 bg-white mb-1 mr-1 flex-1 shadow-sm">
@@ -43,10 +32,7 @@
         class="drawer-overlay"
       />
       <ul class="menu bg-base-200 min-h-full w-80 p-4">
-        <li
-          v-for="item of menu"
-          :key="item.label"
-        >
+        <li v-for="item of menu" :key="item.label">
           <RouterLink :to="{ name: item.routerLink, params: item.params }">
             {{ item.label }}
           </RouterLink>
@@ -74,6 +60,8 @@ const properties = defineProps<{
   user: User | undefined;
 }>();
 
+const emits = defineEmits<{ logout: void }>();
+
 const userMenu = computed(() => {
   return properties.user
     ? {
@@ -82,7 +70,7 @@ const userMenu = computed(() => {
           {
             label: 'Logout',
             action: () => {
-              console.log('logout');
+              emits('logout');
             },
           },
         ],

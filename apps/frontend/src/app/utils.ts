@@ -9,10 +9,9 @@ export const useAuthenticate = () => {
     console.warn('No auth provided, authorized calls may not work');
   }
 
-  console.log(auth);
-
   return {
     isAuthenticated: () => !!auth.user(),
     getUser: () => auth.user(),
+    logout: () => auth.logout(),
   };
 };
