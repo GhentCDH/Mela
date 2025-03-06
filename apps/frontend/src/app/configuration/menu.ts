@@ -1,8 +1,8 @@
-import type { Menu } from '@ghentcdh/ui';
+import type { ShellMenu } from '@ghentcdh/ui';
 
 import { FormKey } from '../views/form/form.def';
 
-export const menu = (): Menu => {
+export const menu = (): ShellMenu => {
   return [
     { label: 'Text Index', routerLink: 'text-index' },
     {

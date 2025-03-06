@@ -4,4 +4,10 @@ export type MenuItem = {
   params?: Record<string, string>;
 };
 
-export type Menu = MenuItem[];
+export type ShellMenu = MenuItem[];
+
+export type User = {
+  name: string;
+  email: string;
+  avatar: string;
+};

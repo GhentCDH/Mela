@@ -22,6 +22,8 @@ export enum IconEnum {
   Plus = 'Plus',
   PaperClip = 'PaperClip',
   Hamburger = 'Hamburger',
+  ChevronDown = 'ChevronDown',
+  ChevronUp = 'ChevronUp',
 }
 
 export const IconMap: Record<IconEnum, string> = {
@@ -46,6 +48,12 @@ export const IconMap: Record<IconEnum, string> = {
     'm18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13',
   ),
   Hamburger: createIcon('M4 6h16M4 12h16M4 18h16'),
+  ChevronDown: createIcon(
+    'M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z',
+  ),
+  ChevronUp: createIcon(
+    'M11.47 7.72a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 0 1-1.06-1.06l7.5-7.5Z',
+  ),
 } as const;
 
 export type IconDef = keyof typeof IconMap;

@@ -1,27 +1,10 @@
 <template>
-  <div class="navbar bg-base-100 shadow-sm">
-    <div class="flex-1">
-      <div class="breadcrumbs text-sm">
-        <ul v-if="textStore.text">
-          <li>
-            <RouterLink :to="{ name: 'text-index' }">
-              Texts
-            </RouterLink>
-          </li>
-          <li>{{ textStore.text.name }} ({{ textStore.text.author?.name }})</li>
-          <li v-if="modeStore.activeMode">
-            {{ modeStore.activeMode }}
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="flex-none ml-4">
-      <Menu
-        title="Elements"
-        :menu="menuElements"
-      />
-    </div>
-  </div>
+  <Menu
+    title="Elements"
+    :menu="menuElements"
+    :breadcrumbs="breadcrumbs"
+  />
+
   <div
     v-if="textStore.text"
     class="mt-2"
@@ -80,15 +63,39 @@ const generatedBlocks = ref(false);
 
 const menuElements = computed(() => {
   return [
-    textStore.sources.map((s) => ({
-      label: `Generate blocks ${s.text_type}`,
-      onClick: () => generateBlocks(s.id),
-    })),
     {
-      label: 'Create annotation',
-      onClick: () => createAnnotation(),
+      label: 'Elements',
+      items: [
+        textStore.sources.map((s) => ({
+          label: `Generate blocks ${s.text_type}`,
+          action: () => generateBlocks(s.id),
+        })),
+        {
+          label: 'Create annotation',
+          action: () => createAnnotation(),
+        },
+      ].flat(),
     },
-  ].flat();
+  ];
+});
+
+const breadcrumbs = computed(() => {
+  return textStore.text
+    ? [
+        {
+          label: 'Texts',
+          routerLink: 'text-index',
+        },
+        {
+          label: `${textStore.text.name} (${textStore.text.author?.name})`,
+        },
+        modeStore.activeMode
+          ? {
+              label: modeStore.activeMode,
+            }
+          : null,
+      ].filter((m) => !!m)
+    : [];
 });
 
 const modeToasts: Record<
