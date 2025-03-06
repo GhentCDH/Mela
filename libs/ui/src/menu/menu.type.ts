@@ -7,7 +7,7 @@ export type MenuWithItems = {
   label: string;
   items?: MenuWithItems[];
   action?: MenuAction;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
 export type Breadcrumb = {

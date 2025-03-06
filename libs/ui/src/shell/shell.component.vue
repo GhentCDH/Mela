@@ -2,11 +2,7 @@
   <toast />
   <ModalWrapper />
   <div class="drawer">
-    <input
-      id="my-drawer-3"
-      type="checkbox"
-      class="drawer-toggle"
-    >
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content flex flex-col h-[100VH]">
       <nav class="navbar bg-primary text-primary-content w-full">
         <div class="navbar-start">
@@ -19,12 +15,11 @@
           </label>
         </div>
         <div class="navbar-center">
-          <a
-            class="btn btn-ghost text-xl"
-            :href="baseUrl"
-          >{{ title }}</a>
+          <a class="btn btn-ghost text-xl" :href="baseUrl">{{ title }}</a>
         </div>
-        <div class="navbar-end" />
+        <div class="navbar-end">
+          <Submenu v-if="user" v-bind="userMenu" :btn-class="''" />
+        </div>
       </nav>
       <div class="p-2 bg-white mb-1 mr-1 flex-1 shadow-sm">
         <slot />
@@ -37,10 +32,7 @@
         class="drawer-overlay"
       />
       <ul class="menu bg-base-200 min-h-full w-80 p-4">
-        <li
-          v-for="item of menu"
-          :key="item.label"
-        >
+        <li v-for="item of menu" :key="item.label">
           <RouterLink :to="{ name: item.routerLink, params: item.params }">
             {{ item.label }}
           </RouterLink>
@@ -51,15 +43,35 @@
 </template>
 
 <script setup lang="ts">
-import type { Menu } from './menu.type';
+import type { ShellMenu, User } from './menu.type';
 import { Icon, IconEnum } from '../icons';
 import { ModalWrapper } from '../modal';
 import Toast from '../toast/toast.vue';
+import { Size } from '../const';
+import { computed } from 'vue';
+import { Submenu } from '../menu';
 
 const baseUrl = import.meta.env.BASE_URL;
 
-defineProps<{
+const properties = defineProps<{
   title: string;
-  menu: Menu;
+  menu: ShellMenu;
+  user: User | undefined;
 }>();
+
+const userMenu = computed(() => {
+  return properties.user
+    ? {
+        label: properties.user.name,
+        items: [
+          {
+            label: 'Logout',
+            action: () => {
+              console.log('logout');
+            },
+          },
+        ],
+      }
+    : [];
+});
 </script>
