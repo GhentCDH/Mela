@@ -22,7 +22,6 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
 
   const changeMode = (mode: MODES, onSuccess?: () => void) => {
     return new Promise((resolve) => {
-      console.log('change mode', mode);
       const onChangeSuccess = () => {
         activeMode.value = mode;
         onSuccess?.();

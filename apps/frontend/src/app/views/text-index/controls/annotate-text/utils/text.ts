@@ -1,20 +1,14 @@
-import type {
-  AnnotationMetadataType,
-  TextContentDto} from '@mela/text/shared';
-import {
-  getAnnotationUri
-} from '@mela/text/shared';
+import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import { getAnnotationUri } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   SourceModelSchema,
   SourceTextSchema,
   TextualBodyClassifyingSchema,
   findAnnotations,
-  updateBody
+  updateBody,
 } from '@ghentcdh/annotations/core';
 import type { TextAnnotation } from '@ghentcdh/annotations/vue';
 
@@ -39,11 +33,11 @@ export class TextWithAnnotations {
     });
   }
 
-  private getSource(sourceId: string): SourceModel | undefined {
+  public getSource(sourceId: string): SourceModel | undefined {
     return this.sources.find((s) => s.id === sourceId);
   }
 
-  private getSourceByUri(sourceUri: string): SourceModel | undefined {
+  public getSourceByUri(sourceUri: string): SourceModel | undefined {
     return this.sources.find((s) => s.uri === sourceUri);
   }
 

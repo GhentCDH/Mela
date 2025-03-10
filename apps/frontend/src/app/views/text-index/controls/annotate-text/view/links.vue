@@ -1,4 +1,6 @@
 <template>
+  {{ links.length }}
+
   <h2>Links</h2>
 
   <fieldset class="fieldset">
@@ -45,9 +47,38 @@
   >
     Add translation
   </Btn>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">
+      Example
+    </legend>
+    <ul class="list">
+      <li
+        v-for="t in examples"
+        :key="t.link.id"
+        class="list-row !px-0 !gap-2"
+      >
+        <div>{{ t.translation }}</div>
+        <Btn
+          :color="Color.secondary"
+          :icon="IconEnum.Edit"
+          @click="deleteAnnotation(t.link)"
+        />
+        <Btn
+          :color="Color.secondary"
+          :icon="IconEnum.Delete"
+          @click="deleteAnnotation(t.link)"
+        />
+      </li>
+    </ul>
+  </fieldset>
+  <Btn @click="addExample">
+    Add Example
+  </Btn>
 </template>
 
 <script setup lang="ts">
+import type { ExampleDto } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
@@ -56,11 +87,17 @@ import {
   findByPurpose,
   findRelatedAnnotation,
 } from '@ghentcdh/annotations/core';
+import type { TextContent } from '@ghentcdh/mela/generated/types';
 import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
+import AddExample from './add-example.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
-import { createTranslationAnnotation } from '../utils/edit/linked-annotations';
+import { PURPOSE_EXAMPLE } from '../utils/edit/example';
+import {
+  PURPOSE_TRANSLATION,
+  createTranslationAnnotation,
+} from '../utils/edit/linked-annotations';
 import { findTextValue } from '../utils/translation';
 
 const listenerStore = useAnnotationListenerStore()();
@@ -70,9 +107,12 @@ const linkTranslation = ref(false);
 type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
+  text: Text;
+  textContent: TextContent;
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
+  saveExample: [ExampleDto];
   saveAnnotation: [W3CAnnotation];
   deleteAnnotation: [string];
 }>();
@@ -101,9 +141,24 @@ effect(() => {
 
 const translatedText = computed(() => findTextValue(linkedTranslation.value));
 
+const filterAnnotations = (purpose: string) => {
+  return properties.links
+    .filter((link) => findByPurpose(purpose)(link.annotation))
+    .map((link) => {
+      const translation = link.relations.find(
+        (r) => r.id !== properties.annotation.id,
+      );
+
+      return {
+        link: link.annotation,
+        translation: findTextValue(translation)?.value,
+      };
+    });
+};
+
 const translations = computed(() =>
   properties.links
-    .filter((link) => findByPurpose('translation')(link.annotation))
+    .filter((link) => findByPurpose(PURPOSE_TRANSLATION)(link.annotation))
     .map((link) => {
       const translation = link.relations.find(
         (r) => r.id !== properties.annotation.id,
@@ -116,8 +171,38 @@ const translations = computed(() =>
     }),
 );
 
+const examples = computed(() =>
+  properties.links
+    .filter((link) => findByPurpose(PURPOSE_EXAMPLE)(link.annotation))
+    .map((link) => {
+      console.log(link);
+      return {
+        link: link.annotation,
+        translation: findTextValue(link.annotation)?.value,
+      };
+    }),
+);
+
 const addLink = () => {
   linkTranslation.value = true;
+};
+
+const addExample = () => {
+  console.log(properties.text);
+  ModalService.openModal({
+    component: AddExample,
+    props: {
+      annotation: properties.annotation,
+      text: properties.text,
+      textContent: properties.textContent,
+      onClose: (result?: ExampleDto) => {
+        console.log('result', result);
+        if (result) {
+          emits('saveExample', result);
+        }
+      },
+    },
+  });
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {

@@ -11,6 +11,7 @@
   >
     <annotate-text
       :store-id="storeId"
+      @save-example="saveExample"
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
     />
@@ -43,6 +44,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { ExampleDto } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
@@ -152,9 +154,11 @@ const createAnnotation = () => {
 };
 
 const saveAnnotation = (annotation: W3CAnnotation) => {
-  annotationStore.saveOrCreateAnnotation(annotation).then(() => {
-    closeAnnotation();
-  });
+  annotationStore.saveOrCreateAnnotation(annotation);
+};
+
+const saveExample = (example: ExampleDto) => {
+  annotationStore.saveExample(example);
 };
 
 const closeAnnotation = () => {

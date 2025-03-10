@@ -1,5 +1,13 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Controller, Delete, Param, Patch, UsePipes } from '@nestjs/common';
+import { MelaAnnotationReturnSchema } from '@mela/text/shared';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
 import { AnnotationDto } from '@ghentcdh/mela/generated/dtos';
@@ -18,6 +26,11 @@ export class AnnotationController extends AbstractController<
 > {
   constructor(repository: AnnotationRepository) {
     super(repository);
+  }
+
+  @Get('/:id')
+  override async findOne(@Param('id') id: string) {
+    return this.findOneAndParse(id, MelaAnnotationReturnSchema);
   }
 
   @Delete(':id')

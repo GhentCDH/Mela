@@ -35,8 +35,11 @@
     <Links
       :annotation="activeAnnotation"
       :links="links"
+      :text="text"
+      :text-content="textContent"
       @save-annotation="saveAnnotation"
       @delete-annotation="deleteAnnotation"
+      @save-example="emits('saveExample', $event)"
     />
 
     <template #actions />
@@ -44,12 +47,13 @@
 </template>
 
 <script setup lang="ts">
-import type { AnnotationMetadataType } from '@mela/text/shared';
+import type { AnnotationMetadataType, ExampleDto } from '@mela/text/shared';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-import type { TextualBody, W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findBodyType, findTagging } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findTagging } from '@ghentcdh/annotations/core';
+import type { TextContent } from '@ghentcdh/mela/generated/types';
 import {
   Btn,
   Card,
@@ -72,10 +76,11 @@ const annotationTypes = IdentifyColor;
 const annotationType = ref<{ label: string; id: string }>(IdentifyColor[0]);
 
 type Properties = {
-  // annotationId: string;
   textWithAnnotations: TextWithAnnotations;
   activeAnnotation: W3CAnnotation;
   links: AnnotationWithRelations[];
+  text: Text;
+  textContent: TextContent;
 };
 const properties = defineProps<Properties>();
 let originalAnnotation: W3CAnnotation;
@@ -85,6 +90,7 @@ const emits = defineEmits<{
   deleteAnnotation: [string];
   saveAnnotation: [W3CAnnotation];
   closeAnnotation: [];
+  saveExample: [ExampleDto];
 }>();
 
 const changeType = () => {

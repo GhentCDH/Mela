@@ -54,6 +54,8 @@ model TextContent {
   text_type        TextType
   language         String
   content          String             @db.Text
+
+  Example Example[]
 }
 
 enum MotivationEnum {
@@ -63,8 +65,6 @@ enum MotivationEnum {
 
 model Annotation {
   id               String             @id @default(uuid())
-  body             Json
-  target           Json
   motivation       MotivationEnum
   text             Text               @relation(fields: [text_id], references: [id])
   text_id          String
@@ -83,6 +83,8 @@ model AnnotationBody {
   value         Json
   annotation    Annotation   @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
+  source_type AnnotationType?
+  source_id String?
   // TextContent        TextContent? @relation(fields: [text_content_id], references: [id])
   // text_content_id     String?
   // example       Example?     @relation(fields: [example_id], references: [id], onDelete: Cascade)
@@ -105,6 +107,8 @@ model Example {
   name           String
   register       Register         @relation(fields: [register_id], references: [id])
   register_id    String
+  textContent        TextContent @relation(fields: [text_content_id], references: [id])
+  text_content_id     String
   // Lema Lema[]
 }
 

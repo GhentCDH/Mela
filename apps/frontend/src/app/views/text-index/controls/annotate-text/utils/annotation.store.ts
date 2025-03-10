@@ -1,4 +1,8 @@
-import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import type {
+  AnnotationMetadataType,
+  ExampleDto,
+  TextContentDto,
+} from '@mela/text/shared';
 import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
@@ -16,7 +20,10 @@ import { ReloadRef } from './reload';
 import { AnnotationTester } from './tester';
 import { TextWithAnnotations } from './text';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
+import { useExampleRepository } from '../../../../../repository/example.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
+
+type SelectedIds = { textContentId: string; annotationId: string };
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
@@ -30,18 +37,29 @@ export const useAnnotationStore = (id: string) =>
     const notificationStore = useNotificationStore();
     const textId = ref<string>(null);
     // const annotations = ref<TranslatedAnnotation[]>([]);
-    const selectedAnnotationId = ref<string | null>(null);
+    const selectedIds = ref<SelectedIds | null>(null);
     const textRepository = useTextRepository();
+    const exampleRepository = useExampleRepository();
     const annotationRepository = useAnnotationRepository();
     const activeAnnotation = computed(() =>
-      selectedAnnotationId.value
-        ? textWithAnnotationsRef.value.getAnnotation(selectedAnnotationId.value)
+      selectedIds.value?.annotationId
+        ? textWithAnnotationsRef.value.getAnnotation(
+            selectedIds.value?.annotationId,
+          )
+        : null,
+    );
+    const activeTextContent = computed(() =>
+      selectedIds.value?.textContentId
+        ? textWithAnnotationsRef.value.getSourceByUri(
+            selectedIds.value?.textContentId,
+          )
         : null,
     );
     const activeAnnotationLinks = computed(() => {
-      if (!selectedAnnotationId.value) return [];
+      const annotationId = selectedIds.value?.annotationId;
+      if (!annotationId) return [];
 
-      const sourceUri = getAnnotationUri({ id: selectedAnnotationId.value });
+      const sourceUri = getAnnotationUri({ id: annotationId });
 
       const annotations = w3cAnnotations.value;
       return findAnnotations(w3cAnnotations.value)
@@ -91,7 +109,10 @@ export const useAnnotationStore = (id: string) =>
       );
 
       reloadFromTextWithAnnotations();
-      selectAnnotation(newAnnotation.id);
+      selectAnnotation({
+        textContentId: sourceId,
+        annotationId: newAnnotation.id,
+      });
 
       return newAnnotation;
     };
@@ -128,18 +149,19 @@ export const useAnnotationStore = (id: string) =>
       reload.reload();
     };
 
-    const selectAnnotation = (id: string | undefined | null) => {
+    const selectAnnotation = (ids: {
+      annotationId: string | undefined | null;
+      textContentId: string | undefined | null;
+    }) => {
       resetSelection();
-      if (!id) {
+      if (!ids || !ids.textContentId || !ids.annotationId) {
         // TODO  showAllTranslations();
-        selectedAnnotationId.value = null;
+        selectedIds.value = null;
         return null;
       }
 
-      const annotation = w3cAnnotations.value.find((a) => a.id === id);
-
-      selectedAnnotationId.value = id;
-      return selectedAnnotationId;
+      selectedIds.value = ids;
+      return ids;
     };
 
     const autoGenerateBlocks = (sourceId: string) => {
@@ -151,7 +173,7 @@ export const useAnnotationStore = (id: string) =>
     };
 
     const resetSelection = () => {
-      selectedAnnotationId.value = null;
+      selectedIds.value = null;
     };
 
     const saveOrCreateAnnotation = async (annotation: W3CAnnotation) => {
@@ -180,16 +202,25 @@ export const useAnnotationStore = (id: string) =>
 
       reload.reload();
 
-      if (annotationId == selectedAnnotationId.value) resetSelection();
+      if (annotationId == selectedIds.value?.annotationId) resetSelection();
     };
 
     const reloadFromTextWithAnnotations = () => {
       w3cAnnotations.value = textWithAnnotations.getAnnotations();
     };
 
+    const saveExample = async (example: ExampleDto & { id?: string }) => {
+      const promise = example.id
+        ? exampleRepository.patch(example.id, example)
+        : exampleRepository.create(example);
+
+      await promise;
+
+      reload.reload();
+    };
+
     return {
       sources,
-      selectedAnnotationId,
       textWithAnnotations: textWithAnnotationsRef,
       annotations: w3cAnnotations,
 
@@ -206,8 +237,9 @@ export const useAnnotationStore = (id: string) =>
           textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
         ),
       cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
-
+      saveExample,
       activeAnnotation,
+      activeTextContent,
       activeAnnotationLinks,
     };
   })();

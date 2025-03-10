@@ -24,7 +24,7 @@ export const useTextRepository = defineStore('textRepository', () => {
     return httpRequest.get(getAnnotationUri(textId), {
       queryParams: RequestSchema.parse({
         pageSize: 10000,
-        filter: `motivation:${motivation}:equals`,
+        // filter: `motivation:${motivation}:equals`,
       }),
     });
   };

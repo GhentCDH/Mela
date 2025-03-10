@@ -1,3 +1,4 @@
+import { pick } from 'lodash-es';
 import { z } from 'zod';
 
 import {
@@ -44,8 +45,7 @@ export const MelaAnnotationSchema = AnnotationSchema.omit({
 });
 
 export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
-  const value = JSON.parse(data.value) as any;
-  const { source_type, source_id } = data as any;
+  const { source_type, source_id, value } = data as any;
   const source = createUri(source_type)({ id: source_id });
 
   return { ...value, source };
@@ -63,10 +63,11 @@ export const MelaAnnotationReturnSchema = AnnotationSchema.pick({
   .transform((data) => {
     return {
       ...data,
+      ...pick(data, ['id', 'motivation', '@context']),
       body: data.annotationBody?.map(mapAnnotationPart),
       target: data.annotationTarget?.map(mapAnnotationPart),
-      mapAnnotationTarget: undefined,
-      mapAnnotationBody: undefined,
+      // annotationBody: undefined,
+      // annotationTarget: undefined,
     };
   });
 

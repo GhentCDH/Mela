@@ -9,6 +9,8 @@ import { AnnotationController } from './annotation/annotation.controller';
 import { AnnotationTextController } from './annotation/annotaton-text.controller';
 import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
+import { ExampleRepository } from './example/example-repository.service';
+import { ExampleController } from './example/example.controller';
 import { LemaRepository } from './lema/lema-repository.service';
 import { LemaController } from './lema/lema.controller';
 import { RegisterRepository } from './register/register-repository.service';
@@ -29,6 +31,7 @@ import { TextController } from './text/text.controller';
     AnnotationController,
     AnnotationTextController,
     TextController,
+    ExampleController,
   ],
   providers: [
     AuthorRepository,
@@ -38,6 +41,7 @@ import { TextController } from './text/text.controller';
     LemaRepository,
     SpeechRepository,
     AnnotationRepository,
+    ExampleRepository,
   ],
   exports: [AuthorRepository, TextRepositoryService],
 })

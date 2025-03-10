@@ -13,6 +13,8 @@ import type {
 import {
   ExampleSchema,
   RegisterSchema,
+  TextContentSchema,
+  TextSchema,
 } from '@ghentcdh/mela/generated/types';
 
 import { RegisterFormSchema } from '../register/register.schema';
@@ -46,6 +48,9 @@ const dtoSchema = ExampleSchema.pick({
   register: RegisterSchema.extend({
     id: z.string().optional(),
   }),
+  textContent: TextContentSchema.pick({ id: true, language: true }),
+  text: TextSchema.pick({ id: true }),
+  annotationTarget: TextContentSchema.pick({ id: true }),
 });
 
 export type ExampleDto = z.infer<typeof dtoSchema>;

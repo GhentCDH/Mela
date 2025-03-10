@@ -47,6 +47,12 @@ export class ModalService {
     });
   }
 
+  static openModal<PROPS extends CloseProps<RESULT>, RESULT>(
+    modal: ModalWrapperModel<PROPS, RESULT>,
+  ) {
+    this.getInstance().openModal(modal);
+  }
+
   static getInstance() {
     if (!this.instance) {
       this.instance = new ModalService();
