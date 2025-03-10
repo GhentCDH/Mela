@@ -1,4 +1,5 @@
 import { getAnnotationUri, getExampleUri } from '@mela/text/shared';
+import { pick } from 'lodash-es';
 
 import {
   SpecificResourceSchema,
@@ -9,7 +10,7 @@ import {
   Annotation,
   AnnotationBody,
   AnnotationTarget,
-  Example,
+  ExampleWithRelations,
   Text,
   TextContent,
 } from '@ghentcdh/mela/generated/types';
@@ -19,7 +20,7 @@ import { CreateAnnotationDto } from '../annotation/dto';
 export const PURPOSE_EXAMPLE = 'example';
 
 export const createExampleAnnotation = (
-  example: Example,
+  example: ExampleWithRelations,
   annotationTarget: Annotation,
   text: Text,
   textContent: TextContent,
@@ -35,7 +36,11 @@ export const createExampleAnnotation = (
       } as unknown as AnnotationBody,
       {
         value: SpecificResourceSchema.parse({
-          value: example.name,
+          // TODO define what should go here, do we store the metadata or do we rebuild it later?
+          value: {
+            name: example.name,
+            resource: pick(example.register, 'id', 'name'),
+          },
           source: getExampleUri(example),
         }),
         source_id: example.id,

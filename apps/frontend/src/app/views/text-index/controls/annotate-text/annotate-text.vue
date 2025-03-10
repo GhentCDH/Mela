@@ -19,7 +19,7 @@
           :text="textStore.text"
           :text-content="store.activeTextContent"
           @save-annotation="saveAnnotation"
-          @delete-annotation="store.deleteAnnotation"
+          @delete-annotation="deleteAnnotation"
           @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
           @save-example="saveExample"
@@ -55,6 +55,7 @@ type Properties = { storeId: string };
 const properties = defineProps<Properties>();
 
 const emits = defineEmits<{
+  deleteAnnotation: [W3CAnnotation];
   saveAnnotation: [W3CAnnotation];
   saveExample: [Example];
   closeAnnotation: [];
@@ -175,6 +176,10 @@ const closeAnnotation = () => {
 
 const saveAnnotation = (annotation: W3CAnnotation) => {
   emits('saveAnnotation', annotation);
+};
+
+const deleteAnnotation = (annotation: W3CAnnotation) => {
+  emits('deleteAnnotation', annotation);
 };
 
 const saveExample = (annotation: W3CAnnotation) => {

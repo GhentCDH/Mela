@@ -62,27 +62,18 @@ export const MelaAnnotationReturnSchema = AnnotationSchema.pick({
   })
   .transform((data) => {
     return {
-      ...data,
       ...pick(data, ['id', 'motivation', '@context']),
       body: data.annotationBody?.map(mapAnnotationPart),
       target: data.annotationTarget?.map(mapAnnotationPart),
-      // annotationBody: undefined,
-      // annotationTarget: undefined,
     };
   });
 
-export const MelaAnnotationPageSchema = z
-  .object({
-    '@context': AnnotationContext,
-    type: z.enum(['AnnotationPage']).default('AnnotationPage'),
-    items: z.array(MelaAnnotationReturnSchema),
-  })
-  .transform((data) => {
-    return {
-      ...data,
-      items: data.items.map((item) => MelaAnnotationReturnSchema.parse(item)),
-    };
-  });
+export const MelaAnnotationPageSchema = z.object({
+  '@context': AnnotationContext,
+  type: z.enum(['AnnotationPage']).default('AnnotationPage'),
+  items: z.array(MelaAnnotationReturnSchema),
+});
+
 export type MelaAnnotationPage = z.infer<typeof MelaAnnotationPageSchema>;
 
 export const AnnotationFormSchema = {

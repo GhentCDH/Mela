@@ -45,8 +45,13 @@ export class ExampleRepository extends AbstractRepository<
       },
     });
 
+    const example = await this.prisma.example.findFirstOrThrow({
+      where: { id: createdExample.id },
+      include: { register: true },
+    });
+
     const annotation = createExampleAnnotation(
-      createdExample,
+      example,
       annotationTarget,
       text,
       textContent,
@@ -96,6 +101,7 @@ export class ExampleRepository extends AbstractRepository<
     }
 
     const { name } = dto.register;
+
     return {
       connectOrCreate: {
         where: {
