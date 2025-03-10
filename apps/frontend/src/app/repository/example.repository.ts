@@ -17,7 +17,5 @@ export const useExampleRepository = defineStore('exampleRepository', () => {
     },
   });
 
-  console.log(repo);
-
   return { ...repo };
 });

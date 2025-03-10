@@ -34,7 +34,7 @@ type RepositoryOptions = {
   };
 };
 
-export const createRepository = <T>(
+export const createRepository = <T extends { id: string }>(
   formSchemaModel: FormSchemaModel,
   httpRequest: HttpRequest<T>,
   options: RepositoryOptions = {},
@@ -77,5 +77,24 @@ export const createRepository = <T>(
       });
   };
 
-  return { create, patch };
+  const _delete = (id: string, options?: RequestOptions) => {
+    return httpRequest
+      .delete(getDataUri(id), options)
+      .then((response) => handleSuccess(`${notificationEntity} deleted`))
+      .catch((response) => {
+        handleError(response, `Failed to delete ${notificationEntity}`);
+      });
+  };
+
+  const patchMulti = (objects: T[], options?: RequestOptions) => {
+    return Promise.all(
+      objects.map((o) => httpRequest.patch(getDataUri(o.id), o, options)),
+    )
+      .then((response) => handleSuccess(`Saved ${notificationEntity}`))
+      .catch((response) => {
+        handleError(response, `Failed to save ${notificationEntity}`);
+      });
+  };
+
+  return { create, patch, patchMulti, delete: _delete };
 };

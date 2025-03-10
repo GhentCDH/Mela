@@ -21,7 +21,7 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
       </div>
     </div>
   </div>

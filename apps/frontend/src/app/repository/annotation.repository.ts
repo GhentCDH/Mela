@@ -1,37 +1,23 @@
 import { AnnotationFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
-
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
+import { useNotificationStore } from '@ghentcdh/ui';
+import { createRepository } from '@ghentcdh/json-forms/vue';
 
 export const useAnnotationRepository = defineStore(
   'annotationRepository',
   () => {
     const httpRequest = useHttpRequest();
+    const notificationStore = useNotificationStore();
 
-    const getDataUri = (...suffix: string[]) => {
-      return [AnnotationFormSchema.schema.uri, ...suffix].join('/');
-    };
+    const repo = createRepository(AnnotationFormSchema.schema, httpRequest, {
+      notification: {
+        show: true,
+        entityType: 'AnnotationFormSchema',
+        notification: notificationStore,
+      },
+    });
 
-    const deleteAnnotation = (annotationId: string) => {
-      return httpRequest.delete(getDataUri(annotationId));
-    };
-
-    const patchAnnotation = (
-      annotationId: string,
-      annotation: W3CAnnotation,
-    ) => {
-      return httpRequest.patch(getDataUri(annotationId), annotation);
-    };
-
-    const patchAnnotations = (annotations: W3CAnnotation[]) => {
-      return Promise.all(
-        annotations.map((annotation) =>
-          patchAnnotation(annotation.id, annotation),
-        ),
-      );
-    };
-
-    return { getDataUri, patchAnnotation, patchAnnotations, deleteAnnotation };
+    return { ...repo };
   },
 );

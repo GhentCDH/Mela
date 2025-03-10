@@ -138,7 +138,7 @@ export const useAnnotationStore = (id: string) =>
 
       loading.value = true;
       await annotationRepository
-        .patchAnnotations(annotations)
+        .patchMulti(annotations)
         .then(() => {
           notificationStore.info('Annotations saved');
         })
@@ -191,14 +191,7 @@ export const useAnnotationStore = (id: string) =>
       }
 
       loading.value = true;
-      await annotationRepository
-        .deleteAnnotation(annotationId)
-        .then(() => {
-          notificationStore.info('Annotation deleted');
-        })
-        .catch(() => {
-          notificationStore.error('Failed to delete annotation');
-        });
+      await annotationRepository.delete(annotationId);
 
       reload.reload();
 

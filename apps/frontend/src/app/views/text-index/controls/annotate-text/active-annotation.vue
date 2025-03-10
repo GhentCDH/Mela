@@ -9,10 +9,13 @@
         />
       </div>
     </template>
+    <AnnotationMetadata
+      :selected-text="selectedText"
+      :active-annotation="activeAnnotation"
+      v-model="annotationMetadata"
+    />
     <fieldset class="fieldset">
-      <legend class="fieldset-legend">
-        Selected text:
-      </legend>
+      <legend class="fieldset-legend">Selected text:</legend>
       {{ selectedText?.value }}
     </fieldset>
     <SelectComponent
@@ -21,16 +24,10 @@
       :options="annotationTypes"
       @change="changeType"
     />
+
     <div class="flex gap-2 justify-end pb-4">
-      <Btn
-        :color="Color.error"
-        @click="deleteActiveAnnotation"
-      >
-        Delete
-      </Btn>
-      <Btn @click="saveActiveAnnotation">
-        Save
-      </Btn>
+      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
+      <Btn @click="saveActiveAnnotation"> Save</Btn>
     </div>
     <Links
       :annotation="activeAnnotation"
@@ -53,7 +50,7 @@ import { computed, ref, watch } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
-import type { TextContent } from '@ghentcdh/mela/generated/types';
+import type { Register, TextContent } from '@ghentcdh/mela/generated/types';
 import {
   Btn,
   Card,
@@ -70,6 +67,8 @@ import type { TextWithAnnotations } from './utils/text';
 import { findTextValue } from './utils/translation';
 import { changeAnnotationSelection } from './utils/warning';
 import Links from './view/links.vue';
+import AnnotationMetadata from './view/annotation-metadata.vue';
+import { findRegister } from './utils/example';
 
 const annotationTypes = IdentifyColor;
 
@@ -87,11 +86,18 @@ let originalAnnotation: W3CAnnotation;
 
 const emits = defineEmits<{
   changeAnnotation: [W3CAnnotation];
-  deleteAnnotation: [string];
+  deleteAnnotation: [W3CAnnotation];
   saveAnnotation: [W3CAnnotation];
   closeAnnotation: [];
   saveExample: [ExampleDto];
 }>();
+
+const annotationMetadata = ref<{
+  annotationType: { label: string; id: AnnotationMetadataType };
+  register?: Register;
+}>({
+  annotationType: IdentifyColor[0],
+});
 
 const changeType = () => {
   const annotation = properties.textWithAnnotations.changeType(
@@ -101,18 +107,18 @@ const changeType = () => {
   emits('changeAnnotation', annotation);
 };
 
-const deleteAnnotation = (annotationId: string) => {
-  emits('deleteAnnotation', annotationId);
+const deleteAnnotation = (annotation: W3CAnnotation) => {
+  emits('deleteAnnotation', annotation);
 };
 
 const deleteActiveAnnotation = () => {
-  emits('deleteAnnotation', properties.activeAnnotation.id);
   ModalService.showConfirm({
     title: 'Delete annotation',
     message: 'Are you sure to delete this annotation, all links will be lost?',
     onClose: (result) => {
+      console.log('on close', result);
       if (result) {
-        deleteAnnotation(properties.activeAnnotation.id);
+        deleteAnnotation(properties.activeAnnotation);
       }
     },
   });
@@ -138,8 +144,11 @@ watch(
     const annotation = properties.activeAnnotation;
     const type = findTagging(annotation).value ?? 'phrase';
     originalAnnotation = cloneDeep(annotation);
-    annotationType.value =
+
+    const annotationType =
       IdentifyColor.find((c) => c.id === type) ?? IdentifyColor[0];
+    const register = findRegister(annotation);
+    annotationMetadata.value = { annotationType: annotationType, register };
   },
   { immediate: true },
 );

@@ -4,7 +4,9 @@
   <h2>Links</h2>
 
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">Translations</legend>
+    <legend class="fieldset-legend">
+      Translations
+    </legend>
     <ul class="list">
       <li
         v-for="t in translations"
@@ -20,22 +22,42 @@
       </li>
     </ul>
   </fieldset>
-  <fieldset v-if="linkTranslation" class="fieldset">
-    <legend class="fieldset-legend">Selected translation</legend>
-    <p v-if="!linkedTranslation">Click on an annotation</p>
+  <fieldset
+    v-if="linkTranslation"
+    class="fieldset"
+  >
+    <legend class="fieldset-legend">
+      Selected translation
+    </legend>
+    <p v-if="!linkedTranslation">
+      Click on an annotation
+    </p>
     <div v-if="linkedTranslation">
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation"> Save translation</Btn>
+        <Btn @click="saveTranslation">
+          Save translation
+        </Btn>
       </div>
     </div>
   </fieldset>
-  <Btn v-if="!linkTranslation" @click="addLink"> Add translation</Btn>
+  <Btn
+    v-if="!linkTranslation"
+    @click="addLink"
+  >
+    Add translation
+  </Btn>
 
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">Example</legend>
+    <legend class="fieldset-legend">
+      Example
+    </legend>
     <ul class="list">
-      <li v-for="t in examples" :key="t.link.id" class="list-row !px-0 !gap-2">
+      <li
+        v-for="t in examples"
+        :key="t.link.id"
+        class="list-row !px-0 !gap-2"
+      >
         <div>{{ t.translation }}</div>
         <Btn
           :color="Color.secondary"
@@ -50,7 +72,9 @@
       </li>
     </ul>
   </fieldset>
-  <Btn @click="addExample"> Add Example</Btn>
+  <Btn @click="addExample">
+    Add Example
+  </Btn>
 </template>
 
 <script setup lang="ts">

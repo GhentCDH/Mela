@@ -40,6 +40,7 @@ export const SpecificResourceSchema = z.object({
   purpose: z.enum(['describing']).default('describing'),
   //TODO  Value is not part of the w3c spec, but we need it to store the data for now f.e. the example
   value: z.any(),
+  source: z.string().optional(),
 });
 export type SpecificResource = z.infer<typeof SpecificResourceSchema>;
 
