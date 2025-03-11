@@ -16,8 +16,8 @@
     />
 
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete </Btn>
-      <Btn :disabled="!valid" @click="saveActiveAnnotation"> Save </Btn>
+      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
+      <Btn :disabled="!valid" @click="saveActiveAnnotation"> Save</Btn>
     </div>
     <Translations
       :annotation="activeAnnotation"
@@ -34,40 +34,26 @@
 
 <script setup lang="ts">
 import type { AnnotationMetadataType, ExampleDto } from '@mela/text/shared';
-import {
-  findExampleMetaData,
-  getExampleIdFromUri,
-  isNewExampleUri,
-} from '@mela/text/shared';
-import { cloneDeep, isEqual, pick } from 'lodash-es';
-import { metadata } from 'reflect-metadata/no-conflict';
+import { findExampleMetaData, getExampleIdFromUri } from '@mela/text/shared';
+import { cloneDeep, isEqual } from 'lodash-es';
 import { computed, ref, watch } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
-  findTextPositionSelector,
   findTagging,
+  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
-import type { Register, TextContent } from '@ghentcdh/mela/generated/types';
-import {
-  Btn,
-  Card,
-  Color,
-  IconEnum,
-  ModalService,
-  SelectComponent,
-} from '@ghentcdh/ui';
+import type { Register } from '@ghentcdh/mela/generated/types';
+import { Btn, Card, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
 import type { AnnotationWithRelations } from './props';
 import { useModeStore } from './store/mode.store';
-import { findRegister } from './utils/example';
 import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
 import { getTextSelection } from './utils/translation';
 import { changeAnnotationSelection } from './utils/warning';
 import AnnotationMetadata from './view/annotation-metadata.vue';
-import Links from './view/links.vue';
 import Translations from './view/translations.vue';
 
 const annotationType = ref<{ label: string; id: string }>(IdentifyColor[0]);
@@ -189,23 +175,7 @@ watch(
 // endregion
 
 const closeAnnotation = async () => {
-  const activeAnnotation = properties.activeAnnotation;
-  const confirmed = await changeAnnotationSelection(
-    !isEqual(activeAnnotation, originalAnnotation),
-    activeAnnotation,
-  );
-
-  if (confirmed.undoChanges) {
-    const textWithAnnotations = properties.textWithAnnotations;
-    if (AnnotationTester(originalAnnotation).isNew()) {
-      textWithAnnotations.cancelAnnotations(originalAnnotation.id);
-    } else {
-      properties.textWithAnnotations.setAnnotation(originalAnnotation);
-    }
-  }
-  if (confirmed.confirmed) {
-    emits('closeAnnotation');
-  }
+  emits('closeAnnotation');
 };
 
 // region Validation

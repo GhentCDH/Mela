@@ -151,14 +151,9 @@ const onSelectAnnotation = async (
   );
 
   if (modeStore.activeMode) {
-    // mode.value = null;
     return;
   }
 
-  // TODO check if something changed
-  // const confirmed = await changeAnnotationSelection(store, annotationId, () => {
-  //   store.reloadFromTextWithAnnotations();
-  // });
   const confirmed = { confirmed: true };
 
   if (!confirmed.confirmed) return;
@@ -168,7 +163,7 @@ const onSelectAnnotation = async (
 };
 
 const closeAnnotation = () => {
-  emits('closeAnnotation');
+  modeStore.changeMode(null, () => emits('closeAnnotation'));
 };
 
 const saveAnnotation = (annotation: W3CAnnotation) => {

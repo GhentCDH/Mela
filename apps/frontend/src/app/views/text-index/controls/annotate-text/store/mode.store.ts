@@ -20,7 +20,7 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
     activeMode.value = null;
   };
 
-  const changeMode = (mode: MODES, onSuccess?: () => void) => {
+  const changeMode = (mode: MODES | null, onSuccess?: () => void) => {
     return new Promise((resolve) => {
       const onChangeSuccess = () => {
         activeMode.value = mode;
@@ -32,10 +32,9 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
         onChangeSuccess();
         return;
       }
-
       ModalService.showConfirm({
         title: 'Warning',
-        message: warningMessages[mode],
+        message: warningMessages[activeMode.value],
         onClose: (result) => {
           if (result.confirmed) onChangeSuccess();
           else resolve(false);
