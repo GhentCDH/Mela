@@ -12,6 +12,7 @@
     <AnnotationMetadata
       v-model="annotationMetadata"
       :selected-text="selectedText"
+      :disabled="disableEditMetaData"
       @valid="onValid($event)"
     />
 
@@ -49,10 +50,8 @@ import { Btn, Card, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 import { IdentifyColor } from '../identify.color';
 import type { AnnotationWithRelations } from './props';
 import { useModeStore } from './store/mode.store';
-import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
 import { getTextSelection } from './utils/translation';
-import { changeAnnotationSelection } from './utils/warning';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import Translations from './view/translations.vue';
 
@@ -66,7 +65,6 @@ type Properties = {
   textContent: SourceModel;
 };
 const properties = defineProps<Properties>();
-let originalAnnotation: W3CAnnotation;
 let originalMetadata: any;
 
 const emits = defineEmits<{
@@ -83,6 +81,10 @@ const annotationMetadata = ref<{
 }>({
   annotationType: IdentifyColor[0],
 });
+
+const disableEditMetaData = computed(
+  () => modeStore.activeMode && modeStore.activeMode !== 'edit',
+);
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   emits('deleteAnnotation', annotation);
@@ -140,7 +142,6 @@ watch(
   (n) => {
     const annotation = properties.activeAnnotation;
     const type = findTagging(annotation).value ?? 'phrase';
-    originalAnnotation = cloneDeep(annotation);
 
     const annotationType =
       IdentifyColor.find((c) => c.id === type) ?? IdentifyColor[0];

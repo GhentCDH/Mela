@@ -11,6 +11,8 @@ const warningMessages: Record<MODES, string> = {
   'create-annotation':
     'Creation of annotation is in progress. Are you sure you want to proceed?',
   edit: 'Edit of annotation is in progress. Are you sure you want to proceed',
+  translate:
+    'Translation of annotation is in progress. Are you sure you want to proceed?',
 };
 
 export const useModeStore = defineStore('annotation_mode_store', () => {

@@ -15,31 +15,17 @@
       />
     </li>
   </ul>
-  <fieldset
-    v-if="linkTranslation"
-    class="fieldset"
-  >
-    <legend class="fieldset-legend">
-      Selected translation
-    </legend>
-    <p v-if="!linkedTranslation">
-      Click on an annotation
-    </p>
+  <fieldset v-if="linkTranslation" class="fieldset">
+    <legend class="fieldset-legend">Selected translation</legend>
+    <p v-if="!linkedTranslation">Click on an annotation</p>
     <div v-if="linkedTranslation">
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation">
-          Save translation
-        </Btn>
+        <Btn @click="saveTranslation"> Save translation</Btn>
       </div>
     </div>
   </fieldset>
-  <Btn
-    v-if="!linkTranslation"
-    @click="addLink"
-  >
-    Add translation
-  </Btn>
+  <Btn v-if="!linkTranslation" @click="addLink"> Add translation</Btn>
 </template>
 
 <script setup lang="ts">
@@ -53,14 +39,17 @@ import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 import type { AnnotationWithRelations } from '../props';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import {
-  PURPOSE_TRANSLATION,
   createTranslationAnnotation,
+  PURPOSE_TRANSLATION,
 } from '../utils/edit/linked-annotations';
 import { findTextValue } from '../utils/translation';
+import { useModeStore } from '../store/mode.store';
 
 const listenerStore = useAnnotationListenerStore()();
 
-const linkTranslation = ref(false);
+const modeStore = useModeStore();
+
+const linkTranslation = computed(() => modeStore.activeMode === 'translate');
 
 type Properties = {
   annotation: W3CAnnotation;
@@ -71,7 +60,7 @@ type Properties = {
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
   save: [W3CAnnotation];
-  delete: [string];
+  delete: [W3CAnnotation];
 }>();
 
 const linkedTranslation = ref();
@@ -112,9 +101,9 @@ const translations = computed(() =>
       };
     }),
 );
-
 const addLink = () => {
   linkTranslation.value = true;
+  modeStore.changeMode('translate');
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
@@ -123,7 +112,7 @@ const deleteAnnotation = (annotation: W3CAnnotation) => {
     message: 'Are you sure to delete this translation',
     onClose: (result) => {
       if (result.confirmed) {
-        emits('delete', annotation.id);
+        emits('delete', annotation);
       }
     },
   });

@@ -1,14 +1,13 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">
-      Selected text:
-    </legend>
+    <legend class="fieldset-legend">Selected text:</legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent
     v-model="metaDataModel.annotationType"
     label="Annotation type"
     :options="annotationTypes"
+    :disabled="disabled"
     @change="onChangeAnnotationType"
   />
 
@@ -16,6 +15,7 @@
     v-if="metaDataModel.annotationType.id === 'example'"
     id="registerForm"
     v-model="metaDataModel"
+    :disabled="disabled"
     :schema="ExampleFormSchema.schema.form.schema"
     :uischema="ExampleFormSchema.schema.form.uiSchema"
     @valid="onValid($event)"
@@ -36,6 +36,7 @@ const annotationTypes = IdentifyColor;
 
 type Properties = {
   selectedText: string;
+  disabled: boolean;
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{

@@ -40,7 +40,7 @@ export const useVanillaControlCustom = <
       isTouched: isTouched.value,
     } as VanillaControlWrapper;
   });
-
+  console.log(vanillaControl, vanillaControl);
   return {
     ...vanillaControl,
     controlWrapper,
