@@ -8,7 +8,7 @@
       :disabled="!enabled"
       @focus="onFocus"
       @blur="onBlur"
-    />
+    >
     <div v-click-outside="() => (results = [])">
       <ul
         v-if="results?.length"
@@ -17,7 +17,10 @@
         absolute z-50`,
         ]"
       >
-        <li v-for="(result, index) in results" :key="result[valueKey]">
+        <li
+          v-for="(result, index) in results"
+          :key="result[valueKey]"
+        >
           <button
             class="w-full h-8 border-b-1 border-gray-200 border-x-0 border-t-0 px-4 py-2 text-left hover:bg-primary-content cursor-pointer"
             type="button"

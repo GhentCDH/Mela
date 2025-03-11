@@ -17,8 +17,18 @@
     />
 
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteActiveAnnotation"> Delete</Btn>
-      <Btn :disabled="!valid" @click="saveActiveAnnotation"> Save</Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteActiveAnnotation"
+      >
+        Delete
+      </Btn>
+      <Btn
+        :disabled="!valid"
+        @click="saveActiveAnnotation"
+      >
+        Save
+      </Btn>
     </div>
     <Translations
       :annotation="activeAnnotation"

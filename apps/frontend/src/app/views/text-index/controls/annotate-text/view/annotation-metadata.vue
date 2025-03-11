@@ -1,6 +1,8 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">Selected text:</legend>
+    <legend class="fieldset-legend">
+      Selected text:
+    </legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent

@@ -15,17 +15,31 @@
       />
     </li>
   </ul>
-  <fieldset v-if="linkTranslation" class="fieldset">
-    <legend class="fieldset-legend">Selected translation</legend>
-    <p v-if="!linkedTranslation">Click on an annotation</p>
+  <fieldset
+    v-if="linkTranslation"
+    class="fieldset"
+  >
+    <legend class="fieldset-legend">
+      Selected translation
+    </legend>
+    <p v-if="!linkedTranslation">
+      Click on an annotation
+    </p>
     <div v-if="linkedTranslation">
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation"> Save translation</Btn>
+        <Btn @click="saveTranslation">
+          Save translation
+        </Btn>
       </div>
     </div>
   </fieldset>
-  <Btn v-if="!linkTranslation" @click="addLink"> Add translation</Btn>
+  <Btn
+    v-if="!linkTranslation"
+    @click="addLink"
+  >
+    Add translation
+  </Btn>
 </template>
 
 <script setup lang="ts">
@@ -38,12 +52,12 @@ import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
+import { useModeStore } from '../store/mode.store';
 import {
-  createTranslationAnnotation,
   PURPOSE_TRANSLATION,
+  createTranslationAnnotation,
 } from '../utils/edit/linked-annotations';
 import { findTextValue } from '../utils/translation';
-import { useModeStore } from '../store/mode.store';
 
 const listenerStore = useAnnotationListenerStore()();
 

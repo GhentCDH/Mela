@@ -75,7 +75,10 @@ const renderers = Object.freeze([
 </script>
 
 <template>
-  <form :id="id" @submit="onSubmit">
+  <form
+    :id="id"
+    @submit="onSubmit"
+  >
     <json-forms
       :data="formData"
       :schema="schema"
