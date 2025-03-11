@@ -23,13 +23,14 @@ export const AnnotationSelectorSchema = z.object({
 });
 export type AnnotationSelector = z.infer<typeof AnnotationSelectorSchema>;
 
-export const AnnotationExampleSchema = AnnotationSelectorSchema.extend({
-  example: z.object({
+export const AnnotationExampleExampleSchema = z.object({
+  id: z.string().optional(),
+  register: RegisterSchema.extend({
     id: z.string().optional(),
-    register: RegisterSchema.extend({
-      id: z.string().optional(),
-    }),
   }),
+});
+export const AnnotationExampleSchema = AnnotationSelectorSchema.extend({
+  example: AnnotationExampleExampleSchema,
   type: z.enum(['AnnotationExample']),
 });
 export type AnnotationExample = z.infer<typeof AnnotationExampleSchema>;
