@@ -1,6 +1,6 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Controller, Get, Post, UsePipes } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
+import { Controller, UsePipes } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { ExampleDto } from '@ghentcdh/mela/generated/dtos';
 
@@ -18,21 +18,5 @@ export class ExampleController extends AbstractController<
 > {
   constructor(repository: ExampleRepository) {
     super(repository);
-  }
-
-  @Get('/:id')
-  @ApiCreatedResponse({
-    type: CreateExampleDto,
-  })
-  protected override async get(dto: CreateExampleDto): Promise<ExampleDto> {
-    return super.create(dto);
-  }
-
-  @Post()
-  @ApiCreatedResponse({
-    type: CreateExampleDto,
-  })
-  override create(dto: CreateExampleDto): Promise<ExampleDto> {
-    return super.create(dto);
   }
 }

@@ -60,7 +60,7 @@ export const TextTargetSchema = z.object({
   source: z.string(),
   textDirection: z.enum(['ltr', 'rtl']).optional(),
   type: z.enum(['Text']).default('Text'),
-  processingLanguage: z.string(),
+  processingLanguage: z.string().optional(),
   selector: TextPositionSelectorSchema.optional(),
 });
 

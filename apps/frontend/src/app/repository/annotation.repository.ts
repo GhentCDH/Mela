@@ -11,7 +11,7 @@ export const useAnnotationRepository = defineStore(
     const httpRequest = useHttpRequest();
     const notificationStore = useNotificationStore();
 
-    const repo = createRepository(AnnotationFormSchema.schema, httpRequest, {
+    const repo = createRepository({ uri: 'annotation/type' }, httpRequest, {
       notification: {
         show: true,
         entityType: 'AnnotationFormSchema',

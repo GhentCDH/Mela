@@ -38,5 +38,5 @@ export const useTextRepository = defineStore('textRepository', () => {
     return Promise.all(annotations.map((a) => createAnnotation(textId, a)));
   };
 
-  return { getDataUri, getAnnotations, createAnnotation, createAnnotations };
+  return { getDataUri, getAnnotations };
 });

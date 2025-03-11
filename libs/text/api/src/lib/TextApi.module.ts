@@ -5,8 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@ghentcdh/mela/generated/prisma';
 
 import { AnnotationRepository } from './annotation/annotation-repository.service';
-import { AnnotationController } from './annotation/annotation.controller';
 import { AnnotationTextController } from './annotation/annotaton-text.controller';
+import { AnnotationTypeRepository } from './annotation/type/annotation-repository.service';
+import { AnnotationTypeController } from './annotation/type/annotation-type.controller';
 import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
 import { ExampleRepository } from './example/example-repository.service';
@@ -28,12 +29,13 @@ import { TextController } from './text/text.controller';
     RegisterController,
     LemaController,
     SpeechController,
-    AnnotationController,
     AnnotationTextController,
+    AnnotationTypeController,
     TextController,
     ExampleController,
   ],
   providers: [
+    AnnotationTypeRepository,
     AuthorRepository,
     TextRepositoryService,
     TextImportService,

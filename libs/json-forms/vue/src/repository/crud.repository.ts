@@ -35,7 +35,7 @@ type RepositoryOptions = {
 };
 
 export const createRepository = <T extends { id: string }>(
-  formSchemaModel: FormSchemaModel,
+  formSchemaModel: Pick<FormSchemaModel, 'uri'>,
   httpRequest: HttpRequest<T>,
   options: RepositoryOptions = {},
 ) => {

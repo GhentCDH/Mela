@@ -47,11 +47,6 @@ const dtoSchema = ExampleSchema.pick({
     id: z.string().optional(),
   }),
   textContent: TextContentSchema.pick({ id: true }),
-  annotation: z.object({
-    id: z.string().optional(),
-    start: z.number(),
-    end: z.number(),
-  }),
 });
 
 export type ExampleDto = z.infer<typeof dtoSchema>;

@@ -3,21 +3,13 @@ import {
   MelaAnnotationPage,
   MelaAnnotationPageSchema,
 } from '@mela/text/shared';
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  UsePipes,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
 
 import { AnnotationRepository } from './annotation-repository.service';
-import { CreateAnnotationDto, MelaAnnotationPageDto } from './dto';
+import { MelaAnnotationPageDto } from './dto';
 import { TextRepositoryService } from '../text/text-repository.service';
 
 @UsePipes(ZodValidationPipe)
@@ -50,20 +42,20 @@ export class AnnotationTextController {
     }) as unknown as MelaAnnotationPage;
   }
 
-  @Post()
-  @ApiCreatedResponse({
-    type: MelaAnnotationPageDto,
-  })
-  async create(
-    @Param('textId') textId: string,
-    @Body() dto: CreateAnnotationDto,
-  ): Promise<MelaAnnotationPageDto> {
-    const text = await this.textRepository.findOne(textId);
-    if (!text) {
-      throw new Error('Text not found');
-    }
-    (dto as any).text_id = textId;
-
-    return this.repository.create(dto);
-  }
+  // @Post()
+  // @ApiCreatedResponse({
+  //   type: MelaAnnotationPageDto,
+  // })
+  // async create(
+  //   @Param('textId') textId: string,
+  //   @Body() dto: CreateAnnotationDto,
+  // ): Promise<MelaAnnotationPageDto> {
+  //   const text = await this.textRepository.findOne(textId);
+  //   if (!text) {
+  //     throw new Error('Text not found');
+  //   }
+  //   (dto as any).text_id = textId;
+  //
+  //   return this.repository.create(dto);
+  // }
 }
