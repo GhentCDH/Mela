@@ -70,19 +70,22 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * @param dto
    * @protected
    */
-  protected async connect(dto: CreateDto): Promise<Partial<CreateDto>> {
+  protected async connect(
+    id: string | null,
+    dto: CreateDto,
+  ): Promise<Partial<CreateDto>> {
     return {};
   }
 
   protected async connectCreate(dto: CreateDto): Promise<Partial<CreateDto>> {
-    return this.connect(dto);
+    return this.connect(null, dto);
   }
 
   protected async connectUpdate(
     id: string,
     dto: CreateDto,
   ): Promise<Partial<CreateDto>> {
-    return this.connect(dto);
+    return this.connect(id, dto);
   }
 
   async findOne(id: string): Promise<Entity> {
@@ -100,7 +103,6 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   }
 
   async update(id: string, dto: CreateDto): Promise<Entity> {
-    console.log(dto);
     const connect = await this.connectUpdate(id, dto);
     return this.prismaModel.update({
       where: {

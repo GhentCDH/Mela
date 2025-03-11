@@ -150,8 +150,6 @@ const onSelectAnnotation = async (
     store.textWithAnnotations.getAnnotation(annotationId),
   );
 
-  console.log(modeStore.activeMode);
-
   if (modeStore.activeMode) {
     // mode.value = null;
     return;
@@ -166,7 +164,6 @@ const onSelectAnnotation = async (
   if (!confirmed.confirmed) return;
 
   store.selectAnnotation({ textContentId, annotationId });
-  modeStore.changeMode('edit');
   // modeStore.value = annotationId ? 'edit' : null;
 };
 

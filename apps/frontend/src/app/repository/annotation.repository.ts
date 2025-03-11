@@ -1,8 +1,9 @@
 import { AnnotationFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
+
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import { useNotificationStore } from '@ghentcdh/ui';
 import { createRepository } from '@ghentcdh/json-forms/vue';
+import { useNotificationStore } from '@ghentcdh/ui';
 
 export const useAnnotationRepository = defineStore(
   'annotationRepository',

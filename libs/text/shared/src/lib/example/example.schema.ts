@@ -8,13 +8,11 @@ import {
   createSchema,
 } from '@ghentcdh/json-forms/core';
 import { ExampleForm } from '@ghentcdh/mela/generated/forms';
-import type {
-  ExampleWithRelations} from '@ghentcdh/mela/generated/types';
+import type { ExampleWithRelations } from '@ghentcdh/mela/generated/types';
 import {
   ExampleSchema,
   RegisterSchema,
   TextContentSchema,
-  TextSchema,
 } from '@ghentcdh/mela/generated/types';
 
 import { RegisterFormSchema } from '../register/register.schema';
@@ -48,9 +46,12 @@ const dtoSchema = ExampleSchema.pick({
   register: RegisterSchema.extend({
     id: z.string().optional(),
   }),
-  textContent: TextContentSchema.pick({ id: true, language: true }),
-  text: TextSchema.pick({ id: true }),
-  annotationTarget: TextContentSchema.pick({ id: true }),
+  textContent: TextContentSchema.pick({ id: true }),
+  annotation: z.object({
+    id: z.string().optional(),
+    start: z.number(),
+    end: z.number(),
+  }),
 });
 
 export type ExampleDto = z.infer<typeof dtoSchema>;

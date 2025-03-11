@@ -18,14 +18,13 @@ import { createResponseData } from '@ghentcdh/json-forms/api';
 import {
   AnnotationBodyWithRelations,
   AnnotationTargetWithRelations,
-  JsonValue,
 } from '@ghentcdh/mela/generated/types';
 
 const mapBody = (body: W3CAnnotationBody): AnnotationBodyWithRelations => {
   // const source_id = getSourceIdFromUri(uri);
 
   return {
-    value: body as JsonValue,
+    value: body as any,
     // text_content_id: getTextContentIdFromUri(uri),
     // example_id: getExampleIdFromUri(uri),
     // source_id,
@@ -46,7 +45,7 @@ const mapTarget = (
   const source_id = getIdFromUri(source_type)(uri);
 
   return {
-    value: target as JsonValue,
+    value: target as any,
     source_id,
     source_type,
   } as AnnotationTargetWithRelations;

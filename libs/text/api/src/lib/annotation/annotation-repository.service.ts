@@ -49,7 +49,7 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   private async createOrConnectTarget(
-    annotation_id: string,
+    annotation_id: string | null,
     dto: CreateAnnotationDto,
   ) {
     if (annotation_id)
@@ -63,7 +63,7 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   private async createOrConnectBody(
-    annotation_id: string,
+    annotation_id: string | null,
     dto: CreateAnnotationDto,
   ) {
     if (annotation_id)

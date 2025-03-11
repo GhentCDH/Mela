@@ -1,7 +1,14 @@
 <template>
-  <Menu title="Elements" :menu="menuElements" :breadcrumbs="breadcrumbs" />
+  <Menu
+    title="Elements"
+    :menu="menuElements"
+    :breadcrumbs="breadcrumbs"
+  />
 
-  <div v-if="textStore.text" class="mt-2">
+  <div
+    v-if="textStore.text"
+    class="mt-2"
+  >
     <annotate-text
       :store-id="storeId"
       @save-example="saveExample"
@@ -10,8 +17,14 @@
       @delete-annotation="deleteAnnotation"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center">
-    <div role="alert" class="alert alert-success bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center"
+  >
+    <div
+      role="alert"
+      class="alert alert-success bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -21,7 +34,12 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>
@@ -40,7 +58,7 @@ import { useAnnotationStore } from './controls/annotate-text/utils/annotation.st
 import { useTextStore } from './text.store';
 
 const textStore = useTextStore();
-const storeId = 'identify_and_translate' + Date.now();
+const storeId = 'identify_and_translate';
 
 const annotationStore = useAnnotationStore(storeId);
 const modeStore = useModeStore();
@@ -100,7 +118,7 @@ const modeToasts: Record<
     deny: () => {
       closeAnnotation();
     },
-    text: 'Edit mode is on',
+    text: 'Current annotation is edited and not saved',
   },
 };
 
@@ -145,7 +163,7 @@ const saveAnnotation = (annotation: W3CAnnotation) => {
 };
 
 const saveExample = (example: ExampleDto) => {
-  annotationStore.saveExample(example);
+  annotationStore.saveExample(example).then(() => modeStore.resetMode());
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {

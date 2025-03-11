@@ -13,6 +13,10 @@ export const findExampleMetaData = (
 ) => {
   return findBodyType<SpecificResource>(
     'SpecificResource',
-    (body: SpecificResource) => isExampleUri(body.source),
+    (body: SpecificResource) => {
+      console.log(body);
+      console.log(isExampleUri(body.source));
+      return isExampleUri(body.source);
+    },
   )(w3CAnnotation);
 };
