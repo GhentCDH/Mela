@@ -35,7 +35,6 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    console.log(props);
     const control = useVanillaControlCustom(
       useJsonFormsControl(props),
       (target) => target.value ?? undefined,
