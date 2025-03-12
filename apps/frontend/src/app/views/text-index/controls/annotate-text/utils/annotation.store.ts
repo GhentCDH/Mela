@@ -1,9 +1,10 @@
-import type {
+import {
   AnnotationMetadataType,
-  ExampleDto,
+  AnnotationType,
+  getAnnotationIdFromUri,
+  getAnnotationUri,
   TextContentDto,
 } from '@mela/text/shared';
-import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -20,7 +21,6 @@ import { ReloadRef } from './reload';
 import { AnnotationTester } from './tester';
 import { TextWithAnnotations } from './text';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
-import { useExampleRepository } from '../../../../../repository/example.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
 
 type SelectedIds = { textContentId: string; annotationId: string };
@@ -39,7 +39,6 @@ export const useAnnotationStore = (id: string) =>
     // const annotations = ref<TranslatedAnnotation[]>([]);
     const selectedIds = ref<SelectedIds | null>(null);
     const textRepository = useTextRepository();
-    const exampleRepository = useExampleRepository();
     const annotationRepository = useAnnotationRepository();
     const activeAnnotation = computed(() =>
       selectedIds.value?.annotationId
@@ -117,34 +116,11 @@ export const useAnnotationStore = (id: string) =>
       return newAnnotation;
     };
 
-    const createAnnotations = async (newAnnotations: W3CAnnotation[]) => {
+    const createAnnotations = async (newAnnotations: AnnotationType[]) => {
       if (newAnnotations.length === 0) return;
 
       loading.value = true;
-      await textRepository
-        .createAnnotations(textId.value, newAnnotations)
-        .then(() => {
-          notificationStore.info('Annotations saved');
-        })
-        .catch(() => {
-          notificationStore.error('Failed to save annotations');
-        });
-
-      reload.reload();
-    };
-
-    const saveAnnotations = async (annotations: W3CAnnotation[]) => {
-      if (annotations.length === 0) return;
-
-      loading.value = true;
-      await annotationRepository
-        .patchMulti(annotations)
-        .then(() => {
-          notificationStore.info('Annotations saved');
-        })
-        .catch(() => {
-          notificationStore.error('Failed to save annotations');
-        });
+      await annotationRepository.createMulti(newAnnotations);
 
       reload.reload();
     };
@@ -176,12 +152,19 @@ export const useAnnotationStore = (id: string) =>
       selectedIds.value = null;
     };
 
-    const saveOrCreateAnnotation = async (annotation: W3CAnnotation) => {
-      if (!annotation.id || AnnotationTester(annotation).isNew()) {
+    const saveOrCreateAnnotation = async (
+      id: string | null,
+      annotation: AnnotationType,
+    ) => {
+      if (!id || AnnotationTester(id).isNew()) {
         return createAnnotations([annotation]);
       }
+      loading.value = true;
+      const saved = await annotationRepository.patch(id, annotation);
 
-      return saveAnnotations([annotation]);
+      reload.reload();
+
+      return saved;
     };
 
     const deleteAnnotation = async (annotationId: string) => {
@@ -202,16 +185,6 @@ export const useAnnotationStore = (id: string) =>
       w3cAnnotations.value = textWithAnnotations.getAnnotations();
     };
 
-    const saveExample = async (example: ExampleDto & { id?: string }) => {
-      const promise = example.id
-        ? exampleRepository.patch(example.id, example)
-        : exampleRepository.create(example);
-
-      await promise;
-
-      reload.reload();
-    };
-
     return {
       sources,
       textWithAnnotations: textWithAnnotationsRef,
@@ -230,7 +203,7 @@ export const useAnnotationStore = (id: string) =>
           textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
         ),
       cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
-      saveExample,
+
       activeAnnotation,
       activeTextContent,
       activeAnnotationLinks,

@@ -35,8 +35,6 @@ export const AnnotationContext = z
   .default('http://www.w3.org/ns/anno.jsonld');
 
 export const MelaAnnotationSchema = AnnotationSchema.omit({
-  body: true,
-  target: true,
   id: true,
   text_id: true,
 }).extend({

@@ -17,12 +17,9 @@ import {
 
 import { AnnotationRepository } from '../annotation-repository.service';
 import { AnnotationTypeDto } from './annotation-type.schema';
+import { createExample } from './utils/create-example';
 import { createLinks } from './utils/create-links';
-import {
-  createExample,
-  createSelector,
-  getTextSelection,
-} from './utils/create-selector';
+import { createSelector, getTextSelection } from './utils/create-selector';
 import { ExampleRepository } from '../../example/example-repository.service';
 
 @Injectable()
@@ -51,7 +48,7 @@ export class AnnotationTypeRepository {
       case PURPOSE_EXAMPLE:
         createdAnnotation = await this.updateExample(
           null,
-          data as AnnotationSelector,
+          data as AnnotationExample,
         );
         break;
       default:
@@ -90,14 +87,17 @@ export class AnnotationTypeRepository {
       id,
     )) as AnnotationWithRelations;
 
-    const relatedAnnotations = (
-      await this.prisma.annotationTarget.findMany({
-        where: {
-          source_id: id,
-          source_type: 'annotation',
-        },
-      })
-    ).map((a) => a.annotation_id);
+    const relatedAnnotations = [
+      (
+        await this.prisma.annotationTarget.findMany({
+          where: {
+            source_id: id,
+            source_type: 'annotation',
+          },
+        })
+      ).map((a) => a.annotation_id),
+      id,
+    ].flat();
 
     const sources = [
       annotation.annotationBody.filter((b) => b.source_type),
@@ -109,8 +109,10 @@ export class AnnotationTypeRepository {
       .map((s) => s.source_id) as string[];
 
     return [
+      relatedAnnotations,
+      examples,
       this.prisma.annotation.deleteMany({
-        where: { id: { in: [relatedAnnotations, id].flat() } },
+        where: { id: { in: relatedAnnotations } },
       }),
       this.prisma.example.deleteMany({ where: { id: { in: examples } } }),
     ];
@@ -118,9 +120,6 @@ export class AnnotationTypeRepository {
 
   // region example
   private async updateExample(id: string | null, data: AnnotationExample) {
-    if (id && !data.example.id)
-      throw new BadRequestException('Example id is required');
-
     const textContent = await this.prisma.textContent.findFirstOrThrow({
       where: { id: data.textContent.id },
     });

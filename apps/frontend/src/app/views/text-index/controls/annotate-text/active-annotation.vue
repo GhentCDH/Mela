@@ -10,52 +10,31 @@
       </div>
     </template>
     <AnnotationMetadata
-      v-model="annotationMetadata"
+      :annotation="activeAnnotation"
       :selected-text="selectedText"
+      :text-content="textContent"
       :disabled="disableEditMetaData"
-      @valid="onValid($event)"
+      @save="saveAnnotation"
+      @delete="deleteAnnotationAndClose"
     />
 
-    <div class="flex gap-2 justify-end pb-4">
-      <Btn
-        :color="Color.error"
-        @click="deleteActiveAnnotation"
-      >
-        Delete
-      </Btn>
-      <Btn
-        :disabled="!valid"
-        @click="saveActiveAnnotation"
-      >
-        Save
-      </Btn>
-    </div>
     <Translations
       :annotation="activeAnnotation"
       :links="links"
       :text="text"
-      :text-content="textContent"
       @save="saveAnnotation"
       @delete="deleteAnnotation"
     />
-
-    <template #actions />
   </Card>
 </template>
 
 <script setup lang="ts">
-import type { AnnotationMetadataType, ExampleDto } from '@mela/text/shared';
-import { findExampleMetaData, getExampleIdFromUri } from '@mela/text/shared';
-import { cloneDeep, isEqual } from 'lodash-es';
-import { computed, ref, watch } from 'vue';
+import { AnnotationType, findExampleMetaData } from '@mela/text/shared';
+import { computed, ref } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import {
-  findTagging,
-  findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
-import type { Register } from '@ghentcdh/mela/generated/types';
-import { Btn, Card, Color, IconEnum, ModalService } from '@ghentcdh/ui';
+import { findTextPositionSelector } from '@ghentcdh/annotations/core';
+import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../identify.color';
 import type { AnnotationWithRelations } from './props';
@@ -63,6 +42,7 @@ import { useModeStore } from './store/mode.store';
 import type { TextWithAnnotations } from './utils/text';
 import { getTextSelection } from './utils/translation';
 import AnnotationMetadata from './view/annotation-metadata.vue';
+import annotationMetadata from './view/annotation-metadata.vue';
 import Translations from './view/translations.vue';
 
 const annotationType = ref<{ label: string; id: string }>(IdentifyColor[0]);
@@ -75,22 +55,13 @@ type Properties = {
   textContent: SourceModel;
 };
 const properties = defineProps<Properties>();
-let originalMetadata: any;
 
 const emits = defineEmits<{
   changeAnnotation: [W3CAnnotation];
   deleteAnnotation: [W3CAnnotation];
-  saveAnnotation: [W3CAnnotation];
+  saveAnnotation: [string | null, AnnotationType];
   closeAnnotation: [];
-  saveExample: [ExampleDto];
 }>();
-
-const annotationMetadata = ref<{
-  annotationType: { label: string; id: AnnotationMetadataType };
-  register?: Register;
-}>({
-  annotationType: IdentifyColor[0],
-});
 
 const disableEditMetaData = computed(
   () => modeStore.activeMode && modeStore.activeMode !== 'edit',
@@ -99,38 +70,13 @@ const disableEditMetaData = computed(
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   emits('deleteAnnotation', annotation);
 };
-
-const deleteActiveAnnotation = () => {
-  ModalService.showConfirm({
-    title: 'Delete annotation',
-    message: 'Are you sure to delete this annotation, all links will be lost?',
-    onClose: (result) => {
-      console.log('on close', result);
-      if (result) {
-        deleteAnnotation(properties.activeAnnotation);
-      }
-    },
-  });
+const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
+  deleteAnnotation(annotation);
+  closeAnnotation();
 };
 
-const saveActiveAnnotation = () => {
-  if (annotationMetadata.value.annotationType.id === 'example') {
-    emits('saveExample', {
-      id: getExampleIdFromUri(exampleMetaData.value?.source),
-      ...annotationMetadata.value,
-    });
-    return;
-  }
-
-  saveAnnotation(
-    properties.textWithAnnotations.getAnnotation(
-      properties.activeAnnotation.id,
-    ),
-  );
-};
-
-const saveAnnotation = (annotation: W3CAnnotation) => {
-  emits('saveAnnotation', annotation);
+const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
+  emits('saveAnnotation', id, annotation);
 };
 
 const textAnnotation = computed(() => ({
@@ -146,45 +92,6 @@ const exampleMetaData = computed(() =>
   findExampleMetaData(properties.activeAnnotation),
 );
 
-// region datamodel
-watch(
-  () => properties.activeAnnotation,
-  (n) => {
-    const annotation = properties.activeAnnotation;
-    const type = findTagging(annotation).value ?? 'phrase';
-
-    const annotationType =
-      IdentifyColor.find((c) => c.id === type) ?? IdentifyColor[0];
-
-    originalMetadata = {
-      annotationType: annotationType,
-      register: exampleMetaData.value?.value.register,
-      text: selectedText.value,
-      name: selectedText.value,
-      textContent: {
-        id: properties.textContent.id,
-      },
-      annotation: textAnnotation.value,
-    };
-
-    annotationMetadata.value = cloneDeep(originalMetadata);
-  },
-  { immediate: true },
-);
-
-watch(
-  () => annotationMetadata.value.annotationType,
-  () => {
-    const annotation = properties.textWithAnnotations.changeType(
-      properties.activeAnnotation.id,
-      annotationType.value.id as AnnotationMetadataType,
-    );
-    emits('changeAnnotation', annotation);
-  },
-);
-
-// endregion
-
 const closeAnnotation = async () => {
   emits('closeAnnotation');
 };
@@ -195,11 +102,8 @@ const modeStore = useModeStore();
 
 const onValid = (value: boolean) => {
   valid.value = value;
-
-  if (
-    !modeStore.activeMode &&
-    !isEqual(annotationMetadata.value, originalMetadata)
-  ) {
+  console.log('valid');
+  if (!valid) {
     modeStore.changeMode('edit');
   }
 };

@@ -1,4 +1,3 @@
-import { AnnotationFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
@@ -11,13 +10,17 @@ export const useAnnotationRepository = defineStore(
     const httpRequest = useHttpRequest();
     const notificationStore = useNotificationStore();
 
-    const repo = createRepository({ uri: 'annotation/type' }, httpRequest, {
-      notification: {
-        show: true,
-        entityType: 'AnnotationFormSchema',
-        notification: notificationStore,
+    const repo = createRepository(
+      { uri: '/api/annotation/type' },
+      httpRequest,
+      {
+        notification: {
+          show: true,
+          entityType: 'Annotation',
+          notification: notificationStore,
+        },
       },
-    });
+    );
 
     return { ...repo };
   },

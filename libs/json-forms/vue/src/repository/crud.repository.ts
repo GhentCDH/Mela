@@ -86,15 +86,13 @@ export const createRepository = <T extends { id: string }>(
       });
   };
 
-  const patchMulti = (objects: T[], options?: RequestOptions) => {
-    return Promise.all(
-      objects.map((o) => httpRequest.patch(getDataUri(o.id), o, options)),
-    )
-      .then((response) => handleSuccess(`Saved ${notificationEntity}`))
+  const createMulti = (objects: T[], options?: RequestOptions) => {
+    return Promise.all(objects.map((o) => create(o, options)))
+      .then((response) => handleSuccess(`Created ${notificationEntity}`))
       .catch((response) => {
         handleError(response, `Failed to save ${notificationEntity}`);
       });
   };
 
-  return { create, patch, patchMulti, delete: _delete };
+  return { create, patch, createMulti, delete: _delete };
 };

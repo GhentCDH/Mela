@@ -17,7 +17,6 @@ export class ExampleRepository extends AbstractRepository<
   }
 
   override async create(dto: CreateExampleDto): Promise<ExampleWithRelations> {
-    console.log('create', dto);
     // const createdExample =  const connect = await this.connectCreate(dto);
     const createdExample = await this.prisma.example.create({
       data: {

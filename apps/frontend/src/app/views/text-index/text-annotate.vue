@@ -1,30 +1,16 @@
 <template>
-  <Menu
-    title="Elements"
-    :menu="menuElements"
-    :breadcrumbs="breadcrumbs"
-  />
+  <Menu title="Elements" :menu="menuElements" :breadcrumbs="breadcrumbs" />
 
-  <div
-    v-if="textStore.text"
-    class="mt-2"
-  >
+  <div v-if="textStore.text" class="mt-2">
     <annotate-text
       :store-id="storeId"
-      @save-example="saveExample"
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
       @delete-annotation="deleteAnnotation"
     />
   </div>
-  <div
-    v-if="modeToast"
-    class="toast toast-center"
-  >
-    <div
-      role="alert"
-      class="alert alert-success bg-white"
-    >
+  <div v-if="modeToast" class="toast toast-center">
+    <div role="alert" class="alert alert-success bg-white">
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -34,18 +20,12 @@
         >
           Close
         </Btn>
-        <Btn
-          v-if="modeToast.save"
-          @click="modeToast.save"
-        >
-          Save
-        </Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import type { ExampleDto } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
@@ -162,19 +142,14 @@ const createAnnotation = () => {
   });
 };
 
-const saveAnnotation = (annotation: W3CAnnotation) => {
+const saveAnnotation = (id: string | null, annotation: W3CAnnotation) => {
   annotationStore
-    .saveOrCreateAnnotation(annotation)
+    .saveOrCreateAnnotation(id, annotation)
     .then(() => modeStore.resetMode());
-};
-
-const saveExample = (example: ExampleDto) => {
-  annotationStore.saveExample(example).then(() => modeStore.resetMode());
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   annotationStore.deleteAnnotation(annotation.id);
-  closeAnnotation();
 };
 
 const closeAnnotation = () => {

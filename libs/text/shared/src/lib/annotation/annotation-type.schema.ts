@@ -19,19 +19,24 @@ export const AnnotationSelectorSchema = z.object({
     end: z.number(),
   }),
   textContent: TextContentSchema.pick({ id: true }),
-  type: z.enum(['AnnotationSelector']),
+  type: z.enum([PURPOSE_ANNOTATION_SELECT]).default(PURPOSE_ANNOTATION_SELECT),
 });
 export type AnnotationSelector = z.infer<typeof AnnotationSelectorSchema>;
 
 export const AnnotationExampleExampleSchema = z.object({
-  id: z.string().optional(),
   register: RegisterSchema.extend({
     id: z.string().optional(),
   }),
+  id: z.string().optional(),
 });
+
+export type AnnotationExampleExample = z.infer<
+  typeof AnnotationExampleExampleSchema
+>;
+
 export const AnnotationExampleSchema = AnnotationSelectorSchema.extend({
   example: AnnotationExampleExampleSchema,
-  type: z.enum(['AnnotationExample']),
+  type: z.enum([PURPOSE_EXAMPLE]).default(PURPOSE_EXAMPLE),
 });
 export type AnnotationExample = z.infer<typeof AnnotationExampleSchema>;
 
@@ -40,8 +45,9 @@ export const LinkSchema = z.object({
   text: TextSchema.pick({ id: true }),
   type: z.string(),
 });
+
 export const TranslationExampleSchema = LinkSchema.extend({
-  type: z.enum([PURPOSE_TRANSLATION]),
+  type: z.enum([PURPOSE_TRANSLATION]).default(PURPOSE_TRANSLATION),
 });
 
 export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
@@ -49,3 +55,4 @@ export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
 ).or(TranslationExampleSchema);
 
 export type AnnotationLink = z.infer<typeof LinkSchema>;
+export type AnnotationType = z.infer<typeof AnnotationTypeSchema>;

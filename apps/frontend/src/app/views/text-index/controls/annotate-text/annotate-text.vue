@@ -34,13 +34,12 @@ import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
-import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
   AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
-import type { Example } from '@ghentcdh/mela/generated/types';
+import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { IdentifyColorMap } from '../identify.color';
@@ -50,14 +49,14 @@ import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useModeStore } from './store/mode.store';
 import { useAnnotationStore } from './utils/annotation.store';
 import { useTextStore } from '../../text.store';
+import { AnnotationType } from '@mela/text/shared';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
 
 const emits = defineEmits<{
   deleteAnnotation: [W3CAnnotation];
-  saveAnnotation: [W3CAnnotation];
-  saveExample: [Example];
+  saveAnnotation: [id: string | null, AnnotationType];
   closeAnnotation: [];
 }>();
 
@@ -166,8 +165,8 @@ const closeAnnotation = () => {
   modeStore.changeMode(null, () => emits('closeAnnotation'));
 };
 
-const saveAnnotation = (annotation: W3CAnnotation) => {
-  emits('saveAnnotation', annotation);
+const saveAnnotation = (id: string | null, annotation: AnnotationType) => {
+  emits('saveAnnotation', id, annotation);
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {

@@ -1,25 +1,22 @@
-import type { ExampleDto} from '@mela/text/shared';
+import type { ExampleDto } from '@mela/text/shared';
 import { getAnnotationUri } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 import type {
+  findBodyType,
   SpecificResourceSchema,
   TextTargetSchema,
   type TextualBody,
   TextualBodyClassifyingSchema,
   W3CAnnotation,
   W3CAnnotationSchema,
-  findBodyType,
 } from '@ghentcdh/annotations/core';
 
-
 import { PREFIX_NEW } from './text-selection-annotation';
-
 
 export const PURPOSE_EXAMPLE = 'example';
 
 export const createExample = (annotation: W3CAnnotation, dto: ExampleDto) => {
-  console.log('createExample', annotation, dto);
   const text = findBodyType<TextualBody>(
     'TextualBody',
     (body: TextualBody) => !!body.language,
