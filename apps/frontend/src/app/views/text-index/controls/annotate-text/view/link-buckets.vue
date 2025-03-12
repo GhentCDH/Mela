@@ -24,27 +24,23 @@
         :options="linkTypes"
       />
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveBucket"> Save LinkBucket</Btn>
+        <Btn @click="saveBucket"> Save LinkBucket </Btn>
       </div>
     </div>
   </fieldset>
-  <Btn v-if="!linkBucket" @click="addLink"> Add LinkBucket</Btn>
+  <Btn v-if="!linkBucket" @click="addLink"> Add LinkBucket </Btn>
 </template>
 
 <script setup lang="ts">
-import {
-  AnnotationType,
-  LinkBucketsSchema,
-  PURPOSE_LINK_BUCKETS,
-} from '@mela/text/shared';
+import type { AnnotationType } from '@mela/text/shared';
+import { LinkBucketsSchema, PURPOSE_LINK_BUCKETS } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
-import {
-  findBodyType,
-  findByPurposeValue,
+import type {
   SpecificResource,
   W3CAnnotation,
 } from '@ghentcdh/annotations/core';
+import { findBodyType, findByPurposeValue } from '@ghentcdh/annotations/core';
 import {
   Btn,
   Color,
@@ -107,19 +103,13 @@ const linkBuckets = computed(() =>
   properties.links
     .filter((link) => findByPurposeValue(PURPOSE_LINK_BUCKETS)(link.annotation))
     .map((link) => {
-      console.log(properties.annotation.id);
       const linked = link.relations.find(
         (r) => r.id !== properties.annotation.id,
       );
-      console.table(link.relations);
-      console.table(link);
-      console.table(linked.body);
       const linkType = findBodyType<SpecificResource>(
         'SpecificResource',
         (body: SpecificResource) => !!body.value,
       )(link.annotation);
-
-      console.log(linkType.value);
 
       return {
         link: link.annotation,
