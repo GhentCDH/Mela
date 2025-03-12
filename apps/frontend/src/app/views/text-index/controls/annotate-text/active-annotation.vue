@@ -16,6 +16,20 @@
       @save="saveAnnotation"
       @delete="deleteAnnotationAndClose"
     />
+    <hr
+      v-if="isExample"
+      class="text-gray-300 my-2"
+    >
+    <LinkBuckets
+      v-if="isExample"
+      :annotation="activeAnnotation"
+      :links="links"
+      :text="text"
+      @save="saveAnnotation"
+      @delete="deleteAnnotation"
+    />
+
+    <hr class="text-gray-300 my-2">
 
     <Translations
       :annotation="activeAnnotation"
@@ -31,14 +45,20 @@
 import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findTextPositionSelector } from '@ghentcdh/annotations/core';
+import type {
+  SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
+  findTagging,
+  findTextPositionSelector
+} from '@ghentcdh/annotations/core';
 import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
 import type { TextWithAnnotations } from './utils/text';
 import { getTextSelection } from './utils/translation';
 import AnnotationMetadata from './view/annotation-metadata.vue';
+import LinkBuckets from './view/link-buckets.vue';
 import Translations from './view/translations.vue';
 
 type Properties = {
@@ -68,6 +88,11 @@ const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
 const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
   emits('saveAnnotation', id, annotation);
 };
+
+const annotationType = computed(
+  () => findTagging(properties.activeAnnotation).value ?? 'phrase',
+);
+const isExample = computed(() => annotationType.value === 'example');
 
 const textAnnotation = computed(() => ({
   id: properties.activeAnnotation.id,

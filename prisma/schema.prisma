@@ -109,7 +109,6 @@ model Example {
   register_id    String
   textContent        TextContent @relation(fields: [text_content_id], references: [id])
   text_content_id     String
-  // Lema Lema[]
 }
 
 model Register {

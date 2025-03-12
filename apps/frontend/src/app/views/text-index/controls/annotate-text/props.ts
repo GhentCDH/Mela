@@ -1,6 +1,11 @@
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 
-export type MODES = 'generate' | 'create-annotation' | 'edit' | 'translate';
+export type MODES =
+  | 'generate'
+  | 'create-annotation'
+  | 'edit'
+  | 'translate'
+  | 'link_buckets';
 
 export const CREATE_MODES: MODES[] = ['create-annotation', 'create-example'];
 

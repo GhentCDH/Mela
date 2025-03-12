@@ -1,6 +1,7 @@
 import { getAnnotationUri } from '@mela/text/shared';
 
 import {
+  SpecificResourceSchema,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
 } from '@ghentcdh/annotations/core';
@@ -33,6 +34,7 @@ export const createLinks = (
   text: Pick<TextContent, 'id'>,
   purpose: string,
   annotations: Annotation[],
+  value?: any,
 ): CreateAnnotationDto => {
   return {
     motivation: 'tagging',
@@ -40,10 +42,18 @@ export const createLinks = (
     annotationBody: [
       {
         value: TextualBodyClassifyingSchema.parse({
-          purpose,
+          purpose: 'tagging',
+          value: purpose,
         }),
       },
-    ],
+      value
+        ? {
+            value: SpecificResourceSchema.parse({
+              value: value,
+            }),
+          }
+        : undefined,
+    ].filter((v) => !!v),
     annotationTarget: annotations.map(createLink),
   } as unknown as CreateAnnotationDto;
 };

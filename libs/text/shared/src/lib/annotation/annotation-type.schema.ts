@@ -10,6 +10,7 @@ import {
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
 export const PURPOSE_EXAMPLE = 'AnnotationExample';
 export const PURPOSE_TRANSLATION = 'translation';
+export const PURPOSE_LINK_BUCKETS = 'link_buckets';
 
 export const AnnotationSelectorSchema = z.object({
   annotation: z.object({
@@ -44,15 +45,21 @@ export const LinkSchema = z.object({
   annotations: z.array(AnnotationSchema.pick({ id: true })),
   text: TextSchema.pick({ id: true }),
   type: z.string(),
+  value: z.any().optional(),
 });
 
 export const TranslationExampleSchema = LinkSchema.extend({
   type: z.enum([PURPOSE_TRANSLATION]).default(PURPOSE_TRANSLATION),
 });
+export const LinkBucketsSchema = LinkSchema.extend({
+  type: z.enum([PURPOSE_LINK_BUCKETS]).default(PURPOSE_LINK_BUCKETS),
+});
 
 export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
   AnnotationExampleSchema,
-).or(TranslationExampleSchema);
+)
+  .or(TranslationExampleSchema)
+  .or(LinkBucketsSchema);
 
 export type AnnotationLink = z.infer<typeof LinkSchema>;
 export type AnnotationType = z.infer<typeof AnnotationTypeSchema>;

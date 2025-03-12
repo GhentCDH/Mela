@@ -1,13 +1,15 @@
 <template>
-  <h2>Translations</h2>
+  <h2>Link buckets</h2>
 
   <ul class="list">
     <li
-      v-for="t in translations"
+      v-for="t in linkBuckets"
       :key="t.link.id"
       class="list-row !px-0 !gap-2"
     >
-      <div>{{ t.translation }}</div>
+      <div>
+        <small>{{ t.translation }}</small> ({{ t.linkType }})
+      </div>
       <Btn
         :color="Color.secondary"
         :icon="IconEnum.Delete"
@@ -16,43 +18,54 @@
     </li>
   </ul>
   <fieldset
-    v-if="linkTranslation"
+    v-if="linkBucket"
     class="fieldset"
   >
     <legend class="fieldset-legend">
-      Selected translation
+      Selected LinkBucket
     </legend>
-    <p v-if="!linkedTranslation">
+    <p v-if="!linkedBucket">
       Click on an annotation
     </p>
-    <div v-if="linkedTranslation">
+    <div v-if="linkedBucket">
       {{ translatedText?.value }}
+      <SelectComponent
+        v-model="linkType"
+        label="Annotation type"
+        :options="linkTypes"
+      />
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation">
-          Save translation
+        <Btn @click="saveBucket">
+          Save LinkBucket
         </Btn>
       </div>
     </div>
   </fieldset>
   <Btn
-    v-if="!linkTranslation"
+    v-if="!linkBucket"
     @click="addLink"
   >
-    Add translation
+    Add LinkBucket
   </Btn>
 </template>
 
 <script setup lang="ts">
 import type { AnnotationType } from '@mela/text/shared';
-import {
-  PURPOSE_TRANSLATION,
-  TranslationExampleSchema,
-} from '@mela/text/shared';
+import { LinkBucketsSchema, PURPOSE_LINK_BUCKETS } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findByPurposeValue } from '@ghentcdh/annotations/core';
-import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
+import type {
+  SpecificResource,
+  W3CAnnotation,
+} from '@ghentcdh/annotations/core';
+import { findBodyType, findByPurposeValue } from '@ghentcdh/annotations/core';
+import {
+  Btn,
+  Color,
+  IconEnum,
+  ModalService,
+  SelectComponent,
+} from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
@@ -63,8 +76,12 @@ const listenerStore = useAnnotationListenerStore()();
 
 const modeStore = useModeStore();
 
-const linkTranslation = computed(() => modeStore.activeMode === 'translate');
-
+const linkBucket = computed(() => modeStore.activeMode === 'link_buckets');
+const linkTypes = [
+  { label: 'Synonymous', value: 'synonymous' },
+  { label: 'Antonym', value: 'antonym' },
+];
+const linkType = ref(linkTypes[0]);
 type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
@@ -76,52 +93,57 @@ const emits = defineEmits<{
   delete: [W3CAnnotation];
 }>();
 
-const linkedTranslation = ref();
+const linkedBucket = ref();
 
 effect(() => {
-  if (!linkTranslation.value) {
-    linkedTranslation.value = null;
+  if (!linkBucket.value) {
+    linkedBucket.value = null;
     return;
   }
   const clAnnotation = listenerStore.clickAnnotation;
 
   if (!clAnnotation) {
-    linkedTranslation.value = null;
+    linkedBucket.value = null;
     return;
   }
 
   const activeAnnotation = properties.annotation.id;
   if (clAnnotation.id === activeAnnotation) {
-    linkedTranslation.value = null;
+    linkedBucket.value = null;
     return;
   }
-  linkedTranslation.value = listenerStore.clickAnnotation;
+  linkedBucket.value = listenerStore.clickAnnotation;
 });
 
-const translatedText = computed(() => findTextValue(linkedTranslation.value));
+const translatedText = computed(() => findTextValue(linkedBucket.value));
 
-const translations = computed(() =>
+const linkBuckets = computed(() =>
   properties.links
-    .filter((link) => findByPurposeValue(PURPOSE_TRANSLATION)(link.annotation))
+    .filter((link) => findByPurposeValue(PURPOSE_LINK_BUCKETS)(link.annotation))
     .map((link) => {
-      const translation = link.relations.find(
+      const linked = link.relations.find(
         (r) => r.id !== properties.annotation.id,
       );
+      const linkType = findBodyType<SpecificResource>(
+        'SpecificResource',
+        (body: SpecificResource) => !!body.value,
+      )(link.annotation);
 
       return {
         link: link.annotation,
-        translation: findTextValue(translation)?.value,
+        translation: findTextValue(linked)?.value,
+        linkType: linkType?.value.linkType,
       };
     }),
 );
 const addLink = () => {
-  modeStore.changeMode('translate');
+  modeStore.changeMode('link_buckets');
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   ModalService.showConfirm({
     title: 'Delete link',
-    message: 'Are you sure to delete this translation',
+    message: 'Are you sure to delete this LinkBucket',
     onClose: (result) => {
       if (result.confirmed) {
         emits('delete', annotation);
@@ -130,14 +152,15 @@ const deleteAnnotation = (annotation: W3CAnnotation) => {
   });
 };
 
-const saveTranslation = () => {
-  const link = TranslationExampleSchema.parse({
+const saveBucket = () => {
+  const link = LinkBucketsSchema.parse({
     text: properties.text,
-    annotations: [properties.annotation, linkedTranslation.value],
+    annotations: [properties.annotation, linkedBucket.value],
+    value: { linkType: linkType.value.value },
   });
 
   emits('save', null, link);
 
-  linkedTranslation.value = null;
+  linkedBucket.value = null;
 };
 </script>

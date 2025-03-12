@@ -5,6 +5,7 @@ import {
   ExampleDto,
   PURPOSE_ANNOTATION_SELECT,
   PURPOSE_EXAMPLE,
+  PURPOSE_LINK_BUCKETS,
   PURPOSE_TRANSLATION,
 } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -34,6 +35,7 @@ export class AnnotationTypeRepository {
     let createdAnnotation: Annotation;
     switch (data.type) {
       case PURPOSE_TRANSLATION:
+      case PURPOSE_LINK_BUCKETS:
         createdAnnotation = await this.updateLinks(
           null,
           data as AnnotationLink,
@@ -162,7 +164,12 @@ export class AnnotationTypeRepository {
       data.annotations,
     );
 
-    const linkedAnnotation = createLinks(data.text, data.type, annotations);
+    const linkedAnnotation = createLinks(
+      data.text,
+      data.type,
+      annotations,
+      data.value,
+    );
 
     if (!id) return this.annotationRepository.create(linkedAnnotation);
 
