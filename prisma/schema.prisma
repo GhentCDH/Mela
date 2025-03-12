@@ -98,8 +98,6 @@ model AnnotationTarget {
   annotation_id String
   source_type AnnotationType
   source_id String
-  // TextContent        TextContent? @relation(fields: [text_content_id], references: [id])
-  // text_content_id     String
 }
 
 model Example {
@@ -117,20 +115,20 @@ model Register {
   examples Example[]
 }
 
-model Speech {
-  id   String @id @default(uuid())
-  name String @unique
-  Lema Lema[]
-}
-
-model Lema {
-  id          String   @id @default(uuid())
-  word        String   @unique
-  link        String
-  grammatical Boolean? @default(false)
-  comparative Boolean? @default(false)
-  superlative Boolean? @default(false)
-  participle  Boolean? @default(false)
-  speech      Speech   @relation(fields: [speech_id], references: [id])
-  speech_id   String
-}
+// model Speech {
+//   id   String @id @default(uuid())
+//   name String @unique
+//   Lema Lema[]
+// }
+//
+// model Lema {
+//   id          String   @id @default(uuid())
+//   word        String   @unique
+//   link        String
+//   grammatical Boolean? @default(false)
+//   comparative Boolean? @default(false)
+//   superlative Boolean? @default(false)
+//   participle  Boolean? @default(false)
+//   speech      Speech   @relation(fields: [speech_id], references: [id])
+//   speech_id   String
+// }
