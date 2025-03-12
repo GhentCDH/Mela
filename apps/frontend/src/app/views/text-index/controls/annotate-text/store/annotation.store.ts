@@ -15,12 +15,12 @@ import {
 } from '@ghentcdh/annotations/core';
 import { useNotificationStore } from '@ghentcdh/ui';
 
+import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
+import { useTextRepository } from '../../../../../repository/text.repository';
 import { PREFIX_GENERATED } from '../utils/generate-blocks';
 import { ReloadRef } from '../utils/reload';
 import { AnnotationTester } from '../utils/tester';
 import { TextWithAnnotations } from '../utils/text';
-import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
-import { useTextRepository } from '../../../../../repository/text.repository';
 
 type SelectedIds = { textContentId: string; annotationId: string };
 

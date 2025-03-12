@@ -1,7 +1,14 @@
 <template>
-  <Menu title="Elements" :menu="menuElements" :breadcrumbs="breadcrumbs" />
+  <Menu
+    title="Elements"
+    :menu="menuElements"
+    :breadcrumbs="breadcrumbs"
+  />
 
-  <div v-if="textStore.text" class="mt-2">
+  <div
+    v-if="textStore.text"
+    class="mt-2"
+  >
     <annotate-text
       :store-id="storeId"
       @save-annotation="saveAnnotation"
@@ -9,8 +16,14 @@
       @delete-annotation="deleteAnnotation"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center">
-    <div role="alert" class="alert alert-success bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center"
+  >
+    <div
+      role="alert"
+      class="alert alert-success bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -20,7 +33,12 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>
@@ -33,8 +51,8 @@ import { Btn, Color, Menu } from '@ghentcdh/ui';
 
 import AnnotateText from './controls/annotate-text/annotate-text.vue';
 import type { MODES } from './controls/annotate-text/props';
-import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useAnnotationStore } from './controls/annotate-text/store/annotation.store';
+import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useTextStore } from './text.store';
 
 const textStore = useTextStore();

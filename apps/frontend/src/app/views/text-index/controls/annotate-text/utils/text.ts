@@ -1,12 +1,13 @@
 import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
-import {
-  createTextSelectionAnnotation,
+import type {
   SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
   SourceModelSchema,
   SourceTextSchema,
-  W3CAnnotation,
+  createTextSelectionAnnotation
 } from '@ghentcdh/annotations/core';
 import type { TextAnnotation } from '@ghentcdh/annotations/vue';
 

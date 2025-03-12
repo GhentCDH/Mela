@@ -47,8 +47,8 @@ import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
 import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
-import { useModeStore } from './store/mode.store';
 import { useAnnotationStore } from './store/annotation.store';
+import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
 
 type Properties = { storeId: string };
