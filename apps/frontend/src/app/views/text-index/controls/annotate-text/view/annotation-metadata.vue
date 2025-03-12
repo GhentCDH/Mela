@@ -1,8 +1,6 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">
-      Selected text:
-    </legend>
+    <legend class="fieldset-legend">Selected text:</legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent
@@ -23,25 +21,13 @@
     @change="changeMetadata"
   />
   <div class="flex gap-2 justify-end pb-4">
-    <Btn
-      :color="Color.error"
-      @click="deleteAnnotation"
-    >
-      Delete
-    </Btn>
-    <Btn
-      :disabled="!valid"
-      @click="saveAnnotation"
-    >
-      Save
-    </Btn>
+    <Btn :color="Color.error" @click="deleteAnnotation"> Delete</Btn>
+    <Btn :disabled="!valid" @click="saveAnnotation"> Save</Btn>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {
-  AnnotationSelector,
-  AnnotationType} from '@mela/text/shared';
+import type { AnnotationSelector, AnnotationType } from '@mela/text/shared';
 import {
   AnnotationExampleExampleSchema,
   AnnotationExampleSchema,
@@ -50,16 +36,14 @@ import {
   findExampleMetaData,
   getExampleIdFromUri,
 } from '@mela/text/shared';
-import { pick } from 'lodash-es';
+import { cloneDeep, isEqual, pick } from 'lodash-es';
 import { computed, ref, watch } from 'vue';
 import type { SafeParseReturnType } from 'zod/lib/types';
 
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   findTagging,
-  findTextPositionSelector
+  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import { FormComponent } from '@ghentcdh/json-forms/vue';
 import { Btn, Color, ModalService, SelectComponent } from '@ghentcdh/ui';
@@ -90,6 +74,7 @@ const isExample = computed(() => {
 });
 
 let changedMetadata: AnnotationType;
+let originalMetaData: AnnotationMetadataModel;
 
 const changeMetadata = () => {
   let annotationType: SafeParseReturnType<AnnotationType, AnnotationType>;
@@ -114,6 +99,13 @@ const changeMetadata = () => {
 
   changedMetadata = annotationType.data;
   valid.value = annotationType.success;
+
+  if (
+    !modeStore.activeMode &&
+    !isEqual(originalMetaData, metaDataModel.value)
+  ) {
+    modeStore.changeMode('edit');
+  }
 
   // TODO make it editmode
 };
@@ -142,6 +134,7 @@ const deleteAnnotation = () => {
 watch(
   () => properties.annotation,
   (n) => {
+    modeStore.resetMode();
     const annotation = properties.annotation;
     const type = findTagging(annotation).value ?? 'phrase';
 
@@ -155,7 +148,7 @@ watch(
         }
       : { register: {} };
 
-    metaDataModel.value = {
+    originalMetaData = {
       annotationType: annotationType,
       example: example,
       annotation: {
@@ -167,6 +160,8 @@ watch(
         )?.selector,
       },
     };
+
+    metaDataModel.value = cloneDeep(originalMetaData);
 
     changeMetadata();
   },
