@@ -1,6 +1,7 @@
 import type {
   TextualBody,
   TextualBodyClassifying,
+  TextualBodyClassifyingPurposeEnum,
   W3CAnnotation,
   W3CAnnotationBody,
   W3CAnnotationBodyType,
@@ -26,10 +27,19 @@ export const findBodyType = <B extends W3CAnnotationBody>(
 };
 
 export const findByPurpose =
-  (purpose: string) => (annotation: W3CAnnotation) => {
+  (purpose: TextualBodyClassifyingPurposeEnum) =>
+  (annotation: W3CAnnotation) => {
     return findBodyType<TextualBodyClassifying>(
       'TextualBody',
       (body: TextualBodyClassifying) => body.purpose === purpose,
+    )(annotation);
+  };
+
+export const findByPurposeValue =
+  (purpose: string) => (annotation: W3CAnnotation) => {
+    return findBodyType<TextualBodyClassifying>(
+      'TextualBody',
+      (body: TextualBodyClassifying) => body.value === purpose,
     )(annotation);
   };
 

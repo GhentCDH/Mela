@@ -25,9 +25,13 @@ export const TextualBodySchema = z.object({
 });
 export type TextualBody = z.infer<typeof TextualBodySchema>;
 
+export const TextualBodyClassifyingPurposeEnumSchema = z.enum(['tagging']);
+export type TextualBodyClassifyingPurposeEnum = z.infer<
+  typeof TextualBodyClassifyingPurposeEnumSchema
+>;
 export const TextualBodyClassifyingSchema = z.object({
   type: z.enum(['TextualBody']).default('TextualBody'),
-  purpose: z.enum(['tagging', 'translation', 'example']).default('tagging'),
+  purpose: TextualBodyClassifyingPurposeEnumSchema.default('tagging'),
   value: z.string().optional(),
 });
 export type TextualBodyClassifying = z.infer<

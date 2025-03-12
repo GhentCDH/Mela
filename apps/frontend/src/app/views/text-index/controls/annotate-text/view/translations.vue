@@ -15,40 +15,28 @@
       />
     </li>
   </ul>
-  <fieldset
-    v-if="linkTranslation"
-    class="fieldset"
-  >
-    <legend class="fieldset-legend">
-      Selected translation
-    </legend>
-    <p v-if="!linkedTranslation">
-      Click on an annotation
-    </p>
+  <fieldset v-if="linkTranslation" class="fieldset">
+    <legend class="fieldset-legend">Selected translation</legend>
+    <p v-if="!linkedTranslation">Click on an annotation</p>
     <div v-if="linkedTranslation">
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation">
-          Save translation
-        </Btn>
+        <Btn @click="saveTranslation"> Save translation </Btn>
       </div>
     </div>
   </fieldset>
-  <Btn
-    v-if="!linkTranslation"
-    @click="addLink"
-  >
-    Add translation
-  </Btn>
+  <Btn v-if="!linkTranslation" @click="addLink"> Add translation </Btn>
 </template>
 
 <script setup lang="ts">
-import type { AnnotationType} from '@mela/text/shared';
-import { PURPOSE_TRANSLATION , TranslationExampleSchema } from '@mela/text/shared';
+import type { AnnotationType } from '@mela/text/shared';
+import {
+  PURPOSE_TRANSLATION,
+  TranslationExampleSchema,
+} from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findByPurpose } from '@ghentcdh/annotations/core';
+import { findByPurposeValue, W3CAnnotation } from '@ghentcdh/annotations/core';
 import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
@@ -99,7 +87,7 @@ const translatedText = computed(() => findTextValue(linkedTranslation.value));
 
 const translations = computed(() =>
   properties.links
-    .filter((link) => findByPurpose(PURPOSE_TRANSLATION)(link.annotation))
+    .filter((link) => findByPurposeValue(PURPOSE_TRANSLATION)(link.annotation))
     .map((link) => {
       const translation = link.relations.find(
         (r) => r.id !== properties.annotation.id,
