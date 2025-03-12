@@ -1,10 +1,9 @@
-import {
+import type {
   AnnotationMetadataType,
   AnnotationType,
-  getAnnotationIdFromUri,
-  getAnnotationUri,
   TextContentDto,
 } from '@mela/text/shared';
+import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -16,10 +15,10 @@ import {
 } from '@ghentcdh/annotations/core';
 import { useNotificationStore } from '@ghentcdh/ui';
 
-import { PREFIX_GENERATED } from './generate-blocks';
-import { ReloadRef } from './reload';
-import { AnnotationTester } from './tester';
-import { TextWithAnnotations } from './text';
+import { PREFIX_GENERATED } from '../utils/generate-blocks';
+import { ReloadRef } from '../utils/reload';
+import { AnnotationTester } from '../utils/tester';
+import { TextWithAnnotations } from '../utils/text';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
 

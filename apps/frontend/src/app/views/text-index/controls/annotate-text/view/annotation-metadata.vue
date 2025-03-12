@@ -1,6 +1,8 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">Selected text:</legend>
+    <legend class="fieldset-legend">
+      Selected text:
+    </legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent
@@ -21,37 +23,49 @@
     @change="changeMetadata"
   />
   <div class="flex gap-2 justify-end pb-4">
-    <Btn :color="Color.error" @click="deleteAnnotation"> Delete</Btn>
-    <Btn :disabled="!valid" @click="saveAnnotation"> Save</Btn>
+    <Btn
+      :color="Color.error"
+      @click="deleteAnnotation"
+    >
+      Delete
+    </Btn>
+    <Btn
+      :disabled="!valid"
+      @click="saveAnnotation"
+    >
+      Save
+    </Btn>
   </div>
 </template>
 
 <script setup lang="ts">
+import type {
+  AnnotationSelector,
+  AnnotationType} from '@mela/text/shared';
 import {
   AnnotationExampleExampleSchema,
   AnnotationExampleSchema,
-  AnnotationSelector,
   AnnotationSelectorSchema,
-  AnnotationType,
   ExampleFormSchema,
   findExampleMetaData,
   getExampleIdFromUri,
 } from '@mela/text/shared';
+import { pick } from 'lodash-es';
 import { computed, ref, watch } from 'vue';
+import type { SafeParseReturnType } from 'zod/lib/types';
 
+import type {
+  SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
+import {
+  findTagging,
+  findTextPositionSelector
+} from '@ghentcdh/annotations/core';
 import { FormComponent } from '@ghentcdh/json-forms/vue';
 import { Btn, Color, ModalService, SelectComponent } from '@ghentcdh/ui';
 
+import type { AnnotationMetadataModel } from './props';
 import { IdentifyColor } from '../../identify.color';
-import { AnnotationMetadataModel } from './props';
-import {
-  findTagging,
-  findTextPositionSelector,
-  SourceModel,
-  W3CAnnotation,
-} from '@ghentcdh/annotations/core';
-import { pick } from 'lodash-es';
-import { SafeParseReturnType } from 'zod/lib/types';
 import { useModeStore } from '../store/mode.store';
 
 const annotationTypes = IdentifyColor;

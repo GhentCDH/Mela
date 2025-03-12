@@ -1,12 +1,10 @@
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
 import {
+  createTextSelectionFromText,
   findTagging,
-  findTextPositionSelector
+  findTextPositionSelector,
+  SourceModel,
+  W3CAnnotation,
 } from '@ghentcdh/annotations/core';
-
-import { createTextSelectionFromText } from './edit/text-selection-annotation';
 
 export const PREFIX_GENERATED = 'generated-';
 

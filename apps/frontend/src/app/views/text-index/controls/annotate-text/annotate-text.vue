@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
@@ -47,9 +48,8 @@ import ActiveAnnotation from './active-annotation.vue';
 import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useModeStore } from './store/mode.store';
-import { useAnnotationStore } from './utils/annotation.store';
+import { useAnnotationStore } from './store/annotation.store';
 import { useTextStore } from '../../text.store';
-import { AnnotationType } from '@mela/text/shared';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();

@@ -29,7 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { AnnotationType, findExampleMetaData } from '@mela/text/shared';
+import type { AnnotationType} from '@mela/text/shared';
+import { findExampleMetaData } from '@mela/text/shared';
 import { computed, ref } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
@@ -103,7 +104,7 @@ const modeStore = useModeStore();
 const onValid = (value: boolean) => {
   valid.value = value;
   console.log('valid');
-  if (!valid) {
+  if (!valid.value) {
     modeStore.changeMode('edit');
   }
 };

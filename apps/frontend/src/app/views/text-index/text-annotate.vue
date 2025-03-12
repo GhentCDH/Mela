@@ -20,7 +20,7 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@ import { Btn, Color, Menu } from '@ghentcdh/ui';
 import AnnotateText from './controls/annotate-text/annotate-text.vue';
 import type { MODES } from './controls/annotate-text/props';
 import { useModeStore } from './controls/annotate-text/store/mode.store';
-import { useAnnotationStore } from './controls/annotate-text/utils/annotation.store';
+import { useAnnotationStore } from './controls/annotate-text/store/annotation.store';
 import { useTextStore } from './text.store';
 
 const textStore = useTextStore();

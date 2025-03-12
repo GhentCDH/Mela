@@ -21,25 +21,26 @@
     <div v-if="linkedTranslation">
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation"> Save translation</Btn>
+        <Btn @click="saveTranslation"> Save translation </Btn>
       </div>
     </div>
   </fieldset>
-  <Btn v-if="!linkTranslation" @click="addLink"> Add translation</Btn>
+  <Btn v-if="!linkTranslation" @click="addLink"> Add translation </Btn>
 </template>
 
 <script setup lang="ts">
+import { AnnotationType, PURPOSE_TRANSLATION } from '@mela/text/shared';
+import { TranslationExampleSchema } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
-import { findByPurpose, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findByPurpose } from '@ghentcdh/annotations/core';
 import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { useModeStore } from '../store/mode.store';
-import { PURPOSE_TRANSLATION } from '../utils/edit/linked-annotations';
 import { findTextValue } from '../utils/translation';
-import { AnnotationType, TranslationExampleSchema } from '@mela/text/shared';
 
 const listenerStore = useAnnotationListenerStore()();
 

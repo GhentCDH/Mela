@@ -1,7 +1,7 @@
 import type { Annotation } from '@ghentcdh/mela/generated/types';
 
-import { PREFIX_NEW } from './edit/text-selection-annotation';
 import { PREFIX_GENERATED } from './generate-blocks';
+import { PREFIX_NEW } from '@ghentcdh/annotations/core';
 
 export const AnnotationTester = (annotation: Pick<Annotation, 'id'>) => {
   return {
