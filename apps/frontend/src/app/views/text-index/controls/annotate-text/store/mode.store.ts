@@ -25,6 +25,7 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
   const changeMode = (mode: MODES | null, onSuccess?: () => void) => {
     return new Promise((resolve) => {
       const onChangeSuccess = () => {
+        // TODO reset selected annotation
         activeMode.value = mode;
         onSuccess?.();
         resolve(true);
@@ -42,7 +43,6 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
           else resolve(false);
         },
       });
-      // TODO add warning
     });
   };
 

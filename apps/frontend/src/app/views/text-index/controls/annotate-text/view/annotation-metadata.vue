@@ -22,7 +22,7 @@
   />
   <div class="flex gap-2 justify-end pb-4">
     <Btn :color="Color.error" @click="deleteAnnotation"> Delete</Btn>
-    <Btn :disabled="!valid" @click="saveAnnotation"> Save</Btn>
+    <Btn :disabled="!valid || disabled" @click="saveAnnotation"> Save</Btn>
   </div>
 </template>
 
@@ -56,7 +56,6 @@ const annotationTypes = IdentifyColor;
 
 type Properties = {
   selectedText: string;
-  disabled: boolean;
   annotation: W3CAnnotation;
   textContent: SourceModel;
 };
@@ -69,6 +68,9 @@ const valid = ref(false);
 const metaDataModel = ref<AnnotationMetadataModel>();
 const modeStore = useModeStore();
 
+const disabled = computed(
+  () => modeStore.activeMode && modeStore.activeMode !== 'edit',
+);
 const isExample = computed(() => {
   return metaDataModel.value.annotationType.id === 'example';
 });
@@ -106,8 +108,6 @@ const changeMetadata = () => {
   ) {
     modeStore.changeMode('edit');
   }
-
-  // TODO make it editmode
 };
 
 const saveAnnotation = () => {
