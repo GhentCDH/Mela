@@ -1,14 +1,17 @@
+import type {
+  AnnotationSelector} from '@mela/text/shared';
 import {
-  findTagging,
-  findTargetType,
-  W3CAnnotation,
-  type W3CAnnotationTarget,
-} from '@ghentcdh/annotations/core';
-import {
-  AnnotationSelector,
   AnnotationSelectorSchema,
   getTextContentIdFromUri,
 } from '@mela/text/shared';
+
+import type {
+  W3CAnnotation,
+  type W3CAnnotationTarget,
+  findTagging,
+  findTargetType,
+} from '@ghentcdh/annotations/core';
+
 
 export const w3cAnnotationToAnnotationSelector = (
   annotation: W3CAnnotation,

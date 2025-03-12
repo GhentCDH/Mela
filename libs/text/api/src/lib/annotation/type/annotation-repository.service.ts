@@ -108,14 +108,12 @@ export class AnnotationTypeRepository {
       .filter((s) => s.source_type === 'example')
       .map((s) => s.source_id) as string[];
 
-    return [
-      relatedAnnotations,
-      examples,
+    return Promise.all([
       this.prisma.annotation.deleteMany({
         where: { id: { in: relatedAnnotations } },
       }),
       this.prisma.example.deleteMany({ where: { id: { in: examples } } }),
-    ];
+    ]);
   }
 
   // region example
