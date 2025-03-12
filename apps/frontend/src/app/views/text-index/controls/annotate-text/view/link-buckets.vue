@@ -2,7 +2,11 @@
   <h2>Link buckets</h2>
 
   <ul class="list">
-    <li v-for="t in linkBuckets" :key="t.link.id" class="list-row !px-0 !gap-2">
+    <li
+      v-for="t in linkBuckets"
+      :key="t.link.id"
+      class="list-row !px-0 !gap-2"
+    >
       <div>
         <small>{{ t.translation }}</small> ({{ t.linkType }})
       </div>
@@ -13,9 +17,16 @@
       />
     </li>
   </ul>
-  <fieldset v-if="linkBucket" class="fieldset">
-    <legend class="fieldset-legend">Selected LinkBucket</legend>
-    <p v-if="!linkedBucket">Click on an annotation</p>
+  <fieldset
+    v-if="linkBucket"
+    class="fieldset"
+  >
+    <legend class="fieldset-legend">
+      Selected LinkBucket
+    </legend>
+    <p v-if="!linkedBucket">
+      Click on an annotation
+    </p>
     <div v-if="linkedBucket">
       {{ translatedText?.value }}
       <SelectComponent
@@ -24,11 +35,18 @@
         :options="linkTypes"
       />
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveBucket"> Save LinkBucket </Btn>
+        <Btn @click="saveBucket">
+          Save LinkBucket
+        </Btn>
       </div>
     </div>
   </fieldset>
-  <Btn v-if="!linkBucket" @click="addLink"> Add LinkBucket </Btn>
+  <Btn
+    v-if="!linkBucket"
+    @click="addLink"
+  >
+    Add LinkBucket
+  </Btn>
 </template>
 
 <script setup lang="ts">
