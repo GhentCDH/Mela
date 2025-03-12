@@ -1,9 +1,4 @@
-import type {
-  AnnotationMetadataType,
-  TextContentDto} from '@mela/text/shared';
-import {
-  getAnnotationUri
-} from '@mela/text/shared';
+import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
 import type {
@@ -12,13 +7,10 @@ import type {
 import {
   SourceModelSchema,
   SourceTextSchema,
-  TextualBodyClassifyingSchema,
-  findAnnotations,
-  updateBody
+  createTextSelectionAnnotation
 } from '@ghentcdh/annotations/core';
 import type { TextAnnotation } from '@ghentcdh/annotations/vue';
 
-import { createTextSelectionAnnotation } from './edit/text-selection-annotation';
 import { generateW3CAnnotationBlocks } from './generate-blocks';
 
 export class TextWithAnnotations {
@@ -39,11 +31,11 @@ export class TextWithAnnotations {
     });
   }
 
-  private getSource(sourceId: string): SourceModel | undefined {
+  public getSource(sourceId: string): SourceModel | undefined {
     return this.sources.find((s) => s.id === sourceId);
   }
 
-  private getSourceByUri(sourceUri: string): SourceModel | undefined {
+  public getSourceByUri(sourceUri: string): SourceModel | undefined {
     return this.sources.find((s) => s.uri === sourceUri);
   }
 
@@ -101,30 +93,5 @@ export class TextWithAnnotations {
 
   public getAnnotations() {
     return this.annotations;
-  }
-
-  public changeType(id: string, textType: AnnotationMetadataType) {
-    let annotation: W3CAnnotation;
-
-    const update = (a: W3CAnnotation) => {
-      annotation = updateBody(
-        a,
-        TextualBodyClassifyingSchema.parse({ value: textType }),
-      );
-
-      return a;
-    };
-
-    this.annotations = this.annotations.map((a) =>
-      a.id === id ? update(a) : a,
-    );
-
-    return annotation;
-  }
-
-  public findTargets(sourceUri: string) {
-    return findAnnotations(this.annotations).findInTargetSource(
-      getAnnotationUri({ id: sourceUri }),
-    );
   }
 }

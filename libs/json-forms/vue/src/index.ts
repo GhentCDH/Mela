@@ -8,5 +8,8 @@ export { default as FormWithActions } from './form-with-actions.component.vue';
 
 export { default as FormComponent } from './form.component.vue';
 
+export { default as FormModal } from './modal/form-modal.vue';
+
 export * from './standalone';
 export * from './table';
+export * from './repository';

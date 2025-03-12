@@ -2,6 +2,7 @@
   <Autocomplete
     v-bind="controlWrapper"
     v-model="control.data"
+    :enabled="control.enabled"
     :config="appliedOptions"
     :label-key="field.label"
     :value-key="field.id"
@@ -19,7 +20,7 @@ import type {
 import { rankWith } from '@jsonforms/core';
 import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 import { Autocomplete, useVanillaControlCustom } from '@ghentcdh/ui';
 

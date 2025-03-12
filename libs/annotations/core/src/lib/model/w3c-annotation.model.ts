@@ -27,7 +27,7 @@ export type TextualBody = z.infer<typeof TextualBodySchema>;
 
 export const TextualBodyClassifyingSchema = z.object({
   type: z.enum(['TextualBody']).default('TextualBody'),
-  purpose: z.enum(['tagging', 'translation']).default('tagging'),
+  purpose: z.enum(['tagging', 'translation', 'example']).default('tagging'),
   value: z.string().optional(),
 });
 export type TextualBodyClassifying = z.infer<
@@ -38,9 +38,9 @@ export const SpecificResourceSchema = z.object({
   id: z.string().optional(),
   type: z.enum(['SpecificResource']).default('SpecificResource'),
   purpose: z.enum(['describing']).default('describing'),
-  source: z.string(),
   //TODO  Value is not part of the w3c spec, but we need it to store the data for now f.e. the example
   value: z.any(),
+  source: z.string().optional(),
 });
 export type SpecificResource = z.infer<typeof SpecificResourceSchema>;
 
@@ -60,7 +60,7 @@ export const TextTargetSchema = z.object({
   source: z.string(),
   textDirection: z.enum(['ltr', 'rtl']).optional(),
   type: z.enum(['Text']).default('Text'),
-  processingLanguage: z.string(),
+  processingLanguage: z.string().optional(),
   selector: TextPositionSelectorSchema.optional(),
 });
 
@@ -74,7 +74,7 @@ export const AnnotationContext = z
 
 export const W3CAnnotationSchema = z.object({
   id: z.string(),
-  '@context': z.string(),
+  '@context': z.string().default('http://www.w3.org/ns/anno.jsonld'),
   motivation: z.enum(['classifying', 'tagging']).default('classifying'),
   body: z.array(W3CAnnotationBodySchema).or(W3CAnnotationBodySchema),
   target: z.array(W3CAnnotationTargetSchema).or(W3CAnnotationTargetSchema),

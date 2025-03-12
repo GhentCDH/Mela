@@ -49,10 +49,11 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   private async createOrConnectTarget(
-    annotation_id: string,
+    annotation_id: string | null,
     dto: CreateAnnotationDto,
   ) {
     if (annotation_id)
+      // TODO decide if this is the best to do?
       await this.prisma.annotationTarget.deleteMany({
         where: {
           annotation_id,
@@ -63,10 +64,11 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   private async createOrConnectBody(
-    annotation_id: string,
+    annotation_id: string | null,
     dto: CreateAnnotationDto,
   ) {
     if (annotation_id)
+      // TODO decide if this is the best to do?
       await this.prisma.annotationBody.deleteMany({
         where: {
           annotation_id,
@@ -77,11 +79,13 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   override async delete(id: string): Promise<Annotation> {
-    // TODO delete annotation relations
+    throw new Error('Use AnnotationtypeRepository.delete instead');
+  }
 
-    return this.prisma.annotation.delete({
+  public findAnnotations(annotations: Array<Pick<Annotation, 'id'>>) {
+    return this.prisma.annotation.findMany({
       where: {
-        id,
+        id: { in: annotations.map((a) => a.id) },
       },
     });
   }

@@ -43,11 +43,8 @@ import type { ResponseData } from '@ghentcdh/json-forms/core';
 
 import ControlWrapper from './core/ControlWrapper.vue';
 import type { ControlEmits } from './core/emits';
-import type {
-  AutoCompleteProperties} from './core/properties';
-import {
-  DefaultAutoCompleteProperties,
-} from './core/properties';
+import type { AutoCompleteProperties } from './core/properties';
+import { DefaultAutoCompleteProperties } from './core/properties';
 
 const properties = withDefaults(
   defineProps<AutoCompleteProperties>(),

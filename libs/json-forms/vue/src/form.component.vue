@@ -9,7 +9,6 @@ import { tailwindRenderers } from './renderes';
 import type { StepperEventListener } from './renderes/layouts/stepper.store';
 import { useStepperStore } from './renderes/layouts/stepper.store';
 
-
 type Data = {
   [key: string]: any;
 };
@@ -28,10 +27,12 @@ const properties = withDefaults(
     events?: {
       stepper?: StepperEventListener;
     };
+    disabled?: boolean;
   }>(),
   {
     renderers: [] as JsonFormsRendererRegistryEntry[],
     events: {} as any,
+    disabled: false,
   },
 );
 
@@ -83,6 +84,7 @@ const renderers = Object.freeze([
       :schema="schema"
       :uischema="uischema"
       :renderers="renderers"
+      :enabled="!disabled"
       @change="onChange"
       @submit="onSubmit"
     />

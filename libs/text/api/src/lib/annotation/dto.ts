@@ -6,6 +6,7 @@ import {
   getTextContentIdFromUri,
   getTypeFromUri,
 } from '@mela/text/shared';
+import { pick } from 'lodash-es';
 
 import {
   W3CAnnotationBody,
@@ -23,7 +24,7 @@ const mapBody = (body: W3CAnnotationBody): AnnotationBodyWithRelations => {
   // const source_id = getSourceIdFromUri(uri);
 
   return {
-    value: JSON.stringify(body),
+    value: body as any,
     // text_content_id: getTextContentIdFromUri(uri),
     // example_id: getExampleIdFromUri(uri),
     // source_id,
@@ -44,7 +45,7 @@ const mapTarget = (
   const source_id = getIdFromUri(source_type)(uri);
 
   return {
-    value: JSON.stringify(target),
+    value: target as any,
     source_id,
     source_type,
   } as AnnotationTargetWithRelations;
@@ -52,7 +53,8 @@ const mapTarget = (
 
 const createSchema = MelaAnnotationSchema.transform((schema) => {
   return {
-    ...schema,
+    // ...schema,
+    ...pick(schema, ['id', 'motivation', 'text_id']),
     annotationBody: getBody(schema as any).map(mapBody),
     annotationTarget: getTarget(schema as any).map(mapTarget),
   };

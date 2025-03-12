@@ -9,152 +9,77 @@
         />
       </div>
     </template>
-    <fieldset class="fieldset">
-      <legend class="fieldset-legend">
-        Selected text:
-      </legend>
-      {{ selectedText?.value }}
-    </fieldset>
-    <SelectComponent
-      v-model="annotationType"
-      label="Annotation type"
-      :options="annotationTypes"
-      @change="changeType"
-    />
-    <div class="flex gap-2 justify-end pb-4">
-      <Btn
-        :color="Color.error"
-        @click="deleteActiveAnnotation"
-      >
-        Delete
-      </Btn>
-      <Btn @click="saveActiveAnnotation">
-        Save
-      </Btn>
-    </div>
-    <Links
+    <AnnotationMetadata
       :annotation="activeAnnotation"
-      :links="links"
-      @save-annotation="saveAnnotation"
-      @delete-annotation="deleteAnnotation"
+      :selected-text="selectedText"
+      :text-content="textContent"
+      @save="saveAnnotation"
+      @delete="deleteAnnotationAndClose"
     />
 
-    <template #actions />
+    <Translations
+      :annotation="activeAnnotation"
+      :links="links"
+      :text="text"
+      @save="saveAnnotation"
+      @delete="deleteAnnotation"
+    />
   </Card>
 </template>
 
 <script setup lang="ts">
-import type { AnnotationMetadataType } from '@mela/text/shared';
-import { cloneDeep, isEqual } from 'lodash-es';
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import type { AnnotationType } from '@mela/text/shared';
+import { computed } from 'vue';
 
-import type { TextualBody, W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findBodyType, findTagging } from '@ghentcdh/annotations/core';
-import {
-  Btn,
-  Card,
-  Color,
-  IconEnum,
-  ModalService,
-  SelectComponent,
-} from '@ghentcdh/ui';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findTextPositionSelector } from '@ghentcdh/annotations/core';
+import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
-import { IdentifyColor } from '../identify.color';
 import type { AnnotationWithRelations } from './props';
-import { AnnotationTester } from './utils/tester';
 import type { TextWithAnnotations } from './utils/text';
-import { findTextValue } from './utils/translation';
-import { changeAnnotationSelection } from './utils/warning';
-import Links from './view/links.vue';
-
-const annotationTypes = IdentifyColor;
-
-const annotationType = ref<{ label: string; id: string }>(IdentifyColor[0]);
+import { getTextSelection } from './utils/translation';
+import AnnotationMetadata from './view/annotation-metadata.vue';
+import Translations from './view/translations.vue';
 
 type Properties = {
-  // annotationId: string;
   textWithAnnotations: TextWithAnnotations;
   activeAnnotation: W3CAnnotation;
   links: AnnotationWithRelations[];
+  text: Text;
+  textContent: SourceModel;
 };
 const properties = defineProps<Properties>();
-let originalAnnotation: W3CAnnotation;
 
 const emits = defineEmits<{
   changeAnnotation: [W3CAnnotation];
-  deleteAnnotation: [string];
-  saveAnnotation: [W3CAnnotation];
+  deleteAnnotation: [W3CAnnotation];
+  saveAnnotation: [string | null, AnnotationType];
   closeAnnotation: [];
 }>();
 
-const changeType = () => {
-  const annotation = properties.textWithAnnotations.changeType(
-    properties.activeAnnotation.id,
-    annotationType.value.id as AnnotationMetadataType,
-  );
-  emits('changeAnnotation', annotation);
+const deleteAnnotation = (annotation: W3CAnnotation) => {
+  emits('deleteAnnotation', annotation);
+};
+const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
+  deleteAnnotation(annotation);
+  closeAnnotation();
 };
 
-const deleteAnnotation = (annotationId: string) => {
-  emits('deleteAnnotation', annotationId);
+const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
+  emits('saveAnnotation', id, annotation);
 };
 
-const deleteActiveAnnotation = () => {
-  emits('deleteAnnotation', properties.activeAnnotation.id);
-  ModalService.showConfirm({
-    title: 'Delete annotation',
-    message: 'Are you sure to delete this annotation, all links will be lost?',
-    onClose: (result) => {
-      if (result) {
-        deleteAnnotation(properties.activeAnnotation.id);
-      }
-    },
-  });
-};
-
-const saveActiveAnnotation = () => {
-  saveAnnotation(
-    properties.textWithAnnotations.getAnnotation(
-      properties.activeAnnotation.id,
-    ),
-  );
-};
-
-const saveAnnotation = (annotation: W3CAnnotation) => {
-  emits('saveAnnotation', annotation);
-};
-
-const selectedText = computed(() => findTextValue(properties.activeAnnotation));
-
-watch(
-  () => properties.activeAnnotation,
-  (n) => {
-    const annotation = properties.activeAnnotation;
-    const type = findTagging(annotation).value ?? 'phrase';
-    originalAnnotation = cloneDeep(annotation);
-    annotationType.value =
-      IdentifyColor.find((c) => c.id === type) ?? IdentifyColor[0];
-  },
-  { immediate: true },
+const textAnnotation = computed(() => ({
+  id: properties.activeAnnotation.id,
+  ...findTextPositionSelector(properties.textContent.uri)(
+    properties.activeAnnotation,
+  )?.selector,
+}));
+const selectedText = computed(() =>
+  getTextSelection(properties.textContent, textAnnotation.value),
 );
 
 const closeAnnotation = async () => {
-  const activeAnnotation = properties.activeAnnotation;
-  const confirmed = await changeAnnotationSelection(
-    !isEqual(activeAnnotation, originalAnnotation),
-    activeAnnotation,
-  );
-
-  if (confirmed.undoChanges) {
-    const textWithAnnotations = properties.textWithAnnotations;
-    if (AnnotationTester(originalAnnotation).isNew()) {
-      textWithAnnotations.cancelAnnotations(originalAnnotation.id);
-    } else {
-      properties.textWithAnnotations.setAnnotation(originalAnnotation);
-    }
-  }
-  if (confirmed.confirmed) {
-    emits('closeAnnotation');
-  }
+  emits('closeAnnotation');
 };
 </script>

@@ -11,6 +11,8 @@ const warningMessages: Record<MODES, string> = {
   'create-annotation':
     'Creation of annotation is in progress. Are you sure you want to proceed?',
   edit: 'Edit of annotation is in progress. Are you sure you want to proceed',
+  translate:
+    'Translation of annotation is in progress. Are you sure you want to proceed?',
 };
 
 export const useModeStore = defineStore('annotation_mode_store', () => {
@@ -20,10 +22,10 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
     activeMode.value = null;
   };
 
-  const changeMode = (mode: MODES, onSuccess?: () => void) => {
+  const changeMode = (mode: MODES | null, onSuccess?: () => void) => {
     return new Promise((resolve) => {
-      console.log('change mode', mode);
       const onChangeSuccess = () => {
+        // TODO reset selected annotation
         activeMode.value = mode;
         onSuccess?.();
         resolve(true);
@@ -33,16 +35,14 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
         onChangeSuccess();
         return;
       }
-
       ModalService.showConfirm({
         title: 'Warning',
-        message: warningMessages[mode],
+        message: warningMessages[activeMode.value],
         onClose: (result) => {
           if (result.confirmed) onChangeSuccess();
           else resolve(false);
         },
       });
-      // TODO add warning
     });
   };
 

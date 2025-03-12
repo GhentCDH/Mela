@@ -1,4 +1,8 @@
-import type { AnnotationMetadataType, TextContentDto } from '@mela/text/shared';
+import type {
+  AnnotationMetadataType,
+  AnnotationType,
+  TextContentDto,
+} from '@mela/text/shared';
 import { getAnnotationIdFromUri, getAnnotationUri } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
@@ -11,12 +15,15 @@ import {
 } from '@ghentcdh/annotations/core';
 import { useNotificationStore } from '@ghentcdh/ui';
 
-import { PREFIX_GENERATED } from './generate-blocks';
-import { ReloadRef } from './reload';
-import { AnnotationTester } from './tester';
-import { TextWithAnnotations } from './text';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
+import { PREFIX_GENERATED } from '../utils/generate-blocks';
+import { ReloadRef } from '../utils/reload';
+import { AnnotationTester } from '../utils/tester';
+import { TextWithAnnotations } from '../utils/text';
+import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
+
+type SelectedIds = { textContentId: string; annotationId: string };
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
@@ -30,18 +37,28 @@ export const useAnnotationStore = (id: string) =>
     const notificationStore = useNotificationStore();
     const textId = ref<string>(null);
     // const annotations = ref<TranslatedAnnotation[]>([]);
-    const selectedAnnotationId = ref<string | null>(null);
+    const selectedIds = ref<SelectedIds | null>(null);
     const textRepository = useTextRepository();
     const annotationRepository = useAnnotationRepository();
     const activeAnnotation = computed(() =>
-      selectedAnnotationId.value
-        ? textWithAnnotationsRef.value.getAnnotation(selectedAnnotationId.value)
+      selectedIds.value?.annotationId
+        ? textWithAnnotationsRef.value.getAnnotation(
+            selectedIds.value?.annotationId,
+          )
+        : null,
+    );
+    const activeTextContent = computed(() =>
+      selectedIds.value?.textContentId
+        ? textWithAnnotationsRef.value.getSourceByUri(
+            selectedIds.value?.textContentId,
+          )
         : null,
     );
     const activeAnnotationLinks = computed(() => {
-      if (!selectedAnnotationId.value) return [];
+      const annotationId = selectedIds.value?.annotationId;
+      if (!annotationId) return [];
 
-      const sourceUri = getAnnotationUri({ id: selectedAnnotationId.value });
+      const sourceUri = getAnnotationUri({ id: annotationId });
 
       const annotations = w3cAnnotations.value;
       return findAnnotations(w3cAnnotations.value)
@@ -91,55 +108,36 @@ export const useAnnotationStore = (id: string) =>
       );
 
       reloadFromTextWithAnnotations();
-      selectAnnotation(newAnnotation.id);
+      selectAnnotation({
+        textContentId: sourceId,
+        annotationId: newAnnotation.id,
+      });
 
       return newAnnotation;
     };
 
-    const createAnnotations = async (newAnnotations: W3CAnnotation[]) => {
+    const createAnnotations = async (newAnnotations: AnnotationType[]) => {
       if (newAnnotations.length === 0) return;
 
       loading.value = true;
-      await textRepository
-        .createAnnotations(textId.value, newAnnotations)
-        .then(() => {
-          notificationStore.info('Annotations saved');
-        })
-        .catch(() => {
-          notificationStore.error('Failed to save annotations');
-        });
+      await annotationRepository.createMulti(newAnnotations);
 
       reload.reload();
     };
 
-    const saveAnnotations = async (annotations: W3CAnnotation[]) => {
-      if (annotations.length === 0) return;
-
-      loading.value = true;
-      await annotationRepository
-        .patchAnnotations(annotations)
-        .then(() => {
-          notificationStore.info('Annotations saved');
-        })
-        .catch(() => {
-          notificationStore.error('Failed to save annotations');
-        });
-
-      reload.reload();
-    };
-
-    const selectAnnotation = (id: string | undefined | null) => {
+    const selectAnnotation = (ids: {
+      annotationId: string | undefined | null;
+      textContentId: string | undefined | null;
+    }) => {
       resetSelection();
-      if (!id) {
+      if (!ids || !ids.textContentId || !ids.annotationId) {
         // TODO  showAllTranslations();
-        selectedAnnotationId.value = null;
+        selectedIds.value = null;
         return null;
       }
 
-      const annotation = w3cAnnotations.value.find((a) => a.id === id);
-
-      selectedAnnotationId.value = id;
-      return selectedAnnotationId;
+      selectedIds.value = ids;
+      return ids;
     };
 
     const autoGenerateBlocks = (sourceId: string) => {
@@ -151,15 +149,22 @@ export const useAnnotationStore = (id: string) =>
     };
 
     const resetSelection = () => {
-      selectedAnnotationId.value = null;
+      selectedIds.value = null;
     };
 
-    const saveOrCreateAnnotation = async (annotation: W3CAnnotation) => {
-      if (!annotation.id || AnnotationTester(annotation).isNew()) {
+    const saveOrCreateAnnotation = async (
+      id: string | null,
+      annotation: AnnotationType,
+    ) => {
+      if (!id || AnnotationTester(id).isNew()) {
         return createAnnotations([annotation]);
       }
+      loading.value = true;
+      const saved = await annotationRepository.patch(id, annotation);
 
-      return saveAnnotations([annotation]);
+      reload.reload();
+
+      return saved;
     };
 
     const deleteAnnotation = async (annotationId: string) => {
@@ -169,18 +174,11 @@ export const useAnnotationStore = (id: string) =>
       }
 
       loading.value = true;
-      await annotationRepository
-        .deleteAnnotation(annotationId)
-        .then(() => {
-          notificationStore.info('Annotation deleted');
-        })
-        .catch(() => {
-          notificationStore.error('Failed to delete annotation');
-        });
+      await annotationRepository.delete(annotationId);
 
       reload.reload();
 
-      if (annotationId == selectedAnnotationId.value) resetSelection();
+      if (annotationId == selectedIds.value?.annotationId) resetSelection();
     };
 
     const reloadFromTextWithAnnotations = () => {
@@ -189,7 +187,6 @@ export const useAnnotationStore = (id: string) =>
 
     return {
       sources,
-      selectedAnnotationId,
       textWithAnnotations: textWithAnnotationsRef,
       annotations: w3cAnnotations,
 
@@ -203,11 +200,14 @@ export const useAnnotationStore = (id: string) =>
       autoGenerateBlocks,
       saveGeneratedBlocks: () =>
         createAnnotations(
-          textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
+          w3cAnnotationsToAnnotationSelectors(
+            textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
+          ),
         ),
       cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
 
       activeAnnotation,
+      activeTextContent,
       activeAnnotationLinks,
     };
   })();

@@ -6,6 +6,7 @@ export * from './lib/text/text.schema';
 
 export * from './lib/annotation/annotation.schema';
 export * from './lib/annotation/annotation.utils';
+export * from './lib/annotation/annotation-type.schema';
 
 export * from './lib/utils/uri';
 export * from './lib/example/example.schema';

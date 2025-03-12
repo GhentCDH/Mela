@@ -36,24 +36,25 @@ export const useTextStore = defineStore('textStore', () => {
   };
   const httpRequest = useHttpRequest();
 
+  const defaultSource = {
+    language: 'gr',
+    content: '',
+    text_type: 'SOURCE',
+  };
+
+  const defaultTranslation = {
+    language: 'en',
+    content: '',
+    text_type: 'TRANSLATION',
+  };
+
   const text = computedAsync(() => {
     if (!textId.value) return null;
 
     if (textId.value === 'new')
       return Promise.resolve({
         name: '',
-        textContent: [
-          {
-            language: 'Greek',
-            content: '',
-            text_type: 'SOURCE',
-          },
-          {
-            language: 'English',
-            content: '',
-            text_type: 'TRANSLATION',
-          },
-        ],
+        textContent: [{ ...defaultSource }, { ...defaultTranslation }],
       } as unknown as Partial<TextWithRelations>);
 
     return httpRequest
@@ -61,16 +62,10 @@ export const useTextStore = defineStore('textStore', () => {
       .then((text) => {
         const textContent = [
           text.textContent?.find((t) => t.text_type === 'SOURCE') ??
-            ({
-              language: 'Greek',
-              content: '',
-              text_type: 'SOURCE',
-            } as TextContentWithRelations),
+            ({ ...defaultSource } as TextContentWithRelations),
           text.textContent?.find((t) => t.text_type === 'TRANSLATION') ??
             ({
-              language: 'English',
-              content: '',
-              text_type: 'TRANSLATION',
+              ...defaultTranslation,
             } as TextContentWithRelations),
         ];
         return { ...text, textContent };
@@ -99,15 +94,11 @@ export const useTextStore = defineStore('textStore', () => {
     const textSource = [
       textContent.find((t) => t.text_type === 'SOURCE') ??
         ({
-          language: 'gr',
-          content: '',
-          text_type: 'SOURCE',
+          ...defaultSource,
         } as TextContentDto),
       textContent.find((t) => t.text_type === 'TRANSLATION') ??
         ({
-          language: 'en',
-          content: '',
-          text_type: 'TRANSLATION',
+          ...defaultTranslation,
         } as TextContentDto),
     ];
 

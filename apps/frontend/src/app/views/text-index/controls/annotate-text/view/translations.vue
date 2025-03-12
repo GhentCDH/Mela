@@ -1,25 +1,20 @@
 <template>
-  <h2>Links</h2>
+  <h2>Translations</h2>
 
-  <fieldset class="fieldset">
-    <legend class="fieldset-legend">
-      Translations
-    </legend>
-    <ul class="list">
-      <li
-        v-for="t in translations"
-        :key="t.link.id"
-        class="list-row !px-0 !gap-2"
-      >
-        <div>{{ t.translation }}</div>
-        <Btn
-          :color="Color.secondary"
-          :icon="IconEnum.Delete"
-          @click="deleteAnnotation(t.link)"
-        />
-      </li>
-    </ul>
-  </fieldset>
+  <ul class="list">
+    <li
+      v-for="t in translations"
+      :key="t.link.id"
+      class="list-row !px-0 !gap-2"
+    >
+      <div>{{ t.translation }}</div>
+      <Btn
+        :color="Color.secondary"
+        :icon="IconEnum.Delete"
+        @click="deleteAnnotation(t.link)"
+      />
+    </li>
+  </ul>
   <fieldset
     v-if="linkTranslation"
     class="fieldset"
@@ -48,33 +43,34 @@
 </template>
 
 <script setup lang="ts">
+import type { AnnotationType} from '@mela/text/shared';
+import { PURPOSE_TRANSLATION , TranslationExampleSchema } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import {
-  findAnnotations,
-  findByPurpose,
-  findRelatedAnnotation,
-} from '@ghentcdh/annotations/core';
+import { findByPurpose } from '@ghentcdh/annotations/core';
 import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
-import { createTranslationAnnotation } from '../utils/edit/linked-annotations';
+import { useModeStore } from '../store/mode.store';
 import { findTextValue } from '../utils/translation';
 
 const listenerStore = useAnnotationListenerStore()();
 
-const linkTranslation = ref(false);
+const modeStore = useModeStore();
+
+const linkTranslation = computed(() => modeStore.activeMode === 'translate');
 
 type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
+  text: Text;
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
-  saveAnnotation: [W3CAnnotation];
-  deleteAnnotation: [string];
+  save: [string | null, AnnotationType];
+  delete: [W3CAnnotation];
 }>();
 
 const linkedTranslation = ref();
@@ -103,7 +99,7 @@ const translatedText = computed(() => findTextValue(linkedTranslation.value));
 
 const translations = computed(() =>
   properties.links
-    .filter((link) => findByPurpose('translation')(link.annotation))
+    .filter((link) => findByPurpose(PURPOSE_TRANSLATION)(link.annotation))
     .map((link) => {
       const translation = link.relations.find(
         (r) => r.id !== properties.annotation.id,
@@ -115,32 +111,30 @@ const translations = computed(() =>
       };
     }),
 );
-
 const addLink = () => {
-  linkTranslation.value = true;
+  modeStore.changeMode('translate');
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   ModalService.showConfirm({
     title: 'Delete link',
-    message: 'Are you sure to delete this link',
+    message: 'Are you sure to delete this translation',
     onClose: (result) => {
-      if (result) {
-        emits('deleteAnnotation', annotation.id);
+      if (result.confirmed) {
+        emits('delete', annotation);
       }
     },
   });
 };
 
 const saveTranslation = () => {
-  const link = createTranslationAnnotation(
-    properties.annotation,
-    linkedTranslation.value,
-  );
+  const link = TranslationExampleSchema.parse({
+    text: properties.text,
+    annotations: [properties.annotation, linkedTranslation.value],
+  });
 
-  emits('saveAnnotation', link);
+  emits('save', null, link);
 
   linkedTranslation.value = null;
-  linkTranslation.value = false;
 };
 </script>

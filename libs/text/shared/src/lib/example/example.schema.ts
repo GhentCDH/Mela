@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import {
   ControlBuilder,
@@ -8,16 +8,14 @@ import {
   createSchema,
 } from '@ghentcdh/json-forms/core';
 import { ExampleForm } from '@ghentcdh/mela/generated/forms';
-import type {
-  ExampleWithRelations} from '@ghentcdh/mela/generated/types';
-import {
-  ExampleSchema,
-  RegisterSchema,
-} from '@ghentcdh/mela/generated/types';
+import type { ExampleWithRelations } from '@ghentcdh/mela/generated/types';
 
+import { AnnotationExampleExampleSchema } from '../annotation/annotation-type.schema';
 import { RegisterFormSchema } from '../register/register.schema';
 
-const uiSchema = LayoutBuilder.vertical<ExampleWithRelations>()
+const uiSchema = LayoutBuilder.vertical<
+  z.infer<typeof AnnotationExampleExampleSchema>
+>()
   .addControls(
     ControlBuilder.asObject('register').autocomplete({
       uri: `${RegisterFormSchema.schema.uri}?filter=name:`,
@@ -40,19 +38,11 @@ const filterSchema = LayoutBuilder.vertical<ExampleWithRelations>()
   .addControls(ControlBuilder.properties('name'))
   .build();
 
-const dtoSchema = ExampleSchema.pick({
-  name: true,
-}).extend({
-  register: RegisterSchema.extend({
-    id: z.string().optional(),
-  }),
-});
-
-export type ExampleDto = z.infer<typeof dtoSchema>;
+export type ExampleDto = z.infer<typeof AnnotationExampleExampleSchema>;
 
 export const ExampleFormSchema = createSchema({
   uiSchema,
-  dtoSchema,
+  dtoSchema: AnnotationExampleExampleSchema,
   filterSchema,
   jsonSchema: ExampleForm,
   tableSchema,

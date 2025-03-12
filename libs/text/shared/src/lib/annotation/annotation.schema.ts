@@ -1,3 +1,4 @@
+import { pick } from 'lodash-es';
 import { z } from 'zod';
 
 import {
@@ -34,8 +35,6 @@ export const AnnotationContext = z
   .default('http://www.w3.org/ns/anno.jsonld');
 
 export const MelaAnnotationSchema = AnnotationSchema.omit({
-  body: true,
-  target: true,
   id: true,
   text_id: true,
 }).extend({
@@ -44,8 +43,7 @@ export const MelaAnnotationSchema = AnnotationSchema.omit({
 });
 
 export const mapAnnotationPart = (data: AnnotationBody | AnnotationTarget) => {
-  const value = JSON.parse(data.value) as any;
-  const { source_type, source_id } = data as any;
+  const { source_type, source_id, value } = data as any;
   const source = createUri(source_type)({ id: source_id });
 
   return { ...value, source };
@@ -62,26 +60,18 @@ export const MelaAnnotationReturnSchema = AnnotationSchema.pick({
   })
   .transform((data) => {
     return {
-      ...data,
+      ...pick(data, ['id', 'motivation', '@context']),
       body: data.annotationBody?.map(mapAnnotationPart),
       target: data.annotationTarget?.map(mapAnnotationPart),
-      mapAnnotationTarget: undefined,
-      mapAnnotationBody: undefined,
     };
   });
 
-export const MelaAnnotationPageSchema = z
-  .object({
-    '@context': AnnotationContext,
-    type: z.enum(['AnnotationPage']).default('AnnotationPage'),
-    items: z.array(MelaAnnotationReturnSchema),
-  })
-  .transform((data) => {
-    return {
-      ...data,
-      items: data.items.map((item) => MelaAnnotationReturnSchema.parse(item)),
-    };
-  });
+export const MelaAnnotationPageSchema = z.object({
+  '@context': AnnotationContext,
+  type: z.enum(['AnnotationPage']).default('AnnotationPage'),
+  items: z.array(MelaAnnotationReturnSchema),
+});
+
 export type MelaAnnotationPage = z.infer<typeof MelaAnnotationPageSchema>;
 
 export const AnnotationFormSchema = {

@@ -11,14 +11,15 @@
     />
 
     <div class="w-350">
-      <template v-if="store.selectedAnnotationId">
+      <template v-if="store.activeAnnotation">
         <ActiveAnnotation
-          :annotation-id="store.selectedAnnotationId"
           :active-annotation="store.activeAnnotation"
           :links="store.activeAnnotationLinks"
           :text-with-annotations="store.textWithAnnotations"
+          :text="textStore.text"
+          :text-content="store.activeTextContent"
           @save-annotation="saveAnnotation"
-          @delete-annotation="store.deleteAnnotation"
+          @delete-annotation="deleteAnnotation"
           @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
         />
@@ -28,30 +29,33 @@
 </template>
 
 <script setup lang="ts">
+import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
-import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
   AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
+import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
 import { CREATE_MODES } from './props';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
+import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
-import { useAnnotationStore } from './utils/annotation.store';
+import { useTextStore } from '../../text.store';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
 
 const emits = defineEmits<{
-  saveAnnotation: [W3CAnnotation];
+  deleteAnnotation: [W3CAnnotation];
+  saveAnnotation: [id: string | null, AnnotationType];
   closeAnnotation: [];
 }>();
 
@@ -74,8 +78,8 @@ const selectedAnnotations = computed(() => {
   const sources = store.sources;
   const activeAnnotations = new Set();
 
-  if (store.selectedAnnotationId) {
-    activeAnnotations.add(store.selectedAnnotationId);
+  if (store.activeAnnotation?.id) {
+    activeAnnotations.add(store.activeAnnotation?.id);
 
     store.activeAnnotationLinks.forEach((a) => {
       activeAnnotations.add(a.annotation.id);
@@ -105,7 +109,7 @@ const annotationActions = computed(() => {
 
 // TODO add id
 const listenerStore = useAnnotationListenerStore()();
-
+const textStore = useTextStore();
 const store = useAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
 
@@ -116,7 +120,7 @@ const eventHandler = (
   switch (e) {
     case 'click-annotation':
     case 'click-outside':
-      onSelectAnnotation(payload.annotationId);
+      onSelectAnnotation(payload.target, payload.annotationId);
       break;
     case 'create--end':
       const annotation = (
@@ -136,34 +140,36 @@ const eventHandler = (
 };
 
 // TODO if you click somewhere else also deselect the annotation
-const onSelectAnnotation = async (annotationId: string | null) => {
+const onSelectAnnotation = async (
+  textContentId: string | null,
+  annotationId: string | null,
+) => {
   listenerStore.onClickAnnotation(
     store.textWithAnnotations.getAnnotation(annotationId),
   );
 
   if (modeStore.activeMode) {
-    // mode.value = null;
     return;
   }
 
-  // TODO check if something changed
-  // const confirmed = await changeAnnotationSelection(store, annotationId, () => {
-  //   store.reloadFromTextWithAnnotations();
-  // });
   const confirmed = { confirmed: true };
 
   if (!confirmed.confirmed) return;
 
-  store.selectAnnotation(annotationId);
+  store.selectAnnotation({ textContentId, annotationId });
   // modeStore.value = annotationId ? 'edit' : null;
 };
 
 const closeAnnotation = () => {
-  emits('closeAnnotation');
+  modeStore.changeMode(null, () => emits('closeAnnotation'));
 };
 
-const saveAnnotation = (annotation: W3CAnnotation) => {
-  emits('saveAnnotation', annotation);
+const saveAnnotation = (id: string | null, annotation: AnnotationType) => {
+  emits('saveAnnotation', id, annotation);
+};
+
+const deleteAnnotation = (annotation: W3CAnnotation) => {
+  emits('deleteAnnotation', annotation);
 };
 
 const MD = () => {
