@@ -21,6 +21,7 @@ import { PREFIX_GENERATED } from '../utils/generate-blocks';
 import { ReloadRef } from '../utils/reload';
 import { AnnotationTester } from '../utils/tester';
 import { TextWithAnnotations } from '../utils/text';
+import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
 
 type SelectedIds = { textContentId: string; annotationId: string };
 
@@ -199,7 +200,9 @@ export const useAnnotationStore = (id: string) =>
       autoGenerateBlocks,
       saveGeneratedBlocks: () =>
         createAnnotations(
-          textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
+          w3cAnnotationsToAnnotationSelectors(
+            textWithAnnotations.getAnnotationsByPrefix(PREFIX_GENERATED),
+          ),
         ),
       cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
 

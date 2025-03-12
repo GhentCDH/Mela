@@ -34,6 +34,7 @@ import { computed } from 'vue';
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTextPositionSelector } from '@ghentcdh/annotations/core';
 import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
+
 import type { AnnotationWithRelations } from './props';
 import type { TextWithAnnotations } from './utils/text';
 import { getTextSelection } from './utils/translation';

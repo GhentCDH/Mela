@@ -22,7 +22,6 @@
           @delete-annotation="deleteAnnotation"
           @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
-          @save-example="saveExample"
         />
       </template>
     </div>
@@ -171,10 +170,6 @@ const saveAnnotation = (id: string | null, annotation: AnnotationType) => {
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   emits('deleteAnnotation', annotation);
-};
-
-const saveExample = (annotation: W3CAnnotation) => {
-  emits('saveExample', annotation);
 };
 
 const MD = () => {
