@@ -32,8 +32,6 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
   const changeMode = (mode: MODES | null, onSuccess?: () => void) => {
     return new Promise((resolve) => {
       const onChangeSuccess = () => {
-        // TODO reset selected annotation
-        // TODO reset selection filter
         activeMode.value = mode;
         onSuccess?.();
         resolve(true);
