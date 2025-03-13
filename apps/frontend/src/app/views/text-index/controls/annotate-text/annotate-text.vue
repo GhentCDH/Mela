@@ -1,27 +1,33 @@
 <template>
   <div class="flex gap-3">
-    <GhentCdhAnnotations
-      :config="annotationConfig"
-      :sources="store.sources"
-      :annotations="store.annotations"
-      :annotation-actions="annotationActions"
-      :selected-annotations="selectedAnnotations"
-      :cols="store.sources.length"
-      @on-event="eventHandler"
-    />
-
-    <div class="w-350">
+    <div class="w-[200px]">
+      <AnnotationTree
+        :filter="store.filter"
+        @change-filter="store.changeFilter"
+      />
+    </div>
+    <div class="flex-grow w-full">
+      <GhentCdhAnnotations
+        :config="annotationConfig"
+        :sources="store.sources"
+        :annotations="store.annotations"
+        :annotation-actions="annotationActions"
+        :selected-annotations="selectedAnnotations"
+        :cols="store.sources.length"
+        @on-event="eventHandler"
+      />
+    </div>
+    <div class="w-[500px]">
       <template v-if="store.activeAnnotation">
         <ActiveAnnotation
           :active-annotation="store.activeAnnotation"
           :links="store.activeAnnotationLinks"
-          :text-with-annotations="store.textWithAnnotations"
           :text="textStore.text"
           :text-content="store.activeTextContent"
           @save-annotation="saveAnnotation"
           @delete-annotation="deleteAnnotation"
-          @change-annotation="store.reloadFromTextWithAnnotations()"
           @close-annotation="closeAnnotation"
+          @change-select-filter="emits('changeSelectFilter', $event)"
         />
       </template>
     </div>
@@ -30,7 +36,7 @@
 
 <script setup lang="ts">
 import type { AnnotationType } from '@mela/text/shared';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
@@ -49,6 +55,8 @@ import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
+import type { AnnotationFilter } from './utils/annotations.utils';
+import AnnotationTree from './view/annotation-tree.vue';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
@@ -57,6 +65,7 @@ const emits = defineEmits<{
   deleteAnnotation: [W3CAnnotation];
   saveAnnotation: [id: string | null, AnnotationType];
   closeAnnotation: [];
+  changeSelectFilter: [Partial<AnnotationFilter>];
 }>();
 
 const annotationConfig: AnnotationConfig = {
@@ -91,19 +100,19 @@ const selectedAnnotations = computed(() => {
   const annotations = Array.from(activeAnnotations);
 
   return {
-    [sources[0].uri]: annotations,
-    [sources[1].uri]: annotations,
+    [sources[0]?.uri]: annotations,
+    [sources[1]?.uri]: annotations,
   };
 });
 const annotationActions = computed(() => {
   const sources = store.sources;
 
   return {
-    [sources[0].uri]: {
+    [sources[0]?.uri]: {
       edit: false,
       create: isCreateMode.value,
     },
-    [sources[1].uri]: { edit: false, create: isCreateMode.value },
+    [sources[1]?.uri]: { edit: false, create: isCreateMode.value },
   };
 });
 
@@ -112,6 +121,13 @@ const listenerStore = useAnnotationListenerStore()();
 const textStore = useTextStore();
 const store = useAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
+
+onMounted(() => {
+  modeStore.registerOnResetFn(() => {
+    store.selectAnnotation(null);
+    store.changeSelectionFilter({});
+  });
+});
 
 const eventHandler = (
   e: AnnotationEventType,
@@ -141,12 +157,10 @@ const eventHandler = (
 
 // TODO if you click somewhere else also deselect the annotation
 const onSelectAnnotation = async (
-  textContentId: string | null,
+  textContentUri: string | null,
   annotationId: string | null,
 ) => {
-  listenerStore.onClickAnnotation(
-    store.textWithAnnotations.getAnnotation(annotationId),
-  );
+  listenerStore.onClickAnnotation(store.getAnnotation(annotationId));
 
   if (modeStore.activeMode) {
     return;
@@ -156,8 +170,7 @@ const onSelectAnnotation = async (
 
   if (!confirmed.confirmed) return;
 
-  store.selectAnnotation({ textContentId, annotationId });
-  // modeStore.value = annotationId ? 'edit' : null;
+  store.selectAnnotation({ textContentUri, annotationId });
 };
 
 const closeAnnotation = () => {

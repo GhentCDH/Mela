@@ -1,4 +1,3 @@
-import type { MotivationEnumType } from '@mela/generated/types';
 import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
@@ -17,14 +16,10 @@ export const useTextRepository = defineStore('textRepository', () => {
     return getDataUri(textId, 'annotation', ...suffix);
   };
 
-  const getAnnotations = (
-    textId: string,
-    motivation: MotivationEnumType,
-  ): Promise<MelaAnnotationPage> => {
+  const getAnnotations = (textId: string): Promise<MelaAnnotationPage> => {
     return httpRequest.get(getAnnotationUri(textId), {
       queryParams: RequestSchema.parse({
         pageSize: 10000,
-        // filter: `motivation:${motivation}:equals`,
       }),
     });
   };

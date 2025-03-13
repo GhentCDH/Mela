@@ -22,11 +22,8 @@
 <script lang="ts" setup>
 import ControlWrapper from './core/ControlWrapper.vue';
 import type { ControlEmits } from './core/emits';
-import type {
-  SelectControlProperties} from './core/properties';
-import {
-  DefaultSelectProperties
-} from './core/properties';
+import type { SelectControlProperties } from './core/properties';
+import { DefaultSelectProperties } from './core/properties';
 
 const properties = withDefaults(
   defineProps<SelectControlProperties>(),

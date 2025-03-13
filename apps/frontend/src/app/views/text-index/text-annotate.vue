@@ -14,6 +14,7 @@
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
       @delete-annotation="deleteAnnotation"
+      @change-select-filter="annotationStore.changeSelectionFilter"
     />
   </div>
   <div
@@ -121,6 +122,10 @@ const modeToasts: Record<
   translate: {
     deny: () => modeStore.resetMode(),
     text: 'Select an annotation for translation',
+  },
+  link_buckets: {
+    deny: () => modeStore.resetMode(),
+    text: 'Select an annotation to link',
   },
 };
 
