@@ -1,6 +1,6 @@
 // eslint-disable @typescript-eslint/consistent-type-imports
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { TextFormSchema, textParseFileTypes } from '@mela/text/shared';
+import { TextFormSchema } from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -10,17 +10,11 @@ import {
   Patch,
   Post,
   Query,
-  UnprocessableEntityException,
-  UploadedFile,
   UseGuards,
-  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
   ApiCreatedResponse,
   ApiResponse,
 } from '@nestjs/swagger';
@@ -30,8 +24,6 @@ import { TextWithRelationsDto } from '@ghentcdh/mela/generated/dtos';
 import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 
 import { CreateTextDto, ListTextDto } from './dto';
-import { TextUploadDto } from './file-upload.dto';
-import { TextImportService } from './text-import.service';
 import { TextRepositoryService } from './text-repository.service';
 import { MelaGuard } from '../auth.guard';
 import { AbstractController } from '../shared/controller';
@@ -44,29 +36,8 @@ export class TextController extends AbstractController<
   TextWithRelations,
   CreateTextDto
 > {
-  constructor(
-    repository: TextRepositoryService,
-    private readonly textImportService: TextImportService,
-  ) {
+  constructor(repository: TextRepositoryService) {
     super(repository);
-  }
-
-  @Post('/:id/upload')
-  @UseInterceptors(FileInterceptor('file'))
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'Upload an excell with the text',
-    type: TextUploadDto,
-  })
-  async upload(
-    @Param('id') id: string,
-    @UploadedFile()
-    file: any,
-  ): Promise<TextWithRelations> {
-    if (!textParseFileTypes.some((type) => file?.mimetype))
-      throw new UnprocessableEntityException('Invalid file type');
-
-    return this.textImportService.parse(id, file);
   }
 
   @Get()
