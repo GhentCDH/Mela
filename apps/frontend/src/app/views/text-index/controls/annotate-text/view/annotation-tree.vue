@@ -16,7 +16,7 @@ import { ref, watch } from 'vue';
 import { MultiSelect } from '@ghentcdh/ui';
 
 import { IdentifyColor } from '../../identify.color';
-import { AnnotationFilter } from '../utils/annotations.utils';
+import type { AnnotationFilter } from '../utils/annotations.utils';
 
 const annotationTypes = IdentifyColor;
 

@@ -15,7 +15,10 @@
         absolute z-50`,
         ]"
       >
-        <li v-for="result in options" :key="result[valueKey]">
+        <li
+          v-for="result in options"
+          :key="result[valueKey]"
+        >
           <button
             class="w-full flex h-8 border-b-1 border-gray-200 border-x-0 border-t-0 px-2 py-2 text-left hover:bg-primary-content cursor-pointer"
             type="button"
