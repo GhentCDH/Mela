@@ -70,6 +70,7 @@ import {
 import type { AnnotationWithRelations } from '../props';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { useModeStore } from '../store/mode.store';
+import type { AnnotationFilter } from '../utils/annotations.utils';
 import { findTextValue } from '../utils/translation';
 
 const listenerStore = useAnnotationListenerStore()();
@@ -91,6 +92,7 @@ const properties = defineProps<Properties>();
 const emits = defineEmits<{
   save: [string | null, AnnotationType];
   delete: [W3CAnnotation];
+  changeSelectFilter: [Partial<AnnotationFilter>];
 }>();
 
 const linkedBucket = ref();
@@ -138,6 +140,7 @@ const linkBuckets = computed(() =>
 );
 const addLink = () => {
   modeStore.changeMode('link_buckets');
+  emits('changeSelectFilter', { annotationType: ['example'] });
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {

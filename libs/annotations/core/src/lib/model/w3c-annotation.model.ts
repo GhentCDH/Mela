@@ -1,19 +1,8 @@
 import { z } from 'zod';
 
-// TODO move all the types here
-
-export const AnnotationMetadataTypes = z.enum([
-  'title',
-  'subtitle',
-  'phrase',
-  'paragraph',
-  'no-link', // This text is not lined yet to some of the source part
-]);
-export type AnnotationMetadataType = z.infer<typeof AnnotationMetadataTypes>;
-
 export const AnnotationTypeBody = z.object({
   type: z.enum(['AnnotationType']).default('AnnotationType'),
-  textType: AnnotationMetadataTypes,
+  textType: z.string(),
 });
 
 export const TextualBodySchema = z.object({

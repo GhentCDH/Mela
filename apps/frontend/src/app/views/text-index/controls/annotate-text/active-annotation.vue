@@ -27,6 +27,7 @@
       :text="text"
       @save="saveAnnotation"
       @delete="deleteAnnotation"
+      @change-select-filter="emits('changeSelectFilter', $event)"
     />
 
     <hr class="text-gray-300 my-2">
@@ -45,24 +46,21 @@
 import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   findTagging,
-  findTextPositionSelector
+  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
-import type { TextWithAnnotations } from './utils/text';
+import type { AnnotationFilter } from './utils/annotations.utils';
 import { getTextSelection } from './utils/translation';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
 import Translations from './view/translations.vue';
 
 type Properties = {
-  textWithAnnotations: TextWithAnnotations;
   activeAnnotation: W3CAnnotation;
   links: AnnotationWithRelations[];
   text: Text;
@@ -71,9 +69,9 @@ type Properties = {
 const properties = defineProps<Properties>();
 
 const emits = defineEmits<{
-  changeAnnotation: [W3CAnnotation];
   deleteAnnotation: [W3CAnnotation];
   saveAnnotation: [string | null, AnnotationType];
+  changeSelectFilter: [Partial<AnnotationFilter>];
   closeAnnotation: [];
 }>();
 
