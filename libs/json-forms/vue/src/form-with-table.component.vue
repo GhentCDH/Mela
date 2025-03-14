@@ -2,19 +2,21 @@
 import { onMounted, ref, watch } from 'vue';
 
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
+import type {
+  TableAction} from '@ghentcdh/ui';
 import {
   Btn,
   Card,
-  hasCustomEventListener,
   IconEnum,
   ModalService,
-  TableAction,
+  hasCustomEventListener
 } from '@ghentcdh/ui';
 
-import { useFormStore } from './form.store';
-import { TableComponent } from './table';
 import { FormModal } from './index';
-import { FormModalProps, FormModalResult } from './modal/form-modal.props';
+
+import { useFormStore } from './form.store';
+import type { FormModalProps, FormModalResult } from './modal/form-modal.props';
+import { TableComponent } from './table';
 
 type Data = {
   [key: string]: any;
@@ -97,7 +99,11 @@ const openModal = (formData?: any) => {
       {{ tableTitle }}
     </h1>
     <div>
-      <Btn :icon="IconEnum.Plus" :outline="true" @click="openModal">
+      <Btn
+        :icon="IconEnum.Plus"
+        :outline="true"
+        @click="openModal"
+      >
         Add new record
       </Btn>
     </div>

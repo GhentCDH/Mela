@@ -20,10 +20,19 @@
       {{ formData }}--
     </template>
     <template #actions>
-      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+      <Btn
+        :color="Color.secondary"
+        :outline="true"
+        @click="onCancel"
+      >
         Cancel
       </Btn>
-      <Btn :disabled="!valid" @click="onSubmit"> Save</Btn>
+      <Btn
+        :disabled="!valid"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -34,7 +43,7 @@ import { ref } from 'vue';
 import { Btn, Color, Modal } from '@ghentcdh/ui';
 
 import FormComponent from '../form.component.vue';
-import { FormModalProps } from './form-modal.props';
+import type { FormModalProps } from './form-modal.props';
 
 const properties = withDefaults(defineProps<FormModalProps>(), {
   cancelLabel: 'cancel',

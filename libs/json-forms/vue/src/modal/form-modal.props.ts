@@ -1,4 +1,4 @@
-import { JsonFormsLayout } from '@ghentcdh/json-forms/core';
+import type { JsonFormsLayout } from '@ghentcdh/json-forms/core';
 
 export type FormModalProps = {
   modalTitle: string;

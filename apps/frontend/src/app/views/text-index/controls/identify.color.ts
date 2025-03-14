@@ -1,4 +1,4 @@
-import { AnnotationColor } from '@ghentcdh/vue-component-annotated-text';
+import type { AnnotationColor } from '@ghentcdh/vue-component-annotated-text';
 
 // TODO use new one when new release is available
 

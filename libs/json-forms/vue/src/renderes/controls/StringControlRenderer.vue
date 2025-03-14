@@ -1,5 +1,8 @@
 <template>
-  <ControlWrapper v-bind="controlWrapper" :styles="styles">
+  <ControlWrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <input
       :id="control.id + '-input'"
       type="text"
@@ -12,7 +15,7 @@
       @change="onChange"
       @focus="onFocus"
       @blur="onBlur"
-    />
+    >
   </ControlWrapper>
 </template>
 

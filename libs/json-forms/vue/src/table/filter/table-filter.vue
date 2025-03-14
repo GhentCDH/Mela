@@ -14,7 +14,11 @@
       <!--        <template #modal-actions />-->
       <!--      </modal-form>-->
       <template v-if="filters.length">
-        <Btn :size="Size.xs" :outline="true" @click="onResetFilters">
+        <Btn
+          :size="Size.xs"
+          :outline="true"
+          @click="onResetFilters"
+        >
           Reset all filters
         </Btn>
       </template>
