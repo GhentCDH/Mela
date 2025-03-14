@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref, shallowRef, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
-import type { TableAction } from '@ghentcdh/ui';
-import { Card, IconEnum , hasCustomEventListener } from '@ghentcdh/ui';
+import {
+  Btn,
+  Card,
+  hasCustomEventListener,
+  IconEnum,
+  ModalService,
+  TableAction,
+} from '@ghentcdh/ui';
 
 import { useFormStore } from './form.store';
-import ModalForm from './modal/modal-form.vue';
 import { TableComponent } from './table';
+import { FormModal } from './index';
+import { FormModalProps, FormModalResult } from './modal/form-modal.props';
 
 type Data = {
   [key: string]: any;
@@ -24,7 +31,6 @@ const properties = defineProps<{
   initialData?: Data;
 }>();
 const reload = ref(0);
-const formData = shallowRef<any>({ ...(properties.initialData ?? {}) });
 
 let store = useFormStore(properties.id);
 onMounted(() => {
@@ -37,10 +43,6 @@ watch(
     store.init(formSchema);
   },
 );
-
-const activeId = shallowRef<string | null>(null);
-
-const modalCompRef = ref(null);
 const emit = defineEmits<{
   editData: [Data];
 }>();
@@ -53,29 +55,39 @@ const edit = (data: Data) => {
     emit('editData', data);
     return;
   }
-  formData.value = data;
-  activeId.value = data.id;
-  modalCompRef.value?.openModal();
+  openModal(data);
 };
 
 const deleteFn = (data: Data) => {
-  // TODO add warning
-  store.delete(data).then(() => (reload.value = Date.now()));
-};
-
-const onReload = () => {
-  reload.value = Date.now();
-};
-
-const onSuccess = () => {
-  store.save(activeId.value, formData.value).then(() => {
-    reload.value = Date.now();
+  ModalService.showConfirm({
+    title: 'Delete annotation',
+    message: 'Are you sure to delete, the data will be lost?',
+    onClose: (result) => {
+      if (result.confirmed) {
+        store.delete(data).then(() => (reload.value = Date.now()));
+      }
+    },
   });
 };
 
-const onCloseModal = () => {
-  formData.value = { ...(properties.initialData ?? {}) };
-  activeId.value = null;
+const openModal = (formData?: any) => {
+  ModalService.openModal<FormModalProps, any>({
+    component: FormModal,
+    props: {
+      formSchema: properties.formSchema.form,
+      data: formData ?? {},
+      modalTitle: formData?.id
+        ? (properties.updateTitle ?? '')
+        : properties.createTitle,
+      onClose: (result: FormModalResult) => {
+        if (result && result.valid) {
+          store.save(formData?.id, result.data).then(() => {
+            reload.value = Date.now();
+          });
+        }
+      },
+    },
+  });
 };
 </script>
 
@@ -85,18 +97,9 @@ const onCloseModal = () => {
       {{ tableTitle }}
     </h1>
     <div>
-      <modal-form
-        ref="modalCompRef"
-        v-model="formData"
-        :modal-title="formData.id ? (updateTitle ?? '') : createTitle"
-        button-label="Add new record"
-        button-save-label="Save"
-        :icon="IconEnum.Plus"
-        :schema="formSchema.form.schema"
-        :uischema="formSchema.form.uiSchema"
-        @close-modal="onCloseModal"
-        @submit="onSuccess"
-      />
+      <Btn :icon="IconEnum.Plus" :outline="true" @click="openModal">
+        Add new record
+      </Btn>
     </div>
   </div>
 

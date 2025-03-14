@@ -19,11 +19,11 @@ import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { AnnotationUtils } from '../utils/annotations.utils';
 import {
-  PREFIX_GENERATED,
   generateW3CAnnotationBlocks,
+  PREFIX_GENERATED,
 } from '../utils/generate-blocks';
 import { mapRelationsToLinks } from '../utils/links';
-import { SourceUtils, createSourceFromTextContent } from '../utils/source';
+import { createSourceFromTextContent, SourceUtils } from '../utils/source';
 import { AnnotationTester } from '../utils/tester';
 import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
 
@@ -112,7 +112,6 @@ export const useAnnotationStore = (id: string) =>
       annotationId: string | undefined | null;
       textContentUri: string | undefined | null;
     }) => {
-      console.log('select', ids);
       resetSelection();
       if (!ids || !ids.textContentUri || !ids.annotationId) {
         // TODO  showAllTranslations();

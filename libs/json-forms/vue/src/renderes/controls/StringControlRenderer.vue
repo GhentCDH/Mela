@@ -1,8 +1,5 @@
 <template>
-  <ControlWrapper
-    v-bind="controlWrapper"
-    :styles="styles"
-  >
+  <ControlWrapper v-bind="controlWrapper" :styles="styles">
     <input
       :id="control.id + '-input'"
       type="text"
@@ -15,7 +12,7 @@
       @change="onChange"
       @focus="onFocus"
       @blur="onBlur"
-    >
+    />
   </ControlWrapper>
 </template>
 
@@ -30,8 +27,7 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
-import { inputClasses } from '@ghentcdh/ui';
-import { useVanillaControlCustom } from '@ghentcdh/ui';
+import { inputClasses, useVanillaControlCustom } from '@ghentcdh/ui';
 
 import ControlWrapper from './ControlWrapper.vue';
 import { isStringFormat } from '../tester';

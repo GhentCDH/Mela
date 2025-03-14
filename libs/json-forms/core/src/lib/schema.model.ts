@@ -4,9 +4,16 @@ import type { Layout } from '@jsonforms/core/src/models/uischema';
 import { cloneDeep } from 'lodash-es';
 import type { ZodObject } from 'zod';
 
+export enum Size {
+  xs = 'xs',
+  sm = 'sm',
+  lg = 'lg',
+}
+
 export type JsonFormsLayout = {
   uiSchema: Layout;
   schema: JsonSchema;
+  modalSize?: Size;
 };
 
 export type FormSchemaModel = {
@@ -26,6 +33,7 @@ export const createSchema = (props: {
   dtoSchema: ZodObject<any>;
   responseSchema?: ZodObject<any>;
   uri: string;
+  modalSize?: Size;
 }) => {
   const dtoSchema = props.dtoSchema;
 
@@ -45,6 +53,7 @@ export const createSchema = (props: {
       form: {
         uiSchema: props.uiSchema,
         schema: detail,
+        modalSize: props.modalSize ?? 'sm',
       },
       table: props.tableSchema
         ? {

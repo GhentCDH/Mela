@@ -10,14 +10,14 @@
           :id="control.id + '-input'"
           type="checkbox"
           :class="['checkbox']"
-          :value="control.data"
+          :checked="control.data"
           :disabled="!control.enabled"
           :autofocus="appliedOptions.focus"
           :placeholder="appliedOptions.placeholder"
           @change="onChange"
           @focus="onFocus"
           @blur="onBlur"
-        >
+        />
         <span class="font-bold text-black"> {{ control.label }}</span>
       </label>
     </control-wrapper>
@@ -37,6 +37,7 @@ import { defineComponent } from 'vue';
 import { useVanillaControlCustom } from '@ghentcdh/ui';
 
 import ControlWrapper from './ControlWrapper.vue';
+import controlWrapper from './ControlWrapper.vue';
 
 const controlRenderer = defineComponent({
   name: 'BooleanControlRenderer',
@@ -47,11 +48,24 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControlCustom(useJsonFormsControl(props), (target) =>
-      target.value === '' ? false : Boolean(target.value),
+    const control = useVanillaControlCustom(
+      useJsonFormsControl(props),
+      (target) => {
+        return Boolean(target.value) ?? false;
+      },
     );
+
+    if (control.control.value.data === undefined) {
+      control.handleChange(control.control.value.path, false);
+    }
+
+    return control;
   },
-  computed: {},
+  computed: {
+    controlWrapper() {
+      return controlWrapper;
+    },
+  },
 });
 
 export default controlRenderer;

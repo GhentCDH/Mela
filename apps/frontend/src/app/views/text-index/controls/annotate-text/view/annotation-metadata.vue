@@ -1,8 +1,6 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">
-      Selected text:
-    </legend>
+    <legend class="fieldset-legend">Selected text:</legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent
@@ -23,18 +21,8 @@
     @change="changeMetadata"
   />
   <div class="flex gap-2 justify-end pb-4">
-    <Btn
-      :color="Color.error"
-      @click="deleteAnnotation"
-    >
-      Delete
-    </Btn>
-    <Btn
-      :disabled="!valid || disabled"
-      @click="saveAnnotation"
-    >
-      Save
-    </Btn>
+    <Btn :color="Color.error" @click="deleteAnnotation"> Delete </Btn>
+    <Btn :disabled="!valid || disabled" @click="saveAnnotation"> Save </Btn>
   </div>
 </template>
 
@@ -135,7 +123,7 @@ const deleteAnnotation = () => {
     title: 'Delete annotation',
     message: 'Are you sure to delete this annotation, all links will be lost?',
     onClose: (result) => {
-      if (result) {
+      if (result.confirmed) {
         emits('delete', properties.annotation);
       }
     },

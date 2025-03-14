@@ -1,24 +1,20 @@
 <template>
   <div class="">
     <div class="flex gap-2 items-center mb-2">
-      <modal-form
-        v-model="formData"
-        :icon="IconEnum.Funnel"
-        modal-title="Filter"
-        button-label="Filter"
-        :schema="layout.schema"
-        :uischema="layout.uiSchema"
-        @submit="onSubmit"
-      >
-        <template #content-before />
-        <template #modal-actions />
-      </modal-form>
+      <!--      <modal-form-->
+      <!--        v-model="formData"-->
+      <!--        :icon="IconEnum.Funnel"-->
+      <!--        modal-title="Filter"-->
+      <!--        button-label="Filter"-->
+      <!--        :schema="layout.schema"-->
+      <!--        :uischema="layout.uiSchema"-->
+      <!--        @submit="onSubmit"-->
+      <!--      >-->
+      <!--        <template #content-before />-->
+      <!--        <template #modal-actions />-->
+      <!--      </modal-form>-->
       <template v-if="filters.length">
-        <Btn
-          :size="Size.xs"
-          :outline="true"
-          @click="onResetFilters"
-        >
+        <Btn :size="Size.xs" :outline="true" @click="onResetFilters">
           Reset all filters
         </Btn>
       </template>
@@ -41,8 +37,6 @@ import { ref, watch } from 'vue';
 
 import type { Filter, JsonFormsLayout } from '@ghentcdh/json-forms/core';
 import { Btn, BtnBadge, IconEnum, Size } from '@ghentcdh/ui';
-
-import ModalForm from '../../modal/modal-form.vue';
 
 const formData = ref();
 
