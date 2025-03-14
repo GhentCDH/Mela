@@ -34,6 +34,7 @@ import { Size } from '../const';
 const ModalSize: Record<Size, string> = {
   xs: 'max-w-xs w-[50VW]',
   sm: 'max-w-sm w-[50VW]',
+  lg: 'max-w-2xl w-[80VW]',
 };
 
 const properties = withDefaults(

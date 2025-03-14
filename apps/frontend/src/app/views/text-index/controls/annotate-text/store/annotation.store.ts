@@ -112,7 +112,6 @@ export const useAnnotationStore = (id: string) =>
       annotationId: string | undefined | null;
       textContentUri: string | undefined | null;
     }) => {
-      console.log('select', ids);
       resetSelection();
       if (!ids || !ids.textContentUri || !ids.annotationId) {
         // TODO  showAllTranslations();

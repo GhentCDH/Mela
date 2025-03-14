@@ -1,16 +1,18 @@
 <template>
   <Modal
-    :modal-title="modalTitle"
+    v-bind="properties"
     :open="true"
     :disable-close="false"
+    :width="formSchema.modalSize ?? 'sm'"
+    @close-modal="onCancel"
   >
     <template #content>
       <slot name="content-before" />
       <FormComponent
         :id="`modal-${id}`"
         v-model="formData"
-        :schema="schema"
-        :uischema="uischema"
+        :schema="formSchema.schema"
+        :uischema="formSchema.uiSchema"
         @valid="onValid($event)"
         @change="onChange"
       />
@@ -21,7 +23,7 @@
       <Btn
         :color="Color.secondary"
         :outline="true"
-        @click="onClear"
+        @click="onCancel"
       >
         Cancel
       </Btn>
@@ -36,51 +38,44 @@
 </template>
 
 <script setup lang="ts">
-import type { JsonSchema } from '@jsonforms/core';
-import type { Layout } from '@jsonforms/core/src/models/uischema';
 import { ref } from 'vue';
 
 import { Btn, Color, Modal } from '@ghentcdh/ui';
 
-import type { SubmitFormEvent } from '../form.component.vue';
 import FormComponent from '../form.component.vue';
+import type { FormModalProps } from './form-modal.props';
 
-withDefaults(
-  defineProps<{
-    modalTitle: string;
-    saveLabel?: string;
-    cancelLabel?: string;
-    schema: JsonSchema;
-    uischema: Layout;
-  }>(),
-  {
-    cancelLabel: 'cancel',
-    saveLabel: 'save',
-  },
-);
+const properties = withDefaults(defineProps<FormModalProps>(), {
+  cancelLabel: 'cancel',
+  saveLabel: 'save',
+});
 
 const id = `modal_${Math.floor(Math.random() * 1000)}`;
 
 const valid = ref(false);
 const formData = defineModel<any>();
-const emits = defineEmits(['submit', 'clear', 'closeModal']);
+const emits = defineEmits(['closeModal']);
+
+if (properties.data) {
+  formData.value = properties.data;
+}
 
 const onValid = (v: boolean) => {
   valid.value = v;
 };
 
-const onClear = () => {
+const onCancel = () => {
   formData.value = {};
-  emits('clear');
+  emits('closeModal', null);
 };
 
 const onChange = (data: any) => {
   formData.value = data;
 };
 
-const onSubmit = (event: SubmitFormEvent) => {
+const onSubmit = () => {
   if (!valid.value) return;
 
-  emits('submit', { data: formData.value, valid: valid.value });
+  emits('closeModal', { data: formData.value, valid: valid.value });
 };
 </script>

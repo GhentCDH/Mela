@@ -135,7 +135,7 @@ const deleteAnnotation = () => {
     title: 'Delete annotation',
     message: 'Are you sure to delete this annotation, all links will be lost?',
     onClose: (result) => {
-      if (result) {
+      if (result.confirmed) {
         emits('delete', properties.annotation);
       }
     },
