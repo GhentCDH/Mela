@@ -69,3 +69,4 @@ storybook-static
 /docs/**/typedoc_sidebar.json
 
 .env
+.env.prod

@@ -30,38 +30,27 @@ COPY --chown=app:app . /app
 
 WORKDIR /app
 
-#RUN npx prisma generate
-#RUN npx prisma migrate dev
-#RUN npx prisma migrate status
-#RUN pnpm run generate:zod
-
-# Docs development
-FROM node-dev AS node-docs
-
-WORKDIR /app
-
-#CMD SLEEP INFINITY
-CMD  pnpm run docs:dev --port 2000
-
-
 # Frontend development
 FROM node-dev AS node-fe-dev
 
 WORKDIR /app
+CMD SLEEP INFINITY
 
 #CMD SLEEP INFINITY
-CMD  pnpm run generate:prisma && npx nx run frontend:serve
+CMD pnpm run generate:prisma && npx nx run frontend:serve:production
 
 # Backend development
 FROM node-dev AS node-be-dev
 
 WORKDIR /app
 
+RUN pnpm run generate:prisma && npx nx run backend:build:production
 
-#CMD SLEEP INFINITY
-CMD npx prisma migrate deploy && pnpm run generate:prisma && npx nx run backend:serve
+CMD node dist/apps/backend/main.js
 
   # ====== RUN CADDY =======
-FROM caddy:2.8.4-alpine AS frontend
+FROM caddy:2.8.4-alpine AS node-fe-dev-11
+
+COPY --from=build-fe /app/dist/apps/frontend /usr/share/caddy
 
 EXPOSE 80 443
