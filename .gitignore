@@ -67,3 +67,5 @@ storybook-static
 /docs/assets
 /docs/api/*
 /docs/**/typedoc_sidebar.json
+
+.env
