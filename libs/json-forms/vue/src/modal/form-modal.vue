@@ -19,10 +19,19 @@
       <slot name="content-after" />
     </template>
     <template #actions>
-      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+      <Btn
+        :color="Color.secondary"
+        :outline="true"
+        @click="onCancel"
+      >
         Cancel
       </Btn>
-      <Btn :disabled="!valid" @click="onSubmit"> Save </Btn>
+      <Btn
+        :disabled="!valid"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>

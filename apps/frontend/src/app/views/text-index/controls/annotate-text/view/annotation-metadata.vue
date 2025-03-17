@@ -1,6 +1,8 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">Selected text:</legend>
+    <legend class="fieldset-legend">
+      Selected text:
+    </legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent
@@ -21,8 +23,18 @@
     @change="changeMetadata"
   />
   <div class="flex gap-2 justify-end pb-4">
-    <Btn :color="Color.error" @click="deleteAnnotation"> Delete</Btn>
-    <Btn :disabled="!valid || disabled" @click="saveAnnotation"> Save</Btn>
+    <Btn
+      :color="Color.error"
+      @click="deleteAnnotation"
+    >
+      Delete
+    </Btn>
+    <Btn
+      :disabled="!valid || disabled"
+      @click="saveAnnotation"
+    >
+      Save
+    </Btn>
   </div>
 </template>
 
@@ -50,8 +62,8 @@ import { Btn, Color, ModalService, SelectComponent } from '@ghentcdh/ui';
 
 import type { AnnotationMetadataModel } from './props';
 import { IdentifyColor } from '../../identify.color';
-import { useModeStore } from '../store/mode.store';
 import { CREATE_MODES } from '../props';
+import { useModeStore } from '../store/mode.store';
 
 const annotationTypes = IdentifyColor;
 

@@ -30,6 +30,8 @@ model Author {
   id   String @id @default(uuid())
   name String @unique
   Text Text[]
+
+  @@map("author")
 }
 
 model Text {
@@ -40,6 +42,8 @@ model Text {
   year        Int
   textContent TextContent[]
   annotations Annotation[]
+
+  @@map("text")
 }
 
 enum TextType {
@@ -56,6 +60,8 @@ model TextContent {
   content          String             @db.Text
 
   Example Example[]
+
+  @@map("text_content")
 }
 
 enum MotivationEnum {
@@ -70,6 +76,8 @@ model Annotation {
   text_id          String
   annotationBody   AnnotationBody[]
   annotationTarget AnnotationTarget[]
+
+  @@map("annotation")
 }
 
 enum AnnotationType {
@@ -85,6 +93,8 @@ model AnnotationBody {
   annotation_id String
   source_type AnnotationType?
   source_id String?
+
+  @@map("annotation_body")
   // TextContent        TextContent? @relation(fields: [text_content_id], references: [id])
   // text_content_id     String?
   // example       Example?     @relation(fields: [example_id], references: [id], onDelete: Cascade)
@@ -98,6 +108,8 @@ model AnnotationTarget {
   annotation_id String
   source_type AnnotationType
   source_id String
+
+  @@map("annotation_target")
 }
 
 model Example {
@@ -107,18 +119,24 @@ model Example {
   register_id    String
   textContent        TextContent @relation(fields: [text_content_id], references: [id])
   text_content_id     String
+
+  @@map("example")
 }
 
 model Register {
   id       String    @id @default(uuid())
   name     String    @unique
   examples Example[]
+
+  @@map("register")
 }
 
 model Speech {
   id   String @id @default(uuid())
   name String @unique
-  Lema Lema[]
+  lema Lema[]
+
+  @@map("speech")
 }
 
 model Lema {
@@ -131,4 +149,6 @@ model Lema {
   participle  Boolean? @default(false)
   speech      Speech   @relation(fields: [speech_id], references: [id])
   speech_id   String
+
+  @@map("lema")
 }
