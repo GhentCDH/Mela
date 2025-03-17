@@ -1,0 +1,112 @@
+# This docker file is to run against test database
+
+version: '4'
+
+services:
+
+  frontend:
+    container_name: mela.app.frontend
+    extends:
+      file: docker-compose-prod.base.yml
+      service: nx-app-base-dev
+    build:
+      target: node-fe-dev
+    ports:
+      - "4200:4200"
+    environment:
+      - VITE_KEYCLOAK_HOST=$KEYCLOAK_HOST
+      - VITE_KEYCLOAK_REALM=$KEYCLOAK_REALM
+      - VITE_KEYCLOAK_CLIENT_ID=$KEYCLOAK_CLIENT_ID
+
+  backend:
+    container_name: mela.app.backend
+    extends:
+      file: docker-compose-prod.base.yml
+      service: nx-app-base-dev
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3333/api/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    build:
+      target: node-be-dev
+    environment:
+      - DATABASE_APP_URL=$DATABASE_APP_URL
+      # we need this internal redirect to the keycloak container
+      - KEYCLOAK_HOST=$KEYCLOAK_HOST
+      - KEYCLOAK_REALM=$KEYCLOAK_REALM
+      - LOG_DIR=/tmp/logs
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./var/logs/backend:/tmp/logs
+
+  authentication:
+    container_name: mela.keycloak
+    image: keycloak/keycloak:25.0.5
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2G"
+    depends_on:
+      database_auth:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:${KEYCLOAK_INTERNAL_TCP_PORT}"
+    healthcheck:
+      # since keycloak does not have wget or curl, we need to use java to check the health, from here, thanks @sarath-soman https://gist.github.com/sarath-soman/5d9aec06953bbd0990c648605d4dba07
+      test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/health/live' ]
+      retries: 3
+    environment:
+      - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN_USERNAME
+      - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
+      - KC_FRONTEND_URL=$KEYCLOAK_HOST
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://$DATABASE_AUTH_HOST/$DATABASE_AUTH_DBNAME
+      - KC_DB_USERNAME=$DATABASE_AUTH_USERNAME
+      - KC_DB_PASSWORD=$DATABASE_AUTH_PASSWORD
+      - KC_HEALTH_ENABLED=true
+      - KC_HOSTNAME=authentication
+    command: start-dev --import-realm --health-enabled=true
+    # --import-realm
+    # --realm-import-file=/opt/keycloak/data/import/mela-realm.json
+    volumes:
+      - ./docker/dev/mela-realm.json:/opt/keycloak/data/import/mela-realm.json
+  #     Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+  #     (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  database_auth:
+    container_name: mela.data.auth
+    extends:
+      file: docker-compose.base.yml
+      service: database
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - --username=$DATABASE_AUTH_USERNAME
+        - --dbname=$DATABASE_AUTH_DBNAME
+      retries: 3
+    volumes:
+      - $STORE_DIR/data/auth:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: $DATABASE_AUTH_USERNAME
+      POSTGRES_PASSWORD: $DATABASE_AUTH_PASSWORD
+      POSTGRES_DB: $DATABASE_AUTH_DBNAME
+
+  caddy:
+    build:
+      context: .
+      dockerfile: $PWD/docker/dev/Dockerfile
+      target: frontend
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker/dev/CaddyFile:/etc/caddy/Caddyfile
+      - /app/node_modules
+
+

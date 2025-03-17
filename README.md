@@ -20,10 +20,10 @@ The platform is a monorepo created with nx, and some docker containers to run th
 
 ## Generate required files
 
-The first time, and each time you adjust the prisma configuration run
+The first time, copy the `.env.dev` file to `.env`.
 
 ```bash
- pnpm run generate:prisma 
+cp .env.dev .env
 ```
 
 ## Running and development
