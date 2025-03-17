@@ -2,14 +2,13 @@
 import { onMounted, ref, watch } from 'vue';
 
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
-import type {
-  TableAction} from '@ghentcdh/ui';
+import type { TableAction } from '@ghentcdh/ui';
 import {
   Btn,
   Card,
+  hasCustomEventListener,
   IconEnum,
   ModalService,
-  hasCustomEventListener
 } from '@ghentcdh/ui';
 
 import { FormModal } from './index';
@@ -22,16 +21,19 @@ type Data = {
   [key: string]: any;
 };
 
-const properties = defineProps<{
-  id: string;
-  tableTitle: string;
-  createTitle: string;
-  updateTitle?: string;
-  dataUri?: string;
-  tableActions?: TableAction[];
-  formSchema: FormSchemaModel;
-  initialData?: Data;
-}>();
+const properties = withDefaults(
+  defineProps<{
+    id: string;
+    tableTitle: string;
+    createTitle: string;
+    updateTitle?: string;
+    dataUri?: string;
+    tableActions?: TableAction[];
+    formSchema: FormSchemaModel;
+    initialData?: Data;
+  }>(),
+  { initialData: {} as Data },
+);
 const reload = ref(0);
 
 let store = useFormStore(properties.id);
@@ -77,7 +79,7 @@ const openModal = (formData?: any) => {
     component: FormModal,
     props: {
       formSchema: properties.formSchema.form,
-      data: formData ?? {},
+      data: formData ?? properties.initialData,
       modalTitle: formData?.id
         ? (properties.updateTitle ?? '')
         : properties.createTitle,
@@ -99,11 +101,7 @@ const openModal = (formData?: any) => {
       {{ tableTitle }}
     </h1>
     <div>
-      <Btn
-        :icon="IconEnum.Plus"
-        :outline="true"
-        @click="openModal"
-      >
+      <Btn :icon="IconEnum.Plus" :outline="true" @click="openModal">
         Add new record
       </Btn>
     </div>

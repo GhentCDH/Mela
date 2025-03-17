@@ -1,14 +1,7 @@
 <template>
-  <Menu
-    title="Elements"
-    :menu="menuElements"
-    :breadcrumbs="breadcrumbs"
-  />
+  <Menu title="Elements" :menu="menuElements" :breadcrumbs="breadcrumbs" />
 
-  <div
-    v-if="textStore.text"
-    class="mt-2"
-  >
+  <div v-if="textStore.text" class="mt-2">
     <annotate-text
       :store-id="storeId"
       @save-annotation="saveAnnotation"
@@ -17,14 +10,8 @@
       @change-select-filter="annotationStore.changeSelectionFilter"
     />
   </div>
-  <div
-    v-if="modeToast"
-    class="toast toast-center"
-  >
-    <div
-      role="alert"
-      class="alert alert-success bg-white"
-    >
+  <div v-if="modeToast" class="toast toast-center">
+    <div role="alert" class="alert alert-success bg-white">
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -34,18 +21,13 @@
         >
           Close
         </Btn>
-        <Btn
-          v-if="modeToast.save"
-          @click="modeToast.save"
-        >
-          Save
-        </Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, effect, ref } from 'vue';
+import { computed, effect, onMounted } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { Btn, Color, Menu } from '@ghentcdh/ui';
@@ -61,7 +43,6 @@ const storeId = 'identify_and_translate';
 
 const annotationStore = useAnnotationStore(storeId);
 const modeStore = useModeStore();
-const generatedBlocks = ref(false);
 
 const menuElements = computed(() => {
   return [
@@ -75,6 +56,10 @@ const menuElements = computed(() => {
         {
           label: 'Create annotation',
           action: () => createAnnotation(),
+        },
+        {
+          label: 'Create example',
+          action: () => createAnnotation('create-example'),
         },
       ].flat(),
     },
@@ -107,6 +92,10 @@ const modeToasts: Record<
   'create-annotation': {
     deny: () => modeStore.resetMode(),
     text: 'Create new annotation by selecting text',
+  },
+  'create-example': {
+    deny: () => modeStore.resetMode(),
+    text: 'Create new example annotation by selecting text',
   },
   generate: {
     save: () => saveGeneratedBlocks(),
@@ -141,44 +130,47 @@ effect(() => {
 const generateBlocks = (sourceId: string) => {
   modeStore.changeMode('generate', () => {
     annotationStore.autoGenerateBlocks(sourceId);
-    generatedBlocks.value = true;
   });
 };
 
 const saveGeneratedBlocks = () => {
   annotationStore.selectAnnotation(null);
   annotationStore.saveGeneratedBlocks();
-  generatedBlocks.value = false;
   modeStore.resetMode();
 };
 
 const cancelGeneratedBlocks = () => {
-  annotationStore.cancelGeneratedBLocks();
-  generatedBlocks.value = false;
-  modeStore.resetMode();
+  closeAnnotation();
 };
 
-const createAnnotation = () => {
-  modeStore.changeMode('create-annotation', () => {
+const createAnnotation = (mode: MODES = 'create-annotation') => {
+  modeStore.changeMode(mode, () => {
     annotationStore.selectAnnotation(null);
     // cancelGeneratedBlocks();
   });
 };
 
 const saveAnnotation = (id: string | null, annotation: W3CAnnotation) => {
-  annotationStore
-    .saveOrCreateAnnotation(id, annotation)
-    .then(() => modeStore.resetMode());
+  annotationStore.saveOrCreateAnnotation(id, annotation);
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   annotationStore.deleteAnnotation(annotation.id);
 };
 
-const closeAnnotation = () => {
-  annotationStore.reloadFromTextWithAnnotations();
-  annotationStore.selectAnnotation(null);
+onMounted(() => {
+  modeStore.registerOnResetFn(() => {
+    annotationStore.selectAnnotation(null);
+    annotationStore.changeSelectionFilter({});
+    annotationStore.cancelNewAnnotations();
+  });
+});
 
+const closeAnnotation = () => {
+  console.log('close annotation');
+  annotationStore.selectAnnotation(null);
+  annotationStore.changeSelectionFilter({});
+  annotationStore.cancelNewAnnotations();
   modeStore.resetMode();
 };
 </script>

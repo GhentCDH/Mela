@@ -4,6 +4,7 @@ import {
   CategoryBuilder,
   ControlBuilder,
   LayoutBuilder,
+  Size,
   TableBuilder,
   TextCellBuilder,
   createSchema,
@@ -123,6 +124,7 @@ export const TextFormSchema = createSchema({
   uri: '/api/text',
   filterSchema,
   tableSchema,
+  modalSize: Size.xl,
 });
 
 export const textParseFileTypes = [

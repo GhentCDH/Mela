@@ -62,5 +62,5 @@ export const generateW3CAnnotationBlocks = (
       (a) => !originalEquals.includes(getEqualIdentifier(textContent.uri, a)),
     );
 
-  return [originalAnnotations, generatedAnnotations].flat() as W3CAnnotation[];
+  return generatedAnnotations as W3CAnnotation[];
 };

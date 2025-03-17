@@ -47,6 +47,6 @@ export const AnnotationUtils = (annotations: Annotation[]) => {
   return {
     byId: (id: string) => byId(id, annotations),
     byPrefix: (prefix: string) => byPrefix(prefix, annotations),
-    filter: (filter: AnnotationsUtils) => filterValues(filter, annotations),
+    filter: (filter: AnnotationFilter) => filterValues(filter, annotations),
   };
 };

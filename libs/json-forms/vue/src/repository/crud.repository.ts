@@ -1,4 +1,5 @@
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
+import { object } from 'zod';
 
 type RequestOptions = {
   skipAuth?: boolean;
@@ -87,7 +88,7 @@ export const createRepository = <T extends { id?: string }>(
   };
 
   const createMulti = (objects: T[], options?: RequestOptions) => {
-    return Promise.all(objects.map((o) => create(o, options)))
+    return Promise.all(httpRequest.post(getDataUri(), object, options))
       .then((response) => handleSuccess(`Created ${notificationEntity}`))
       .catch((response) => {
         handleError(response, `Failed to save ${notificationEntity}`);
