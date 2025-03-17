@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import type { AnnotationType } from '@mela/text/shared';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
@@ -122,13 +122,6 @@ const textStore = useTextStore();
 const store = useAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
 
-onMounted(() => {
-  modeStore.registerOnResetFn(() => {
-    store.selectAnnotation(null);
-    store.changeSelectionFilter({});
-  });
-});
-
 const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
@@ -142,7 +135,6 @@ const eventHandler = (
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
-
       store.createAnnotation(
         payload.target,
         annotation,

@@ -24,12 +24,15 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
   let onReset = () => {};
 
   const resetMode = () => {
+    console.log('resetMode annotation', activeMode.value);
     if (!activeMode.value) return;
     activeMode.value = null;
     onReset();
   };
 
   const changeMode = (mode: MODES | null, onSuccess?: () => void) => {
+    console.log('changeMode annotation');
+
     return new Promise((resolve) => {
       const onChangeSuccess = () => {
         activeMode.value = mode;

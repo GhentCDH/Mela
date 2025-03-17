@@ -59,7 +59,7 @@ WORKDIR /app
 
 
 #CMD SLEEP INFINITY
-CMD pnpm run generate:prisma && npx nx run backend:serve
+CMD npx prisma migrate dev && pnpm run generate:prisma && npx nx run backend:serve
 
   # ====== RUN CADDY =======
 FROM caddy:2.8.4-alpine AS frontend

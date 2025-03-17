@@ -62,6 +62,7 @@ import { Btn, Color, ModalService, SelectComponent } from '@ghentcdh/ui';
 
 import type { AnnotationMetadataModel } from './props';
 import { IdentifyColor } from '../../identify.color';
+import { CREATE_MODES } from '../props';
 import { useModeStore } from '../store/mode.store';
 
 const annotationTypes = IdentifyColor;
@@ -81,7 +82,12 @@ const metaDataModel = ref<AnnotationMetadataModel>();
 const modeStore = useModeStore();
 
 const disabled = computed(
-  () => modeStore.activeMode && modeStore.activeMode !== 'edit',
+  () =>
+    modeStore.activeMode &&
+    !(
+      modeStore.activeMode === 'edit' ||
+      CREATE_MODES.includes(modeStore.activeMode)
+    ),
 );
 const isExample = computed(() => {
   return metaDataModel.value.annotationType.id === 'example';
@@ -146,7 +152,7 @@ const deleteAnnotation = () => {
 watch(
   () => properties.annotation,
   (n) => {
-    modeStore.resetMode();
+    // modeStore.resetMode();
     const annotation = properties.annotation;
     const type = findTagging(annotation).value ?? 'phrase';
 

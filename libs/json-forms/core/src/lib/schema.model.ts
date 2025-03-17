@@ -8,6 +8,7 @@ export enum Size {
   xs = 'xs',
   sm = 'sm',
   lg = 'lg',
+  xl = 'xl',
 }
 
 export type JsonFormsLayout = {

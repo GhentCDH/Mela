@@ -17,7 +17,6 @@
         @change="onChange"
       />
       <slot name="content-after" />
-      {{ formData }}--
     </template>
     <template #actions>
       <Btn

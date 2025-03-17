@@ -45,7 +45,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, effect, ref } from 'vue';
+import { computed, effect, onMounted } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { Btn, Color, Menu } from '@ghentcdh/ui';
@@ -61,7 +61,6 @@ const storeId = 'identify_and_translate';
 
 const annotationStore = useAnnotationStore(storeId);
 const modeStore = useModeStore();
-const generatedBlocks = ref(false);
 
 const menuElements = computed(() => {
   return [
@@ -75,6 +74,10 @@ const menuElements = computed(() => {
         {
           label: 'Create annotation',
           action: () => createAnnotation(),
+        },
+        {
+          label: 'Create example',
+          action: () => createAnnotation('create-example'),
         },
       ].flat(),
     },
@@ -107,6 +110,10 @@ const modeToasts: Record<
   'create-annotation': {
     deny: () => modeStore.resetMode(),
     text: 'Create new annotation by selecting text',
+  },
+  'create-example': {
+    deny: () => modeStore.resetMode(),
+    text: 'Create new example annotation by selecting text',
   },
   generate: {
     save: () => saveGeneratedBlocks(),
@@ -141,44 +148,47 @@ effect(() => {
 const generateBlocks = (sourceId: string) => {
   modeStore.changeMode('generate', () => {
     annotationStore.autoGenerateBlocks(sourceId);
-    generatedBlocks.value = true;
   });
 };
 
 const saveGeneratedBlocks = () => {
   annotationStore.selectAnnotation(null);
   annotationStore.saveGeneratedBlocks();
-  generatedBlocks.value = false;
   modeStore.resetMode();
 };
 
 const cancelGeneratedBlocks = () => {
-  annotationStore.cancelGeneratedBLocks();
-  generatedBlocks.value = false;
-  modeStore.resetMode();
+  closeAnnotation();
 };
 
-const createAnnotation = () => {
-  modeStore.changeMode('create-annotation', () => {
+const createAnnotation = (mode: MODES = 'create-annotation') => {
+  modeStore.changeMode(mode, () => {
     annotationStore.selectAnnotation(null);
     // cancelGeneratedBlocks();
   });
 };
 
 const saveAnnotation = (id: string | null, annotation: W3CAnnotation) => {
-  annotationStore
-    .saveOrCreateAnnotation(id, annotation)
-    .then(() => modeStore.resetMode());
+  annotationStore.saveOrCreateAnnotation(id, annotation);
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   annotationStore.deleteAnnotation(annotation.id);
 };
 
-const closeAnnotation = () => {
-  annotationStore.reloadFromTextWithAnnotations();
-  annotationStore.selectAnnotation(null);
+onMounted(() => {
+  modeStore.registerOnResetFn(() => {
+    annotationStore.selectAnnotation(null);
+    annotationStore.changeSelectionFilter({});
+    annotationStore.cancelNewAnnotations();
+  });
+});
 
+const closeAnnotation = () => {
+  console.log('close annotation');
+  annotationStore.selectAnnotation(null);
+  annotationStore.changeSelectionFilter({});
+  annotationStore.cancelNewAnnotations();
   modeStore.resetMode();
 };
 </script>

@@ -3,19 +3,27 @@ import {
   MelaAnnotationPage,
   MelaAnnotationPageSchema,
 } from '@mela/text/shared';
-import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
 
 import { AnnotationRepository } from './annotation-repository.service';
 import { MelaAnnotationPageDto } from './dto';
+import { MelaGuard } from '../auth.guard';
 import { TextRepositoryService } from '../text/text-repository.service';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text/:textId/annotation')
 @ApiBearerAuth()
-// @UseGuards(MelaGuard)
+@UseGuards(MelaGuard)
 export class AnnotationTextController {
   constructor(
     private readonly repository: AnnotationRepository,

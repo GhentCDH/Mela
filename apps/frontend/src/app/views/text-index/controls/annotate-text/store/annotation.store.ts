@@ -18,10 +18,7 @@ import { createTextSelectionAnnotation } from '@ghentcdh/annotations/core';
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { AnnotationUtils } from '../utils/annotations.utils';
-import {
-  PREFIX_GENERATED,
-  generateW3CAnnotationBlocks,
-} from '../utils/generate-blocks';
+import { generateW3CAnnotationBlocks } from '../utils/generate-blocks';
 import { mapRelationsToLinks } from '../utils/links';
 import { SourceUtils, createSourceFromTextContent } from '../utils/source';
 import { AnnotationTester } from '../utils/tester';
@@ -45,9 +42,7 @@ export const useAnnotationStore = (id: string) =>
 
     const selectedIds = ref<SelectedIds | null>(null);
     const activeAnnotation = computed(() =>
-      AnnotationUtils(annotationService.annotations.value).byId(
-        selectedIds.value?.annotationId,
-      ),
+      AnnotationUtils(annotations.value).byId(selectedIds.value?.annotationId),
     );
     const activeTextContent = computed(() =>
       SourceUtils(sources.value).getSourceByUri(
@@ -69,7 +64,7 @@ export const useAnnotationStore = (id: string) =>
 
     const newAnnotations = ref<W3CAnnotation[]>([]);
     const annotations = computed(() =>
-      [annotationService.annotations.value, newAnnotations].flat(),
+      [annotationService.annotations.value, newAnnotations.value].flat(),
     );
 
     const filteredAnnotations = computed(() =>
@@ -98,7 +93,7 @@ export const useAnnotationStore = (id: string) =>
         type,
       );
 
-      newAnnotations.value = [...newAnnotations.value, newAnnotation];
+      newAnnotations.value = [newAnnotation];
 
       selectAnnotation({
         textContentUri: sourceUri,
@@ -124,12 +119,13 @@ export const useAnnotationStore = (id: string) =>
     };
 
     const autoGenerateBlocks = (sourceId: string) => {
-      newAnnotations.value = generateW3CAnnotationBlocks(
+      const generatedBlocks = generateW3CAnnotationBlocks(
         SourceUtils(sources.value).getSource(sourceId),
-        annotationService.annotations.value,
+        annotations.value,
       );
+      newAnnotations.value = [newAnnotations.value, generatedBlocks].flat();
     };
-    const cancelAnnotations = (prefix: string) => {
+    const cancelNewAnnotations = () => {
       newAnnotations.value = [];
     };
 
@@ -181,7 +177,6 @@ export const useAnnotationStore = (id: string) =>
       selectAnnotation,
       autoGenerateBlocks,
       saveGeneratedBlocks,
-      cancelGeneratedBLocks: () => cancelAnnotations(PREFIX_GENERATED),
 
       getAnnotation: (id: string) =>
         AnnotationUtils(annotations.value).byId(id),
@@ -192,6 +187,7 @@ export const useAnnotationStore = (id: string) =>
 
       changeFilter,
       changeSelectionFilter,
+      cancelNewAnnotations,
       filter,
     };
   })();
