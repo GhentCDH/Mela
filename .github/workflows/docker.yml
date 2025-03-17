@@ -27,5 +27,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/mela:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/mela:${{ env.TAG }}
+            ghentcdh/mela:latest
+            ghentcdh/mela:${{ env.TAG }}
