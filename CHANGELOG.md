@@ -1,3 +1,14 @@
+## 0.0.3-0 (2025-03-18)
+
+### 🚀 Features
+
+- setup docker prod ([5abc1a9](https://github.com/GhentCDH/Mela/commit/5abc1a9))
+- setup docker prod ([9bacc97](https://github.com/GhentCDH/Mela/commit/9bacc97))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 0.0.2-0 (2025-03-18)
 
 ### 🚀 Features
