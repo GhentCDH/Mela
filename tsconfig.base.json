@@ -39,9 +39,7 @@
       "@ghentcdh/mela/generated/forms": [
         "generated/types/forms/index.ts"
       ],
-      "@ghentcdh/mela/generated/prisma": [
-        "generated/prisma/index.ts"
-      ],
+
       "@ghentcdh/mela/generated/types": [
         "generated/types/index.ts"
       ],
