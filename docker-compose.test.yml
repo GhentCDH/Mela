@@ -10,7 +10,7 @@ services:
       file: docker-compose-prod.base.yml
       service: nx-app-base-dev
     build:
-      target: node-fe-dev
+      target: mela-frontend
     ports:
       - "4200:4200"
     environment:
@@ -30,7 +30,7 @@ services:
       retries: 3
       start_period: 60s
     build:
-      target: node-be-dev
+      target: mela-backend
     environment:
       - DATABASE_APP_URL=$DATABASE_APP_URL
       # we need this internal redirect to the keycloak container

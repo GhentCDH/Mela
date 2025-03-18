@@ -31,7 +31,7 @@ COPY --chown=app:app . /app
 WORKDIR /app
 
 # Frontend development
-FROM node-dev AS node-fe-dev
+FROM node-dev AS mela-frontend
 
 WORKDIR /app
 CMD SLEEP INFINITY
@@ -40,17 +40,10 @@ CMD SLEEP INFINITY
 CMD pnpm run generate:prisma && npx nx run frontend:serve:production
 
 # Backend development
-FROM node-dev AS node-be-dev
+FROM node-dev AS mela-backend
 
 WORKDIR /app
 
 RUN pnpm run generate:prisma && npx nx run backend:build:production
 
 CMD node dist/apps/backend/main.js
-
-  # ====== RUN CADDY =======
-FROM caddy:2.8.4-alpine AS node-fe-dev-11
-
-COPY --from=build-fe /app/dist/apps/frontend /usr/share/caddy
-
-EXPOSE 80 443
