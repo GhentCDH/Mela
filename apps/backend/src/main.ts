@@ -53,6 +53,8 @@ async function bootstrap() {
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
 
+  console.log(process.env.DATABASE_URL);
+
   // return app
 }
 
