@@ -36,7 +36,7 @@ FROM node-dev AS mela-frontend
 WORKDIR /app
 
 #CMD SLEEP INFINITY
-CMD pnpm run generate:prisma && npx nx run frontend:serve:production
+CMD pnpm run generate:prisma && npx nx run frontend:serve:production --port 80
 
 # Backend development
 FROM node-dev AS mela-backend
@@ -45,4 +45,4 @@ WORKDIR /app
 
 RUN pnpm run generate:prisma && npx nx run backend:build:production
 
-CMD node dist/apps/backend/main.js
+CMD PORT=80 node dist/apps/backend/main.js

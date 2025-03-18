@@ -12,7 +12,7 @@ services:
     build:
       target: mela-frontend
     ports:
-      - "4200:4200"
+      - "4200:80"
     environment:
       - VITE_KEYCLOAK_HOST=$KEYCLOAK_HOST
       - VITE_KEYCLOAK_REALM=$KEYCLOAK_REALM
@@ -38,7 +38,7 @@ services:
       - KEYCLOAK_REALM=$KEYCLOAK_REALM
       - LOG_DIR=/tmp/logs
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3000:80"
     volumes:
       - ./var/logs/backend:/tmp/logs
 
@@ -106,7 +106,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./docker/dev/CaddyFile:/etc/caddy/Caddyfile
+      - ./docker/test/CaddyFile:/etc/caddy/Caddyfile
       - /app/node_modules
 
 
