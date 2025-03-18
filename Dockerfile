@@ -34,7 +34,6 @@ WORKDIR /app
 FROM node-dev AS mela-frontend
 
 WORKDIR /app
-CMD SLEEP INFINITY
 
 #CMD SLEEP INFINITY
 CMD pnpm run generate:prisma && npx nx run frontend:serve:production

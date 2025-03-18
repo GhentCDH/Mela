@@ -26,6 +26,16 @@ jobs:
         with:
           context: .
           push: true
+          target: mela-frontend
           tags: |
-            ghentcdh/mela:latest
-            ghentcdh/mela:${{ env.TAG }}
+            ghentcdh/mela-frontend:latest
+            ghentcdh/mela-frontend:${{ env.TAG }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: mela-backend
+          push: true
+          tags: |
+            ghentcdh/mela-backend:latest
+            ghentcdh/mela-backend:${{ env.TAG }}
