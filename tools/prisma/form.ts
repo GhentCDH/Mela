@@ -1,19 +1,14 @@
 import { generateSchema } from '@anatine/zod-openapi';
 
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import * as model from '../../generated/types/modelSchema';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export const generateForm = (dir: string) => {
-  const dtoDir = path.join(dir, 'dtos');
-  const formDir = path.join(dir, 'forms');
+export const generateForm = (dtoDir: string, formDir: string, model: any) => {
+  if (fs.existsSync(dtoDir)) fs.rmSync(dtoDir, { recursive: true });
+  if (fs.existsSync(formDir)) fs.rmSync(formDir, { recursive: true });
 
-  if (fs.existsSync(dtoDir)) fs.rmdirSync(dtoDir, { recursive: true });
-  if (fs.existsSync(formDir)) fs.rmdirSync(formDir, { recursive: true });
-
-  fs.mkdirSync(dtoDir, { recursive: true });
-  fs.mkdirSync(formDir, { recursive: true });
+  fs.mkdirSync(`${dtoDir}/lib`, { recursive: true });
+  fs.mkdirSync(`${formDir}/lib`, { recursive: true });
 
   const importsDto = [`import { createZodDto } from '@anatine/zod-nestjs';`];
 

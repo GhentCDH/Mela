@@ -35,12 +35,20 @@ module.exports = [
                 '@nestjs/*',
                 '@anatine/zod-nestjs',
               ],
-              onlyDependOnLibsWithTags: ['scope:shared'],
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:generated'],
+            },
+            {
+              sourceTag: 'scope:generated',
+              onlyDependOnLibsWithTags: ['scope:generated'],
             },
             {
               sourceTag: 'scope:tool',
               bannedExternalImports: [],
-              onlyDependOnLibsWithTags: ['scope:tool', 'scope:shared'],
+              onlyDependOnLibsWithTags: [
+                'scope:tool',
+                'scope:shared',
+                'scope:generated',
+              ],
             },
             {
               sourceTag: 'scope:feature',
@@ -49,6 +57,7 @@ module.exports = [
                 'scope:tool',
                 'scope:shared',
                 'scope:feature',
+                'scope:generated',
               ],
             },
             {
@@ -58,6 +67,7 @@ module.exports = [
                 'scope:api',
                 'scope:shared',
                 'scope:tool',
+                'scope:generated',
               ],
             },
             {
@@ -71,6 +81,7 @@ module.exports = [
                 'scope:ui',
                 'scope:shared',
                 'scope:tool',
+                'scope:generated',
               ],
             },
             {
@@ -81,6 +92,7 @@ module.exports = [
                 'scope:shared',
                 'scope:tool',
                 'scope:feature',
+                'scope:generated',
               ],
             },
             {
@@ -95,6 +107,7 @@ module.exports = [
                 'scope:shared',
                 'scope:tool',
                 'scope:feature',
+                'scope:generated',
               ],
             },
           ],
