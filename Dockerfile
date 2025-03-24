@@ -37,7 +37,7 @@ WORKDIR /app
 
 #CMD SLEEP INFINITY
 #RUN pnpm run generate:prisma
-CMD http-server -p 80 dist/apps/frontend
+CMD npx http-server -p 80 dist/apps/frontend
 #CMD vite serve --port 80
     #npx nx run frontend:serve:production --port 80
 
