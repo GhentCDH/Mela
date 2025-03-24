@@ -1,4 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { AuthorDto } from '@generated/dtos';
 import {
   Body,
   Controller,
@@ -18,7 +19,6 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
-import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';

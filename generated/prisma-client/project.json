@@ -1,0 +1,19 @@
+{
+  "name": "generated-prisma-client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "generated/prisma-client/src",
+  "projectType": "library",
+  "tags": ["scope:generated", "scope:api"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/generated/prisma-client",
+        "main": "generated/prisma-client/src/index.ts",
+        "tsConfig": "generated/prisma-client/tsconfig.lib.json",
+        "assets": ["generated/prisma-client/*.md"]
+      }
+    }
+  }
+}

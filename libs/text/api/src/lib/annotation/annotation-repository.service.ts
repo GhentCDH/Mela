@@ -1,7 +1,6 @@
+import { PrismaService } from '@generated/prisma-client';
+import { Annotation } from '@generated/types';
 import { Injectable } from '@nestjs/common';
-
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { Annotation } from '@ghentcdh/mela/generated/types';
 
 import { CreateAnnotationDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';

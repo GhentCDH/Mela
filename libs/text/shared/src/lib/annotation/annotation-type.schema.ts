@@ -1,11 +1,10 @@
-import { z } from 'zod';
-
 import {
   AnnotationSchema,
   RegisterSchema,
   TextContentSchema,
   TextSchema,
-} from '@ghentcdh/mela/generated/types';
+} from '@generated/types';
+import { z } from 'zod';
 
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
 export const PURPOSE_EXAMPLE = 'AnnotationExample';

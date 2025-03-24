@@ -1,3 +1,6 @@
+import { LemaForm } from '@generated/forms';
+import type { Lema } from '@generated/types';
+import { LemaSchema, SpeechSchema } from '@generated/types';
 import { z } from 'zod';
 
 import {
@@ -7,9 +10,6 @@ import {
   TextCellBuilder,
   createSchema,
 } from '@ghentcdh/json-forms/core';
-import { LemaForm } from '@ghentcdh/mela/generated/forms';
-import type { Lema } from '@ghentcdh/mela/generated/types';
-import { LemaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
 
 const uiSchema = LayoutBuilder.vertical<Lema>()
   .addControls(

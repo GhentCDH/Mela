@@ -1,8 +1,8 @@
+import type { Annotation } from '@generated/types';
 import type { AnnotationMetadataType } from '@mela/text/shared';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
-import type { Annotation } from '@ghentcdh/mela/generated/types';
 
 export type AnnotationFilter = {
   annotationType?: AnnotationMetadataType[];

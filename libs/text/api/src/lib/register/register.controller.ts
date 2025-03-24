@@ -1,4 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { RegisterDto } from '@generated/dtos';
 import {
   Body,
   Controller,
@@ -17,7 +18,6 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
-import { RegisterDto } from '@ghentcdh/mela/generated/dtos';
 
 import { CreateRegisterDto, ListRegisterDto } from './dto';
 import { RegisterRepository } from './register-repository.service';

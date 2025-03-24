@@ -1,12 +1,12 @@
-import { AnnotationSelector, getExampleUri } from '@mela/text/shared';
-import { pick } from 'lodash-es';
-
-import { SpecificResourceSchema } from '@ghentcdh/annotations/core';
 import type {
   AnnotationBody,
   ExampleWithRelations,
   TextContent,
-} from '@ghentcdh/mela/generated/types';
+} from '@generated/types';
+import { AnnotationSelector, getExampleUri } from '@mela/text/shared';
+import { pick } from 'lodash-es';
+
+import { SpecificResourceSchema } from '@ghentcdh/annotations/core';
 
 import { createSelector } from './create-selector';
 import { CreateAnnotationDto } from '../../dto';

@@ -1,3 +1,5 @@
+import { PrismaService } from '@generated/prisma-client';
+import { Annotation, AnnotationWithRelations } from '@generated/types';
 import {
   AnnotationExample,
   AnnotationLink,
@@ -9,12 +11,6 @@ import {
   PURPOSE_TRANSLATION,
 } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
-
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import {
-  Annotation,
-  AnnotationWithRelations,
-} from '@ghentcdh/mela/generated/types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
 import { AnnotationTypeDto } from './annotation-type.schema';

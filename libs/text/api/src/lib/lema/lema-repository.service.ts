@@ -1,8 +1,6 @@
+import { PrismaService } from '@generated/prisma-client';
+import { LemaWithRelations } from '@generated/types';
 import { Injectable } from '@nestjs/common';
-import { LemaCreateManyInput } from '@prisma/client';
-
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
 
 import { CreateLemaDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
@@ -51,23 +49,5 @@ export class LemaRepository extends AbstractRepository<
     return {
       connect: { id: findSpeech.id },
     };
-  }
-
-  public createMany(lemas: LemaCreateManyInput[]) {
-    // First create the speeches
-    return Promise.all(
-      lemas.map(async (l) => {
-        const lema = {
-          ...l,
-          speech: (await this.createOrConnectSpeech(l)) as LemaCreateManyInput,
-        };
-
-        return this.prisma.lema.upsert({
-          where: { word: l.word },
-          update: lema,
-          create: lema,
-        });
-      }),
-    );
   }
 }

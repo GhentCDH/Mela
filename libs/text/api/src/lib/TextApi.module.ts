@@ -1,8 +1,7 @@
+import { PrismaModule } from '@generated/prisma-client';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-import { PrismaModule } from '@ghentcdh/mela/generated/prisma';
 
 import { AnnotationRepository } from './annotation/annotation-repository.service';
 import { AnnotationTextController } from './annotation/annotaton-text.controller';

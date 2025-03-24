@@ -1,8 +1,7 @@
+import { PrismaService } from '@generated/prisma-client';
+import { Example, ExampleWithRelations } from '@generated/types';
 import { Injectable } from '@nestjs/common';
 import { pick } from 'lodash-es';
-
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { Example, ExampleWithRelations } from '@ghentcdh/mela/generated/types';
 
 import { CreateExampleDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';

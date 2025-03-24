@@ -1,3 +1,7 @@
+import { AuthorForm } from '@generated/forms';
+import type { Author } from '@generated/types';
+import { AuthorSchema } from '@generated/types';
+
 import {
   ControlBuilder,
   LayoutBuilder,
@@ -5,9 +9,6 @@ import {
   TextCellBuilder,
   createSchema,
 } from '@ghentcdh/json-forms/core';
-import { AuthorForm } from '@ghentcdh/mela/generated/forms';
-import type { Author } from '@ghentcdh/mela/generated/types';
-import { AuthorSchema } from '@ghentcdh/mela/generated/types';
 
 const uiSchema = LayoutBuilder.vertical<Author>()
   .addControls(ControlBuilder.properties('name'))

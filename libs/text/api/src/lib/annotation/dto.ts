@@ -1,5 +1,9 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import {
+  AnnotationBodyWithRelations,
+  AnnotationTargetWithRelations,
+} from '@generated/types';
+import {
   MelaAnnotationPageSchema,
   MelaAnnotationSchema,
   getIdFromUri,
@@ -15,10 +19,6 @@ import {
   getTarget,
 } from '@ghentcdh/annotations/core';
 import { createResponseData } from '@ghentcdh/json-forms/api';
-import {
-  AnnotationBodyWithRelations,
-  AnnotationTargetWithRelations,
-} from '@ghentcdh/mela/generated/types';
 
 const mapBody = (body: W3CAnnotationBody): AnnotationBodyWithRelations => {
   // const source_id = getSourceIdFromUri(uri);

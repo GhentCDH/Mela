@@ -1,3 +1,6 @@
+import { TextForm } from '@generated/forms';
+import type { Text, TextContent, TextWithRelations } from '@generated/types';
+import { AuthorSchema, TextContentSchema, TextSchema } from '@generated/types';
 import { z } from 'zod';
 
 import {
@@ -9,17 +12,6 @@ import {
   TextCellBuilder,
   createSchema,
 } from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
-import { TextForm } from '@ghentcdh/mela/generated/forms';
-import type {
-  Text,
-  TextContent,
-  TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
-import {
-  AuthorSchema,
-  TextContentSchema,
-  TextSchema,
-} from '@ghentcdh/mela/generated/types';
 
 import { AuthorFormSchema } from '../author/author.schema';
 import { getTextContentUri } from '../utils/uri';

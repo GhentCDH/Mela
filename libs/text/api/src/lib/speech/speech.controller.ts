@@ -1,4 +1,5 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { SpeechDto } from '@generated/dtos';
 import {
   Body,
   Controller,
@@ -17,7 +18,6 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
-import { SpeechDto } from '@ghentcdh/mela/generated/dtos';
 
 import { CreateSpeechDto, ListSpeechDto } from './dto';
 import { SpeechRepository } from './speech-repository.service';

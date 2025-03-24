@@ -1,3 +1,7 @@
+import type {
+  TextContentWithRelations,
+  TextWithRelations,
+} from '@generated/types';
 import type { TextContentDto } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
@@ -5,10 +9,6 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import type {
-  TextContentWithRelations,
-  TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();

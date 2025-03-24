@@ -1,8 +1,8 @@
 import { createZodDto } from '@anatine/zod-nestjs';
+import { ExampleSchema } from '@generated/types';
 import { ExampleFormSchema } from '@mela/text/shared';
 
 import { createResponseData } from '@ghentcdh/json-forms/api';
-import { ExampleSchema } from '@ghentcdh/mela/generated/types';
 
 export class CreateExampleDto extends createZodDto(
   ExampleFormSchema.dtoSchema,

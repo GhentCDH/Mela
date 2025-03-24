@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { TextContentWithRelations } from '@generated/types';
 import { TextFormSchema } from '@mela/text/shared';
 import { useRouter } from 'vue-router';
 
 import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
-import type { TextContentWithRelations } from '@ghentcdh/mela/generated/types';
 
 const formId = 'text-index';
 const router = useRouter();

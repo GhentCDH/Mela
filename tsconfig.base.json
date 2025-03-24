@@ -10,58 +10,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ghentcdh/annotations/core": [
-        "libs/annotations/core/src/index.ts"
-      ],
-      "@ghentcdh/annotations/vue": [
-        "libs/annotations/vue/src/index.ts"
-      ],
-      "@ghentcdh/json-forms/api": [
-        "libs/json-forms/api/src/index.ts"
-      ],
-      "@ghentcdh/json-forms/core": [
-        "libs/json-forms/core/src/index.ts"
-      ],
-      "@ghentcdh/json-forms/vue": [
-        "libs/json-forms/vue/src/index.ts"
-      ],
-      "@ghentcdh/mela/generated/dtos": [
-        "generated/types/dtos/index.ts"
-      ],
-      "@ghentcdh/mela/generated/forms": [
-        "generated/types/forms/index.ts"
-      ],
-      "@ghentcdh/mela/generated/prisma": [
-        "generated/prisma/index.ts"
-      ],
-      "@ghentcdh/mela/generated/types": [
-        "generated/types/index.ts"
-      ],
+      "@generated/dtos": ["generated/dtos/src/index.ts"],
+      "@generated/forms": ["generated/forms/src/index.ts"],
+      "@generated/prisma-client": ["generated/prisma-client/src/index.ts"],
+      "@generated/types": ["generated/types/src/index.ts"],
+      "@ghentcdh/annotations/core": ["libs/annotations/core/src/index.ts"],
+      "@ghentcdh/annotations/vue": ["libs/annotations/vue/src/index.ts"],
+      "@ghentcdh/json-forms/api": ["libs/json-forms/api/src/index.ts"],
+      "@ghentcdh/json-forms/core": ["libs/json-forms/core/src/index.ts"],
+      "@ghentcdh/json-forms/vue": ["libs/json-forms/vue/src/index.ts"],
       "@ghentcdh/tools/logging/frontend": [
         "libs/tools/logging/frontend/src/index.ts"
       ],
-      "@ghentcdh/ui": [
-        "libs/ui/src/index.ts"
-      ],
-      "@mela/text/api": [
-        "libs/text/api/src/index.ts"
-      ],
-      "@mela/text/shared": [
-        "libs/text/shared/src/index.ts"
-      ]
+      "@ghentcdh/ui": ["libs/ui/src/index.ts"],
+      "@mela/text/api": ["libs/text/api/src/index.ts"],
+      "@mela/text/shared": ["libs/text/shared/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "generated"
-  ]
+  "exclude": ["node_modules", "tmp", "generated"]
 }

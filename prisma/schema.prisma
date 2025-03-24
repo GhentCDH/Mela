@@ -6,12 +6,12 @@
 
 generator client {
   provider = "prisma-client-js"
-  // output   = "../generated/prisma-client/"
+  // output   = "../generated/prisma-client/src/client"
 }
 
 generator zod {
   provider                         = "zod-prisma-types"
-  output                           = "../generated/types"
+  output                           = "../generated/types/src/lib"
   createInputTypes                 = "false"
   addInputTypeValidation           = "false"
   writeBarrelFiles                 = "true"

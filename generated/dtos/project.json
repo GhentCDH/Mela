@@ -1,0 +1,19 @@
+{
+  "name": "generated-dtos",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "generated/dtos/src",
+  "projectType": "library",
+  "tags": ["scope:generated"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/generated/dtos",
+        "main": "generated/dtos/src/index.ts",
+        "tsConfig": "generated/dtos/tsconfig.lib.json",
+        "assets": ["generated/dtos/*.md"]
+      }
+    }
+  }
+}

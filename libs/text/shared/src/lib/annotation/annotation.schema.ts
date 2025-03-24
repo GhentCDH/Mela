@@ -1,3 +1,9 @@
+import type { AnnotationBody, AnnotationTarget } from '@generated/types';
+import {
+  AnnotationBodySchema,
+  AnnotationSchema,
+  AnnotationTargetSchema,
+} from '@generated/types';
 import { pick } from 'lodash-es';
 import { z } from 'zod';
 
@@ -5,15 +11,6 @@ import {
   W3CAnnotationBodySchema,
   W3CAnnotationTargetSchema,
 } from '@ghentcdh/annotations/core';
-import type {
-  AnnotationBody,
-  AnnotationTarget,
-} from '@ghentcdh/mela/generated/types';
-import {
-  AnnotationBodySchema,
-  AnnotationSchema,
-  AnnotationTargetSchema,
-} from '@ghentcdh/mela/generated/types';
 
 import { createUri } from '../utils/uri';
 

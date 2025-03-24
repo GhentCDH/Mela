@@ -1,5 +1,6 @@
+import type { Annotation } from '@generated/types';
+
 import { PREFIX_NEW } from '@ghentcdh/annotations/core';
-import type { Annotation } from '@ghentcdh/mela/generated/types';
 
 import { PREFIX_GENERATED } from './generate-blocks';
 

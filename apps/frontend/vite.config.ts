@@ -4,6 +4,35 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 
+import * as fs from 'node:fs';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
+// Custom plugin to copy Prisma files
+function copyPrismaFiles(): any {
+  return {
+    name: 'copy-prisma-files',
+    writeBundle: {
+      sequential: true,
+      order: 'post',
+      async handler({ dir }) {
+        const prismaDestDir = path.join(dir, 'prisma');
+        await fs.ensureDir(prismaDestDir);
+
+        // Copy prisma dir
+        await fs.copy(
+          /// I guess the default is node modules prisma client, i had a custom path so use what fits your needs.
+          'path/to/your/prisma/generated/files',
+          prismaDestDir,
+          { overwrite: true },
+        );
+
+        console.log('✓ Copied Prisma files to build output');
+      },
+    },
+  };
+}
+
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/apps/frontend',

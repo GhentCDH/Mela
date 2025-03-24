@@ -1,4 +1,6 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
+import { LemaDto } from '@generated/dtos';
+import { LemaWithRelations } from '@generated/types';
 import {
   Body,
   Controller,
@@ -17,8 +19,6 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
-import { LemaDto } from '@ghentcdh/mela/generated/dtos';
-import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
 
 import { CreateLemaDto, ListLemaDto } from './dto';
 import { LemaRepository } from './lema-repository.service';

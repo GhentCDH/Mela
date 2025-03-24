@@ -1,3 +1,8 @@
+import type {
+  AnnotationBody,
+  AnnotationTarget,
+  TextContent,
+} from '@generated/types';
 import { AnnotationSelector, getTextContentUri } from '@mela/text/shared';
 
 import type { TextAnnotation } from '@ghentcdh/annotations/core';
@@ -7,11 +12,6 @@ import {
   TextualBodySchema,
   createTextPositionSelector,
 } from '@ghentcdh/annotations/core';
-import type {
-  AnnotationBody,
-  AnnotationTarget,
-  TextContent,
-} from '@ghentcdh/mela/generated/types';
 
 import { CreateAnnotationDto } from '../../dto';
 
