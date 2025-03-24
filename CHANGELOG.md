@@ -1,3 +1,13 @@
+## 0.0.3-2 (2025-03-24)
+
+### 🚀 Features
+
+- improve prisma generation ([#69](https://github.com/GhentCDH/Mela/pull/69))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 0.0.3-1 (2025-03-24)
 
 ### 🚀 Features
