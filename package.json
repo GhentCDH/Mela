@@ -1,6 +1,6 @@
 {
   "name": "@mela/source",
-  "version": "0.0.3-3",
+  "version": "0.0.3-1",
   "license": "MIT",
   "scripts": {
     "commitlint": "commit",
@@ -11,7 +11,7 @@
     "docs:dev": "pnpm run docs:build:menu && vuepress dev docs",
     "generate:schema": "npx prisma generate",
     "generate:zod": "ts-node --project ./tools/tsconfig.tools.json ./tools/prisma/index.ts ",
-    "generated:lint": "npx eslint generated/src/lib/types/** --fix && && npx eslint generated/prisma/** --fix",
+    "generated:lint": "npx eslint generated/types/** --fix && && npx eslint generated/prisma/** --fix",
     "generate:prisma": "pnpm run generate:schema && pnpm run generate:zod",
     "prepare": "husky"
   },
