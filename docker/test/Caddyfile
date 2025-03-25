@@ -12,6 +12,6 @@
 
 
     handle_path /* {
-       reverse_proxy frontend:80
+       reverse_proxy frontend:9000
     }
 }
