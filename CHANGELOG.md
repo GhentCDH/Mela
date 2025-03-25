@@ -1,3 +1,13 @@
+## 0.0.3-5 (2025-03-25)
+
+### 🚀 Features
+
+- disable all backend requests ([536f1f9](https://github.com/GhentCDH/Mela/commit/536f1f9))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 0.0.3-4 (2025-03-25)
 
 This was a version bump only, there were no code changes.
