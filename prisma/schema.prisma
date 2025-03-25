@@ -1,24 +1,17 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "../generated/prisma-client/src/client"
 }
 
 generator zod {
   provider                         = "zod-prisma-types"
   output                           = "../generated/types"
-  createInputTypes                 = "false"
   addInputTypeValidation           = "false"
-  writeBarrelFiles                 = "true"
+  createInputTypes                 = "false"
+  createModelTypes                 = "true"
   createOptionalDefaultValuesTypes = "false"
   createRelationValuesTypes        = "true"
   useMultipleFiles                 = "true"
-  createModelTypes                 = "true"
+  writeBarrelFiles                 = "true"
 }
 
 datasource db {
@@ -37,88 +30,67 @@ model Author {
 model Text {
   id          String        @id @default(uuid())
   name        String
-  author      Author        @relation(fields: [author_id], references: [id])
   author_id   String
   year        Int
-  textContent TextContent[]
   annotations Annotation[]
+  author      Author        @relation(fields: [author_id], references: [id])
+  textContent TextContent[]
 
   @@map("text")
 }
 
-enum TextType {
-  SOURCE
-  TRANSLATION
-}
-
 model TextContent {
-  id               String             @id @default(uuid())
-  text             Text               @relation(fields: [text_id], references: [id], onDelete: Cascade)
-  text_id          String
-  text_type        TextType
-  language         String
-  content          String             @db.Text
-
-  Example Example[]
+  id        String    @id @default(uuid())
+  text_id   String
+  text_type TextType
+  language  String
+  content   String
+  Example   Example[]
+  text      Text      @relation(fields: [text_id], references: [id], onDelete: Cascade)
 
   @@map("text_content")
-}
-
-enum MotivationEnum {
-  classifying
-  tagging
 }
 
 model Annotation {
   id               String             @id @default(uuid())
   motivation       MotivationEnum
-  text             Text               @relation(fields: [text_id], references: [id])
   text_id          String
+  text             Text               @relation(fields: [text_id], references: [id])
   annotationBody   AnnotationBody[]
   annotationTarget AnnotationTarget[]
 
   @@map("annotation")
 }
 
-enum AnnotationType {
-  text_content
-  annotation
-  example
-}
-
 model AnnotationBody {
-  id            String       @id @default(uuid())
+  id            String          @id @default(uuid())
   value         Json
-  annotation    Annotation   @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
-  source_type AnnotationType?
-  source_id String?
+  source_type   AnnotationType?
+  source_id     String?
+  annotation    Annotation      @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
 
   @@map("annotation_body")
-  // TextContent        TextContent? @relation(fields: [text_content_id], references: [id])
-  // text_content_id     String?
-  // example       Example?     @relation(fields: [example_id], references: [id], onDelete: Cascade)
-  // example_id    String?
 }
 
 model AnnotationTarget {
-  id            String       @id @default(uuid())
+  id            String         @id @default(uuid())
   value         Json
-  annotation    Annotation   @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
   annotation_id String
-  source_type AnnotationType
-  source_id String
+  source_type   AnnotationType
+  source_id     String
+  annotation    Annotation     @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
 
   @@map("annotation_target")
 }
 
 model Example {
-  id             String           @id @default(uuid())
-  name           String
-  register       Register         @relation(fields: [register_id], references: [id])
-  register_id    String
-  textContent        TextContent @relation(fields: [text_content_id], references: [id])
-  text_content_id     String
+  id              String      @id @default(uuid())
+  name            String
+  register_id     String
+  text_content_id String
+  register        Register    @relation(fields: [register_id], references: [id])
+  textContent     TextContent @relation(fields: [text_content_id], references: [id])
 
   @@map("example")
 }
@@ -147,8 +119,24 @@ model Lema {
   comparative Boolean? @default(false)
   superlative Boolean? @default(false)
   participle  Boolean? @default(false)
-  speech      Speech   @relation(fields: [speech_id], references: [id])
   speech_id   String
+  speech      Speech   @relation(fields: [speech_id], references: [id])
 
   @@map("lema")
+}
+
+enum TextType {
+  SOURCE
+  TRANSLATION
+}
+
+enum MotivationEnum {
+  classifying
+  tagging
+}
+
+enum AnnotationType {
+  text_content
+  annotation
+  example
 }
