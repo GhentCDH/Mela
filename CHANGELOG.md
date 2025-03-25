@@ -1,3 +1,13 @@
+## 0.0.3-6 (2025-03-25)
+
+### 🚀 Features
+
+- enable all backend requests ([a7f96d2](https://github.com/GhentCDH/Mela/commit/a7f96d2))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 0.0.3-5 (2025-03-25)
 
 ### 🚀 Features
