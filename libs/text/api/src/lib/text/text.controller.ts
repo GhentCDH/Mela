@@ -10,7 +10,6 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -25,13 +24,12 @@ import { TextWithRelations } from '@ghentcdh/mela/generated/types';
 
 import { CreateTextDto, ListTextDto } from './dto';
 import { TextRepositoryService } from './text-repository.service';
-import { MelaGuard } from '../auth.guard';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
 @Controller('text')
 @ApiBearerAuth()
-@UseGuards(MelaGuard)
+// @UseGuards(MelaGuard)
 export class TextController extends AbstractController<
   TextWithRelations,
   CreateTextDto

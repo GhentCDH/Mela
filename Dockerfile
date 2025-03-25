@@ -31,21 +31,32 @@ COPY --chown=app:app . /app
 WORKDIR /app
 
 # Frontend development
-FROM node-dev AS mela-frontend
+FROM node-dev AS build-fe
 
 WORKDIR /app
 
 #CMD SLEEP INFINITY
-#RUN pnpm run generate:prisma
+RUN pnpm run generate:prisma  && \
+    npx nx run frontend:build:production
+
 CMD npx http-server -p 80 dist/apps/frontend
 #CMD vite serve --port 80
     #npx nx run frontend:serve:production --port 80
 
-# Backend development
+# Backend developmen
 FROM node-dev AS mela-backend
 
 WORKDIR /app
 
-RUN pnpm run generate:prisma && npx nx run backend:build:production
+RUN pnpm run generate:prisma && \
+    npx nx run backend:build:production
 
 CMD PORT=80 node dist/apps/backend/main.js
+
+  # ====== RUN CADDY =======
+FROM caddy:2.8.4-alpine AS mela-frontend
+
+COPY --from=build-fe /app/dist/apps/frontend /usr/share/caddy
+COPY --from=build-fe /app/docker/prod/Caddyfile /etc/caddy/Caddyfile
+
+EXPOSE 80 443
