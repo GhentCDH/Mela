@@ -40,13 +40,17 @@ async function bumpVersion(type: semver.ReleaseType) {
 }
 
 async function gitCommitAndTag(version: string) {
-  git.add('package.json');
-  git.commit(`chore(release): v${version}`);
-  git.addTag(`v${version}`);
-  git.push();
-  git.pushTags();
-
-  console.log(`🏷️ Created git tag: v${version}`);
+  git
+    .add('package.json')
+    .add('RELEASE_NOTES.json')
+    .commit(`chore(release): v${version}`)
+    .addTag(`v${version}`)
+    .push()
+    .pushTags()
+    .log()
+    .exec(() => {
+      console.log(`🏷️ Created git tag: v${version}`);
+    });
 }
 
 const dynamicReleaseTypes = (): ReleaseType[] => {

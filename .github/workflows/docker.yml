@@ -14,12 +14,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get latest tag
-        id: get_tag
+      - name: Extract version and set it to TAG env var
         run: |
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "Latest tag is $latest_tag"
-          echo "TAG=$latest_tag" >> $GITHUB_ENV
+          echo "TAG=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+          echo "SOURCE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: Use the tag
         run: echo "The latest tag is ${{ env.TAG }}"
       - name: Set up Docker Buildx
