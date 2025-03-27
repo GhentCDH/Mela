@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computedAsync } from '@vueuse/core';
+
 import { ShellComponent } from '@ghentcdh/ui';
 
 import { menu } from './configuration/menu';

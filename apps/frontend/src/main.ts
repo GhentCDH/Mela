@@ -1,6 +1,7 @@
 import './styles.scss';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
+
 import { ClickOutside } from '@ghentcdh/ui';
 
 import App from './app/App.vue';
