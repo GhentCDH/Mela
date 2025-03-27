@@ -42,7 +42,7 @@ async function bumpVersion(type: semver.ReleaseType) {
 async function gitCommitAndTag(version: string) {
   git
     .add('package.json')
-    .add('RELEASE_NOTES.json')
+    .add('RELEASE_NOTES.md')
     .commit(`chore(release): v${version}`)
     .addTag(`v${version}`)
     .push()
