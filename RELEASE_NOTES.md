@@ -1,4 +1,4 @@
-## [0.0.3-7](https://github.com/GhentCDH/Mela/compare/v0.0.3-7...v0.0.3-4) (2025-03-27)
+## [0.0.3-8](https://github.com/GhentCDH/Mela/compare/v0.0.3-6...v0.0.3-8) (2025-03-27)
 
 
 ### Features
