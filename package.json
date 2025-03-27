@@ -14,6 +14,7 @@
     "generated:lint": "npx eslint generated/types/** --fix && && npx eslint generated/prisma/** --fix",
     "generate:prisma": "pnpm run generate:schema && pnpm run generate:zod",
     "release": "ts-node --project tools/tsconfig.tools.json tools/release/release.ts",
+    "create-env": "ts-node --project tools/tsconfig.tools.json tools/scripts/create-env.ts",
     "prepare": "husky"
   },
   "private": true,
