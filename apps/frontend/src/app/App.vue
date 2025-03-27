@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { computedAsync } from '@vueuse/core';
-import { computed, inject } from 'vue';
-
-import {
-  getUser,
-  isAuthenticated,
-} from '@ghentcdh/authentication-vue/lib/utils';
 import { ShellComponent } from '@ghentcdh/ui';
 
 import { menu } from './configuration/menu';
 import { useAuthenticate } from './utils';
+
+console.log(import.meta.env);
 
 const auth = useAuthenticate();
 const user = computedAsync(async () => {
