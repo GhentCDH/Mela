@@ -39,7 +39,7 @@ WORKDIR /app
 RUN pnpm run generate:prisma  && \
     npx nx run frontend:build:production
 
-CMD  ./tools/scripts/startup.sh /app/dist/apps/frontend
+CMD  cd /app/tools/scripts && ./startup.sh /app/dist/apps/frontend
 #CMD npx vite serve --port 9000 /app/dist/apps/frontend --host
     #npx nx run frontend:serve:production --port 80
 
