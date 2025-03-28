@@ -14,9 +14,9 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - VITE_KEYCLOAK_HOST=$KEYCLOAK_HOST
-      - VITE_KEYCLOAK_REALM=$KEYCLOAK_REALM
-      - VITE_KEYCLOAK_CLIENT_ID=$KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_HOST=$KEYCLOAK_HOST
+      - KEYCLOAK_REALM=$KEYCLOAK_REALM
+      - KEYCLOAK_CLIENT_ID=$KEYCLOAK_CLIENT_ID
 
   backend:
     container_name: mela.app.backend
