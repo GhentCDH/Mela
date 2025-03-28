@@ -1,10 +1,10 @@
-## [0.0.3-8](https://github.com/GhentCDH/Mela/compare/v0.0.3-6...v0.0.3-8) (2025-03-27)
+## [0.0.3-9](https://github.com/GhentCDH/Mela/compare/v0.0.3-8...v0.0.3-9) (2025-03-28)
 
 
 ### Features
 
-* disable authentication on all request ([3964835](https://github.com/GhentCDH/Mela/commit/39648351c27f26aa113250b506e42b8dd8039deb))
-* disable authentication on all request ([f754c4c](https://github.com/GhentCDH/Mela/commit/f754c4c4030d9803f1dc43782105228c554f8760))
+* create frontend env file ([106f355](https://github.com/GhentCDH/Mela/commit/106f355f3db4093fb0939addd8f4734efd3864c4))
+* create frontend env file ([7c2c8c8](https://github.com/GhentCDH/Mela/commit/7c2c8c85d005c82c381d8dac89e7e4d92bdcd9b6))
 
 
 
