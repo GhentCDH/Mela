@@ -2,6 +2,8 @@ ARG NODE_VERSION=23
 
 FROM node:${NODE_VERSION}-slim AS node-dev
 
+ENV VERSION=local-development
+
 # INSTALL dependencies
 RUN apt-get update -qq && \
     apt-get install -qq -y \
@@ -49,7 +51,7 @@ FROM node-dev AS node-fe-dev
 
 WORKDIR /app
 
-RUN ./tools/scripts/create-env.sh /app/apps/frontend/src/assets
+RUN ./tools/scripts/create-env.sh /app/apps/frontend/
 
 #CMD SLEEP INFINITY
 CMD  pnpm run generate:prisma && npx nx run frontend:serve

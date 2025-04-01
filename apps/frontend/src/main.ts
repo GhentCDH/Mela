@@ -9,9 +9,6 @@ import router from './router';
 
 const app = createApp(App);
 
-const windowVariables = window['_env_'];
-console.log(windowVariables);
-
 app.use(createPinia());
 app.use(router);
 

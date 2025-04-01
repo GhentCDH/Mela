@@ -2,6 +2,9 @@ ARG NODE_VERSION=23
 
 FROM node:${NODE_VERSION}-slim AS node-dev
 
+ARG version=no-version
+ENV VERSION=${version}
+
 # INSTALL dependencies
 RUN apt-get update -qq && \
     apt-get install -qq -y \

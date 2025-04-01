@@ -4,9 +4,7 @@ import { computedAsync } from '@vueuse/core';
 import { ShellComponent } from '@ghentcdh/ui';
 
 import { menu } from './configuration/menu';
-import { useAuthenticate } from './utils';
-
-console.log(import.meta.env);
+import { mela_env, useAuthenticate } from './utils';
 
 const auth = useAuthenticate();
 const user = computedAsync(async () => {
@@ -19,6 +17,7 @@ const user = computedAsync(async () => {
     title="MeLa | Meaning of LAnguage"
     :menu="menu()"
     :user="user"
+    :version="mela_env.VERSION"
     @click="auth.logout"
   >
     <RouterView />
