@@ -15,7 +15,7 @@ export default defineConfig({
     port: 4300,
     host: 'localhost',
   },
-  plugins: [vue(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
+  plugins: [vue(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md', 'assets/**'])],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],

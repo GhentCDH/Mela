@@ -2,6 +2,9 @@ ARG NODE_VERSION=23
 
 FROM node:${NODE_VERSION}-slim AS node-dev
 
+ARG version=no-version
+ENV VERSION=${version}
+
 # INSTALL dependencies
 RUN apt-get update -qq && \
     apt-get install -qq -y \
@@ -39,7 +42,7 @@ WORKDIR /app
 RUN pnpm run generate:prisma  && \
     npx nx run frontend:build:production
 
-CMD  ./tools/scripts/startup.sh /app/dist/apps/frontend
+CMD  cd /app/tools/scripts && ./startup.sh /app/dist/apps/frontend
 #CMD npx vite serve --port 9000 /app/dist/apps/frontend --host
     #npx nx run frontend:serve:production --port 80
 

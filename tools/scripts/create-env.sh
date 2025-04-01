@@ -29,6 +29,7 @@ ENV_VARS=(
   "KEYCLOAK_REALM"
   "KEYCLOAK_CLIENT_ID"
   "ENV"
+  "VERSION"
 )
 
 # Start writing to the env.js file

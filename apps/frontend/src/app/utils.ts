@@ -15,3 +15,13 @@ export const useAuthenticate = () => {
     logout: () => auth.logout(),
   };
 };
+
+export const mela_env = (window['_env_'] ?? {}) as {
+  KEYCLOAK_HOST: string;
+  KEYCLOAK_REALM: string;
+  KEYCLOAK_CLIENT_ID: string;
+  VERSION: string;
+  ENV: string;
+};
+
+console.log('mela_env', mela_env);
