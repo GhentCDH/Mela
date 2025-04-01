@@ -25,7 +25,7 @@ export const AnnotationSelectorSchema = z.object({
 export type AnnotationSelector = z.infer<typeof AnnotationSelectorSchema>;
 
 export const AnnotationExampleExampleSchema = z.object({
-  register: RegisterSchema.extend({
+  register: RegisterSchema.omit({ createdAt: true, updatedAt: true }).extend({
     id: z.string().optional(),
   }),
   id: z.string().optional(),

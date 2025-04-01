@@ -1,8 +1,6 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">
-      Selected text:
-    </legend>
+    <legend class="fieldset-legend">Selected text:</legend>
     {{ selectedText }}
   </fieldset>
   <SelectComponent
@@ -23,18 +21,8 @@
     @change="changeMetadata"
   />
   <div class="flex gap-2 justify-end pb-4">
-    <Btn
-      :color="Color.error"
-      @click="deleteAnnotation"
-    >
-      Delete
-    </Btn>
-    <Btn
-      :disabled="!valid || disabled"
-      @click="saveAnnotation"
-    >
-      Save
-    </Btn>
+    <Btn :color="Color.error" @click="deleteAnnotation"> Delete</Btn>
+    <Btn :disabled="!valid || disabled" @click="saveAnnotation"> Save</Btn>
   </div>
 </template>
 
@@ -161,7 +149,7 @@ watch(
 
     const example = exampleMetaData?.value?.value
       ? {
-          ...AnnotationExampleExampleSchema.parse(exampleMetaData.value.value),
+          ...AnnotationExampleExampleSchema.parse(exampleMetaData.value?.value),
           id: getExampleIdFromUri(exampleMetaData.value.source),
         }
       : { register: {} };
