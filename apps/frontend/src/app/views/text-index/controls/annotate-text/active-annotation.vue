@@ -16,7 +16,10 @@
       @save="saveAnnotation"
       @delete="deleteAnnotationAndClose"
     />
-    <hr v-if="isExample" class="text-gray-300 my-2" />
+    <hr
+      v-if="isExample"
+      class="text-gray-300 my-2"
+    >
     <LinkBuckets
       v-if="isExample"
       :annotation="activeAnnotation"
@@ -27,7 +30,7 @@
       @change-select-filter="emits('changeSelectFilter', $event)"
     />
 
-    <hr class="text-gray-300 my-2" />
+    <hr class="text-gray-300 my-2">
 
     <Translations
       :annotation="activeAnnotation"
