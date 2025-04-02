@@ -6,12 +6,14 @@
     :display-value="displayValue"
     :annotation="activeAnnotation"
     :links="links"
-    :newLink="linkBucket"
+    :new-link="linkBucket"
     :text="text"
-    @addLink="addLink"
+    @add-link="addLink"
     @delete="deleteAnnotation"
   >
-    <p v-if="!linkedBucket">Click on an annotation</p>
+    <p v-if="!linkedBucket">
+      Click on an annotation
+    </p>
     <div v-if="linkedBucket">
       {{ translatedText?.value }}
       <SelectComponent
@@ -20,7 +22,9 @@
         :options="linkTypes"
       />
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveBucket"> Save LinkBucket</Btn>
+        <Btn @click="saveBucket">
+          Save LinkBucket
+        </Btn>
       </div>
     </div>
   </LinkComponent>
@@ -38,13 +42,13 @@ import type {
 import { findBodyType } from '@ghentcdh/annotations/core';
 import { Btn, SelectComponent } from '@ghentcdh/ui';
 
+import activeAnnotation from '../active-annotation.vue';
 import type { AnnotationWithRelations } from '../props';
+import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { useModeStore } from '../store/mode.store';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { findTextValue } from '../utils/translation';
-import activeAnnotation from '../active-annotation.vue';
-import LinkComponent from './link-component.vue';
 
 const listenerStore = useAnnotationListenerStore()();
 

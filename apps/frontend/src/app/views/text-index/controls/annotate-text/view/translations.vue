@@ -6,15 +6,15 @@
     :display-value="displayValue"
     :links="links"
     :text="text"
-    :newLink="linkedTranslation"
-    @addLink="addLink"
+    :new-link="linkedTranslation"
+    @add-link="addLink"
     @delete="deleteAnnotation"
   >
     <p v-if="!linkedTranslation">Click on an annotation</p>
     <div v-else>
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation"> Save translation</Btn>
+        <Btn @click="saveTranslation"> Save translation </Btn>
       </div>
     </div>
   </LinkComponent>
@@ -32,10 +32,10 @@ import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { Btn } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
+import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { useModeStore } from '../store/mode.store';
 import { findTextValue } from '../utils/translation';
-import LinkComponent from './link-component.vue';
 
 const listenerStore = useAnnotationListenerStore()();
 
@@ -57,7 +57,6 @@ const emits = defineEmits<{
 const linkedTranslation = ref();
 
 effect(() => {
-  console.log('run effect');
   if (!linkTranslation.value) {
     linkedTranslation.value = null;
     return;

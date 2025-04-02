@@ -10,6 +10,7 @@ import {
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
 export const PURPOSE_EXAMPLE = 'AnnotationExample';
 export const PURPOSE_TRANSLATION = 'translation';
+export const PURPOSE_LEMA = 'lema';
 export const PURPOSE_LINK_BUCKETS = 'link_buckets';
 
 export const AnnotationSelectorSchema = z.object({
