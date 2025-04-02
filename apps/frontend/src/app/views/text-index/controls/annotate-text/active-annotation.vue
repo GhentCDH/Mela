@@ -16,10 +16,17 @@
       @save="saveAnnotation"
       @delete="deleteAnnotationAndClose"
     />
-    <hr
+    <hr v-if="isExample" class="text-gray-300 my-2" />
+    <LinkLema
       v-if="isExample"
-      class="text-gray-300 my-2"
-    >
+      :annotation="activeAnnotation"
+      :links="links"
+      :text="text"
+      @save="saveAnnotation"
+      @delete="deleteAnnotation"
+      @change-select-filter="emits('changeSelectFilter', $event)"
+    />
+    <hr v-if="isExample" class="text-gray-300 my-2" />
     <LinkBuckets
       v-if="isExample"
       :annotation="activeAnnotation"
@@ -30,7 +37,7 @@
       @change-select-filter="emits('changeSelectFilter', $event)"
     />
 
-    <hr class="text-gray-300 my-2">
+    <hr class="text-gray-300 my-2" />
 
     <Translations
       :annotation="activeAnnotation"
@@ -59,6 +66,7 @@ import { getTextSelection } from './utils/translation';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
 import Translations from './view/translations.vue';
+import LinkLema from './view/link-lema.vue';
 
 type Properties = {
   activeAnnotation: W3CAnnotation;
