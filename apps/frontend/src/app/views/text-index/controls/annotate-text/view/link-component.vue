@@ -47,7 +47,7 @@ type Properties = {
   entity: string;
   links: AnnotationWithRelations[];
   purpose: string;
-  newLink: AnnotationWithRelations;
+  newLink: any | null;
   displayValue: (link: AnnotationWithRelations) => string;
 };
 const properties = defineProps<Properties>();

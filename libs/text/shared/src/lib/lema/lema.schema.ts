@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms/core';
 import { LemaForm } from '@ghentcdh/mela/generated/forms';
 import type { Lema } from '@ghentcdh/mela/generated/types';
@@ -51,13 +51,13 @@ const dtoSchema = LemaSchema.pick({
   superlative: true,
   participle: true,
 }).extend({
-  speech: SpeechSchema.extend({
+  speech: SpeechSchema.omit({ createdAt: true, updatedAt: true }).extend({
     id: z.string().optional(),
-    grammatical: z.boolean().optional().default(false),
-    comparative: z.boolean().optional().default(false),
-    superlative: z.boolean().optional().default(false),
-    participle: z.boolean().optional().default(false),
   }),
+  grammatical: z.boolean().optional().default(false),
+  comparative: z.boolean().optional().default(false),
+  superlative: z.boolean().optional().default(false),
+  participle: z.boolean().optional().default(false),
 });
 
 export const LemaFormSchema = createSchema({
@@ -67,5 +67,6 @@ export const LemaFormSchema = createSchema({
   jsonSchema: LemaForm,
   tableSchema,
   uri: '/api/lema',
+  searchUri: '/api/lema?filter=word:',
   modalSize: 'lg',
 });

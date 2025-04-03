@@ -65,8 +65,6 @@ watch(
   { immediate: true },
 );
 
-const styles = myStyles;
-
 provide('styles', myStyles);
 const renderers = Object.freeze([
   ...properties.renderers,
@@ -75,10 +73,7 @@ const renderers = Object.freeze([
 </script>
 
 <template>
-  <form
-    :id="id"
-    @submit="onSubmit"
-  >
+  <form :id="id" @submit="onSubmit">
     <json-forms
       :data="formData"
       :schema="schema"

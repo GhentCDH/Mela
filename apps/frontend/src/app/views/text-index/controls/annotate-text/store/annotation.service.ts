@@ -4,8 +4,6 @@ import { ref } from 'vue';
 import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
 import { useTextRepository } from '../../../../../repository/text.repository';
 
-type SelectedIds = { textContentId: string; annotationId: string };
-
 export type Filter = {
   annotationType?: AnnotationMetadataType[];
 };

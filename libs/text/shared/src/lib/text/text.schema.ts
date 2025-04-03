@@ -3,11 +3,11 @@ import { z } from 'zod';
 import {
   CategoryBuilder,
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   Size,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
 import { TextForm } from '@ghentcdh/mela/generated/forms';
 import type {
@@ -105,7 +105,7 @@ const dtoSchema = TextSchema.pick({
   name: true,
   year: true,
 }).extend({
-  author: AuthorSchema.extend({
+  author: AuthorSchema.omit({ createdAt: true, updatedAt: true }).extend({
     id: z.string().optional(),
   }),
   textContent: z.array(TextContentDtoSchema),

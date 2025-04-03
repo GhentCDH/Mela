@@ -23,6 +23,7 @@ export type FormSchemaModel = {
   filter?: JsonFormsLayout;
 
   uri: string;
+  searchUri: string;
 };
 
 export const createSchema = (props: {
@@ -34,6 +35,7 @@ export const createSchema = (props: {
   dtoSchema: ZodObject<any>;
   responseSchema?: ZodObject<any>;
   uri: string;
+  searchUri?: string;
   modalSize?: Size;
 }) => {
   const dtoSchema = props.dtoSchema;
@@ -69,6 +71,7 @@ export const createSchema = (props: {
           }
         : undefined,
       uri: props.uri,
+      searchUri: props.searchUri ?? `${props.uri}?filter=`,
     } as FormSchemaModel,
   };
 };
