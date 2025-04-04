@@ -5,19 +5,16 @@
     :purpose="PURPOSE_LEMA"
     :display-value="displayValue"
     :links="links"
-    :text="text"
     @add-link="addLink"
     @delete="deleteAnnotation"
   />
-
-  <LinkLemaModal :on-close="() => {}" :annotation="annotation" />
 </template>
 
 <script setup lang="ts">
 import type { AnnotationType } from '@mela/text/shared';
 import { PURPOSE_LEMA } from '@mela/text/shared';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import { ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
@@ -27,15 +24,15 @@ import type {
   LinkLemaModalResult,
 } from './link-lema-modal.props';
 import LinkLemaModal from './link-lema-modal.vue';
-import { useModeStore } from '../store/mode.store';
 import { findTextValue } from '../utils/translation';
-
-const modeStore = useModeStore();
+import { Text } from '@ghentcdh/mela/generated/types';
+import { onMounted } from 'vue';
 
 type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
   text: Text;
+  textContent: SourceModel;
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
@@ -56,8 +53,11 @@ const addLink = () => {
     component: LinkLemaModal,
     props: {
       annotation: properties.annotation,
+      textContent: properties.textContent,
       onClose: (result: LinkLemaModalResult) => {
-        alert(result);
+        console.log('onClose');
+        console.log(result);
+        if (result?.valid) emits('save', null, result.data);
       },
     },
   });
@@ -66,4 +66,6 @@ const addLink = () => {
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   emits('delete', annotation);
 };
+
+onMounted(() => addLink());
 </script>

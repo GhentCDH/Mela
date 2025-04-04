@@ -1,6 +1,5 @@
 <template>
   <Modal
-    v-bind="properties"
     :modal-title="'Create lema'"
     :open="true"
     :disable-close="false"
@@ -60,6 +59,11 @@ import {
   GhentCdhAnnotations,
 } from '@ghentcdh/annotations/vue';
 import {
+  FormModal,
+  type FormModalProps,
+  type FormModalResult,
+} from '@ghentcdh/json-forms/vue';
+import {
   Autocomplete,
   type AutoCompleteConfig,
   Btn,
@@ -74,11 +78,6 @@ import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-te
 
 import type { LinkLemaModalProps } from './link-lema-modal.props';
 import { findTextValue } from '../utils/translation';
-import {
-  FormModal,
-  type FormModalProps,
-  type FormModalResult,
-} from '@ghentcdh/json-forms/vue';
 
 import { useLemaRepository } from '../../../../../repository/lema.repository';
 
@@ -112,7 +111,8 @@ const sources = computed(() => {
 
   return [source.value];
 });
-const lemaAnnoation = ref();
+
+const lemaAnnotation = ref();
 
 const annotationActions = computed(() => {
   return {
@@ -135,11 +135,7 @@ const eventHandler = (
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
-      lemaAnnoation.value = createTextSelectionAnnotation(
-        source.value,
-        pick(annotation, ['start', 'end']),
-        'lema',
-      );
+      lemaAnnotation.value = annotation;
       break;
     default:
       console.log('event not handled', e);
@@ -147,10 +143,16 @@ const eventHandler = (
 };
 
 const annotations = computed(() => {
-  if (!lemaAnnoation.value) {
+  if (!lemaAnnotation.value) {
     return [];
   }
-  return [lemaAnnoation.value];
+  return [
+    createTextSelectionAnnotation(
+      source.value,
+      pick(lemaAnnotation.value, ['start', 'end']),
+      'lema',
+    ),
+  ];
 });
 
 const createLema = () => {
@@ -180,23 +182,22 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
-  console.log('on submit');
-  emits(
-    'closeModal',
-    AnnotationExampleLemaSchema.parse({
-      annotation: lemaAnnoation.value,
-      lema: lema.value,
-      example: { id: properties.annotation.id },
-      id: lemaAnnoation.value.id,
-      textContent: properties.textContent,
-    }),
-  );
+  const exampleLemma = {
+    annotation: lemaAnnotation.value,
+    lema: lema.value,
+    example: pick(properties.annotation, 'id'),
+    id: lemaAnnotation.value.id,
+    textContent: pick(properties.textContent, 'id'),
+  };
+
+  const data = AnnotationExampleLemaSchema.parse(exampleLemma);
+  emits('closeModal', { valid: true, data });
 };
 
 const disabled = computed(() => {
   if (!lema.value) {
     return true;
   }
-  return !lemaAnnoation.value;
+  return !lemaAnnotation.value;
 });
 </script>

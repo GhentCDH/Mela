@@ -15,22 +15,12 @@
       />
     </li>
   </ul>
-  <fieldset
-    v-if="newLink"
-    class="fieldset"
-  >
-    <legend class="fieldset-legend">
-      Selected {{ entity }}
-    </legend>
+  <fieldset v-if="newLink" class="fieldset">
+    <legend class="fieldset-legend">Selected {{ entity }}</legend>
 
     <slot />
   </fieldset>
-  <Btn
-    v-if="!newLink"
-    @click="addLink"
-  >
-    Add {{ entity }}
-  </Btn>
+  <Btn v-if="!newLink" @click="addLink"> Add {{ entity }} </Btn>
 </template>
 
 <script setup lang="ts">
@@ -47,7 +37,7 @@ type Properties = {
   entity: string;
   links: AnnotationWithRelations[];
   purpose: string;
-  newLink: any | null;
+  newLink?: any | null;
   displayValue: (link: AnnotationWithRelations) => string;
 };
 const properties = defineProps<Properties>();

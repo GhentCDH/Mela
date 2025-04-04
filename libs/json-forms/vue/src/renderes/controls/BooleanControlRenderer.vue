@@ -17,10 +17,9 @@
           @change="onChange"
           @focus="onFocus"
           @blur="onBlur"
-        />
-        <span class="font-bold text-gray-500 text-sm">
-          {{ control.label }}</span
         >
+        <span class="font-bold text-gray-500 text-sm">
+          {{ control.label }}</span>
       </label>
     </control-wrapper>
   </div>

@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
-  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
+  createSchema,
 } from '@ghentcdh/json-forms/core';
 import { LemaForm } from '@ghentcdh/mela/generated/forms';
 import type { Lema } from '@ghentcdh/mela/generated/types';

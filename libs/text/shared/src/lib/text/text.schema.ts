@@ -3,11 +3,11 @@ import { z } from 'zod';
 import {
   CategoryBuilder,
   ControlBuilder,
-  createSchema,
   LayoutBuilder,
   Size,
   TableBuilder,
   TextCellBuilder,
+  createSchema,
 } from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
 import { TextForm } from '@ghentcdh/mela/generated/forms';
 import type {

@@ -1,13 +1,13 @@
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { TextContent } from '@ghentcdh/mela/generated/types';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { AnnotationExampleLema } from '@mela/text/shared';
 
 export type LinkLemaModalProps = {
   onClose: (result: LinkLemaModalResult) => void;
   annotation: W3CAnnotation;
-  textContent: TextContent;
+  textContent: SourceModel;
 };
 
 export type LinkLemaModalResult<DATA = any> = {
-  data: DATA;
+  data: AnnotationExampleLema;
   valid: boolean;
 };
