@@ -9,11 +9,15 @@
     @add-link="addLink"
     @delete="deleteAnnotation"
   >
-    <p v-if="!linkedTranslation">Click on an annotation</p>
+    <p v-if="!linkedTranslation">
+      Click on an annotation
+    </p>
     <div v-else>
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation"> Save translation </Btn>
+        <Btn @click="saveTranslation">
+          Save translation
+        </Btn>
       </div>
     </div>
   </LinkComponent>

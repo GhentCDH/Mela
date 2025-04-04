@@ -30,14 +30,28 @@
           :placeholder="'Select lema'"
           label-key="word"
         />
-        <Btn :icon="IconEnum.Plus" @click="createLema">Create new Lema</Btn>
+        <Btn
+          :icon="IconEnum.Plus"
+          @click="createLema"
+        >
+          Create new Lema
+        </Btn>
       </div>
     </template>
     <template #actions>
-      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+      <Btn
+        :color="Color.secondary"
+        :outline="true"
+        @click="onCancel"
+      >
         Cancel
       </Btn>
-      <Btn :disabled="disabled" @click="onSubmit"> Save</Btn>
+      <Btn
+        :disabled="disabled"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -45,8 +59,8 @@
 <script setup lang="ts">
 import {
   AnnotationExampleLemaSchema,
-  getAnnotationUri,
   LemaFormSchema,
+  getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, ref } from 'vue';
@@ -64,8 +78,8 @@ import {
   type FormModalResult,
 } from '@ghentcdh/json-forms/vue';
 import {
-  Autocomplete,
   type AutoCompleteConfig,
+  Autocomplete,
   Btn,
   Color,
   ControlWrapper,
@@ -77,9 +91,9 @@ import {
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import type { LinkLemaModalProps } from './link-lema-modal.props';
+import { useLemaRepository } from '../../../../../repository/lema.repository';
 import { findTextValue } from '../utils/translation';
 
-import { useLemaRepository } from '../../../../../repository/lema.repository';
 
 const properties = defineProps<LinkLemaModalProps>();
 const emits = defineEmits(['closeModal']);

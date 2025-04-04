@@ -13,8 +13,10 @@
 <script setup lang="ts">
 import type { AnnotationType } from '@mela/text/shared';
 import { PURPOSE_LEMA } from '@mela/text/shared';
+import { onMounted } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { Text } from '@ghentcdh/mela/generated/types';
 import { ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';
@@ -25,8 +27,6 @@ import type {
 } from './link-lema-modal.props';
 import LinkLemaModal from './link-lema-modal.vue';
 import { findTextValue } from '../utils/translation';
-import { Text } from '@ghentcdh/mela/generated/types';
-import { onMounted } from 'vue';
 
 type Properties = {
   annotation: W3CAnnotation;

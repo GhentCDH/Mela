@@ -1,5 +1,6 @@
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import type { AnnotationExampleLema } from '@mela/text/shared';
+
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
 export type LinkLemaModalProps = {
   onClose: (result: LinkLemaModalResult) => void;

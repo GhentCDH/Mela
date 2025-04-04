@@ -16,17 +16,23 @@
       @save="saveAnnotation"
       @delete="deleteAnnotationAndClose"
     />
-    <hr v-if="isExample" class="text-gray-300 my-2" />
+    <hr
+      v-if="isExample"
+      class="text-gray-300 my-2"
+    >
     <LinkLema
       v-if="isExample"
       :annotation="activeAnnotation"
       :links="links"
       :text="text"
-      :textContent="textContent"
+      :text-content="textContent"
       @save="saveAnnotation"
       @delete="deleteAnnotation"
     />
-    <hr v-if="isExample" class="text-gray-300 my-2" />
+    <hr
+      v-if="isExample"
+      class="text-gray-300 my-2"
+    >
     <LinkBuckets
       v-if="isExample"
       :annotation="activeAnnotation"
@@ -37,7 +43,7 @@
       @change-select-filter="emits('changeSelectFilter', $event)"
     />
 
-    <hr class="text-gray-300 my-2" />
+    <hr class="text-gray-300 my-2">
 
     <Translations
       :annotation="activeAnnotation"
@@ -58,6 +64,7 @@ import {
   findTagging,
   findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
+import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
@@ -67,7 +74,6 @@ import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
 import LinkLema from './view/link-lema.vue';
 import Translations from './view/translations.vue';
-import { Text } from '@ghentcdh/mela/generated/types';
 
 type Properties = {
   activeAnnotation: W3CAnnotation;
