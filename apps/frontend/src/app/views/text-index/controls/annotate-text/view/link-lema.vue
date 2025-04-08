@@ -13,7 +13,6 @@
 <script setup lang="ts">
 import type { AnnotationType } from '@mela/text/shared';
 import { PURPOSE_LEMA } from '@mela/text/shared';
-import { onMounted } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import type { Text } from '@ghentcdh/mela/generated/types';
@@ -55,8 +54,6 @@ const addLink = () => {
       annotation: properties.annotation,
       textContent: properties.textContent,
       onClose: (result: LinkLemaModalResult) => {
-        console.log('onClose');
-        console.log(result);
         if (result?.valid) emits('save', null, result.data);
       },
     },
@@ -66,6 +63,4 @@ const addLink = () => {
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   emits('delete', annotation);
 };
-
-onMounted(() => addLink());
 </script>

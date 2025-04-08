@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemaSchema,
   LemaFormSchema,
@@ -66,7 +67,10 @@ import { pick } from 'lodash-es';
 import { computed, ref } from 'vue';
 
 import type { SourceModel } from '@ghentcdh/annotations/core';
-import { createTextSelectionAnnotation } from '@ghentcdh/annotations/core';
+import {
+  createTextSelectionAnnotation,
+  findTextPositionSelector,
+} from '@ghentcdh/annotations/core';
 import {
   type AnnotationEventHandlerPayloadData,
   type AnnotationEventType,
@@ -93,7 +97,6 @@ import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-te
 import type { LinkLemaModalProps } from './link-lema-modal.props';
 import { useLemaRepository } from '../../../../../repository/lema.repository';
 import { findTextValue } from '../utils/translation';
-
 
 const properties = defineProps<LinkLemaModalProps>();
 const emits = defineEmits(['closeModal']);
@@ -126,7 +129,7 @@ const sources = computed(() => {
   return [source.value];
 });
 
-const lemaAnnotation = ref();
+const lemaAnnotation = ref<AnnotationStartEnd>();
 
 const annotationActions = computed(() => {
   return {
@@ -152,7 +155,7 @@ const eventHandler = (
       lemaAnnotation.value = annotation;
       break;
     default:
-      console.log('event not handled', e);
+      console.warn('event not handled', e);
   }
 };
 
@@ -196,14 +199,23 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
+  const annotation = lemaAnnotation.value;
+
+  // Add the original start and endpoint
+  const selector = findTextPositionSelector(properties.textContent.uri)(
+    properties.annotation,
+  )?.selector;
+
+  annotation.start += selector.start;
+  annotation.end += selector.start;
+
   const exampleLemma = {
-    annotation: lemaAnnotation.value,
+    annotation,
     lema: lema.value,
-    example: pick(properties.annotation, 'id'),
+    exampleAnnotation: pick(properties.annotation, 'id'),
     id: lemaAnnotation.value.id,
     textContent: pick(properties.textContent, 'id'),
   };
-
   const data = AnnotationExampleLemaSchema.parse(exampleLemma);
   emits('closeModal', { valid: true, data });
 };
@@ -212,6 +224,6 @@ const disabled = computed(() => {
   if (!lema.value) {
     return true;
   }
-  return !lemaAnnotation.value;
+  return !lemaAnnotation.value?.id;
 });
 </script>

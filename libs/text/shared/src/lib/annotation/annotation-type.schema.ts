@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 import {
   AnnotationSchema,
-  ExampleSchema,
   LemaSchema,
   RegisterSchema,
   TextContentSchema,
@@ -12,16 +11,19 @@ import {
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
 export const PURPOSE_EXAMPLE = 'AnnotationExample';
 export const PURPOSE_TRANSLATION = 'translation';
-export const PURPOSE_LEMA = 'lema';
+export const PURPOSE_LEMA = 'lemma';
 export const PURPOSE_LINK_BUCKETS = 'link_buckets';
 
+export const AnnotationStartEndSchema = z.object({
+  id: z.string().optional(),
+  tagging: z.string().optional(),
+  start: z.number(),
+  end: z.number(),
+});
+export type AnnotationStartEnd = z.infer<typeof AnnotationStartEndSchema>;
+
 export const AnnotationSelectorSchema = z.object({
-  annotation: z.object({
-    id: z.string().optional(),
-    tagging: z.string().optional(),
-    start: z.number(),
-    end: z.number(),
-  }),
+  annotation: AnnotationStartEndSchema,
   textContent: TextContentSchema.pick({ id: true }),
   type: z.enum([PURPOSE_ANNOTATION_SELECT]).default(PURPOSE_ANNOTATION_SELECT),
 });
@@ -59,16 +61,9 @@ export const LinkBucketsSchema = LinkSchema.extend({
 });
 
 export const AnnotationExampleLemaSchema = z.object({
-  annotation: z.object({
-    id: z.string().optional(),
-    tagging: z.string().optional(),
-    start: z.number(),
-    end: z.number(),
-  }),
-  example: ExampleSchema.pick({ id: true }),
-  lema: LemaSchema.pick({ name: true }).extend({
-    id: z.string().optional(),
-  }),
+  annotation: AnnotationStartEndSchema,
+  exampleAnnotation: AnnotationSchema.pick({ id: true }),
+  lema: LemaSchema.pick({ id: true }),
   id: z.string().optional(),
   textContent: TextContentSchema.pick({ id: true }),
   type: z.enum([PURPOSE_LEMA]).default(PURPOSE_LEMA),
@@ -80,7 +75,7 @@ export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
 )
   .or(TranslationExampleSchema)
   .or(LinkBucketsSchema)
-  .or(AnnotationExampleExampleSchema);
+  .or(AnnotationExampleLemaSchema);
 
 export type AnnotationLink = z.infer<typeof LinkSchema>;
 export type AnnotationType = z.infer<typeof AnnotationTypeSchema>;

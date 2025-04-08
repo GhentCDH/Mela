@@ -8,7 +8,7 @@ import {
 import {
   Annotation,
   AnnotationTarget,
-  TextContent,
+  Text,
 } from '@ghentcdh/mela/generated/types';
 
 import { CreateAnnotationDto } from '../../dto';
@@ -31,7 +31,7 @@ const createLink = (annotation: Annotation) => {
 };
 
 export const createLinks = (
-  text: Pick<TextContent, 'id'>,
+  text: Pick<Text, 'id'>,
   purpose: string,
   annotations: Annotation[],
   value?: any,

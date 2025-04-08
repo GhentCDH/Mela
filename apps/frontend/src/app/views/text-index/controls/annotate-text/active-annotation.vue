@@ -46,6 +46,7 @@
     <hr class="text-gray-300 my-2">
 
     <Translations
+      v-if="canTranslate"
       :annotation="activeAnnotation"
       :links="links"
       :text="text"
@@ -99,7 +100,6 @@ const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
 };
 
 const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
-  console.log('saveAnnotation', id, annotation);
   emits('saveAnnotation', id, annotation);
 };
 
@@ -107,6 +107,7 @@ const annotationType = computed(
   () => findTagging(properties.activeAnnotation).value ?? 'phrase',
 );
 const isExample = computed(() => annotationType.value === 'example');
+const canTranslate = computed(() => annotationType.value !== 'lemma');
 
 const textAnnotation = computed(() => ({
   id: properties.activeAnnotation.id,

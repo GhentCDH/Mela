@@ -7,12 +7,16 @@
       :key="t.link.id"
       class="list-row !px-0 !gap-2"
     >
-      <div>{{ t.translation }}</div>
-      <Btn
-        :color="Color.secondary"
-        :icon="IconEnum.Delete"
-        @click="deleteAnnotation(t.link)"
-      />
+      <div class="list-col-grow">
+        {{ t.translation }}
+      </div>
+      <div>
+        <Btn
+          :color="Color.secondary"
+          :icon="IconEnum.Delete"
+          @click="deleteAnnotation(t.link)"
+        />
+      </div>
     </li>
   </ul>
   <fieldset

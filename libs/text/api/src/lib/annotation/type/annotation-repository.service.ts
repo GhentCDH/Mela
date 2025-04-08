@@ -1,10 +1,12 @@
 import {
   AnnotationExample,
+  AnnotationExampleLema,
   AnnotationLink,
   AnnotationSelector,
   ExampleDto,
   PURPOSE_ANNOTATION_SELECT,
   PURPOSE_EXAMPLE,
+  PURPOSE_LEMA,
   PURPOSE_LINK_BUCKETS,
   PURPOSE_TRANSLATION,
 } from '@mela/text/shared';
@@ -14,6 +16,8 @@ import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import {
   Annotation,
   AnnotationWithRelations,
+  Lema,
+  TextContent,
 } from '@ghentcdh/mela/generated/types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
@@ -51,6 +55,12 @@ export class AnnotationTypeRepository {
         createdAnnotation = await this.updateExample(
           null,
           data as AnnotationExample,
+        );
+        break;
+      case PURPOSE_LEMA:
+        createdAnnotation = await this.updateLema(
+          null,
+          data as AnnotationExampleLema,
         );
         break;
       default:
@@ -106,15 +116,19 @@ export class AnnotationTypeRepository {
       annotation.annotationTarget.filter((t) => t.source_type),
     ].flat();
 
-    const examples = sources
-      .filter((s) => s.source_type === 'example')
+    const sourceTypeDelete = ['example'];
+
+    const deleteRelated = sources
+      .filter((s) => sourceTypeDelete.includes(s.source_type))
       .map((s) => s.source_id) as string[];
+
+    // TODO delete linked lemma annotation
 
     return Promise.all([
       this.prisma.annotation.deleteMany({
         where: { id: { in: relatedAnnotations } },
       }),
-      this.prisma.example.deleteMany({ where: { id: { in: examples } } }),
+      this.prisma.example.deleteMany({ where: { id: { in: deleteRelated } } }),
     ]);
   }
 
@@ -169,6 +183,78 @@ export class AnnotationTypeRepository {
       data.type,
       annotations,
       data.value,
+    );
+
+    if (!id) return this.annotationRepository.create(linkedAnnotation);
+
+    return this.annotationRepository.update(id, linkedAnnotation);
+  }
+
+  // endregion
+
+  // region lemma
+  private async updateLema(id: string | null, data: AnnotationExampleLema) {
+    // 1.
+    //    a. find the text content
+    //    b. find or create the lema
+    //    c. find or create the example
+    const [textContent, lemma, exampleAnnotation] = await Promise.all([
+      this.prisma.textContent.findFirstOrThrow({
+        where: { id: data.textContent.id },
+      }),
+      this.prisma.lema.findFirstOrThrow({ where: { id: data.lema.id } }),
+      this.prisma.annotation.findFirstOrThrow({
+        where: { id: data.exampleAnnotation.id },
+      }),
+    ]);
+
+    // 2. Check if the example is the one of the annotation
+
+    // 3. find or create the annotation for the lema
+    const selectionAnnotation = await this.updateLemmaExampleSelection(
+      id,
+      textContent,
+      data,
+    );
+
+    // 4. create the lema annotation with a link betrween the lema and the example
+    return this.updateLemmaExampleLink(
+      id,
+      textContent,
+      lemma,
+      exampleAnnotation,
+      selectionAnnotation,
+    );
+  }
+
+  private async updateLemmaExampleSelection(
+    id: string | null,
+    textContent: TextContent,
+    data: AnnotationExampleLema,
+  ) {
+    const annotation = createSelector(textContent, {
+      ...data.annotation,
+      tagging: PURPOSE_LEMA,
+    });
+
+    if (!id) return this.annotationRepository.create(annotation);
+    return this.annotationRepository.update(id, annotation);
+  }
+
+  private async updateLemmaExampleLink(
+    id: string | null,
+    textContent: TextContent,
+    lemma: Lema,
+    exampleAnnotation: Annotation,
+    selectionAnnotation: Annotation,
+  ) {
+    const annotations = [exampleAnnotation, selectionAnnotation];
+
+    const linkedAnnotation = createLinks(
+      { id: textContent.text_id },
+      PURPOSE_LEMA,
+      annotations,
+      lemma,
     );
 
     if (!id) return this.annotationRepository.create(linkedAnnotation);

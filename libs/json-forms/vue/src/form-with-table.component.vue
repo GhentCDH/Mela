@@ -54,7 +54,6 @@ const emit = defineEmits<{
 const hasEdit = hasCustomEventListener('editData');
 
 const edit = (data: Data) => {
-  console.log('edit', hasEdit);
   if (hasEdit) {
     emit('editData', data);
     return;

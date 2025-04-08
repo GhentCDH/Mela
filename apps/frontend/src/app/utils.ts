@@ -23,5 +23,3 @@ export const mela_env = (window['_env_'] ?? {}) as {
   VERSION: string;
   ENV: string;
 };
-
-console.log('mela_env', mela_env);
