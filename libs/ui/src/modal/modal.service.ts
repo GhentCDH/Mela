@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ref } from 'vue';
 
 import { ConfirmModal } from './index';
@@ -9,33 +10,39 @@ import type {
   ModalWrapperModel,
 } from './modal.model';
 
+type ModalUnknown = ModalWrapperModel<CloseProps<unknown>, unknown>;
+
 export class ModalService {
   private static instance: ModalService;
 
-  public showModal = ref(false);
+  public showModal = ref<boolean | number>(false);
 
-  public modal: ModalWrapperModel<CloseProps<unknown>, unknown> | null = null;
+  public modals: ModalUnknown[] = [];
 
   private openModal<PROPS extends CloseProps<RESULT>, RESULT>(
-    modal: ModalWrapperModel<PROPS, RESULT>,
+    modal: Omit<ModalWrapperModel<PROPS, RESULT>, 'id'>,
   ) {
     const onClose = modal.props.onClose;
 
+    const id = uuidv4();
+    const newModal = modal as unknown as ModalUnknown;
+
     modal.props.onClose = (result: RESULT) => {
       onClose(result);
-      this.closeModal();
+      this.closeModal(id);
     };
 
-    this.modal = modal as unknown as ModalWrapperModel<
-      CloseProps<unknown>,
-      unknown
-    >;
-    this.showModal.value = true;
+    newModal.id = id;
+
+    this.modals = [...this.modals, newModal];
+
+    this.showModal.value = Date.now();
   }
 
-  private closeModal() {
-    this.modal = null;
-    this.showModal.value = false;
+  private closeModal(modalId: string) {
+    this.modals = this.modals.filter((m) => m.id !== modalId);
+
+    this.showModal.value = Date.now();
   }
 
   static showConfirm<
@@ -48,7 +55,7 @@ export class ModalService {
   }
 
   static openModal<PROPS extends CloseProps<RESULT>, RESULT>(
-    modal: ModalWrapperModel<PROPS, RESULT>,
+    modal: Omit<ModalWrapperModel<PROPS, RESULT>, 'id'>,
   ) {
     this.getInstance().openModal(modal);
   }

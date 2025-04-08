@@ -20,7 +20,7 @@
       v-if="isExample"
       class="text-gray-300 my-2"
     >
-    <LinkLema
+    <LinkLemma
       v-if="isExample"
       :annotation="activeAnnotation"
       :links="links"
@@ -73,7 +73,7 @@ import type { AnnotationFilter } from './utils/annotations.utils';
 import { getTextSelection } from './utils/translation';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
-import LinkLema from './view/link-lema.vue';
+import LinkLemma from './view/link-lemma.vue';
 import Translations from './view/translations.vue';
 
 type Properties = {

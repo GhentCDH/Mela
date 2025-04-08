@@ -21,9 +21,9 @@ export const menu = (): ShellMenu => {
       params: { formId: FormKey.speech },
     },
     {
-      label: 'Lema',
+      label: 'Lemma',
       routerLink: 'form',
-      params: { formId: FormKey.lema },
+      params: { formId: FormKey.lemma },
     },
   ];
 };

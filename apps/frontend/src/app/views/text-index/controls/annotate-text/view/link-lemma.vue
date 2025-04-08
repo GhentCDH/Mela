@@ -1,7 +1,7 @@
 <template>
   <LinkComponent
-    title="Lemas"
-    entity="lema"
+    title="Lemmas"
+    entity="lemma"
     :purpose="PURPOSE_LEMA"
     :display-value="displayValue"
     :links="links"
@@ -21,10 +21,10 @@ import { ModalService } from '@ghentcdh/ui';
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';
 import type {
-  LinkLemaModalProps,
-  LinkLemaModalResult,
-} from './link-lema-modal.props';
-import LinkLemaModal from './link-lema-modal.vue';
+  LinkLemmaModalProps,
+  LinkLemmaModalResult,
+} from './link-lemma-modal.props';
+import LinkLemmaModal from './link-lemma-modal.vue';
 import { findTextValue } from '../utils/translation';
 
 type Properties = {
@@ -48,12 +48,12 @@ const displayValue = (link: AnnotationWithRelations): string => {
 };
 
 const addLink = () => {
-  ModalService.openModal<LinkLemaModalProps, LinkLemaModalResult>({
-    component: LinkLemaModal,
+  ModalService.openModal<LinkLemmaModalProps, LinkLemmaModalResult>({
+    component: LinkLemmaModal,
     props: {
       annotation: properties.annotation,
       textContent: properties.textContent,
-      onClose: (result: LinkLemaModalResult) => {
+      onClose: (result: LinkLemmaModalResult) => {
         if (result?.valid) emits('save', null, result.data);
       },
     },

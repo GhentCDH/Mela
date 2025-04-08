@@ -1,6 +1,6 @@
 import {
   AnnotationExample,
-  AnnotationExampleLema,
+  AnnotationExampleLemma,
   AnnotationLink,
   AnnotationSelector,
   ExampleDto,
@@ -16,7 +16,7 @@ import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import {
   Annotation,
   AnnotationWithRelations,
-  Lema,
+  Lemma,
   TextContent,
 } from '@ghentcdh/mela/generated/types';
 
@@ -58,9 +58,9 @@ export class AnnotationTypeRepository {
         );
         break;
       case PURPOSE_LEMA:
-        createdAnnotation = await this.updateLema(
+        createdAnnotation = await this.updateLemma(
           null,
-          data as AnnotationExampleLema,
+          data as AnnotationExampleLemma,
         );
         break;
       default:
@@ -193,16 +193,16 @@ export class AnnotationTypeRepository {
   // endregion
 
   // region lemma
-  private async updateLema(id: string | null, data: AnnotationExampleLema) {
+  private async updateLemma(id: string | null, data: AnnotationExampleLemma) {
     // 1.
     //    a. find the text content
-    //    b. find or create the lema
+    //    b. find or create the lemma
     //    c. find or create the example
     const [textContent, lemma, exampleAnnotation] = await Promise.all([
       this.prisma.textContent.findFirstOrThrow({
         where: { id: data.textContent.id },
       }),
-      this.prisma.lema.findFirstOrThrow({ where: { id: data.lema.id } }),
+      this.prisma.lemma.findFirstOrThrow({ where: { id: data.lemma.id } }),
       this.prisma.annotation.findFirstOrThrow({
         where: { id: data.exampleAnnotation.id },
       }),
@@ -210,14 +210,14 @@ export class AnnotationTypeRepository {
 
     // 2. Check if the example is the one of the annotation
 
-    // 3. find or create the annotation for the lema
+    // 3. find or create the annotation for the lemma
     const selectionAnnotation = await this.updateLemmaExampleSelection(
       id,
       textContent,
       data,
     );
 
-    // 4. create the lema annotation with a link betrween the lema and the example
+    // 4. create the lemma annotation with a link betrween the lemma and the example
     return this.updateLemmaExampleLink(
       id,
       textContent,
@@ -230,7 +230,7 @@ export class AnnotationTypeRepository {
   private async updateLemmaExampleSelection(
     id: string | null,
     textContent: TextContent,
-    data: AnnotationExampleLema,
+    data: AnnotationExampleLemma,
   ) {
     const annotation = createSelector(textContent, {
       ...data.annotation,
@@ -244,7 +244,7 @@ export class AnnotationTypeRepository {
   private async updateLemmaExampleLink(
     id: string | null,
     textContent: TextContent,
-    lemma: Lema,
+    lemma: Lemma,
     exampleAnnotation: Annotation,
     selectionAnnotation: Annotation,
   ) {

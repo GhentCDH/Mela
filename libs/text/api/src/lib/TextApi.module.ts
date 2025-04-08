@@ -12,8 +12,8 @@ import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
 import { ExampleRepository } from './example/example-repository.service';
 import { ExampleController } from './example/example.controller';
-import { LemaRepository } from './lema/lema-repository.service';
-import { LemaController } from './lema/lema.controller';
+import { LemmaRepository } from './lemma/lemma-repository.service';
+import { LemmaController } from './lemma/lemma.controller';
 import { RegisterRepository } from './register/register-repository.service';
 import { RegisterController } from './register/register.controller';
 import { SpeechRepository } from './speech/speech-repository.service';
@@ -30,7 +30,7 @@ import { TextController } from './text/text.controller';
     AnnotationTypeController,
     TextController,
     ExampleController,
-    LemaController,
+    LemmaController,
     SpeechController,
   ],
   providers: [
@@ -40,7 +40,7 @@ import { TextController } from './text/text.controller';
     RegisterRepository,
     AnnotationRepository,
     ExampleRepository,
-    LemaRepository,
+    LemmaRepository,
     SpeechRepository,
   ],
   exports: [AuthorRepository, TextRepositoryService],

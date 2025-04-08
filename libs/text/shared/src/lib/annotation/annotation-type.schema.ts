@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import {
   AnnotationSchema,
-  LemaSchema,
+  LemmaSchema,
   RegisterSchema,
   TextContentSchema,
   TextSchema,
@@ -60,22 +60,24 @@ export const LinkBucketsSchema = LinkSchema.extend({
   type: z.enum([PURPOSE_LINK_BUCKETS]).default(PURPOSE_LINK_BUCKETS),
 });
 
-export const AnnotationExampleLemaSchema = z.object({
+export const AnnotationExampleLemmaSchema = z.object({
   annotation: AnnotationStartEndSchema,
   exampleAnnotation: AnnotationSchema.pick({ id: true }),
-  lema: LemaSchema.pick({ id: true }),
+  lemma: LemmaSchema.pick({ id: true }),
   id: z.string().optional(),
   textContent: TextContentSchema.pick({ id: true }),
   type: z.enum([PURPOSE_LEMA]).default(PURPOSE_LEMA),
 });
-export type AnnotationExampleLema = z.infer<typeof AnnotationExampleLemaSchema>;
+export type AnnotationExampleLemma = z.infer<
+  typeof AnnotationExampleLemmaSchema
+>;
 
 export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
   AnnotationExampleSchema,
 )
   .or(TranslationExampleSchema)
   .or(LinkBucketsSchema)
-  .or(AnnotationExampleLemaSchema);
+  .or(AnnotationExampleLemmaSchema);
 
 export type AnnotationLink = z.infer<typeof LinkSchema>;
 export type AnnotationType = z.infer<typeof AnnotationTypeSchema>;

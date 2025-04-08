@@ -1,30 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { LemaCreateManyInput } from '@prisma/client';
+import { LemmaCreateManyInput } from '@prisma/client';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
+import { LemmaWithRelations } from '@ghentcdh/mela/generated/types';
 
-import { CreateLemaDto } from './dto';
+import { CreateLemmaDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
 import { SpeechRepository } from '../speech/speech-repository.service';
 
 @Injectable()
-export class LemaRepository extends AbstractRepository<
-  LemaWithRelations,
-  CreateLemaDto
+export class LemmaRepository extends AbstractRepository<
+  LemmaWithRelations,
+  CreateLemmaDto
 > {
   constructor(
     private readonly prisma: PrismaService,
     private readonly speechRepository: SpeechRepository,
   ) {
-    super(prisma.lema);
+    super(prisma.lemma);
   }
 
   protected override includeList(): Record<string, true> {
     return { speech: true };
   }
 
-  override async create(dto: CreateLemaDto): Promise<LemaWithRelations> {
+  override async create(dto: CreateLemmaDto): Promise<LemmaWithRelations> {
     return super.create({
       ...dto,
       speech: await this.createOrConnectSpeech(dto),
@@ -33,15 +33,15 @@ export class LemaRepository extends AbstractRepository<
 
   override async update(
     id: string,
-    dto: CreateLemaDto,
-  ): Promise<LemaWithRelations> {
+    dto: CreateLemmaDto,
+  ): Promise<LemmaWithRelations> {
     return super.update(id, {
       ...dto,
       speech: await this.createOrConnectSpeech(dto),
     });
   }
 
-  private async createOrConnectSpeech(dto: CreateLemaDto) {
+  private async createOrConnectSpeech(dto: CreateLemmaDto) {
     const { name, id } = dto.speech;
 
     const findSpeech = id
@@ -53,19 +53,19 @@ export class LemaRepository extends AbstractRepository<
     };
   }
 
-  public createMany(lemas: LemaCreateManyInput[]) {
+  public createMany(lemmas: LemmaCreateManyInput[]) {
     // First create the speeches
     return Promise.all(
-      lemas.map(async (l) => {
-        const lema = {
+      lemmas.map(async (l) => {
+        const lemma = {
           ...l,
-          speech: (await this.createOrConnectSpeech(l)) as LemaCreateManyInput,
+          speech: (await this.createOrConnectSpeech(l)) as LemmaCreateManyInput,
         };
 
-        return this.prisma.lema.upsert({
+        return this.prisma.lemma.upsert({
           where: { word: l.word },
-          update: lema,
-          create: lema,
+          update: lemma,
+          create: lemma,
         });
       }),
     );

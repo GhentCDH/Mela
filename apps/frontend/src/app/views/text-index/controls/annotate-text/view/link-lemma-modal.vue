@@ -1,6 +1,6 @@
 <template>
   <Modal
-    :modal-title="'Create lema'"
+    :modal-title="'Create lemma'"
     :open="true"
     :disable-close="false"
     :width="Size.lg"
@@ -24,17 +24,17 @@
       </ControlWrapper>
       <div class="flex gap-2 items-center">
         <Autocomplete
-          v-model="lema"
-          :config="lemaConfig"
-          :label="'Lema'"
-          :placeholder="'Select lema'"
+          v-model="lemma"
+          :config="lemmaConfig"
+          :label="'Lemma'"
+          :placeholder="'Select lemma'"
           label-key="word"
         />
         <Btn
           :icon="IconEnum.Plus"
-          @click="createLema"
+          @click="createLemma"
         >
-          Create new Lema
+          Create new Lemma
         </Btn>
       </div>
     </template>
@@ -59,8 +59,8 @@
 <script setup lang="ts">
 import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
-  AnnotationExampleLemaSchema,
-  LemaFormSchema,
+  AnnotationExampleLemmaSchema,
+  LemmaFormSchema,
   getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
@@ -77,9 +77,8 @@ import {
   GhentCdhAnnotations,
 } from '@ghentcdh/annotations/vue';
 import {
-  FormModal,
-  type FormModalProps,
   type FormModalResult,
+  FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
   type AutoCompleteConfig,
@@ -89,16 +88,15 @@ import {
   ControlWrapper,
   IconEnum,
   Modal,
-  ModalService,
   Size,
 } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import type { LinkLemaModalProps } from './link-lema-modal.props';
-import { useLemaRepository } from '../../../../../repository/lema.repository';
+import type { LinkLemmaModalProps } from './link-lemma-modal.props';
+import { useLemmaRepository } from '../../../../../repository/lemma.repository';
 import { findTextValue } from '../utils/translation';
 
-const properties = defineProps<LinkLemaModalProps>();
+const properties = defineProps<LinkLemmaModalProps>();
 const emits = defineEmits(['closeModal']);
 const textBody = computed(() => findTextValue(properties.annotation));
 const annotationUri = computed(() => getAnnotationUri(properties.annotation));
@@ -113,10 +111,10 @@ const source = computed(() => {
     },
   } as SourceModel;
 });
-const lema = ref();
+const lemma = ref();
 
-const lemaConfig: AutoCompleteConfig = {
-  uri: LemaFormSchema.schema.searchUri,
+const lemmaConfig: AutoCompleteConfig = {
+  uri: LemmaFormSchema.schema.searchUri,
   dataField: 'data',
 };
 
@@ -129,7 +127,7 @@ const sources = computed(() => {
   return [source.value];
 });
 
-const lemaAnnotation = ref<AnnotationStartEnd>();
+const lemmaAnnotation = ref<AnnotationStartEnd>();
 
 const annotationActions = computed(() => {
   return {
@@ -152,7 +150,7 @@ const eventHandler = (
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
-      lemaAnnotation.value = annotation;
+      lemmaAnnotation.value = annotation;
       break;
     default:
       console.warn('event not handled', e);
@@ -160,35 +158,31 @@ const eventHandler = (
 };
 
 const annotations = computed(() => {
-  if (!lemaAnnotation.value) {
+  if (!lemmaAnnotation.value) {
     return [];
   }
   return [
     createTextSelectionAnnotation(
       source.value,
-      pick(lemaAnnotation.value, ['start', 'end']),
-      'lema',
+      pick(lemmaAnnotation.value, ['start', 'end']),
+      'lemma',
     ),
   ];
 });
 
-const createLema = () => {
-  const formSchema = LemaFormSchema.schema;
-  ModalService.openModal<FormModalProps, any>({
-    component: FormModal,
-    props: {
-      formSchema: formSchema.form,
-      data: {},
-      modalTitle: 'Create Lema',
-      onClose: (result: FormModalResult) => {
-        if (result && result.valid) {
-          useLemaRepository()
-            .create(result.data)
-            .then((response) => {
-              lema.value = response;
-            });
-        }
-      },
+const createLemma = () => {
+  const formSchema = LemmaFormSchema.schema;
+  FormModalService.openModal({
+    formSchema: formSchema.form,
+    modalTitle: 'Create Lemma',
+    onClose: (result: FormModalResult) => {
+      if (result && result.valid) {
+        useLemmaRepository()
+          .create(result.data)
+          .then((response) => {
+            lemma.value = response;
+          });
+      }
     },
   });
 };
@@ -199,7 +193,7 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
-  const annotation = lemaAnnotation.value;
+  const annotation = lemmaAnnotation.value;
 
   // Add the original start and endpoint
   const selector = findTextPositionSelector(properties.textContent.uri)(
@@ -211,19 +205,19 @@ const onSubmit = () => {
 
   const exampleLemma = {
     annotation,
-    lema: lema.value,
+    lemma: lemma.value,
     exampleAnnotation: pick(properties.annotation, 'id'),
-    id: lemaAnnotation.value.id,
+    id: lemmaAnnotation.value.id,
     textContent: pick(properties.textContent, 'id'),
   };
-  const data = AnnotationExampleLemaSchema.parse(exampleLemma);
+  const data = AnnotationExampleLemmaSchema.parse(exampleLemma);
   emits('closeModal', { valid: true, data });
 };
 
 const disabled = computed(() => {
-  if (!lema.value) {
+  if (!lemma.value?.id) {
     return true;
   }
-  return !lemaAnnotation.value?.id;
+  return !lemmaAnnotation.value;
 });
 </script>
