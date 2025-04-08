@@ -7,7 +7,6 @@ export type FormModalProps = {
   formSchema: JsonFormsLayout;
   onClose: (result: any) => void;
   data: any;
-  id: string;
 };
 
 export type FormModalResult<DATA = any> = {

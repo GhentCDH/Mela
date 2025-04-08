@@ -1,7 +1,7 @@
 import type { JsonFormsLayout } from '@ghentcdh/json-forms/core';
 import { ModalService } from '@ghentcdh/ui';
 
-import { FormModal, type FormModalProps, FormModalResult } from './index';
+import { FormModal, type FormModalProps, type FormModalResult } from './index';
 
 export class FormModalService {
   static openModal<DATA = any>({
