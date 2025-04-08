@@ -1,7 +1,7 @@
 import type { JsonFormsLayout } from '@ghentcdh/json-forms/core';
 import { ModalService } from '@ghentcdh/ui';
 
-import type { FormModal, type FormModalProps, FormModalResult } from './index';
+import { FormModal, type FormModalProps, FormModalResult } from './index';
 
 export class FormModalService {
   static openModal<DATA = any>({
@@ -15,8 +15,9 @@ export class FormModalService {
     modalTitle: string;
     onClose: (result: FormModalResult) => void;
   }) {
+    const component = FormModal;
     ModalService.openModal<FormModalProps, FormModalResult>({
-      component: FormModal,
+      component,
       props: {
         formSchema,
         data: initialData ?? {},
