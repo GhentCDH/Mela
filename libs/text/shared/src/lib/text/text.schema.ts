@@ -105,7 +105,7 @@ const dtoSchema = TextSchema.pick({
   name: true,
   year: true,
 }).extend({
-  author: AuthorSchema.extend({
+  author: AuthorSchema.omit({ createdAt: true, updatedAt: true }).extend({
     id: z.string().optional(),
   }),
   textContent: z.array(TextContentDtoSchema),

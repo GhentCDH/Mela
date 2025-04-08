@@ -64,7 +64,10 @@ export const createRepository = <T extends { id?: string }>(
   const create = (object: T, options?: RequestOptions) => {
     return httpRequest
       .post(getDataUri(), object, options)
-      .then((response) => handleSuccess(`Created ${notificationEntity}`))
+      .then((response) => {
+        handleSuccess(`Created ${notificationEntity}`);
+        return response;
+      })
       .catch((response) => {
         handleError(response, `Failed to create ${notificationEntity}`);
       });

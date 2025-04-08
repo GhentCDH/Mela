@@ -18,9 +18,8 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import MdEditor from '@toast-ui/editor';
 import { defineComponent, onMounted } from 'vue';
 
-import { useVanillaControlCustom } from '@ghentcdh/ui';
+import { ControlWrapper, useVanillaControlCustom } from '@ghentcdh/ui';
 
-import ControlWrapper from './ControlWrapper.vue';
 import { isMarkdownControl } from '../tester';
 
 import '@toast-ui/editor/dist/toastui-editor.css';

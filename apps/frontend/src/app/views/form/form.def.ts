@@ -1,6 +1,6 @@
 import {
   AuthorFormSchema,
-  LemaFormSchema,
+  LemmaFormSchema,
   RegisterFormSchema,
   SpeechFormSchema,
 } from '@mela/text/shared';
@@ -18,7 +18,7 @@ export enum FormKey {
   author = 'author',
   register = 'register',
   speech = 'speech',
-  lema = 'lema',
+  lemma = 'lemma',
 }
 
 export const FormDictionary: Record<FormKey, FormDef> = {
@@ -40,10 +40,10 @@ export const FormDictionary: Record<FormKey, FormDef> = {
     tableTitle: 'Speech',
     title: 'Speech',
   },
-  lema: {
-    formId: 'lema',
-    formSchema: LemaFormSchema.schema,
-    title: 'Lema',
-    tableTitle: 'Lemas',
+  lemma: {
+    formId: 'lemma',
+    formSchema: LemmaFormSchema.schema,
+    title: 'Lemma',
+    tableTitle: 'Lemmas',
   },
 };

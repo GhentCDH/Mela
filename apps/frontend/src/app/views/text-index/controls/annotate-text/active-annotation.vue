@@ -20,6 +20,19 @@
       v-if="isExample"
       class="text-gray-300 my-2"
     >
+    <LinkLemma
+      v-if="isExample"
+      :annotation="activeAnnotation"
+      :links="links"
+      :text="text"
+      :text-content="textContent"
+      @save="saveAnnotation"
+      @delete="deleteAnnotation"
+    />
+    <hr
+      v-if="isExample"
+      class="text-gray-300 my-2"
+    >
     <LinkBuckets
       v-if="isExample"
       :annotation="activeAnnotation"
@@ -33,6 +46,7 @@
     <hr class="text-gray-300 my-2">
 
     <Translations
+      v-if="canTranslate"
       :annotation="activeAnnotation"
       :links="links"
       :text="text"
@@ -51,6 +65,7 @@ import {
   findTagging,
   findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
+import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
@@ -58,6 +73,7 @@ import type { AnnotationFilter } from './utils/annotations.utils';
 import { getTextSelection } from './utils/translation';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
+import LinkLemma from './view/link-lemma.vue';
 import Translations from './view/translations.vue';
 
 type Properties = {
@@ -91,6 +107,7 @@ const annotationType = computed(
   () => findTagging(properties.activeAnnotation).value ?? 'phrase',
 );
 const isExample = computed(() => annotationType.value === 'example');
+const canTranslate = computed(() => annotationType.value !== 'lemma');
 
 const textAnnotation = computed(() => ({
   id: properties.activeAnnotation.id,

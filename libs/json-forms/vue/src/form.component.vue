@@ -65,8 +65,6 @@ watch(
   { immediate: true },
 );
 
-const styles = myStyles;
-
 provide('styles', myStyles);
 const renderers = Object.freeze([
   ...properties.renderers,

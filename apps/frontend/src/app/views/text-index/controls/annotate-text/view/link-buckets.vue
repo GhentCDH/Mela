@@ -1,29 +1,15 @@
 <template>
-  <h2>Link buckets</h2>
-
-  <ul class="list">
-    <li
-      v-for="t in linkBuckets"
-      :key="t.link.id"
-      class="list-row !px-0 !gap-2"
-    >
-      <div>
-        <small>{{ t.translation }}</small> ({{ t.linkType }})
-      </div>
-      <Btn
-        :color="Color.secondary"
-        :icon="IconEnum.Delete"
-        @click="deleteAnnotation(t.link)"
-      />
-    </li>
-  </ul>
-  <fieldset
-    v-if="linkBucket"
-    class="fieldset"
+  <LinkComponent
+    title="Link buckets"
+    entity="linkBucket"
+    :purpose="PURPOSE_LINK_BUCKETS"
+    :display-value="displayValue"
+    :annotation="activeAnnotation"
+    :links="links"
+    :new-link="linkBucket"
+    @add-link="addLink"
+    @delete="deleteAnnotation"
   >
-    <legend class="fieldset-legend">
-      Selected LinkBucket
-    </legend>
     <p v-if="!linkedBucket">
       Click on an annotation
     </p>
@@ -40,13 +26,7 @@
         </Btn>
       </div>
     </div>
-  </fieldset>
-  <Btn
-    v-if="!linkBucket"
-    @click="addLink"
-  >
-    Add LinkBucket
-  </Btn>
+  </LinkComponent>
 </template>
 
 <script setup lang="ts">
@@ -58,16 +38,12 @@ import type {
   SpecificResource,
   W3CAnnotation,
 } from '@ghentcdh/annotations/core';
-import { findBodyType, findByPurposeValue } from '@ghentcdh/annotations/core';
-import {
-  Btn,
-  Color,
-  IconEnum,
-  ModalService,
-  SelectComponent,
-} from '@ghentcdh/ui';
+import { findBodyType } from '@ghentcdh/annotations/core';
+import { Btn, SelectComponent } from '@ghentcdh/ui';
 
+import activeAnnotation from '../active-annotation.vue';
 import type { AnnotationWithRelations } from '../props';
+import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { useModeStore } from '../store/mode.store';
 import type { AnnotationFilter } from '../utils/annotations.utils';
@@ -119,40 +95,23 @@ effect(() => {
 
 const translatedText = computed(() => findTextValue(linkedBucket.value));
 
-const linkBuckets = computed(() =>
-  properties.links
-    .filter((link) => findByPurposeValue(PURPOSE_LINK_BUCKETS)(link.annotation))
-    .map((link) => {
-      const linked = link.relations.find(
-        (r) => r.id !== properties.annotation.id,
-      );
-      const linkType = findBodyType<SpecificResource>(
-        'SpecificResource',
-        (body: SpecificResource) => !!body.value,
-      )(link.annotation);
+const displayValue = (link: AnnotationWithRelations): string => {
+  const linked = link.relations.find((r) => r.id !== properties.annotation.id);
+  const linkType = findBodyType<SpecificResource>(
+    'SpecificResource',
+    (body: SpecificResource) => !!body.value,
+  )(link.annotation);
 
-      return {
-        link: link.annotation,
-        translation: findTextValue(linked)?.value,
-        linkType: linkType?.value.linkType,
-      };
-    }),
-);
+  return `${findTextValue(linked)?.value} (${linkType?.value.linkType})`;
+};
+
 const addLink = () => {
   modeStore.changeMode('link_buckets');
   emits('changeSelectFilter', { annotationType: ['example'] });
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
-  ModalService.showConfirm({
-    title: 'Delete link',
-    message: 'Are you sure to delete this LinkBucket',
-    onClose: (result) => {
-      if (result.confirmed) {
-        emits('delete', annotation);
-      }
-    },
-  });
+  emits('delete', annotation);
 };
 
 const saveBucket = () => {
@@ -163,6 +122,8 @@ const saveBucket = () => {
   });
 
   emits('save', null, link);
+
+  modeStore.resetModeNoEffect();
 
   linkedBucket.value = null;
 };

@@ -186,7 +186,6 @@ onMounted(() => {
 });
 
 const closeAnnotation = () => {
-  console.log('close annotation');
   annotationStore.selectAnnotation(null);
   annotationStore.changeSelectionFilter({});
   annotationStore.cancelNewAnnotations();

@@ -13,7 +13,7 @@ import { entry as autocompleteControlRenderer } from './autocomplete/Autocomplet
 // import { entry as timeControlRendererEntry } from './TimeControlRenderer.vue';
 
 export { default as AutocompleteControlRenderer } from './autocomplete/AutocompleteControlRenderer.vue';
-export { default as ControlWrapper } from './ControlWrapper.vue';
+
 export { default as StringControlRenderer } from './StringControlRenderer.vue';
 // export { default as MultiStringControlRenderer } from './MultiStringControlRenderer.vue';
 export { default as NumberControlRenderer } from './NumberControlRenderer.vue';

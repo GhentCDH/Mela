@@ -1,18 +1,18 @@
-import { ExampleFormSchema } from '@mela/text/shared';
+import { LemmaFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import { createRepository } from '@ghentcdh/json-forms/vue';
 import { useNotificationStore } from '@ghentcdh/ui';
 
-export const useExampleRepository = defineStore('exampleRepository', () => {
+export const useLemmaRepository = defineStore('lemmaRepository', () => {
   const httpRequest = useHttpRequest();
   const notificationStore = useNotificationStore();
 
-  const repo = createRepository(ExampleFormSchema.schema, httpRequest, {
+  const repo = createRepository(LemmaFormSchema.schema, httpRequest, {
     notification: {
       show: true,
-      entityType: 'Example',
+      entityType: 'Lemma',
       notification: notificationStore,
     },
   });

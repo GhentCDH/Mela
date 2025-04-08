@@ -1,10 +1,13 @@
 <template>
-  <template v-if="modalService.showModal.value">
+  <template
+    v-for="modal in modals"
+    :key="modal.id"
+  >
     <component
       :is="modal?.component"
       v-bind="modal?.props"
       :open="true"
-      @close-modal="modal?.props.onClose"
+      @close-modal="modal?.props?.onClose"
     />
   </template>
 </template>
@@ -16,7 +19,7 @@ import { ModalService } from './modal.service';
 
 const modalService = ModalService.getInstance();
 
-const modal = computed(() =>
-  modalService.showModal.value ? modalService.modal : null,
-);
+const modals = computed(() => {
+  return modalService.showModal.value ? modalService.modals : [];
+});
 </script>

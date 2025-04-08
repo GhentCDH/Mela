@@ -7,11 +7,11 @@ import {
   TextCellBuilder,
   createSchema,
 } from '@ghentcdh/json-forms/core';
-import { LemaForm } from '@ghentcdh/mela/generated/forms';
-import type { Lema } from '@ghentcdh/mela/generated/types';
-import { LemaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
+import { LemmaForm } from '@ghentcdh/mela/generated/forms';
+import type { Lemma } from '@ghentcdh/mela/generated/types';
+import { LemmaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
 
-const uiSchema = LayoutBuilder.vertical<Lema>()
+const uiSchema = LayoutBuilder.vertical<Lemma>()
   .addControls(
     ControlBuilder.properties('word'),
     ControlBuilder.properties('link'),
@@ -22,7 +22,7 @@ const uiSchema = LayoutBuilder.vertical<Lema>()
         label: 'name',
       },
     }),
-    LayoutBuilder.horizontal<Lema>().addControls(
+    LayoutBuilder.horizontal<Lemma>().addControls(
       ControlBuilder.properties('grammatical'),
       ControlBuilder.properties('comparative'),
       ControlBuilder.properties('superlative'),
@@ -31,7 +31,7 @@ const uiSchema = LayoutBuilder.vertical<Lema>()
   )
   .build();
 
-const tableSchema = TableBuilder.init<Lema>()
+const tableSchema = TableBuilder.init<Lemma>()
   .addControls(
     TextCellBuilder.properties('id'),
     TextCellBuilder.properties('word'),
@@ -39,11 +39,11 @@ const tableSchema = TableBuilder.init<Lema>()
   )
   .build();
 
-const filterSchema = LayoutBuilder.vertical<Lema>()
+const filterSchema = LayoutBuilder.vertical<Lemma>()
   .addControls(ControlBuilder.properties('word'))
   .build();
 
-const dtoSchema = LemaSchema.pick({
+const dtoSchema = LemmaSchema.pick({
   word: true,
   link: true,
   grammatical: true,
@@ -51,21 +51,22 @@ const dtoSchema = LemaSchema.pick({
   superlative: true,
   participle: true,
 }).extend({
-  speech: SpeechSchema.extend({
+  speech: SpeechSchema.omit({ createdAt: true, updatedAt: true }).extend({
     id: z.string().optional(),
-    grammatical: z.boolean().optional().default(false),
-    comparative: z.boolean().optional().default(false),
-    superlative: z.boolean().optional().default(false),
-    participle: z.boolean().optional().default(false),
   }),
+  grammatical: z.boolean().optional().default(false),
+  comparative: z.boolean().optional().default(false),
+  superlative: z.boolean().optional().default(false),
+  participle: z.boolean().optional().default(false),
 });
 
-export const LemaFormSchema = createSchema({
+export const LemmaFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: LemaForm,
+  jsonSchema: LemmaForm,
   tableSchema,
-  uri: '/api/lema',
+  uri: '/api/lemma',
+  searchUri: '/api/lemma?filter=word:',
   modalSize: 'lg',
 });

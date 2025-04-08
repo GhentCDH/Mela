@@ -17,67 +17,67 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms/api';
-import { LemaDto } from '@ghentcdh/mela/generated/dtos';
-import { LemaWithRelations } from '@ghentcdh/mela/generated/types';
+import { LemmaDto } from '@ghentcdh/mela/generated/dtos';
+import { LemmaWithRelations } from '@ghentcdh/mela/generated/types';
 
-import { CreateLemaDto, ListLemaDto } from './dto';
-import { LemaRepository } from './lema-repository.service';
+import { CreateLemmaDto, ListLemmaDto } from './dto';
+import { LemmaRepository } from './lemma-repository.service';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
-@Controller('lema')
+@Controller('lemma')
 @ApiBearerAuth()
 // @UseGuards(GhentCdhGuard)
-export class LemaController extends AbstractController<
-  LemaWithRelations,
-  CreateLemaDto
+export class LemmaController extends AbstractController<
+  LemmaWithRelations,
+  CreateLemmaDto
 > {
-  constructor(repository: LemaRepository) {
+  constructor(repository: LemmaRepository) {
     super(repository);
   }
 
   @Get()
   @ApiCreatedResponse({
-    type: ListLemaDto,
+    type: ListLemmaDto,
   })
-  override async list(@Query() params: RequestDto): Promise<ListLemaDto> {
+  override async list(@Query() params: RequestDto): Promise<ListLemmaDto> {
     return super.list(params);
   }
 
   @Post()
   @ApiCreatedResponse({
-    type: LemaDto,
+    type: LemmaDto,
   })
   override async create(
-    @Body() dto: CreateLemaDto,
-  ): Promise<LemaWithRelations> {
+    @Body() dto: CreateLemmaDto,
+  ): Promise<LemmaWithRelations> {
     return super.create(dto);
   }
 
   @Get('/:id')
   @ApiCreatedResponse({
-    type: LemaDto,
+    type: LemmaDto,
   })
-  override async findOne(@Param('id') id: string): Promise<LemaWithRelations> {
+  override async findOne(@Param('id') id: string): Promise<LemmaWithRelations> {
     return super.findOne(id);
   }
 
   @Patch('/:id')
   @ApiResponse({
-    type: LemaDto,
+    type: LemmaDto,
   })
   override async update(
     @Param('id') id: string,
-    @Body() dto: CreateLemaDto,
-  ): Promise<LemaDto> {
+    @Body() dto: CreateLemmaDto,
+  ): Promise<LemmaDto> {
     return super.update(id, dto);
   }
 
   @Delete('/:id')
   @ApiResponse({
-    type: LemaDto,
+    type: LemmaDto,
   })
-  override async delete(@Param('id') id: string): Promise<LemaWithRelations> {
+  override async delete(@Param('id') id: string): Promise<LemmaWithRelations> {
     return super.delete(id);
   }
 }

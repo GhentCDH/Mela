@@ -142,8 +142,8 @@ const eventHandler = (
       );
 
       break;
-    default:
-      console.log('event not handled', e);
+    // default:
+    // console.debug('event not handled', e);
   }
 };
 

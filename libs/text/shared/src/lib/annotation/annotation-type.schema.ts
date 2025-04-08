@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import {
   AnnotationSchema,
+  LemmaSchema,
   RegisterSchema,
   TextContentSchema,
   TextSchema,
@@ -10,15 +11,19 @@ import {
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
 export const PURPOSE_EXAMPLE = 'AnnotationExample';
 export const PURPOSE_TRANSLATION = 'translation';
+export const PURPOSE_LEMA = 'lemma';
 export const PURPOSE_LINK_BUCKETS = 'link_buckets';
 
+export const AnnotationStartEndSchema = z.object({
+  id: z.string().optional(),
+  tagging: z.string().optional(),
+  start: z.number(),
+  end: z.number(),
+});
+export type AnnotationStartEnd = z.infer<typeof AnnotationStartEndSchema>;
+
 export const AnnotationSelectorSchema = z.object({
-  annotation: z.object({
-    id: z.string().optional(),
-    tagging: z.string().optional(),
-    start: z.number(),
-    end: z.number(),
-  }),
+  annotation: AnnotationStartEndSchema,
   textContent: TextContentSchema.pick({ id: true }),
   type: z.enum([PURPOSE_ANNOTATION_SELECT]).default(PURPOSE_ANNOTATION_SELECT),
 });
@@ -55,11 +60,24 @@ export const LinkBucketsSchema = LinkSchema.extend({
   type: z.enum([PURPOSE_LINK_BUCKETS]).default(PURPOSE_LINK_BUCKETS),
 });
 
+export const AnnotationExampleLemmaSchema = z.object({
+  annotation: AnnotationStartEndSchema,
+  exampleAnnotation: AnnotationSchema.pick({ id: true }),
+  lemma: LemmaSchema.pick({ id: true }),
+  id: z.string().optional(),
+  textContent: TextContentSchema.pick({ id: true }),
+  type: z.enum([PURPOSE_LEMA]).default(PURPOSE_LEMA),
+});
+export type AnnotationExampleLemma = z.infer<
+  typeof AnnotationExampleLemmaSchema
+>;
+
 export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
   AnnotationExampleSchema,
 )
   .or(TranslationExampleSchema)
-  .or(LinkBucketsSchema);
+  .or(LinkBucketsSchema)
+  .or(AnnotationExampleLemmaSchema);
 
 export type AnnotationLink = z.infer<typeof LinkSchema>;
 export type AnnotationType = z.infer<typeof AnnotationTypeSchema>;

@@ -5,3 +5,4 @@ export { default as MultiSelect } from './MultiSelect.vue';
 export * from './core/styles';
 export * from './core/utils/style';
 export * from './core/utils/vanillaControl';
+export * from './core/properties';

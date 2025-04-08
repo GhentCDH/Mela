@@ -105,6 +105,7 @@ model Example {
   textContent     TextContent @relation(fields: [text_content_id], references: [id])
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt @default(now())
+  lemmas Lemma[] @relation("example_lemma")
 
   @@map("example")
 }
@@ -122,14 +123,14 @@ model Register {
 model Speech {
   id   String @id @default(uuid())
   name String @unique
-  lema Lema[]
+  lemma Lemma[]
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt @default(now())
 
   @@map("speech")
 }
 
-model Lema {
+model Lemma {
   id          String   @id @default(uuid())
   word        String   @unique
   link        String
@@ -141,8 +142,9 @@ model Lema {
   speech      Speech   @relation(fields: [speech_id], references: [id])
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt @default(now())
+  examples Example[] @relation("example_lemma")
 
-  @@map("lema")
+  @@map("lemma")
 }
 
 enum TextType {

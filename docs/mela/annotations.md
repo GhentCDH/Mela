@@ -63,6 +63,6 @@ One annotation describes the relation between different annotattions, this can b
         A[Annotation link] --> B[Annotation text 1]
         A --> C[Annotation text 2];
         
-        D[Lema] --> B
+        D[Lemma] --> B
     
 ```

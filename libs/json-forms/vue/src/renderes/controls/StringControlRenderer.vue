@@ -30,9 +30,12 @@ import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
 // import { default as ControlWrapper.vue } from './ControlWrapper.vue.vue';
-import { inputClasses, useVanillaControlCustom } from '@ghentcdh/ui';
+import {
+  ControlWrapper,
+  inputClasses,
+  useVanillaControlCustom,
+} from '@ghentcdh/ui';
 
-import ControlWrapper from './ControlWrapper.vue';
 import { isStringFormat } from '../tester';
 
 const controlRenderer = defineComponent({

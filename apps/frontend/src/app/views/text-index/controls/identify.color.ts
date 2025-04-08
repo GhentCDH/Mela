@@ -6,8 +6,9 @@ const Colors = {
   title: '#dd7777', // pastel red
   subtitle: '#FFB74D', // pastel orange
   paragraph: '#4d88ff', // pastel blue
-  phrase: '#CAB2D6', // pastel green
-  example: '#4fff66', // pastel yellow
+  phrase: '#CAB2D6', // pastel purple
+  example: '#4fff66', // pastel green
+  lemma: '#f3ff4d', // pastel yellow
 };
 
 const defaultConfig: any = {
@@ -72,4 +73,5 @@ export const IdentifyColor = [
   { label: 'Paragraph', id: 'paragraph' },
   { label: 'Phrase', id: 'phrase' },
   { label: 'Example', id: 'example' },
+  { label: 'Lemma', id: 'lemma' },
 ] as const;
