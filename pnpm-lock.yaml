@@ -402,6 +402,9 @@ importers:
       vite:
         specifier: ^6.0.7
         version: 6.2.2(@types/node@22.10.10)(jiti@2.4.2)(less@4.1.3)(lightningcss@1.29.2)(sass@1.83.1)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.0)
+      vite-plugin-checker:
+        specifier: ^0.9.1
+        version: 0.9.1(eslint@9.23.0(jiti@2.4.2))(meow@13.2.0)(optionator@0.9.4)(typescript@5.7.2)(vite@6.2.2(@types/node@22.10.10)(jiti@2.4.2)(less@4.1.3)(lightningcss@1.29.2)(sass@1.83.1)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.0))(vue-tsc@2.2.8(typescript@5.7.2))
       vite-plugin-dts:
         specifier: ~4.4.0
         version: 4.4.0(@types/node@22.10.10)(rollup@4.37.0)(typescript@5.7.2)(vite@6.2.2(@types/node@22.10.10)(jiti@2.4.2)(less@4.1.3)(lightningcss@1.29.2)(sass@1.83.1)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.0))
@@ -9957,6 +9960,40 @@ packages:
     resolution: {integrity: sha512-AM9aQ/IPrW/6ENLQg3AGY4K1N2TGZdR5e4gu/MmmR2xR3Ll1+dib+nook92g4TV3PXVyeyxdWwtaCAiUL0hMxA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
+
+  vite-plugin-checker@0.9.1:
+    resolution: {integrity: sha512-neH3CSNWdkZ+zi+WPt/0y5+IO2I0UAI0NX6MaXqU/KxN1Lz6np/7IooRB6VVAMBa4nigqm1GRF6qNa4+EL5jDQ==}
+    engines: {node: '>=14.16'}
+    peerDependencies:
+      '@biomejs/biome': '>=1.7'
+      eslint: '>=7'
+      meow: ^13.2.0
+      optionator: ^0.9.4
+      stylelint: '>=16'
+      typescript: '*'
+      vite: '>=2.0.0'
+      vls: '*'
+      vti: '*'
+      vue-tsc: ~2.2.2
+    peerDependenciesMeta:
+      '@biomejs/biome':
+        optional: true
+      eslint:
+        optional: true
+      meow:
+        optional: true
+      optionator:
+        optional: true
+      stylelint:
+        optional: true
+      typescript:
+        optional: true
+      vls:
+        optional: true
+      vti:
+        optional: true
+      vue-tsc:
+        optional: true
 
   vite-plugin-dts@4.4.0:
     resolution: {integrity: sha512-CJ6phvnnPLF+aFk8Jz2ZcMBLleJ4gKJOXb9We5Kzmsp5bPuD+uMDeVefjFNYSXZ+wdcqnf+Yp2P7oA5hBKQTlQ==}
@@ -21881,6 +21918,25 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  vite-plugin-checker@0.9.1(eslint@9.23.0(jiti@2.4.2))(meow@13.2.0)(optionator@0.9.4)(typescript@5.7.2)(vite@6.2.2(@types/node@22.10.10)(jiti@2.4.2)(less@4.1.3)(lightningcss@1.29.2)(sass@1.83.1)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.0))(vue-tsc@2.2.8(typescript@5.7.2)):
+    dependencies:
+      '@babel/code-frame': 7.26.2
+      chokidar: 4.0.3
+      npm-run-path: 6.0.0
+      picocolors: 1.1.1
+      picomatch: 4.0.2
+      strip-ansi: 7.1.0
+      tiny-invariant: 1.3.3
+      tinyglobby: 0.2.12
+      vite: 6.2.2(@types/node@22.10.10)(jiti@2.4.2)(less@4.1.3)(lightningcss@1.29.2)(sass@1.83.1)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.0)
+      vscode-uri: 3.1.0
+    optionalDependencies:
+      eslint: 9.23.0(jiti@2.4.2)
+      meow: 13.2.0
+      optionator: 0.9.4
+      typescript: 5.7.2
+      vue-tsc: 2.2.8(typescript@5.7.2)
 
   vite-plugin-dts@4.4.0(@types/node@22.10.10)(rollup@4.37.0)(typescript@5.7.2)(vite@6.2.2(@types/node@22.10.10)(jiti@2.4.2)(less@4.1.3)(lightningcss@1.29.2)(sass@1.83.1)(stylus@0.64.0)(terser@5.39.0)(yaml@2.7.0)):
     dependencies:
