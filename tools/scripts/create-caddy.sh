@@ -23,10 +23,21 @@ do
   esac
 done
 
-./create-env.sh $ROOT_DIR
-./create-caddy.sh --port=$PORT --dir=$ROOT_DIR
-#npx http-server -p 9000 $ROOT_DIR --host
 
+# Optional: fallback to current directory if no argument given
+if [ -z "PORT" ]; then
+  PORT="."
+fi
 
-# Keep it running
-caddy run --config $ROOT_DIR/Caddyfile --adapter caddyfile
+OUTPUT_FILE="$ROOT_DIR/Caddyfile"
+
+echo ":${PORT} {
+	root * ${ROOT_DIR}
+	file_server
+
+  # Rewrite all requests that aren't actual files to index.html
+  @vue_not_found {
+    not file
+  }
+  rewrite @vue_not_found /index.html
+}" > "$OUTPUT_FILE"
