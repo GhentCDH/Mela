@@ -34,7 +34,7 @@ COPY --chown=app:app . /app
 WORKDIR /app
 
 # Frontend development
-FROM node-dev AS mela-frontend
+FROM node-dev AS mela-frontend-build
 
 WORKDIR /app
 
@@ -42,9 +42,18 @@ WORKDIR /app
 RUN pnpm run generate:prisma  && \
     npx nx run frontend:build:production
 
-CMD  cd /app/tools/scripts && ./startup.sh /app/dist/apps/frontend
-#CMD npx vite serve --port 9000 /app/dist/apps/frontend --host
-    #npx nx run frontend:serve:production --port 80
+# production stage
+FROM caddy:2.8.4-alpine as mela-frontend
+WORKDIR /app
+
+COPY --from=mela-frontend-build /app /app
+
+RUN apk add --no-cache bash
+
+
+CMD  cd /app/tools/scripts && ./startup.sh --dir=/app/dist/apps/frontend --port=9000
+
+EXPOSE 80 443 9000
 
 # Backend developmen
 FROM node-dev AS mela-backend

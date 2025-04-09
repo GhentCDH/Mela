@@ -20,6 +20,7 @@
     </template>
     <template #actions>
       <Btn
+        :as="button"
         :color="Color.secondary"
         :outline="true"
         @click="onCancel"

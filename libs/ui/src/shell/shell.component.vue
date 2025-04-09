@@ -81,7 +81,7 @@ const properties = defineProps<{
   version: string;
 }>();
 
-const emits = defineEmits<{ logout: void }>();
+const emits = defineEmits<{ logout: [] }>();
 
 const userMenu = computed(() => {
   return properties.user

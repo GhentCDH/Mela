@@ -9,7 +9,7 @@ const formId = 'text-index';
 const router = useRouter();
 
 const edit = (data: any) => {
-  router.replace({
+  router.push({
     name: 'text-index-annotate',
     params: { textId: data?.id },
   });

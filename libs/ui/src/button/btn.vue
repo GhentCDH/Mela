@@ -1,5 +1,6 @@
 <template>
-  <as
+  <component
+    :is="as"
     :class="[
       `btn  p-1 flex justify-center flex-nowrap`,
       ButtonColor[color],
@@ -15,7 +16,7 @@
       :size="size"
     />
     <slot />
-  </as>
+  </component>
 </template>
 
 <script setup lang="ts">

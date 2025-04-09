@@ -94,7 +94,7 @@ CREATE TABLE "speech" (
 );
 
 -- CreateTable
-CREATE TABLE "lemma" (
+CREATE TABLE "lema" (
     "id" TEXT NOT NULL,
     "word" TEXT NOT NULL,
     "link" TEXT NOT NULL,
@@ -117,7 +117,7 @@ CREATE UNIQUE INDEX "register_name_key" ON "register"("name");
 CREATE UNIQUE INDEX "speech_name_key" ON "speech"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "lemma_word_key" ON "lemma"("word");
+CREATE UNIQUE INDEX "lemma_word_key" ON "lema"("word");
 
 -- AddForeignKey
 ALTER TABLE "text" ADD CONSTRAINT "text_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "author"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -141,4 +141,4 @@ ALTER TABLE "example" ADD CONSTRAINT "example_register_id_fkey" FOREIGN KEY ("re
 ALTER TABLE "example" ADD CONSTRAINT "example_text_content_id_fkey" FOREIGN KEY ("text_content_id") REFERENCES "text_content"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "lemma" ADD CONSTRAINT "lemma_speech_id_fkey" FOREIGN KEY ("speech_id") REFERENCES "speech"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "lema" ADD CONSTRAINT "lema_speech_id_fkey" FOREIGN KEY ("speech_id") REFERENCES "speech"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

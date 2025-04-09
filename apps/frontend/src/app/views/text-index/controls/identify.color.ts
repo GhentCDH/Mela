@@ -8,7 +8,7 @@ const Colors = {
   paragraph: '#4d88ff', // pastel blue
   phrase: '#CAB2D6', // pastel purple
   example: '#4fff66', // pastel green
-  lemma: '#f3ff4d', // pastel yellow
+  lemma: '#f2ff64', // pastel yellow
 };
 
 const defaultConfig: any = {

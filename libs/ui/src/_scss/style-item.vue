@@ -7,7 +7,10 @@ const props = withDefaults(defineProps<StyleItem>(), {
 </script>
 
 <template>
-  <as :class="props.class">
+  <component
+    :is="as"
+    :class="props.class"
+  >
     Lorem ipsum odor amet.
-  </as>
+  </component>
 </template>
