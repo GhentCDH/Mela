@@ -5,7 +5,6 @@
       :annotations="annotationsForText"
       :selected-annotations="selectedAnnotations"
       :allow-create="actions?.create"
-      :use-snapper="useWordSnapper"
       @annotation-create-begin="onAnnotationCreateBegin"
       @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
@@ -29,8 +28,7 @@ import { filterAnnotationsForText } from './utils/filter';
 import { textToLines } from './utils/lines';
 import type { AnnotationEmits } from '../model/emits';
 import type { AnnotationActions, AnnotationConfig } from '../model/properties';
-import type { UseSnapper} from '../snapper';
-import { useWordSnapper } from '../snapper';
+import type { UseSnapper } from '../snapper';
 import { fixOffset } from './utils/fix-offset';
 
 const properties = withDefaults(
