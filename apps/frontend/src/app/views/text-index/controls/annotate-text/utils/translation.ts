@@ -19,5 +19,5 @@ export const getTextSelection = (
   text: SourceModel,
   annotation: TextAnnotation,
 ) => {
-  return text.content.text.substring(annotation.start, annotation.end);
+  return text.content.text.substring(annotation.start, annotation.end + 1);
 };

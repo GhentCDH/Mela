@@ -3,6 +3,7 @@ const source1 = {
   id: 'text-1',
   type: 'text',
   content: {
+    processingLanguage: 'gr',
     text: `Tit. Παρατηρήματα ἀναγκαῖα τῶν Ἀττικῶν συνηθείας ἐκλεγέντα, παρὰ τοῦ λογιωτάτου μοναχοῦ κυροῦ Μαξίμου τοῦ Πλανούδη:-
 
 1C Ἀντὶ τοῦ εἰπεῖν∙ μνημονεύω τοῦ δεῖνος, διὰ μνήμης ἔχω τὸν δεῖνα λέγουσιν∙ οὕτω καὶ διὰ φροντίδος ἔχω τὸν δεῖνα∙ καὶ δι᾿ ἀγάπης∙ καὶ δι’ ἀμελείας∙ καὶ δι’ ἐπαίνου∙ καὶ διὰ ψόγου, ἀντὶ τοῦ φρονέω∙ καὶ ἀγαπῶ∙ καὶ ἀμελῶ∙ καὶ ἐπαινῶ∙ καὶ ψέγω:-
@@ -10,12 +11,25 @@ const source1 = {
 2C Ἀντὶ τοῦ εἰπεῖν∙ ἰδικῶς ἰδιωτικῶς, ἰδίᾳ λέγουσιν∙ οἷον ἰδίᾳ ὡμίλησα τῷ δεῖνι∙ μηδενὸς ἑτέρου παρόντος:-`,
   },
 };
+const oneLine = {
+  uri: 'text:text-online',
+  id: 'text-online',
+  type: 'text',
+  content: {
+    processingLanguage: 'gr',
+    text: `Tit. Παρατηρήματα ἀναγκαῖα τῶν Ἀττικῶν συνηθείας ἐκλεγέντα, παρὰ τοῦ λογιωτάτου μοναχοῦ κυροῦ Μαξίμου τοῦ Πλανούδη:-
 
+1C Ἀντὶ τοῦ εἰπεῖν∙ μνημονεύω τοῦ δεῖνος, διὰ μνήμης ἔχω τὸν δεῖνα λέγουσιν∙ οὕτω καὶ διὰ φροντίδος ἔχω τὸν δεῖνα∙ καὶ δι᾿ ἀγάπης∙ καὶ δι’ ἀμελείας∙ καὶ δι’ ἐπαίνου∙ καὶ διὰ ψόγου, ἀντὶ τοῦ φρονέω∙ καὶ ἀγαπῶ∙ καὶ ἀμελῶ∙ καὶ ἐπαινῶ∙ καὶ ψέγω:-
+
+2C Ἀντὶ τοῦ εἰπεῖν∙ ἰδικῶς ἰδιωτικῶς, ἰδίᾳ λέγουσιν∙ οἷον ἰδίᾳ ὡμίλησα τῷ δεῖνι∙ μηδενὸς ἑτέρου παρόντος:-`,
+  },
+};
 const source2 = {
   uri: 'text:text-2',
   id: 'text-2',
   type: 'text',
   content: {
+    processingLanguage: 'gr',
     text: `Tit. (transl): Indispensable, to-be-adhered-to norms of the linguistic habit of the users of Attic selected by the most learned monk Maximos Planoudes.
 
 
@@ -97,4 +111,4 @@ const annotations = [
   },
 ];
 
-export const demoAnnotations = { annotations, source1, source2 };
+export const demoAnnotations = { annotations, source1, source2, oneLine };

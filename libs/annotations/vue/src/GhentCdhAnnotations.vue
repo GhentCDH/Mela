@@ -10,6 +10,7 @@
       <div>
         <text-annotations
           :source="source"
+          :use-snapper="useSnapper"
           :annotations="annotations"
           :actions="annotationActions?.[source.uri]"
           :selected-annotations="selectedAnnotations?.[source.uri]"
@@ -28,10 +29,13 @@ import { computed } from 'vue';
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
 import type {
- AnnotationActions, AnnotationConfig,
+  AnnotationActions,
+  AnnotationConfig,
   AnnotationEmits,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType } from './model';
+  AnnotationEventType
+} from './model';
+import type { UseSnapper } from './snapper';
 import TextAnnotations from './text/text-annotations.vue';
 import { hasCustomEventListener } from './utils/hasCustomEventListener';
 
@@ -43,22 +47,23 @@ const properties = withDefaults(
     config?: AnnotationConfig;
     selectedAnnotations?: Record<string, []>;
     annotationActions?: Record<string, AnnotationActions>;
+    useSnapper?: UseSnapper<any>;
   }>(),
   {
-    cols: 1,
-  },
+    cols: 1
+  }
 );
 
 const emits = defineEmits<AnnotationEmits>();
 
 const gridColumns = computed(() => ({
-  'grid-template-columns': `repeat(${properties.cols}, 1fr)`,
+  'grid-template-columns': `repeat(${properties.cols}, 1fr)`
 }));
 
 const hasEventListener = hasCustomEventListener('onEvent');
 const onEvent = (
   type: AnnotationEventType,
-  data: AnnotationEventHandlerPayloadData<any>,
+  data: AnnotationEventHandlerPayloadData<any>
 ) => {
   if (!hasEventListener) return;
   emits('onEvent', type, data);

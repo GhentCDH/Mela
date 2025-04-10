@@ -17,6 +17,7 @@
             :sources="sources"
             :annotations="annotations"
             :annotation-actions="annotationActions"
+            :use-snapper="useWordSnapper"
             :cols="1"
             @on-event="eventHandler"
           />
@@ -75,6 +76,7 @@ import {
   type AnnotationEventHandlerPayloadData,
   type AnnotationEventType,
   GhentCdhAnnotations,
+  useWordSnapper,
 } from '@ghentcdh/annotations/vue';
 import {
   type FormModalResult,
