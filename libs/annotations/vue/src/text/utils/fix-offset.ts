@@ -1,4 +1,4 @@
-import { Snapper } from '../../snapper';
+import type { Snapper } from '../../snapper';
 
 type ACTIONS = 'updateCreating' | 'confirmStartUpdating';
 

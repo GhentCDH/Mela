@@ -6,14 +6,21 @@
       :class="[btnClass, 'btn btn-ghost text-right flex-nowrap flex']"
     >
       <span> {{ label }}</span>
-      <Icon :icon="IconEnum.ChevronDown" :size="Size.sm" />
+      <Icon
+        :icon="IconEnum.ChevronDown"
+        :size="Size.sm"
+      />
     </div>
     <ul
       tabindex="0"
       class="menu dropdown-content bg-white z-1 mt-4 p-2 shadow-sm"
     >
       <li class="min-w-max flex-no-wrap text-black">
-        <MenuItem v-for="item in items" :key="item.label" v-bind="item" />
+        <MenuItem
+          v-for="item in items"
+          :key="item.label"
+          v-bind="item"
+        />
       </li>
     </ul>
   </div>

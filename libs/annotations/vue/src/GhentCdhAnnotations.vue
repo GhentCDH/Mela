@@ -1,10 +1,16 @@
 <template>
-  <div :class="['grid gap-2']" :style="gridColumns">
-    <template v-for="source in sources" :key="source.uri">
+  <div
+    :class="['grid gap-2']"
+    :style="gridColumns"
+  >
+    <template
+      v-for="source in sources"
+      :key="source.uri"
+    >
       <div>
         <text-annotations
           :source="source"
-          :useSnapper="useSnapper"
+          :use-snapper="useSnapper"
           :annotations="annotations"
           :actions="annotationActions?.[source.uri]"
           :selected-annotations="selectedAnnotations?.[source.uri]"
@@ -29,9 +35,9 @@ import type {
   AnnotationEventHandlerPayloadData,
   AnnotationEventType
 } from './model';
+import type { UseSnapper } from './snapper';
 import TextAnnotations from './text/text-annotations.vue';
 import { hasCustomEventListener } from './utils/hasCustomEventListener';
-import { UseSnapper } from './snapper';
 
 const properties = withDefaults(
   defineProps<{

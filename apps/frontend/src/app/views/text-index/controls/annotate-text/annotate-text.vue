@@ -41,10 +41,11 @@ import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
-import {
+import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType,
+  AnnotationEventType} from '@ghentcdh/annotations/vue';
+import {
   GhentCdhAnnotations,
   useWordSnapper,
 } from '@ghentcdh/annotations/vue';

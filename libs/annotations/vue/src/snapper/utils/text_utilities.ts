@@ -1,4 +1,5 @@
 import Tokenizr from 'tokenizr';
+
 import { type Line } from '@ghentcdh/vue-component-annotated-text';
 
 //returns an array of tokens for a text, uses a defined word boundry

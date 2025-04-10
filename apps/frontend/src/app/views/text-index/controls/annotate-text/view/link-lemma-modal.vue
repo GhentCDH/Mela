@@ -31,14 +31,28 @@
           :placeholder="'Select lemma'"
           label-key="word"
         />
-        <Btn :icon="IconEnum.Plus" @click="createLemma"> Create new Lemma </Btn>
+        <Btn
+          :icon="IconEnum.Plus"
+          @click="createLemma"
+        >
+          Create new Lemma
+        </Btn>
       </div>
     </template>
     <template #actions>
-      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+      <Btn
+        :color="Color.secondary"
+        :outline="true"
+        @click="onCancel"
+      >
         Cancel
       </Btn>
-      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
+      <Btn
+        :disabled="disabled"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -47,8 +61,8 @@
 import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
-  getAnnotationUri,
   LemmaFormSchema,
+  getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, ref } from 'vue';
@@ -69,8 +83,8 @@ import {
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  Autocomplete,
   type AutoCompleteConfig,
+  Autocomplete,
   Btn,
   Color,
   ControlWrapper,

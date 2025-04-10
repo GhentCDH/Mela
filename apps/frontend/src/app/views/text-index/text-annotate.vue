@@ -1,7 +1,14 @@
 <template>
-  <Menu title="Elements" :menu="menuElements" :breadcrumbs="breadcrumbs" />
+  <Menu
+    title="Elements"
+    :menu="menuElements"
+    :breadcrumbs="breadcrumbs"
+  />
 
-  <div v-if="textStore.text" class="mt-2">
+  <div
+    v-if="textStore.text"
+    class="mt-2"
+  >
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
@@ -11,8 +18,14 @@
       @change-select-filter="annotationStore.changeSelectionFilter"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center">
-    <div role="alert" class="alert alert-success bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center"
+  >
+    <div
+      role="alert"
+      class="alert alert-success bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -22,7 +35,12 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>

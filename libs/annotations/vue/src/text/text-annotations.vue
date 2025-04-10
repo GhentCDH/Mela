@@ -29,7 +29,8 @@ import { filterAnnotationsForText } from './utils/filter';
 import { textToLines } from './utils/lines';
 import type { AnnotationEmits } from '../model/emits';
 import type { AnnotationActions, AnnotationConfig } from '../model/properties';
-import { UseSnapper, useWordSnapper } from '../snapper';
+import type { UseSnapper} from '../snapper';
+import { useWordSnapper } from '../snapper';
 import { fixOffset } from './utils/fix-offset';
 
 const properties = withDefaults(
