@@ -58,6 +58,7 @@
     "pinia": "^2.3.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "tokenizr": "^1.7.0",
     "uuid": "^11.0.5",
     "vite-plugin-node": "^4.0.0",
     "vue-router": "^4.5.0",

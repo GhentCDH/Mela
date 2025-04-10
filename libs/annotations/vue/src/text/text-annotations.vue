@@ -5,9 +5,10 @@
       :annotations="annotationsForText"
       :selected-annotations="selectedAnnotations"
       :allow-create="actions?.create"
+      :use-snapper="useWordSnapper"
       @annotation-create-begin="onAnnotationCreateBegin"
+      @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
-      @aaaaannotation-creating="onAnnotationCreating"
       @annotation-click="onSelectAnnotation($event, true)"
     />
   </div>
@@ -17,15 +18,19 @@
 import { computed, ref } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import type { MouseEventPayload } from '@ghentcdh/vue-component-annotated-text';
+import type {
+  CreateAnnotationState,
+  MouseEventPayload,
+} from '@ghentcdh/vue-component-annotated-text';
 import { AnnotatedText } from '@ghentcdh/vue-component-annotated-text';
 import '@ghentcdh/vue-component-annotated-text/style.css';
-import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { filterAnnotationsForText } from './utils/filter';
 import { textToLines } from './utils/lines';
 import type { AnnotationEmits } from '../model/emits';
 import type { AnnotationActions, AnnotationConfig } from '../model/properties';
+import { UseSnapper, useWordSnapper } from '../snapper';
+import { fixOffset } from './utils/fix-offset';
 
 const properties = withDefaults(
   defineProps<{
@@ -34,10 +39,12 @@ const properties = withDefaults(
     actions: AnnotationActions;
     selectedAnnotations: string[];
     config: AnnotationConfig;
+    useSnapper?: UseSnapper<any>;
   }>(),
   {
     selectedAnnotations: [] as string[],
-    actions: { edit: false, create: false },
+    actions: { edit: false, create: false } as AnnotationConfig,
+    useSnapper: undefined,
   },
 );
 const lines = computed(() => textToLines(properties.source.content.text));
@@ -52,6 +59,9 @@ const annotationsForText = computed(() =>
 const clickedOnAnnotation = ref(false);
 
 const emits = defineEmits<AnnotationEmits>();
+const snapper = properties.useSnapper?.initSnapper(
+  properties.source.content.text,
+);
 
 const onSelectAnnotation = (
   annotation: MouseEventPayload,
@@ -85,8 +95,6 @@ const onAnnotationCreateBegin = (event: CreateAnnotationState) => {
 };
 
 const onAnnotationCreateEnd = (event: CreateAnnotationState) => {
-  const annotation = event.getAnnotation();
-
   emits('onEvent', 'create--end', {
     target: properties.source.uri,
     // annotationId: event.annotation.id,
@@ -95,6 +103,7 @@ const onAnnotationCreateEnd = (event: CreateAnnotationState) => {
 };
 
 const onAnnotationCreating = (event: CreateAnnotationState) => {
+  fixOffset(event, snapper, 'updateCreating');
   emits('onEvent', 'create--changing', {
     target: properties.source.uri,
     // annotationId: event.annotation.id,

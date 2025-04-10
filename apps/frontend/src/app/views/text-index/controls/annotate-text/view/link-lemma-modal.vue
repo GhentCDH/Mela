@@ -17,6 +17,7 @@
             :sources="sources"
             :annotations="annotations"
             :annotation-actions="annotationActions"
+            :use-snapper="useWordSnapper"
             :cols="1"
             @on-event="eventHandler"
           />
@@ -30,28 +31,14 @@
           :placeholder="'Select lemma'"
           label-key="word"
         />
-        <Btn
-          :icon="IconEnum.Plus"
-          @click="createLemma"
-        >
-          Create new Lemma
-        </Btn>
+        <Btn :icon="IconEnum.Plus" @click="createLemma"> Create new Lemma </Btn>
       </div>
     </template>
     <template #actions>
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
         Cancel
       </Btn>
-      <Btn
-        :disabled="disabled"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
     </template>
   </Modal>
 </template>
@@ -60,8 +47,8 @@
 import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
-  LemmaFormSchema,
   getAnnotationUri,
+  LemmaFormSchema,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, ref } from 'vue';
@@ -75,14 +62,15 @@ import {
   type AnnotationEventHandlerPayloadData,
   type AnnotationEventType,
   GhentCdhAnnotations,
+  useWordSnapper,
 } from '@ghentcdh/annotations/vue';
 import {
   type FormModalResult,
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  type AutoCompleteConfig,
   Autocomplete,
+  type AutoCompleteConfig,
   Btn,
   Color,
   ControlWrapper,
