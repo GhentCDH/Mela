@@ -10,7 +10,6 @@
         :icon="IconEnum.ChevronDown"
         :size="Size.sm"
       />
-      w
     </div>
     <ul
       tabindex="0"

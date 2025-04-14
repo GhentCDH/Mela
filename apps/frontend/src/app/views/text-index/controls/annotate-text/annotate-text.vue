@@ -13,6 +13,7 @@
         :annotations="store.annotations"
         :annotation-actions="annotationActions"
         :selected-annotations="selectedAnnotations"
+        :use-snapper="useWordSnapper"
         :cols="store.sources.length"
         @on-event="eventHandler"
       />
@@ -43,9 +44,11 @@ import { findTagging } from '@ghentcdh/annotations/core';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType,
+  AnnotationEventType} from '@ghentcdh/annotations/vue';
+import {
+  GhentCdhAnnotations,
+  useWordSnapper,
 } from '@ghentcdh/annotations/vue';
-import { GhentCdhAnnotations } from '@ghentcdh/annotations/vue';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { IdentifyColorMap } from '../identify.color';

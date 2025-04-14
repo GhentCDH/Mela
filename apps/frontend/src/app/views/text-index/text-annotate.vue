@@ -11,6 +11,7 @@
   >
     <annotate-text
       :store-id="storeId"
+      :snapper="useWordSnapper"
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
       @delete-annotation="deleteAnnotation"
@@ -48,6 +49,7 @@
 import { computed, effect, onMounted } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import { useWordSnapper } from '@ghentcdh/annotations/vue';
 import { Btn, Color, Menu } from '@ghentcdh/ui';
 
 import AnnotateText from './controls/annotate-text/annotate-text.vue';

@@ -1,11 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('./app/views/text-index/text-index.vue'),
-  },
+  { path: '/', name: 'home', component: () => import('./app/Home.vue') },
   {
     path: '/form/:formId',
     name: 'form',
