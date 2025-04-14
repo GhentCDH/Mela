@@ -1,0 +1,14 @@
+pull_request:
+  reviewer:
+    enabled: true
+    paths:
+      - "apps/**"                # Include all apps
+      - "libs/**"                # Include shared libraries
+      - "!apps/**/e2e/**"        # Ignore end-to-end test folders
+      - "!**/*.spec.ts"          # Ignore unit tests
+      - "!**/*.test.ts"          # Ignore test files
+      - "!**/__tests__/**"       # Ignore __tests__ folders
+    languages:
+      - typescript
+      - javascript
+      - vue
