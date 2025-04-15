@@ -43,7 +43,10 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: [],
+      external: [
+        '@ghentcdh/vue-component-annotated-text',
+        '@ghentcdh/vue-component-annotated-text/style.css',
+      ],
     },
   },
 });

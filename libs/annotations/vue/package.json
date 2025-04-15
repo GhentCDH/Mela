@@ -4,7 +4,7 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "dependencies": {
-    "@ghentcdh/vue-component-annotated-text": "^0.4.7",
+    "@ghentcdh/vue-component-annotated-text": "^0.4.12",
     "vue": "^3.2.20"
   },
   "exports": {

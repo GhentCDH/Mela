@@ -35,8 +35,8 @@ const properties = withDefaults(
   defineProps<{
     source: SourceModel;
     annotations: W3CAnnotation[];
-    actions: AnnotationActions;
-    selectedAnnotations: string[];
+    actions?: AnnotationActions;
+    selectedAnnotations?: string[];
     config: AnnotationConfig;
     useSnapper?: UseSnapper<any>;
   }>(),
