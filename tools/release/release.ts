@@ -84,8 +84,6 @@ const dynamicReleaseTypes = (): ReleaseType[] => {
     .parseSync();
   console.log(`🚀 Released version ${options.version}`);
 
-  return;
-
   try {
     const releaseType: ReleaseType = options.version;
     if (!releaseType) {
