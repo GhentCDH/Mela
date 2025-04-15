@@ -1,11 +1,15 @@
-import { simpleGit } from 'simple-git';
-import { readJson, writeJson } from 'fs-extra';
-import * as semver from 'semver';
-import { ReleaseType } from 'semver';
-import * as path from 'path';
-import * as yargs from 'yargs';
-import * as fs from 'fs';
+/* eslint-disable no-console */
+
 import conventionalChangelog from 'conventional-changelog';
+import { readJson, writeJson } from 'fs-extra';
+import type { ReleaseType } from 'semver';
+import * as semver from 'semver';
+import { simpleGit } from 'simple-git';
+import * as yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
+import * as fs from 'fs';
+import * as path from 'path';
 
 const git = simpleGit();
 
@@ -40,7 +44,7 @@ async function bumpVersion(type: semver.ReleaseType) {
 }
 
 async function gitCommitAndTag(version: string) {
-  git
+  return git
     .add('package.json')
     .add('RELEASE_NOTES.md')
     .commit(`chore(release): v${version}`)
@@ -67,7 +71,7 @@ const dynamicReleaseTypes = (): ReleaseType[] => {
 };
 
 (async () => {
-  const options = await yargs
+  const options = yargs(hideBin(process.argv))
     .version(false)
     .option('version', {
       alias: 'v',
@@ -76,7 +80,9 @@ const dynamicReleaseTypes = (): ReleaseType[] => {
       choices: dynamicReleaseTypes(), // 👈 dynamic options
       demandOption: true,
     })
-    .parseAsync();
+    .help()
+    .parseSync();
+  console.log(`🚀 Released version ${options.version}`);
 
   try {
     const releaseType: ReleaseType = options.version;

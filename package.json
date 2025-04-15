@@ -164,7 +164,11 @@
     "yargs": "^17.7.2",
     "zod-prisma-types": "^3.2.4"
   },
-  "packageManager": "pnpm@10.1.0+sha256.3ee53e914011ec7f1a6e3ab0c58b9a024a052bfe18295b23b68567d6a6a5ebcd",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.8.1",
   "nx": {
     "includedScripts": []
   }
