@@ -27,8 +27,8 @@ importers:
         specifier: 0.0.2-10
         version: 0.0.2-10(@babel/traverse@7.27.0)(@nestjs/core@11.0.17)(@prisma/client@6.6.0(prisma@6.6.0(typescript@5.8.3))(typescript@5.8.3))(@swc-node/register@1.10.10(@swc/core@1.11.21(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.11.21(@swc/helpers@0.5.17))(@types/node@22.14.1)(axios@1.8.4)(less@4.1.3)(lightningcss@1.29.2)(nx@20.7.2(@swc-node/register@1.10.10(@swc/core@1.11.21(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.11.21(@swc/helpers@0.5.17)))(reflect-metadata@0.2.2)(rxjs@7.8.2)(sass-embedded@1.86.3)(sass@1.86.3)(stylus@0.64.0)(terser@5.39.0)(typescript@5.8.3)(verdaccio@6.1.2(typanion@3.14.0))(vitest@3.1.1)
       '@ghentcdh/vue-component-annotated-text':
-        specifier: ^0.4.8
-        version: 0.4.8(vue@3.5.13(typescript@5.8.3))
+        specifier: ^0.4.12
+        version: 0.4.12(vue@3.5.13(typescript@5.8.3))
       '@jsonforms/vue':
         specifier: ^3.5.1
         version: 3.5.1(@jsonforms/core@3.5.1)(vue@3.5.13(typescript@5.8.3))
@@ -1841,9 +1841,9 @@ packages:
   '@ghentcdh/tools-api@0.0.2-10':
     resolution: {integrity: sha512-4s4dOvbPCKriRMyoE1mXjwTvayYCM/NmIrIK4F4yRw1JvYpbydNi8w6G65EeBRkqzIIUwYJKWDDyHg1J2vDdNA==}
 
-  '@ghentcdh/vue-component-annotated-text@0.4.8':
-    resolution: {integrity: sha512-CeliSLfP1IYra18U9vOHzuGxqusMJ2A9W7PCw6tmY9LrKeVACvSBLzqszeERn6k2MAbB03iruJdNNcz7ko9Rxg==}
-    engines: {node: '>=20', pnpm: '>=9'}
+  '@ghentcdh/vue-component-annotated-text@0.4.12':
+    resolution: {integrity: sha512-cptxNV+4CXPjCFBee3rPGKe+0xBa0jwFZ+ZBBSHYUel52fzL61XPTQ0lO+brqCf9UX+ADBB5uDi7EWGL426LCg==}
+    engines: {node: '>=22', pnpm: '>=10'}
     peerDependencies:
       vue: ^3.0.0
 
@@ -12168,7 +12168,7 @@ snapshots:
       - verdaccio
       - vitest
 
-  '@ghentcdh/vue-component-annotated-text@0.4.8(vue@3.5.13(typescript@5.8.3))':
+  '@ghentcdh/vue-component-annotated-text@0.4.12(vue@3.5.13(typescript@5.8.3))':
     dependencies:
       lodash-es: 4.17.21
       memoizee: 0.4.17
