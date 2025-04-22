@@ -95,7 +95,7 @@ import {
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import type { LinkLemmaModalProps } from './link-lemma-modal.props';
-import { useLemmaRepository } from '../../../../../repository/lemma.repository';
+import { useLemmaRepository } from '../../../../../../repository/lemma.repository';
 import { findTextValue } from '../utils/translation';
 
 const properties = defineProps<LinkLemmaModalProps>();

@@ -2,14 +2,23 @@ insert into author (id, name)
 values ('49d13faa-14b4-4b0f-a992-e4fdaaa720aa', 'Cuomo'),
        ('4094479e-d076-40f6-ab22-5e5659a4bf90', 'Stephanus');
 
+
 insert into public.register (id, name)
 values ('1f262c5d-11b9-4a08-87b4-fa7680760ed9', 'test'),
        ('d6bc6297-c341-48ff-9e0c-d4d18c11e2c3', 'Koine'),
        ('f1a156a5-7a6b-4358-84a5-ff57fa4fbafc', 'Attic');
 
-insert into public.text (id, name, author_id, year)
-values ('a3d6d523-39f0-48ec-841b-68162bf370f7', 'Dictionary', '49d13faa-14b4-4b0f-a992-e4fdaaa720aa', 2025),
-       ('113f772f-c69b-4022-9832-46f6580a768b', 'Normal book', '4094479e-d076-40f6-ab22-5e5659a4bf90', 1586);
+insert into public.book (id, name, author_id, year)
+values ('db97847d-b826-4614-a975-29f472f3366a', 'Dictionary', '49d13faa-14b4-4b0f-a992-e4fdaaa720aa', 2025),
+       ('1d26dc6e-d98e-415a-8f7e-823a289c8b25', 'Normal book', '4094479e-d076-40f6-ab22-5e5659a4bf90', 1586);
+
+insert into public.chapter (id, name, book_id, chapter_number)
+values ('9f49057d-c27e-426e-bbab-1786c65139ad', 'Dictionary', 'db97847d-b826-4614-a975-29f472f3366a', '1'),
+       ('f27a3f43-9d73-4fca-a256-f60f9d347790', 'Chapter 1', '1d26dc6e-d98e-415a-8f7e-823a289c8b25', 'CH1');
+
+insert into public.text (id, chapter_id)
+values ('a3d6d523-39f0-48ec-841b-68162bf370f7', '9f49057d-c27e-426e-bbab-1786c65139ad'),
+       ('113f772f-c69b-4022-9832-46f6580a768b', 'f27a3f43-9d73-4fca-a256-f60f9d347790');
 
 insert into text_content (id, text_id, text_type, language, content)
 values ('e9d6f265-4fbd-4c0e-aa09-c603ebbac9e9', 'a3d6d523-39f0-48ec-841b-68162bf370f7', 'SOURCE', 'gr', 'Tit. Παρατηρήματα ἀναγκαῖα τῶν Ἀττικῶν συνηθείας ἐκλεγέντα, παρὰ τοῦ λογιωτάτου μοναχοῦ κυροῦ Μαξίμου τοῦ Πλανούδη:-

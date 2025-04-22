@@ -82,6 +82,10 @@ export const createRepository = <T extends { id?: string }>(
       });
   };
 
+  const get = (id: string, options?: RequestOptions) => {
+    return httpRequest.get(getDataUri(id), options);
+  };
+
   const _delete = (id: string, options?: RequestOptions) => {
     return httpRequest
       .delete(getDataUri(id), options)
@@ -99,5 +103,5 @@ export const createRepository = <T extends { id?: string }>(
       });
   };
 
-  return { create, patch, createMulti, delete: _delete };
+  return { create, patch, createMulti, delete: _delete, get };
 };

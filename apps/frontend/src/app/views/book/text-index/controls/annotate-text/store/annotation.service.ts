@@ -1,8 +1,8 @@
 import type { AnnotationMetadataType, AnnotationType } from '@mela/text/shared';
 import { ref } from 'vue';
 
-import { useAnnotationRepository } from '../../../../../repository/annotation.repository';
-import { useTextRepository } from '../../../../../repository/text.repository';
+import { useAnnotationRepository } from '../../../../../../repository/annotation.repository';
+import { useTextRepository } from '../../../../../../repository/text.repository';
 
 export type Filter = {
   annotationType?: AnnotationMetadataType[];

@@ -15,6 +15,7 @@ import { FormModal } from './index';
 
 import { useFormStore } from './form.store';
 import type { FormModalProps, FormModalResult } from './modal/form-modal.props';
+import type { FormEventListener } from './state/form.state';
 import { TableComponent } from './table';
 
 type Data = {
@@ -31,6 +32,7 @@ const properties = withDefaults(
     tableActions?: TableAction[];
     formSchema: FormSchemaModel;
     initialData?: Data;
+    eventListener?: FormEventListener;
   }>(),
   { initialData: {} as Data },
 );
@@ -79,6 +81,7 @@ const openModal = (formData?: any) => {
     props: {
       formSchema: properties.formSchema.form,
       data: formData ?? properties.initialData,
+      eventListener: properties.eventListener,
       modalTitle: formData?.id
         ? (properties.updateTitle ?? '')
         : properties.createTitle,

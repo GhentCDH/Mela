@@ -6,8 +6,8 @@ import { provide, ref, watch } from 'vue';
 import { myStyles } from '@ghentcdh/ui';
 
 import { tailwindRenderers } from './renderes';
-import type { StepperEventListener } from './renderes/layouts/stepper.store';
-import { useStepperStore } from './renderes/layouts/stepper.store';
+import type { FormEventListener } from './state/form.state';
+import { useFormState } from './state/form.state';
 
 type Data = {
   [key: string]: any;
@@ -24,19 +24,18 @@ const properties = withDefaults(
     schema: any;
     uischema: any;
     renderers?: JsonFormsRendererRegistryEntry[];
-    events?: {
-      stepper?: StepperEventListener;
-    };
+    eventListener?: FormEventListener;
     disabled?: boolean;
   }>(),
   {
-    renderers: [] as JsonFormsRendererRegistryEntry[],
-    events: {} as any,
     disabled: false,
+    renderers: [] as JsonFormsRendererRegistryEntry[],
   },
 );
 
-const formData = defineModel<any>({});
+const _JSON_FORM_ID = `json-form-${Date.now()}`;
+const formState = useFormState(_JSON_FORM_ID);
+const formData = defineModel<any>();
 const emits = defineEmits(['valid', 'change', 'submit']);
 const valid = ref(false);
 
@@ -49,6 +48,7 @@ const onChange = (event: Data) => {
 
 const onSubmit = (event: SubmitEvent) => {
   event.preventDefault();
+
   emits('submit', {
     data: formData.value,
     valid: valid.value,
@@ -56,11 +56,10 @@ const onSubmit = (event: SubmitEvent) => {
 };
 
 watch(
-  () => properties.events,
-  (events) => {
-    if (events?.stepper) {
-      useStepperStore().registerListener(events.stepper);
-    }
+  () => properties.eventListener,
+  () => {
+    if (properties.eventListener)
+      formState.registerEventListener(_JSON_FORM_ID, properties.eventListener);
   },
   { immediate: true },
 );

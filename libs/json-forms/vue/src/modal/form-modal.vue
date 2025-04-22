@@ -13,6 +13,7 @@
         v-model="formData"
         :schema="formSchema.schema"
         :uischema="formSchema.uiSchema"
+        :event-listener="eventListener"
         @valid="onValid($event)"
         @change="onChange"
       />
@@ -20,7 +21,6 @@
     </template>
     <template #actions>
       <Btn
-        :as="button"
         :color="Color.secondary"
         :outline="true"
         @click="onCancel"

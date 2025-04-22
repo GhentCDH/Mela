@@ -1,10 +1,4 @@
 <template>
-  <Menu
-    title="Elements"
-    :menu="menuElements"
-    :breadcrumbs="breadcrumbs"
-  />
-
   <div
     v-if="textStore.text"
     class="mt-2"
@@ -50,13 +44,14 @@ import { computed, effect, onMounted } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useWordSnapper } from '@ghentcdh/annotations/vue';
-import { Btn, Color, Menu } from '@ghentcdh/ui';
+import { Btn, Color } from '@ghentcdh/ui';
 
 import AnnotateText from './controls/annotate-text/annotate-text.vue';
 import type { MODES } from './controls/annotate-text/props';
 import { useAnnotationStore } from './controls/annotate-text/store/annotation.store';
 import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useTextStore } from './text.store';
+import { useBookMenuStore } from '../book-menu.store';
 
 const textStore = useTextStore();
 // Create a new store each time we have a new text
@@ -64,13 +59,15 @@ const storeId = `identify_and_translate_${Date.now()}`;
 
 const annotationStore = useAnnotationStore(storeId);
 const modeStore = useModeStore();
+const bookMenuStore = useBookMenuStore();
 
-const menuElements = computed(() => {
-  return [
+effect(() => {
+  const sources = textStore.sources;
+  const elementsMenu = [
     {
       label: 'Elements',
       items: [
-        textStore.sources.map((s) => ({
+        sources.map((s) => ({
           label: `Generate blocks ${s.text_type}`,
           action: () => generateBlocks(s.id),
         })),
@@ -85,6 +82,26 @@ const menuElements = computed(() => {
       ].flat(),
     },
   ];
+
+  bookMenuStore.setExtraMenu(elementsMenu);
+});
+
+effect(() => {
+  const activeMode = modeStore.activeMode;
+
+  bookMenuStore.setBreadcrumbs(
+    [
+      {
+        label: 'Annotate',
+      },
+    ]
+      .filter((m) => !!m)
+      .concat(),
+  );
+});
+
+const menuElements = computed(() => {
+  return [];
 });
 
 const breadcrumbs = computed(() => {

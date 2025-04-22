@@ -5,13 +5,18 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   protected constructor(private readonly prismaModel: any) {}
 
   async list(request: RequestDto): Promise<Entity[]> {
-    return this.prismaModel.findMany({
+    const query = {
       where: this.buildWhere(request.filter),
-      include: this.includeList(),
       take: request.pageSize,
       skip: request.offset,
       orderBy: this.buildSort(request),
-    });
+    };
+    if (this.selectList()) {
+      query['select'] = this.selectList();
+    } else if (this.includeList()) {
+      query['include'] = this.includeList();
+    }
+    return this.prismaModel.findMany(query);
   }
 
   async count(filter: string[]): Promise<number> {
@@ -31,8 +36,17 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * Used in list function
    * @protected
    */
-  protected includeList(): Record<string, true> {
-    return {};
+  protected includeList(): Record<string, any> {
+    return null;
+  }
+
+  /**
+   * Fields to be included in creation
+   * Used in list function
+   * @protected
+   */
+  protected selectList(): Record<string, any> {
+    return null;
   }
 
   /**
@@ -41,7 +55,16 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * @protected
    */
   protected includeLDetail(): Record<string, true> {
-    return {};
+    return null;
+  }
+
+  /**
+   * Fields to be included in creation
+   * Used in list function
+   * @protected
+   */
+  protected selectDetail(): Record<string, true> {
+    return null;
   }
 
   /**
@@ -89,10 +112,13 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   }
 
   async findOne(id: string): Promise<Entity> {
-    return this.prismaModel.findUnique({
-      where: { id },
-      include: this.includeLDetail(),
-    });
+    const query = { where: { id } };
+    if (this.selectDetail()) {
+      query['select'] = this.selectDetail();
+    } else if (this.includeLDetail()) {
+      query['include'] = this.includeLDetail();
+    }
+    return this.prismaModel.findUnique(query);
   }
 
   async create(dto: CreateDto): Promise<Entity> {

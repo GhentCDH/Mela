@@ -5,23 +5,15 @@ import {
   ControlBuilder,
   LayoutBuilder,
   Size,
-  TableBuilder,
-  TextCellBuilder,
   createSchema,
 } from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
 import { TextForm } from '@ghentcdh/mela/generated/forms';
 import type {
-  Text,
   TextContent,
   TextWithRelations,
 } from '@ghentcdh/mela/generated/types';
-import {
-  AuthorSchema,
-  TextContentSchema,
-  TextSchema,
-} from '@ghentcdh/mela/generated/types';
+import { TextContentSchema, TextSchema } from '@ghentcdh/mela/generated/types';
 
-import { AuthorFormSchema } from '../author/author.schema';
 import { getTextContentUri } from '../utils/uri';
 
 // TODO add autocomplete for textschema
@@ -37,52 +29,8 @@ const textContentStep =
       .labelKey('text_type'),
   );
 
-const detailStep = LayoutBuilder.vertical<TextWithRelations>().addControls(
-  LayoutBuilder.horizontal<TextWithRelations>().addControls(
-    ControlBuilder.properties('name'),
-    ControlBuilder.asObject('author').autocomplete({
-      uri: `${AuthorFormSchema.schema.uri}?filter=name:`,
-      field: {
-        id: 'id',
-        label: 'name',
-      },
-    }),
-    ControlBuilder.properties('year').width('sm'),
-  ),
-);
-
 const uiSchema = LayoutBuilder.vertical()
-  .addControls(
-    CategoryBuilder.label('Metadata').addControls(detailStep),
-    CategoryBuilder.label('Text').addControls(textContentStep),
-  )
-  .build();
-
-const tableSchema = TableBuilder.init<Text>()
-  .addControls(
-    TextCellBuilder.properties('id'),
-    TextCellBuilder.properties('name'),
-    TextCellBuilder.properties('year'),
-    TextCellBuilder.properties('author').key('name').setSortId('author.name'),
-  )
-  .build();
-
-const filterSchema = LayoutBuilder.vertical()
-  .addControls(
-    LayoutBuilder.horizontal<Text>().addControls(
-      ControlBuilder.properties('name'),
-      // TODO autocomplete
-      // ControlBuilder.object('#/properties/author').autocomplete({
-      //   uri: '/api/author?name=',
-      //   uriDetail: '/api/author/',
-      //   field: {
-      //     id: 'id',
-      //     label: 'name',
-      //   },
-      // }),
-      ControlBuilder.properties('year'),
-    ),
-  )
+  .addControls(CategoryBuilder.label('Text').addControls(textContentStep))
   .build();
 
 export const TextContentDtoSchema = TextContentSchema.pick({
@@ -101,20 +49,18 @@ export const TextContentResponseSchema = TextContentDtoSchema.transform(
 );
 export type TextContentDto = z.infer<typeof TextContentResponseSchema>;
 
-const dtoSchema = TextSchema.pick({
-  name: true,
-  year: true,
-}).extend({
-  author: AuthorSchema.omit({ createdAt: true, updatedAt: true }).extend({
-    id: z.string().optional(),
-  }),
+const dtoSchema = TextSchema.pick({ chapter_id: true }).extend({
   textContent: z.array(TextContentDtoSchema),
 });
 
-const responseSchema = TextSchema.omit({ textContent: true }).extend({
-  author: AuthorSchema,
+const responseSchema = TextSchema.omit({
+  textContent: true,
+  chapter_id: true,
+}).extend({
   textContent: z.array(TextContentResponseSchema),
 });
+
+export type TextCreate = z.infer<typeof dtoSchema>;
 
 export const TextFormSchema = createSchema({
   uiSchema,
@@ -122,12 +68,5 @@ export const TextFormSchema = createSchema({
   responseSchema,
   jsonSchema: TextForm,
   uri: '/api/text',
-  filterSchema,
-  tableSchema,
   modalSize: Size.xl,
 });
-
-export const textParseFileTypes = [
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.ms-excel',
-];

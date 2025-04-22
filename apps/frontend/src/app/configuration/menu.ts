@@ -4,7 +4,10 @@ import { FormKey } from '../views/form/form.def';
 
 export const menu = (): ShellMenu => {
   return [
-    { label: 'Text Index', routerLink: 'text-index' },
+    {
+      label: 'Books',
+      routerLink: 'book-index',
+    },
     {
       label: 'Authors',
       routerLink: 'form',

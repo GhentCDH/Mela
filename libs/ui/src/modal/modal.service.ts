@@ -67,4 +67,13 @@ export class ModalService {
 
     return this.instance;
   }
+
+  static closeAll() {
+    this.instance.closeAll();
+  }
+
+  private closeAll() {
+    this.modals = [];
+    this.showModal.value = false;
+  }
 }

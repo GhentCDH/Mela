@@ -1,4 +1,4 @@
-export { default as FixedArrayRenderer } from './FixedArrayRenderer.vue';
+import { entry as ArrayRenderer } from './ArrayRenderer.vue';
 import { entry as FixedArrayRenderer } from './FixedArrayRenderer.vue';
 
-export const arrayRenderers = [FixedArrayRenderer];
+export const arrayRenderers = [FixedArrayRenderer, ArrayRenderer];

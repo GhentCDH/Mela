@@ -9,6 +9,7 @@ export const ControlType = {
   textArea: 'textArea',
   markdown: 'markdown',
   fixedArray: 'fixedArray',
+  array: 'array',
   custom: 'custom',
 } as const;
 
@@ -30,6 +31,12 @@ export interface AutocompleteOptions extends ControlOption {
   };
 }
 
+export type ArrayActionType = 'edit';
+export type ArrayAction = {
+  type: ArrayActionType;
+  idField: string;
+};
+
 export interface ControlOption {
   format?: string;
   readonly?: boolean;
@@ -38,6 +45,7 @@ export interface ControlOption {
   elements?: any;
   elementLabelProp?: string;
   labelKey?: string;
+  actions?: ArrayAction[];
 }
 
 export type ControlTypes = {
@@ -99,7 +107,18 @@ export class ControlBuilder<
     this._detail = layoutBuilder;
     this.options = {
       ...(this.options ?? {}),
+      format: ControlType.array,
       elementLabelProp: label,
+    };
+    return this;
+  }
+
+  addAction(action: ArrayAction) {
+    const actions = this.options?.actions ?? [];
+    actions.push(action);
+    this.options = {
+      ...(this.options ?? {}),
+      actions,
     };
     return this;
   }
