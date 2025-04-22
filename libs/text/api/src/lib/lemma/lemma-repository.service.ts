@@ -44,13 +44,7 @@ export class LemmaRepository extends AbstractRepository<
   private async createOrConnectSpeech(dto: CreateLemmaDto) {
     const { name, id } = dto.speech;
 
-    const findSpeech = id
-      ? await this.speechRepository.findOne(id)
-      : await this.speechRepository.findOrCreate(name.trim());
-
-    return {
-      connect: { id: findSpeech.id },
-    };
+    return this.speechRepository.createOrConnect(id, name);
   }
 
   public createMany(lemmas: LemmaCreateManyInput[]) {

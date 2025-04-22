@@ -31,6 +31,10 @@ export const isFixedArray = and(
   schemaTypeIs('array'),
   optionIs('format', ControlType.fixedArray),
 );
+export const isArrayRenderer = and(
+  schemaTypeIs('array'),
+  optionIs('format', ControlType.array),
+);
 
 export const isCustomControl = (customType: string) => {
   return and(

@@ -4,10 +4,10 @@ import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import { Author } from '@ghentcdh/mela/generated/types';
 
 import { CreateAuthorDto } from './dto';
-import { AbstractRepository } from '../shared/repository.service';
+import { AbstractNameRepository } from '../shared/name.repository.service';
 
 @Injectable()
-export class AuthorRepository extends AbstractRepository<
+export class AuthorRepository extends AbstractNameRepository<
   Author,
   CreateAuthorDto
 > {

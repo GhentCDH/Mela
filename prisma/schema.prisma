@@ -22,24 +22,49 @@ datasource db {
 model Author {
   id   String @id @default(uuid())
   name String @unique
-  Text Text[]
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt @default(now())
 
+  book Book[]
   @@map("author")
+}
+
+model Book{
+  id          String        @id @default(uuid())
+  name        String
+  author_id   String
+  author      Author        @relation(fields: [author_id], references: [id])
+  year        Int
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt @default(now())
+
+  chapter Chapter[]
+  @@map("book")
+}
+
+model Chapter {
+  id          String        @id @default(uuid())
+  chapter_number        String?
+  order Int?
+  name        String
+  book_id     String
+  book        Book          @relation(fields: [book_id], references: [id])
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt @default(now())
+
+  text Text[]
+  @@map("chapter")
 }
 
 model Text {
   id          String        @id @default(uuid())
-  name        String
-  author_id   String
-  year        Int
   annotations Annotation[]
-  author      Author        @relation(fields: [author_id], references: [id])
   textContent TextContent[]
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt @default(now())
 
+  chapter_id String
+  chapter Chapter @relation(fields: [chapter_id], references: [id])
   @@map("text")
 }
 

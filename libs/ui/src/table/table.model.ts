@@ -1,7 +1,10 @@
 import type { ColumnDef } from '@ghentcdh/json-forms/core';
 
+import type { IconEnum } from '../icons';
+
 export type TableAction = {
-  label: string;
+  label?: string;
+  icon?: IconEnum;
   action: <T>(data: T) => void;
 };
 

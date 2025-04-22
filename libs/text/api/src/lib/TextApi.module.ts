@@ -10,6 +10,10 @@ import { AnnotationTypeRepository } from './annotation/type/annotation-repositor
 import { AnnotationTypeController } from './annotation/type/annotation-type.controller';
 import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
+import { BookRepository } from './book/book-repository.service';
+import { BookController } from './book/book.controller';
+import { ChapterController } from './chapter/chapter.controller';
+import { ChapterRepository } from './chapter/chapter.repository.service';
 import { ExampleRepository } from './example/example-repository.service';
 import { ExampleController } from './example/example.controller';
 import { LemmaRepository } from './lemma/lemma-repository.service';
@@ -32,6 +36,8 @@ import { TextController } from './text/text.controller';
     ExampleController,
     LemmaController,
     SpeechController,
+    BookController,
+    ChapterController,
   ],
   providers: [
     AnnotationTypeRepository,
@@ -42,6 +48,8 @@ import { TextController } from './text/text.controller';
     ExampleRepository,
     LemmaRepository,
     SpeechRepository,
+    BookRepository,
+    ChapterRepository,
   ],
   exports: [AuthorRepository, TextRepositoryService],
 })

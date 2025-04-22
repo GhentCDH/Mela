@@ -66,9 +66,6 @@ const components = {
             @sort="onSort"
           />
         </th>
-        <th v-if="actions">
-          actions
-        </th>
         <th />
       </tr>
     </thead>
@@ -96,19 +93,17 @@ const components = {
             :column="column"
           />
         </td>
-        <td v-if="actions">
-          <button
-            v-for="action of actions"
-            :key="action.label"
-            class="btn btn-outline btn-sm p-1"
-            type="button"
-            @click="action.action(item)"
-          >
-            {{ action.label }}
-          </button>
-        </td>
         <td>
           <span class="flex gap-2">
+            <Btn
+              v-for="action of actions"
+              :key="action.label"
+              :icon="action.icon"
+              :outline="true"
+              @click="action.action(item)"
+            >
+              {{ action.label }}
+            </Btn>
             <Btn
               :icon="IconEnum.Edit"
               :outline="true"
