@@ -17,8 +17,8 @@ values ('9f49057d-c27e-426e-bbab-1786c65139ad', 'Dictionary', 'db97847d-b826-461
        ('f27a3f43-9d73-4fca-a256-f60f9d347790', 'Chapter 1', '1d26dc6e-d98e-415a-8f7e-823a289c8b25', 'CH1');
 
 insert into public.text (id, chapter_id)
-values ('a3d6d523-39f0-48ec-841b-68162bf370f7', 'Dictionary', '9f49057d-c27e-426e-bbab-1786c65139ad', 2025),
-       ('113f772f-c69b-4022-9832-46f6580a768b', 'Normal book', 'f27a3f43-9d73-4fca-a256-f60f9d347790', 1586);
+values ('a3d6d523-39f0-48ec-841b-68162bf370f7', '9f49057d-c27e-426e-bbab-1786c65139ad'),
+       ('113f772f-c69b-4022-9832-46f6580a768b', 'f27a3f43-9d73-4fca-a256-f60f9d347790');
 
 insert into text_content (id, text_id, text_type, language, content)
 values ('e9d6f265-4fbd-4c0e-aa09-c603ebbac9e9', 'a3d6d523-39f0-48ec-841b-68162bf370f7', 'SOURCE', 'gr', 'Tit. Παρατηρήματα ἀναγκαῖα τῶν Ἀττικῶν συνηθείας ἐκλεγέντα, παρὰ τοῦ λογιωτάτου μοναχοῦ κυροῦ Μαξίμου τοῦ Πλανούδη:-

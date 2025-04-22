@@ -33,7 +33,7 @@ CREATE TABLE "book" (
 CREATE TABLE "chapter" (
     "id" TEXT NOT NULL,
     "chapter_number" TEXT,
-    "order" INTEGER NOT NULL,
+    "order" INTEGER,
     "name" TEXT NOT NULL,
     "book_id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

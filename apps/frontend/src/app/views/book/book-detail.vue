@@ -1,7 +1,9 @@
 <template>
   <div class="m-auto max-w-lg p-2">
     <ul class="list bg-base-100 rounded-box shadow-md">
-      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Chapters</li>
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">
+        Chapters
+      </li>
       <li
         v-for="chapter in bookStore.book?.chapter"
         :key="chapter.id"
