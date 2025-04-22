@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
+import { FormWithTableComponent } from '@ghentcdh/json-forms/vue';
 
 import type { FormKey } from './form.def';
 import { FormDictionary } from './form.def';
@@ -16,7 +16,7 @@ const formConfig = computed(() => {
 
 <template>
   <div class="max-w-screen-lg m-auto">
-    <FormWithTableCompnent
+    <FormWithTableComponent
       v-if="formConfig"
       id="custom-form"
       :create-title="'Create ' + formConfig.title"

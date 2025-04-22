@@ -3,7 +3,7 @@ import { BookFormSchema } from '@mela/text/shared';
 import { useRouter } from 'vue-router';
 
 import type { FormEventListener } from '@ghentcdh/json-forms/vue';
-import { FormWithTableCompnent } from '@ghentcdh/json-forms/vue';
+import { FormWithTableComponent } from '@ghentcdh/json-forms/vue';
 import type { Book, Chapter } from '@ghentcdh/mela/generated/types';
 import { IconEnum } from '@ghentcdh/ui';
 
@@ -42,7 +42,7 @@ const tableActions = [
 
 <template>
   <div class="max-w-screen-lg m-auto">
-    <FormWithTableCompnent
+    <FormWithTableComponent
       :id="`form_table_${formId}`"
       :create-title="'Create book'"
       :update-title="'Update book'"
