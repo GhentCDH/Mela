@@ -5,21 +5,27 @@
       :annotations="annotationsForText"
       :selected-annotations="selectedAnnotations"
       :allow-create="actions?.create"
+      :allow-edit="actions?.edit"
       @annotation-create-begin="onAnnotationCreateBegin"
       @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
       @annotation-click="onSelectAnnotation($event, true)"
+      @annotation-update-begin="onAnnotationUpdateBegin"
+      @annotation-updating="onAnnotationUpdating"
+      @annotation-update-end="onAnnotationUpdateEnd"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { cloneDeep } from 'lodash-es';
 import { computed, ref } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import type {
   CreateAnnotationState,
   MouseEventPayload,
+  UpdateAnnotationState,
 } from '@ghentcdh/vue-component-annotated-text';
 import { AnnotatedText } from '@ghentcdh/vue-component-annotated-text';
 import '@ghentcdh/vue-component-annotated-text/style.css';
@@ -106,6 +112,39 @@ const onAnnotationCreating = (event: CreateAnnotationState) => {
   emits('onEvent', 'create--changing', {
     target: properties.source.uri,
     // annotationId: event.annotation.id,
+    payload: event,
+  });
+};
+
+const onAnnotationUpdateBegin = (event: UpdateAnnotationState) => {
+  // event.init({});
+  fixOffset(event, snapper, 'confirmStartUpdating');
+
+  emits('onEvent', 'update--start', {
+    target: properties.source.uri,
+    annotationId: event.annotation.id,
+    payload: event,
+  });
+};
+
+const onAnnotationUpdateEnd = (event: UpdateAnnotationState) => {
+  // TODO remove this when update of the dependency
+
+  event.getAnnotation = () => {
+    return cloneDeep(event!.annotation);
+  };
+  emits('onEvent', 'update--end', {
+    target: properties.source.uri,
+    annotationId: event.annotation.id,
+    payload: event,
+  });
+};
+
+const onAnnotationUpdating = (event: UpdateAnnotationState) => {
+  fixOffset(event, snapper, 'confirmUpdate');
+  emits('onEvent', 'update--changing', {
+    target: properties.source.uri,
+    annotationId: event.annotation.id,
     payload: event,
   });
 };

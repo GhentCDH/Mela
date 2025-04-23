@@ -22,19 +22,29 @@
     :uischema="ExampleFormSchema.schema.form.uiSchema"
     @change="changeMetadata"
   />
-  <div class="flex gap-2 justify-end pb-4">
-    <Btn
-      :color="Color.error"
-      @click="deleteAnnotation"
-    >
-      Delete
-    </Btn>
-    <Btn
-      :disabled="!valid || disabled"
-      @click="saveAnnotation"
-    >
-      Save
-    </Btn>
+  <div class="flex gap-2 justify-between pb-4">
+    <div>
+      <Btn
+        :outline="true"
+        @click="adjustSelection"
+      >
+        Adjust selection
+      </Btn>
+    </div>
+    <div class="flex gap-2 justify-end pb-4">
+      <Btn
+        :color="Color.error"
+        @click="deleteAnnotation"
+      >
+        Delete
+      </Btn>
+      <Btn
+        :disabled="!valid || disabled"
+        @click="saveAnnotation"
+      >
+        Save
+      </Btn>
+    </div>
   </div>
 </template>
 
@@ -74,6 +84,7 @@ type Properties = {
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
+  adjustSelection: [string | null];
   save: [string | null, AnnotationType];
   delete: [W3CAnnotation];
 }>();
@@ -130,6 +141,10 @@ const changeMetadata = () => {
 
 const saveAnnotation = () => {
   emits('save', properties.annotation.id, changedMetadata);
+};
+
+const adjustSelection = () => {
+  emits('adjustSelection', properties.annotation.id);
 };
 
 const exampleMetaData = computed(() =>

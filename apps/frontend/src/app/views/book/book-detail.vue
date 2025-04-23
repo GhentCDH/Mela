@@ -5,7 +5,7 @@
         Chapters
       </li>
       <li
-        v-for="chapter in bookStore.book?.chapter"
+        v-for="chapter in bookStore.chapters"
         :key="chapter.id"
         class="list-row items-center"
       >

@@ -1,3 +1,8 @@
+import {
+  createTextSelectionAnnotation,
+  SourceModel,
+} from '../../libs/annotations/core';
+
 const source1 = {
   uri: 'text:text-1',
   id: 'text-1',
@@ -10,7 +15,7 @@ const source1 = {
 
 2C Ἀντὶ τοῦ εἰπεῖν∙ ἰδικῶς ἰδιωτικῶς, ἰδίᾳ λέγουσιν∙ οἷον ἰδίᾳ ὡμίλησα τῷ δεῖνι∙ μηδενὸς ἑτέρου παρόντος:-`,
   },
-};
+} as SourceModel;
 const oneLine = {
   uri: 'text:text-online',
   id: 'text-online',
@@ -40,75 +45,49 @@ const source2 = {
 
 2C Transl. Instead of commonly saying “ἰδικῶς [in a private/ personal manner]”, they say “ἰδίᾳ [privately]”, as: “ἰδίᾳ ὡμίλησα τῷ δεῖνι∙ μηδενὸς ἑτέρου παρόντος [I spoke privately with so-and-so, as there was no one else around]”.`,
   },
-};
+} as SourceModel;
 
 const annotations = [
-  {
-    '@context': 'http://www.w3.org/ns/anno.jsonld',
-    id: 'anno-1',
-    type: 'Annotation',
-    body: [
-      {
-        type: 'TextualBody',
-        purpose: 'tagging',
-        value: 'title',
-      },
-      {
-        type: 'TextualBody',
-        purpose: 'describing',
-        value:
-          'This title indicates a collection of linguistic observations on Attic Greek expressions by Maximus Planudes.',
-      },
-    ],
-    target: [
-      {
-        source: source1.uri,
-        selector: {
-          type: 'TextPositionSelector',
-          start: 4,
-          end: 113,
-        },
-      },
-      {
-        source: source2.uri,
-        selector: {
-          type: 'TextPositionSelector',
-          start: 15,
-          end: 149,
-        },
-      },
-    ],
-  },
-  {
-    '@context': 'http://www.w3.org/ns/anno.jsonld',
-    id: 'anno-2',
-    type: 'Annotation',
-    body: [
-      {
-        type: 'TextualBody',
-        purpose: 'tagging',
-        value: 'paragraph',
-      },
-    ],
-    target: [
-      {
-        source: source1.uri,
-        selector: {
-          type: 'TextPositionSelector',
-          start: 120,
-          end: 360,
-        },
-      },
-      {
-        source: source2.uri,
-        selector: {
-          type: 'TextPositionSelector',
-          start: 160,
-          end: 632,
-        },
-      },
-    ],
-  },
+  createTextSelectionAnnotation(
+    source1,
+    {
+      start: 18,
+      end: 29,
+    },
+    'paragraph',
+  ),
+  createTextSelectionAnnotation(
+    source1,
+    {
+      start: 4,
+      end: 113,
+    },
+    'title',
+  ),
+  createTextSelectionAnnotation(
+    source2,
+    {
+      start: 15,
+      end: 149,
+    },
+    'title',
+  ),
+  createTextSelectionAnnotation(
+    source1,
+    {
+      start: 120,
+      end: 360,
+    },
+    'title',
+  ),
+  createTextSelectionAnnotation(
+    source2,
+    {
+      start: 160,
+      end: 632,
+    },
+    'title',
+  ),
 ];
 
 export const demoAnnotations = { annotations, source1, source2, oneLine };

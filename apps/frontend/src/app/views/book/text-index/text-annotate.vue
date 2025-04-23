@@ -6,6 +6,8 @@
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
+      @adjust-selection="adjustSelection"
+      @select-annotation="selectAnnotation"
       @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
       @delete-annotation="deleteAnnotation"
@@ -14,11 +16,11 @@
   </div>
   <div
     v-if="modeToast"
-    class="toast toast-center"
+    class="toast toast-center z-[3000]"
   >
     <div
       role="alert"
-      class="alert alert-success bg-white"
+      class="alert border-primary bg-white"
     >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
@@ -100,29 +102,6 @@ effect(() => {
   );
 });
 
-const menuElements = computed(() => {
-  return [];
-});
-
-const breadcrumbs = computed(() => {
-  return textStore.text
-    ? [
-        {
-          label: 'Texts',
-          routerLink: 'text-index',
-        },
-        {
-          label: `${textStore.text.name} (${textStore.text.author?.name})`,
-        },
-        modeStore.activeMode
-          ? {
-              label: modeStore.activeMode,
-            }
-          : null,
-      ].filter((m) => !!m)
-    : [];
-});
-
 const modeToasts: Record<
   MODES,
   { deny?: () => void; save?: () => void; text: string }
@@ -153,6 +132,14 @@ const modeToasts: Record<
   link_buckets: {
     deny: () => modeStore.resetMode(),
     text: 'Select an annotation to link',
+  },
+  adjust_annotation: {
+    deny: () => {
+      annotationStore.changeSelectionFilter({});
+      modeStore.changeMode('edit');
+    },
+
+    text: 'Adjust the selected annotation',
   },
 };
 
@@ -190,6 +177,20 @@ const createAnnotation = (mode: MODES = 'create-annotation') => {
 
 const saveAnnotation = (id: string | null, annotation: W3CAnnotation) => {
   annotationStore.saveOrCreateAnnotation(id, annotation);
+};
+
+const adjustSelection = (id: string | null) => {
+  modeStore.changeMode('adjust_annotation');
+  annotationStore.changeSelectionFilter({
+    annotationId: id,
+  });
+};
+
+const selectAnnotation = (
+  annotationId: string | null,
+  textContentUri: string,
+) => {
+  annotationStore.selectAnnotation({ annotationId, textContentUri });
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {

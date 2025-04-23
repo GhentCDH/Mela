@@ -30,6 +30,7 @@ export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
     const filter = ref<AnnotationFilter>({
       annotationType: [],
+      annotationId: undefined,
     });
 
     // This filter is used for selection depending on an action made in the frontend. f.e. adding an example can only be an example annotation

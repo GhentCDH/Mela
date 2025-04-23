@@ -1,6 +1,14 @@
 import { createAnnotationColors } from '@ghentcdh/annotations/vue';
 
-const Colors = {
+export type AnnotationType =
+  | 'title'
+  | 'subtitle'
+  | 'paragraph'
+  | 'phrase'
+  | 'example'
+  | 'lemma';
+
+const Colors: Record<AnnotationType, string> = {
   title: '#dd7777', // pastel red
   subtitle: '#FFB74D', // pastel orange
   paragraph: '#4d88ff', // pastel blue

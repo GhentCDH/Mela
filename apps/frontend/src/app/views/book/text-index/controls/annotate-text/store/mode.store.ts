@@ -15,6 +15,8 @@ const warningMessages: Record<MODES, string> = {
     'Translation of annotation is in progress. Are you sure you want to proceed?',
   link_buckets:
     'Linking of buckets is in progress. Are you sure you want to proceed?',
+  adjust_annotation:
+    'Adjust the annotation selection is in progress. Are you sure you want to proceed?',
 };
 
 export const useModeStore = defineStore('annotation_mode_store', () => {

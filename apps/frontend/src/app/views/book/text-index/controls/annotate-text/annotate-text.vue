@@ -1,9 +1,14 @@
 <template>
   <div class="flex gap-3">
-    <div class="w-[200px]">
+    <div class="w-[300px]">
       <AnnotationTree
         :filter="store.filter"
+        :annotations="store.annotations"
+        :chapters="bookStore.chapters"
+        :active-chapter="bookStore.chapter"
+        :sources="store.sources"
         @change-filter="store.changeFilter"
+        @select-annotation="selectAnnotation"
       />
     </div>
     <div class="flex-grow w-full">
@@ -25,6 +30,7 @@
           :links="store.activeAnnotationLinks"
           :text="textStore.text"
           :text-content="store.activeTextContent"
+          @adjust-selection="adjustSelection"
           @save-annotation="saveAnnotation"
           @delete-annotation="deleteAnnotation"
           @close-annotation="closeAnnotation"
@@ -44,11 +50,9 @@ import { findTagging } from '@ghentcdh/annotations/core';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType} from '@ghentcdh/annotations/vue';
-import {
-  GhentCdhAnnotations,
-  useWordSnapper,
+  AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
+import { GhentCdhAnnotations, useWordSnapper } from '@ghentcdh/annotations/vue';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { IdentifyColorMap } from '../identify.color';
@@ -60,13 +64,17 @@ import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
 import type { AnnotationFilter } from './utils/annotations.utils';
 import AnnotationTree from './view/annotation-tree.vue';
+import { useBookStore } from '../../../book.store';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
+const bookStore = useBookStore();
 
 const emits = defineEmits<{
   deleteAnnotation: [W3CAnnotation];
   saveAnnotation: [id: string | null, AnnotationType];
+  adjustSelection: [id: string | null];
+  selectAnnotation: [id: string | null, textContentUri: string | null];
   closeAnnotation: [];
   changeSelectFilter: [Partial<AnnotationFilter>];
 }>();
@@ -109,13 +117,17 @@ const selectedAnnotations = computed(() => {
 });
 const annotationActions = computed(() => {
   const sources = store.sources;
+  const mode = modeStore.activeMode;
 
   return {
     [sources[0]?.uri]: {
-      edit: false,
+      edit: mode === 'adjust_annotation',
       create: isCreateMode.value,
     },
-    [sources[1]?.uri]: { edit: false, create: isCreateMode.value },
+    [sources[1]?.uri]: {
+      edit: mode === 'adjust_annotation',
+      create: isCreateMode.value,
+    },
   };
 });
 
@@ -145,8 +157,6 @@ const eventHandler = (
       );
 
       break;
-    // default:
-    // console.debug('event not handled', e);
   }
 };
 
@@ -176,21 +186,15 @@ const saveAnnotation = (id: string | null, annotation: AnnotationType) => {
   emits('saveAnnotation', id, annotation);
 };
 
+const adjustSelection = (id: string | null) => {
+  emits('adjustSelection', id);
+};
+
 const deleteAnnotation = (annotation: W3CAnnotation) => {
   emits('deleteAnnotation', annotation);
 };
 
-const MD = () => {
-  const parse = (text: string) => {
-    if (!text) return text;
-
-    return text
-      .replace(/\n/g, '<br />')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<i>$1</i>');
-  };
-
-  return { parse };
+const selectAnnotation = (annotation: string, sourceUri: string) => {
+  emits('selectAnnotation', annotation, sourceUri);
 };
-const markdown = MD();
 </script>

@@ -13,6 +13,7 @@
       :annotation="activeAnnotation"
       :selected-text="selectedText"
       :text-content="textContent"
+      @adjust-selection="adjustSelection"
       @save="saveAnnotation"
       @delete="deleteAnnotationAndClose"
     />
@@ -87,6 +88,7 @@ const properties = defineProps<Properties>();
 const emits = defineEmits<{
   deleteAnnotation: [W3CAnnotation];
   saveAnnotation: [string | null, AnnotationType];
+  adjustSelection: [string | null];
   changeSelectFilter: [Partial<AnnotationFilter>];
   closeAnnotation: [];
 }>();
@@ -101,6 +103,10 @@ const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
 
 const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
   emits('saveAnnotation', id, annotation);
+};
+
+const adjustSelection = (id: null | string) => {
+  emits('adjustSelection', id);
 };
 
 const annotationType = computed(
