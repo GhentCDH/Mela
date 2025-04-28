@@ -1,14 +1,14 @@
+import { getAnnotationUri } from '@mela/text/shared';
 import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
 
 import { ModalService } from '@ghentcdh/ui';
 
 import { useAnnotationStore } from './annotation.store';
 import { useModeStore } from './mode.store';
-import { computed, ref } from 'vue';
 import { AnnotationUtils } from '../utils/annotations.utils';
-import { SourceUtils } from '../utils/source';
-import { getAnnotationUri } from '@mela/text/shared';
 import { mapRelationsToLinks } from '../utils/links';
+import { SourceUtils } from '../utils/source';
 
 type SelectedIds = { textContentUri: string; annotationId: string };
 

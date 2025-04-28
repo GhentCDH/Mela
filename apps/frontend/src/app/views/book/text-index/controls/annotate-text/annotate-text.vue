@@ -2,39 +2,36 @@
   <div class="flex gap-3">
     <div class="w-[300px]">
       <AnnotationTree
-        :filter="store.filter"
-        :annotations="store.annotations"
+        :filter="annotationStore.filter"
+        :annotations="annotationStore.annotations"
         :chapters="bookStore.chapters"
         :active-chapter="bookStore.chapter"
-        :sources="store.sources"
-        @change-filter="store.changeFilter"
+        :sources="annotationStore.sources"
+        @change-filter="annotationStore.changeFilter"
         @select-annotation="selectAnnotation"
       />
     </div>
     <div class="flex-grow w-full">
       <GhentCdhAnnotations
         :config="annotationConfig"
-        :sources="store.sources"
+        :sources="annotationStore.sources"
         :annotations="annotations"
         :annotation-actions="annotationActions"
         :selected-annotations="selectedAnnotations"
         :use-snapper="useWordSnapper"
-        :cols="store.sources.length"
+        :cols="annotationStore.sources.length"
         @on-event="eventHandler"
       />
     </div>
     <div class="w-[500px]">
-      <template v-if="store.activeAnnotation">
+      <template v-if="activeAnnotationStore.activeAnnotation">
         <ActiveAnnotation
-          :active-annotation="store.activeAnnotation"
+          :active-annotation="activeAnnotationStore.activeAnnotation"
           :store-id="storeId"
-          :links="store.activeAnnotationLinks"
+          :links="activeAnnotationStore.activeAnnotationLinks"
           :text="textStore.text"
-          :text-content="store.activeTextContent"
-          @adjust-selection="adjustSelection"
-          @delete-annotation="deleteAnnotation"
-          @close-annotation="closeAnnotation"
-          @change-select-filter="store.changeSelectionFilter"
+          :text-content="activeAnnotationStore.activeTextContent"
+          @change-select-filter="annotationStore.changeSelectionFilter"
         />
       </template>
     </div>
@@ -62,6 +59,7 @@ import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
 import AnnotationTree from './view/annotation-tree.vue';
 import { useBookStore } from '../../../book.store';
+import { useActiveAnnotationStore } from './store/active-annotation.store';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
@@ -89,13 +87,13 @@ const isCreateMode = computed(() =>
 );
 
 const selectedAnnotations = computed(() => {
-  const sources = store.sources;
+  const sources = annotationStore.sources;
   const activeAnnotations = new Set();
 
-  if (store.activeAnnotation?.id) {
-    activeAnnotations.add(store.activeAnnotation?.id);
+  if (activeAnnotationStore.activeAnnotation?.id) {
+    activeAnnotations.add(activeAnnotationStore.activeAnnotation?.id);
 
-    store.activeAnnotationLinks.forEach((a) => {
+    activeAnnotationStore.activeAnnotationLinks.forEach((a) => {
       activeAnnotations.add(a.annotation.id);
       a.relations.forEach((r) => {
         activeAnnotations.add(r.id);
@@ -110,16 +108,15 @@ const selectedAnnotations = computed(() => {
   };
 });
 const annotationActions = computed(() => {
-  const sources = store.sources;
-  const mode = modeStore.activeMode;
+  const sources = annotationStore.sources;
 
   return {
     [sources[0]?.uri]: {
-      edit: mode === 'adjust_annotation',
+      edit: false,
       create: isCreateMode.value,
     },
     [sources[1]?.uri]: {
-      edit: mode === 'adjust_annotation',
+      edit: false,
       create: isCreateMode.value,
     },
   };
@@ -128,14 +125,11 @@ const annotationActions = computed(() => {
 // TODO add id
 const listenerStore = useAnnotationListenerStore()();
 const textStore = useTextStore();
-const store = useAnnotationStore(properties.storeId);
+const annotationStore = useAnnotationStore(properties.storeId);
+const activeAnnotationStore = useActiveAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
 
-const annotations = computed(() =>
-  modeStore.activeMode === 'adjust_annotation'
-    ? [store.activeAnnotation]
-    : store.annotations,
-);
+const annotations = computed(() => annotationStore.annotations);
 
 const eventHandler = (
   e: AnnotationEventType,
@@ -150,15 +144,11 @@ const eventHandler = (
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
-      store.createAnnotation(
+      annotationStore.createAnnotation(
         payload.target,
         annotation,
         modeStore.activeMode === 'create-annotation' ? 'phrase' : 'example',
       );
-    case 'update--end':
-      const annotation1 = payload.payload.getAnnotation();
-      // store.updateActiveAnnotation(payload.target, annotation1);
-      break;
   }
 };
 
@@ -167,7 +157,7 @@ const onSelectAnnotation = async (
   textContentUri: string | null,
   annotationId: string | null,
 ) => {
-  listenerStore.onClickAnnotation(store.getAnnotation(annotationId));
+  listenerStore.onClickAnnotation(annotationStore.getAnnotation(annotationId));
 
   if (modeStore.activeMode) {
     return;
@@ -177,10 +167,10 @@ const onSelectAnnotation = async (
 
   if (!confirmed.confirmed) return;
 
-  store.selectAnnotation({ textContentUri, annotationId });
+  activeAnnotationStore.selectAnnotation({ textContentUri, annotationId });
 };
 
 const selectAnnotation = (annotationId: string, textContentUri: string) => {
-  store.selectAnnotation({ annotationId, textContentUri });
+  activeAnnotationStore.selectAnnotation({ annotationId, textContentUri });
 };
 </script>

@@ -8,6 +8,11 @@ import type {
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
 import ExampleSelectionModal from './example-selection.modal.vue';
 import type { AnnotationType } from '../../../identify.color';
+import type {
+  LemaSelectionModal,
+  LinkLemmaModalResult,
+} from './lema-selection-modal';
+import LemaSelectionModal from './lema-selection-modal.vue';
 
 const modalSelection: Record<AnnotationType, any> = {
   example: ExampleSelectionModal,
@@ -50,6 +55,7 @@ export class ModalSelectionService {
       'annotation' | 'textContent' | 'annotationType' | 'storeId'
     > & { parent: W3CAnnotation },
   ) {
+    alert('implement me');
     const component = modalSelection[props.annotationType];
 
     if (!component)
@@ -65,6 +71,20 @@ export class ModalSelectionService {
         mode: 'edit',
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         onClose: (result: AnnotationSelectionModalResult) => {},
+      },
+    });
+  }
+
+  static createLemma(
+    props: Pick<LemaSelectionModal, 'annotation' | 'textContent'>,
+  ) {
+    alert('implement me');
+    ModalService.openModal<LemaSelectionModal, LinkLemmaModalResult>({
+      component: LemaSelectionModal,
+      props: {
+        ...props,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onClose: (result: LinkLemmaModalResult) => {},
       },
     });
   }

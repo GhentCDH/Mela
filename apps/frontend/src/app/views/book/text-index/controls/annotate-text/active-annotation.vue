@@ -15,7 +15,7 @@
       :source="textContent"
     />
     <template v-if="children.length">
-      <hr class="text-gray-300 my-2">
+      <hr class="text-gray-300 my-2" />
       <div class="flex gap-2 flex-wrap">
         <Btn
           v-for="child in children"
@@ -26,42 +26,32 @@
         </Btn>
       </div>
     </template>
-    <hr
-      v-if="isExample"
-      class="text-gray-300 my-2"
-    >
+    <hr v-if="isExample" class="text-gray-300 my-2" />
     <LinkLemma
       v-if="isExample"
       :annotation="activeAnnotation"
       :links="links"
-      :text="text"
       :text-content="textContent"
-      @save="saveAnnotation"
-      @delete="deleteAnnotation"
+      :store-id="storeId"
     />
-    <hr
-      v-if="isExample"
-      class="text-gray-300 my-2"
-    >
+    <hr v-if="isExample" class="text-gray-300 my-2" />
     <LinkBuckets
       v-if="isExample"
       :annotation="activeAnnotation"
       :links="links"
       :text="text"
-      @save="saveAnnotation"
-      @delete="deleteAnnotation"
+      :store-id="storeId"
       @change-select-filter="emits('changeSelectFilter', $event)"
     />
 
-    <hr class="text-gray-300 my-2">
+    <hr class="text-gray-300 my-2" />
 
     <Translations
       v-if="canTranslate"
       :annotation="activeAnnotation"
       :links="links"
       :text="text"
-      @save="saveAnnotation"
-      @delete="deleteAnnotation"
+      :store-id="storeId"
     />
   </Card>
 </template>

@@ -9,22 +9,17 @@
     @add-link="addLink"
     @delete="deleteAnnotation"
   >
-    <p v-if="!linkedTranslation">
-      Click on an annotation
-    </p>
+    <p v-if="!linkedTranslation">Click on an annotation</p>
     <div v-else>
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation">
-          Save translation
-        </Btn>
+        <Btn @click="saveTranslation"> Save translation</Btn>
       </div>
     </div>
   </LinkComponent>
 </template>
 
 <script setup lang="ts">
-import type { AnnotationType } from '@mela/text/shared';
 import {
   PURPOSE_TRANSLATION,
   TranslationExampleSchema,
@@ -39,6 +34,8 @@ import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
 import { useModeStore } from '../store/mode.store';
 import { findTextValue } from '../utils/translation';
+import { useAnnotationStore } from '../store/annotation.store';
+import type { Text } from '@ghentcdh/mela/generated/types';
 
 const listenerStore = useAnnotationListenerStore()();
 
@@ -50,14 +47,12 @@ type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
   text: Text;
+  storeId: string;
 };
 const properties = defineProps<Properties>();
-const emits = defineEmits<{
-  save: [string | null, AnnotationType];
-  delete: [W3CAnnotation];
-}>();
 
 const linkedTranslation = ref();
+const annotationStore = useAnnotationStore(properties.storeId);
 
 effect(() => {
   if (!linkTranslation.value) {
@@ -93,7 +88,7 @@ const addLink = () => {
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
-  emits('delete', annotation);
+  annotationStore.deleteAnnotation(annotation.id);
 };
 
 const saveTranslation = () => {
@@ -102,7 +97,7 @@ const saveTranslation = () => {
     annotations: [properties.annotation, linkedTranslation.value],
   });
 
-  emits('save', null, link);
+  annotationStore.saveOrCreateAnnotation(null, link);
 
   linkedTranslation.value = null;
   modeStore.resetModeNoEffect();
