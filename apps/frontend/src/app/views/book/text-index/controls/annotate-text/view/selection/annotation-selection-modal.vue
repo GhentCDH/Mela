@@ -1,6 +1,6 @@
 <template>
   <Modal
-    :modal-title="'Create lemma'"
+    :modal-title="title"
     :open="true"
     :disable-close="false"
     :width="Size.lg"
@@ -8,7 +8,7 @@
   >
     <template #content>
       <ControlWrapper
-        :label="'Select linked words'"
+        :label="selectLabel"
         :error="false"
         :required="true"
       >
@@ -24,19 +24,7 @@
         </div>
       </ControlWrapper>
       <div class="flex gap-2 items-center">
-        <Autocomplete
-          v-model="lemma"
-          :config="lemmaConfig"
-          :label="'Lemma'"
-          :placeholder="'Select lemma'"
-          label-key="word"
-        />
-        <Btn
-          :icon="IconEnum.Plus"
-          @click="createLemma"
-        >
-          Create new Lemma
-        </Btn>
+        <slot name="custom-content" />
       </div>
     </template>
     <template #actions>
@@ -47,7 +35,9 @@
       >
         Cancel
       </Btn>
+      <slot name="custom-actions" />
       <Btn
+        v-if="enableSave"
         :disabled="disabled"
         @click="onSubmit"
       >
@@ -58,19 +48,18 @@
 </template>
 
 <script setup lang="ts">
-import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
-  AnnotationExampleLemmaSchema,
-  LemmaFormSchema,
+  AnnotationSelectorSchema,
+  type AnnotationStartEnd,
   getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
+import { sources } from 'typedoc-plugin-markdown/dist/theme/context/partials';
 import { computed, ref } from 'vue';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
 import {
+  type SourceModel,
   createTextSelectionAnnotation,
-  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import {
   type AnnotationEventHandlerPayloadData,
@@ -78,30 +67,34 @@ import {
   GhentCdhAnnotations,
   useWordSnapper,
 } from '@ghentcdh/annotations/vue';
-import {
-  type FormModalResult,
-  FormModalService,
-} from '@ghentcdh/json-forms/vue';
-import {
-  type AutoCompleteConfig,
-  Autocomplete,
-  Btn,
-  Color,
-  ControlWrapper,
-  IconEnum,
-  Modal,
-  Size,
-} from '@ghentcdh/ui';
+import { Btn, Color, ControlWrapper, Modal, Size } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
-import type { LinkLemmaModalProps } from './link-lemma-modal.props';
-import { useLemmaRepository } from '../../../../../../repository/lemma.repository';
-import { useAnnotationStore } from '../store/annotation.store';
-import { findTextValue } from '../utils/translation';
+import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
+import { createSelection } from './selection.utils';
+import { AnnotationTypeLabelValue } from '../../../identify.color';
+import { useAnnotationStore } from '../../store/annotation.store';
+import { findTextValue } from '../../utils/translation';
+
+// Schema for validation
+const schema = AnnotationSelectorSchema;
+
+const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
+  mode: 'create',
+  enableSave: true,
+  schema: AnnotationSelectorSchema,
+});
+const emits = defineEmits(['closeModal']);
 
 const annotationStore = useAnnotationStore(properties.storeId);
-const properties = defineProps<LinkLemmaModalProps>();
-const emits = defineEmits(['closeModal']);
+const type = AnnotationTypeLabelValue[properties.annotationType];
+const title =
+  properties.mode === 'edit' ? `Edit ${type.label}` : `Create ${type.label}`;
+const selectLabel =
+  properties.mode === 'edit'
+    ? `Adjust ${type.label} selection`
+    : `Select ${type.label} selection`;
+
 const textBody = computed(() => findTextValue(properties.annotation));
 const annotationUri = computed(() => getAnnotationUri(properties.annotation));
 const source = computed(() => {
@@ -111,16 +104,12 @@ const source = computed(() => {
     type: 'text',
     content: {
       text: textBody.value.value,
+      schema: AnnotationSelectorSchema,
       processingLanguage: textBody.value.language,
     },
   } as SourceModel;
 });
 const lemma = ref();
-
-const lemmaConfig: AutoCompleteConfig = {
-  uri: LemmaFormSchema.schema.searchUri,
-  dataField: 'data',
-};
 
 const sources = computed(() => {
   const tb = textBody.value;
@@ -131,7 +120,7 @@ const sources = computed(() => {
   return [source.value];
 });
 
-const lemmaAnnotation = ref<AnnotationStartEnd>();
+const selection = defineModel<AnnotationStartEnd>();
 
 const annotationActions = computed(() => {
   return {
@@ -151,10 +140,11 @@ const eventHandler = (
       // onSelectAnnotation(payload.target, payload.annotationId);
       break;
     case 'create--end':
+    case 'update--end':
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
-      lemmaAnnotation.value = annotation;
+      selection.value = annotation;
       break;
     default:
       console.warn('event not handled', e);
@@ -162,34 +152,17 @@ const eventHandler = (
 };
 
 const annotations = computed(() => {
-  if (!lemmaAnnotation.value) {
+  if (!selection.value) {
     return [];
   }
   return [
     createTextSelectionAnnotation(
       source.value,
-      pick(lemmaAnnotation.value, ['start', 'end']),
+      pick(selection.value, ['start', 'end']),
       'lemma',
     ),
   ];
 });
-
-const createLemma = () => {
-  const formSchema = LemmaFormSchema.schema;
-  FormModalService.openModal({
-    formSchema: formSchema.form,
-    modalTitle: 'Create Lemma',
-    onClose: (result: FormModalResult) => {
-      if (result && result.valid) {
-        useLemmaRepository()
-          .create(result.data)
-          .then((response) => {
-            lemma.value = response;
-          });
-      }
-    },
-  });
-};
 
 const onCancel = () => {
   // ModalService.closeModal();
@@ -197,33 +170,23 @@ const onCancel = () => {
 };
 
 const onSubmit = () => {
-  const annotation = lemmaAnnotation.value;
-
-  // Add the original start and endpoint
-  const selector = findTextPositionSelector(properties.textContent.uri)(
+  const data = createSelection(
+    selection.value,
+    properties.annotationType,
     properties.annotation,
-  )?.selector;
+    properties.textContent,
+    properties.schema,
+  );
 
-  annotation.start += selector.start;
-  annotation.end += selector.start;
-
-  const exampleLemma = {
-    annotation,
-    lemma: lemma.value,
-    exampleAnnotation: pick(properties.annotation, 'id'),
-    id: lemmaAnnotation.value.id,
-    textContent: pick(properties.textContent, 'id'),
-  };
-  const data = AnnotationExampleLemmaSchema.parse(exampleLemma);
+  const annotationId =
+    properties.mode === 'create' ? null : properties.annotation.id;
   annotationStore.saveOrCreateAnnotation(annotationId, data);
+
   emits('closeModal', { valid: true, data });
 };
 
 const disabled = computed(() => {
-  if (!lemma.value?.id) {
-    return true;
-  }
-
-  return !lemmaAnnotation.value;
+  // TODO if there is metadata needed validate it here!
+  return !selection.value;
 });
 </script>

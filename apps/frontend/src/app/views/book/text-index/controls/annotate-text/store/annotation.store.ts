@@ -104,6 +104,7 @@ export const useAnnotationStore = (id: string) =>
       return newAnnotation;
     };
 
+    // Move it to active annotation store
     const selectAnnotation = (ids: {
       annotationId: string | undefined | null;
       textContentUri: string | undefined | null;

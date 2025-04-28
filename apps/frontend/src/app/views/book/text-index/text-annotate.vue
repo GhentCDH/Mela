@@ -6,12 +6,7 @@
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
-      @adjust-selection="adjustSelection"
-      @select-annotation="selectAnnotation"
-      @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
-      @delete-annotation="deleteAnnotation"
-      @change-select-filter="annotationStore.changeSelectionFilter"
     />
   </div>
   <div
@@ -44,7 +39,6 @@
 <script setup lang="ts">
 import { computed, effect, onMounted } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useWordSnapper } from '@ghentcdh/annotations/vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
@@ -173,28 +167,6 @@ const createAnnotation = (mode: MODES = 'create-annotation') => {
     annotationStore.selectAnnotation(null);
     // cancelGeneratedBlocks();
   });
-};
-
-const saveAnnotation = (id: string | null, annotation: W3CAnnotation) => {
-  annotationStore.saveOrCreateAnnotation(id, annotation);
-};
-
-const adjustSelection = (id: string | null) => {
-  modeStore.changeMode('adjust_annotation');
-  annotationStore.changeSelectionFilter({
-    annotationId: id,
-  });
-};
-
-const selectAnnotation = (
-  annotationId: string | null,
-  textContentUri: string,
-) => {
-  annotationStore.selectAnnotation({ annotationId, textContentUri });
-};
-
-const deleteAnnotation = (annotation: W3CAnnotation) => {
-  annotationStore.deleteAnnotation(annotation.id);
 };
 
 onMounted(() => {

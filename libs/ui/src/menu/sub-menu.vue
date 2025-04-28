@@ -7,6 +7,7 @@
     >
       <span> {{ label }}</span>
       <Icon
+        v-if="!disableArrow"
         :icon="IconEnum.ChevronDown"
         :size="Size.sm"
       />
@@ -32,5 +33,5 @@ import type { MenuWithItems } from './menu.type';
 import { Size } from '../const';
 import { Icon, IconEnum } from '../icons';
 
-const properties = defineProps<MenuWithItems & { btnClass: string }>();
+defineProps<MenuWithItems & { btnClass: string; disableArrow?: boolean }>();
 </script>

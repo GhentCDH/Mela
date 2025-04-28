@@ -1,34 +1,24 @@
 <template>
-  <fieldset class="fieldset">
+  <fieldset
+    v-for="item in metaData"
+    :key="item.label"
+    :class="['fieldset', item.valueOnNewLine ? '' : 'flex flex-col gap-2']"
+  >
     <legend class="fieldset-legend">
-      Selected text:
+      {{ item.label }}
     </legend>
-    {{ selectedText }}
+    <div>
+      {{ item.value }}
+    </div>
   </fieldset>
-  <SelectComponent
-    v-model="metaDataModel.annotationType"
-    label="Annotation type"
-    :options="annotationTypes"
-    :disabled="disabled"
-    @change="changeMetadata"
-  />
-
-  <FormComponent
-    v-if="isExample"
-    id="registerForm"
-    v-model="metaDataModel.example"
-    :disabled="disabled"
-    :schema="ExampleFormSchema.schema.form.schema"
-    :uischema="ExampleFormSchema.schema.form.uiSchema"
-    @change="changeMetadata"
-  />
   <div class="flex gap-2 justify-between pb-4">
     <div>
       <Btn
+        v-if="false"
         :outline="true"
-        @click="adjustSelection"
+        @click="editAnnotation"
       >
-        Adjust selection
+        Edit
       </Btn>
     </div>
     <div class="flex gap-2 justify-end pb-4">
@@ -38,167 +28,82 @@
       >
         Delete
       </Btn>
-      <Btn
-        :disabled="!valid || disabled"
-        @click="saveAnnotation"
-      >
-        Save
-      </Btn>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { AnnotationSelector, AnnotationType } from '@mela/text/shared';
-import {
-  AnnotationExampleExampleSchema,
-  AnnotationExampleSchema,
-  AnnotationSelectorSchema,
-  ExampleFormSchema,
-  findExampleMetaData,
-  getExampleIdFromUri,
-} from '@mela/text/shared';
-import { cloneDeep, isEqual, pick } from 'lodash-es';
-import { computed, ref, watch } from 'vue';
-import type { SafeParseReturnType } from 'zod/lib/types';
+import { findExampleMetaData } from '@mela/text/shared';
+import { computed } from 'vue';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type {
+  SourceModel,
+  W3CAnnotation} from '@ghentcdh/annotations/core';
 import {
   findTagging,
-  findTextPositionSelector,
+  findTextPositionSelector
 } from '@ghentcdh/annotations/core';
-import { FormComponent } from '@ghentcdh/json-forms/vue';
-import { Btn, Color, ModalService, SelectComponent } from '@ghentcdh/ui';
+import { Btn, Color } from '@ghentcdh/ui';
 
-import type { AnnotationMetadataModel } from './props';
-import { IdentifyColor } from '../../identify.color';
-import { CREATE_MODES } from '../props';
-import { useModeStore } from '../store/mode.store';
-
-const annotationTypes = IdentifyColor;
+import { useActiveAnnotationStore } from '../store/active-annotation.store';
+import { ModalSelectionService } from './selection/modal-selection.service';
+import type { AnnotationType} from '../../identify.color';
+import { AnnotationTypeLabelValue } from '../../identify.color';
+import { getTextSelection } from '../utils/translation';
 
 type Properties = {
-  selectedText: string;
+  storeId: string;
+  source: SourceModel;
   annotation: W3CAnnotation;
-  textContent: SourceModel;
 };
 const properties = defineProps<Properties>();
-const emits = defineEmits<{
-  adjustSelection: [string | null];
-  save: [string | null, AnnotationType];
-  delete: [W3CAnnotation];
-}>();
-const valid = ref(false);
-const metaDataModel = ref<AnnotationMetadataModel>();
-const modeStore = useModeStore();
+const activeAnnotationStore = useActiveAnnotationStore(properties.storeId);
 
-const disabled = computed(
-  () =>
-    modeStore.activeMode &&
-    !(
-      modeStore.activeMode === 'edit' ||
-      CREATE_MODES.includes(modeStore.activeMode)
-    ),
-);
-const isExample = computed(() => {
-  return metaDataModel.value.annotationType.id === 'example';
+const annotationType = computed<AnnotationType>(() => {
+  const id = findTagging(properties.annotation).value ?? 'phrase';
+
+  return AnnotationTypeLabelValue[id];
 });
 
-let changedMetadata: AnnotationType;
-let originalMetaData: AnnotationMetadataModel;
+const exampleMetaData = computed(() => {
+  if (annotationType.value.key !== 'example') return null;
 
-const changeMetadata = () => {
-  let annotationType: SafeParseReturnType<AnnotationType, AnnotationType>;
-  const formValue = metaDataModel.value;
+  return findExampleMetaData(properties.annotation)?.value;
+});
 
-  let type: AnnotationSelector = {
-    annotation: {
-      ...formValue.annotation,
-      tagging: formValue.annotationType.id,
+const textAnnotation = computed(() => ({
+  id: properties.annotation.id,
+  ...findTextPositionSelector(properties.source.uri)(properties.annotation)
+    ?.selector,
+}));
+
+const selectedText = computed(() => {
+  return getTextSelection(properties.source, textAnnotation.value);
+});
+
+const metaData = computed(() => {
+  return [
+    {
+      label: 'Selected text',
+      value: selectedText.value,
+      valueOnNewLine: true,
     },
-    textContent: pick(properties.textContent, ['id']),
-  };
-
-  if (isExample.value) {
-    annotationType = AnnotationExampleSchema.safeParse({
-      ...type,
-      example: formValue.example,
-    });
-  } else {
-    annotationType = AnnotationSelectorSchema.safeParse(type);
-  }
-
-  changedMetadata = annotationType.data;
-  valid.value = annotationType.success;
-
-  if (
-    !modeStore.activeMode &&
-    !isEqual(originalMetaData, metaDataModel.value)
-  ) {
-    modeStore.changeMode('edit');
-  }
-};
-
-const saveAnnotation = () => {
-  emits('save', properties.annotation.id, changedMetadata);
-};
-
-const adjustSelection = () => {
-  emits('adjustSelection', properties.annotation.id);
-};
-
-const exampleMetaData = computed(() =>
-  findExampleMetaData(properties.annotation),
-);
+    { label: 'Annotation type', value: annotationType.value.label },
+    { label: 'Register', value: exampleMetaData.value?.register.name ?? null },
+  ].filter((v) => v.value != null);
+});
 
 const deleteAnnotation = () => {
-  ModalService.showConfirm({
-    title: 'Delete annotation',
-    message: 'Are you sure to delete this annotation, all links will be lost?',
-    onClose: (result) => {
-      if (result.confirmed) {
-        emits('delete', properties.annotation);
-      }
-    },
-  });
+  activeAnnotationStore.delete(properties.annotation.id);
 };
 
-// region datamodel
-watch(
-  () => properties.annotation,
-  (n) => {
-    // modeStore.resetMode();
-    const annotation = properties.annotation;
-    const type = findTagging(annotation).value ?? 'phrase';
-
-    const annotationType =
-      IdentifyColor.find((c) => c.id === type) ?? IdentifyColor[0];
-
-    const example = exampleMetaData?.value?.value
-      ? {
-          ...AnnotationExampleExampleSchema.parse(exampleMetaData.value?.value),
-          id: getExampleIdFromUri(exampleMetaData.value.source),
-        }
-      : { register: {} };
-
-    originalMetaData = {
-      annotationType: annotationType,
-      example: example,
-      annotation: {
-        // TODO check if new id
-        id: properties.annotation.id,
-        tagging: annotationType.id,
-        ...findTextPositionSelector(properties.textContent.uri)(
-          properties.annotation,
-        )?.selector,
-      },
-    };
-
-    metaDataModel.value = cloneDeep(originalMetaData);
-
-    changeMetadata();
-  },
-  { immediate: true },
-);
-// endregion
+const editAnnotation = () => {
+  ModalSelectionService.editSelection({
+    // TODO parent
+    annotation: properties.annotation,
+    textContent: properties.textContent,
+    annotationType,
+    storeId: properties.storeId,
+  });
+};
 </script>

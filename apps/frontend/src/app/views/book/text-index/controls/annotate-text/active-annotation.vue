@@ -10,13 +10,22 @@
       </div>
     </template>
     <AnnotationMetadata
+      :store-id="storeId"
       :annotation="activeAnnotation"
-      :selected-text="selectedText"
-      :text-content="textContent"
-      @adjust-selection="adjustSelection"
-      @save="saveAnnotation"
-      @delete="deleteAnnotationAndClose"
+      :source="textContent"
     />
+    <template v-if="children.length">
+      <hr class="text-gray-300 my-2">
+      <div class="flex gap-2 flex-wrap">
+        <Btn
+          v-for="child in children"
+          :key="child.key"
+          @click="createAnnotation(child.key)"
+        >
+          Create {{ child.label }}
+        </Btn>
+      </div>
+    </template>
     <hr
       v-if="isExample"
       class="text-gray-300 my-2"
@@ -62,22 +71,22 @@ import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import {
-  findTagging,
-  findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
+import { findTagging } from '@ghentcdh/annotations/core';
 import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
+import { AnnotationTypeLabelValue } from '../identify.color';
 import type { AnnotationFilter } from './utils/annotations.utils';
-import { getTextSelection } from './utils/translation';
+import { treeOrder } from './utils/tree';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
 import LinkLemma from './view/link-lemma.vue';
+import { ModalSelectionService } from './view/selection/modal-selection.service';
 import Translations from './view/translations.vue';
 
 type Properties = {
+  storeId: string;
   activeAnnotation: W3CAnnotation;
   links: AnnotationWithRelations[];
   text: Text;
@@ -86,46 +95,32 @@ type Properties = {
 const properties = defineProps<Properties>();
 
 const emits = defineEmits<{
-  deleteAnnotation: [W3CAnnotation];
-  saveAnnotation: [string | null, AnnotationType];
-  adjustSelection: [string | null];
   changeSelectFilter: [Partial<AnnotationFilter>];
   closeAnnotation: [];
 }>();
 
-const deleteAnnotation = (annotation: W3CAnnotation) => {
-  emits('deleteAnnotation', annotation);
-};
-const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
-  deleteAnnotation(annotation);
-  closeAnnotation();
-};
-
-const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
-  emits('saveAnnotation', id, annotation);
-};
-
-const adjustSelection = (id: null | string) => {
-  emits('adjustSelection', id);
-};
-
 const annotationType = computed(
   () => findTagging(properties.activeAnnotation).value ?? 'phrase',
 );
+
+const children = computed(() => {
+  return treeOrder[annotationType.value]
+    .filter((t) => t !== 'lemma')
+    .map((child) => AnnotationTypeLabelValue[child]);
+});
 const isExample = computed(() => annotationType.value === 'example');
 const canTranslate = computed(() => annotationType.value !== 'lemma');
 
-const textAnnotation = computed(() => ({
-  id: properties.activeAnnotation.id,
-  ...findTextPositionSelector(properties.textContent.uri)(
-    properties.activeAnnotation,
-  )?.selector,
-}));
-const selectedText = computed(() =>
-  getTextSelection(properties.textContent, textAnnotation.value),
-);
-
 const closeAnnotation = async () => {
   emits('closeAnnotation');
+};
+
+const createAnnotation = (annotationType: AnnotationType) => {
+  ModalSelectionService.createSelection({
+    annotation: properties.activeAnnotation,
+    textContent: properties.textContent,
+    annotationType,
+    storeId: properties.storeId,
+  });
 };
 </script>

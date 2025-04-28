@@ -1,6 +1,6 @@
 <template>
   <li class="">
-    <span
+    <div
       :class="[
         {
           'menu-dropdown-toggle': property.children.length,
@@ -9,13 +9,15 @@
       ]"
       @click="selectCurrentAnnotation"
     >
-      <div
-        class="tooltip tooltip-right"
-        :data-tip="property.content"
-      >
-        {{ property.type }}
+      <div class="flex space-between items-center w-full">
+        <div
+          class="tooltip tooltip-right"
+          :data-tip="property.content"
+        >
+          {{ property.type }}
+        </div>
       </div>
-    </span>
+    </div>
     <ul
       v-if="property.children"
       :class="['menu-dropdown', { 'menu-dropdown-show': open }]"
@@ -44,7 +46,7 @@ const properties = defineProps<{
 }>();
 
 const emits = defineEmits<{
-  selectAnnotation: [id: string | null, textContentUri: string | null];
+  selectAnnotation: [id: string | null];
 }>();
 
 const selectCurrentAnnotation = () => {

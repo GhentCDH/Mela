@@ -7,7 +7,9 @@ import type { Annotation } from '@ghentcdh/mela/generated/types';
 import { findTextValue } from './translation';
 import type { AnnotationType } from '../../identify.color';
 
-const treeOrder = {
+// Type, can have children xxx
+export const treeOrder: Record<AnnotationType, AnnotationType[]> = {
+  lemma: [],
   paragraph: ['title', 'subtitle', 'phrase'],
   title: ['example'],
   subtitle: ['example'],

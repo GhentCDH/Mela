@@ -15,7 +15,7 @@
       <GhentCdhAnnotations
         :config="annotationConfig"
         :sources="store.sources"
-        :annotations="store.annotations"
+        :annotations="annotations"
         :annotation-actions="annotationActions"
         :selected-annotations="selectedAnnotations"
         :use-snapper="useWordSnapper"
@@ -27,14 +27,14 @@
       <template v-if="store.activeAnnotation">
         <ActiveAnnotation
           :active-annotation="store.activeAnnotation"
+          :store-id="storeId"
           :links="store.activeAnnotationLinks"
           :text="textStore.text"
           :text-content="store.activeTextContent"
           @adjust-selection="adjustSelection"
-          @save-annotation="saveAnnotation"
           @delete-annotation="deleteAnnotation"
           @close-annotation="closeAnnotation"
-          @change-select-filter="emits('changeSelectFilter', $event)"
+          @change-select-filter="store.changeSelectionFilter"
         />
       </template>
     </div>
@@ -42,10 +42,8 @@
 </template>
 
 <script setup lang="ts">
-import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
 import type {
   AnnotationConfig,
@@ -62,7 +60,6 @@ import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
-import type { AnnotationFilter } from './utils/annotations.utils';
 import AnnotationTree from './view/annotation-tree.vue';
 import { useBookStore } from '../../../book.store';
 
@@ -71,12 +68,7 @@ const properties = defineProps<Properties>();
 const bookStore = useBookStore();
 
 const emits = defineEmits<{
-  deleteAnnotation: [W3CAnnotation];
-  saveAnnotation: [id: string | null, AnnotationType];
-  adjustSelection: [id: string | null];
-  selectAnnotation: [id: string | null, textContentUri: string | null];
   closeAnnotation: [];
-  changeSelectFilter: [Partial<AnnotationFilter>];
 }>();
 
 const annotationConfig: AnnotationConfig = {
@@ -86,6 +78,8 @@ const annotationConfig: AnnotationConfig = {
   },
   mapTarget: (annotation) => {
     const type = findTagging(annotation);
+    const mode = modeStore.activeMode;
+    if (mode == 'adjust_annotation') return 'text';
     return type?.value === 'paragraph' ? 'gutter' : 'text';
   },
 };
@@ -137,6 +131,12 @@ const textStore = useTextStore();
 const store = useAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
 
+const annotations = computed(() =>
+  modeStore.activeMode === 'adjust_annotation'
+    ? [store.activeAnnotation]
+    : store.annotations,
+);
+
 const eventHandler = (
   e: AnnotationEventType,
   payload: AnnotationEventHandlerPayloadData<unknown>,
@@ -155,7 +155,9 @@ const eventHandler = (
         annotation,
         modeStore.activeMode === 'create-annotation' ? 'phrase' : 'example',
       );
-
+    case 'update--end':
+      const annotation1 = payload.payload.getAnnotation();
+      // store.updateActiveAnnotation(payload.target, annotation1);
       break;
   }
 };
@@ -178,23 +180,7 @@ const onSelectAnnotation = async (
   store.selectAnnotation({ textContentUri, annotationId });
 };
 
-const closeAnnotation = () => {
-  modeStore.changeMode(null, () => emits('closeAnnotation'));
-};
-
-const saveAnnotation = (id: string | null, annotation: AnnotationType) => {
-  emits('saveAnnotation', id, annotation);
-};
-
-const adjustSelection = (id: string | null) => {
-  emits('adjustSelection', id);
-};
-
-const deleteAnnotation = (annotation: W3CAnnotation) => {
-  emits('deleteAnnotation', annotation);
-};
-
-const selectAnnotation = (annotation: string, sourceUri: string) => {
-  emits('selectAnnotation', annotation, sourceUri);
+const selectAnnotation = (annotationId: string, textContentUri: string) => {
+  store.selectAnnotation({ annotationId, textContentUri });
 };
 </script>
