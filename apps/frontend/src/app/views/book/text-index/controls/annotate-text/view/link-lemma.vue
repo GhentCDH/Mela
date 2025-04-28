@@ -17,8 +17,8 @@ import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';
-import { findTextValue } from '../utils/translation';
 import { useAnnotationStore } from '../store/annotation.store';
+import { findTextValue } from '../utils/translation';
 import { ModalSelectionService } from './selection/modal-selection.service';
 
 type Properties = {

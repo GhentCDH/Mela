@@ -1,7 +1,8 @@
 import type { AnnotationExampleLemma } from '@mela/text/shared';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import { AnnotationSelectionModalResult } from './annotation-selection-modal.props';
+
+import type { AnnotationSelectionModalResult } from './annotation-selection-modal.props';
 
 export type LemaSelectionModal = {
   onClose: (result: LinkLemmaModalResult) => void;

@@ -53,13 +53,13 @@ import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-te
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
 import { CREATE_MODES } from './props';
+import { useActiveAnnotationStore } from './store/active-annotation.store';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
 import AnnotationTree from './view/annotation-tree.vue';
 import { useBookStore } from '../../../book.store';
-import { useActiveAnnotationStore } from './store/active-annotation.store';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();

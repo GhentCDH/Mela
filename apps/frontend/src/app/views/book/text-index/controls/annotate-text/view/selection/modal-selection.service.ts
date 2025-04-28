@@ -7,12 +7,12 @@ import type {
 } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
 import ExampleSelectionModal from './example-selection.modal.vue';
-import type { AnnotationType } from '../../../identify.color';
 import type {
   LemaSelectionModal,
   LinkLemmaModalResult,
 } from './lema-selection-modal';
 import LemaSelectionModal from './lema-selection-modal.vue';
+import type { AnnotationType } from '../../../identify.color';
 
 const modalSelection: Record<AnnotationType, any> = {
   example: ExampleSelectionModal,

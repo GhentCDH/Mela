@@ -10,7 +10,9 @@
     @add-link="addLink"
     @delete="deleteAnnotation"
   >
-    <p v-if="!linkedBucket">Click on an annotation</p>
+    <p v-if="!linkedBucket">
+      Click on an annotation
+    </p>
     <div v-if="linkedBucket">
       {{ translatedText?.value }}
       <SelectComponent
@@ -19,7 +21,9 @@
         :options="linkTypes"
       />
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveBucket"> Save LinkBucket</Btn>
+        <Btn @click="saveBucket">
+          Save LinkBucket
+        </Btn>
       </div>
     </div>
   </LinkComponent>
@@ -40,10 +44,10 @@ import activeAnnotation from '../active-annotation.vue';
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
+import { useAnnotationStore } from '../store/annotation.store';
 import { useModeStore } from '../store/mode.store';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { findTextValue } from '../utils/translation';
-import { useAnnotationStore } from '../store/annotation.store';
 
 const listenerStore = useAnnotationListenerStore()();
 

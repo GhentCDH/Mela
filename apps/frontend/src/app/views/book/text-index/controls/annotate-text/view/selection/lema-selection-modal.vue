@@ -14,20 +14,31 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      <Btn :icon="IconEnum.Plus" @click="createLemma"> Create new Lemma</Btn>
+      <Btn
+        :icon="IconEnum.Plus"
+        @click="createLemma"
+      >
+        Create new Lemma
+      </Btn>
     </template>
     <template #custom-actions>
-      <Btn :disabled="!selection || !lemma.id" @click="onSubmit"> Save</Btn>
+      <Btn
+        :disabled="!selection || !lemma.id"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
 
 <script setup lang="ts">
+import type {
+  AnnotationStartEnd} from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
-  AnnotationStartEnd,
-  getAnnotationUri,
   LemmaFormSchema,
+  getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, ref } from 'vue';
@@ -38,18 +49,18 @@ import {
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  Autocomplete,
   type AutoCompleteConfig,
+  Autocomplete,
   Btn,
   IconEnum,
 } from '@ghentcdh/ui';
 
-import { LemaSelectionModalProps } from './lema-selection-modal';
+import AnnotationSelectionModal from './annotation-selection-modal.vue';
+import type { LemaSelectionModalProps } from './lema-selection-modal';
+import { createSelection } from './selection.utils';
 import { useLemmaRepository } from '../../../../../../../repository/lemma.repository';
 import { useAnnotationStore } from '../../store/annotation.store';
 import { findTextValue } from '../../utils/translation';
-import AnnotationSelectionModal from './annotation-selection-modal.vue';
-import { createSelection } from './selection.utils';
 
 const properties = defineProps<LemaSelectionModalProps>();
 
