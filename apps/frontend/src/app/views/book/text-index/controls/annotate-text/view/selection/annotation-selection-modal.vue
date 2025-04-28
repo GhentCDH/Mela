@@ -28,7 +28,7 @@
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn v-if="enableSave" :disabled="disabled" @click="onSubmit"> Save </Btn>
+      <Btn v-if="enableSave" :disabled="disabled" @click="onSubmit"> Save</Btn>
     </template>
   </Modal>
 </template>
@@ -40,7 +40,7 @@ import {
   getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 import {
   createTextSelectionAnnotation,
@@ -62,8 +62,6 @@ import { useAnnotationStore } from '../../store/annotation.store';
 import { findTextValue } from '../../utils/translation';
 
 // Schema for validation
-const schema = AnnotationSelectorSchema;
-
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
   mode: 'create',
   enableSave: true,
@@ -94,7 +92,6 @@ const source = computed(() => {
     },
   } as SourceModel;
 });
-const lemma = ref();
 
 const sources = computed(() => {
   const tb = textBody.value;
