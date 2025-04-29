@@ -7,10 +7,7 @@ import type {
 } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
 import ExampleSelectionModal from './example-selection.modal.vue';
-import type {
-  LemaSelectionModal,
-  LinkLemmaModalResult,
-} from './lema-selection-modal';
+import type { LinkLemmaModalResult } from './lema-selection-modal';
 import LemaSelectionModal from './lema-selection-modal.vue';
 import type { AnnotationType } from '../../../identify.color';
 
@@ -76,13 +73,13 @@ export class ModalSelectionService {
   }
 
   static createLemma(
-    props: Pick<LemaSelectionModal, 'annotation' | 'textContent'>,
+    props: Pick<LemaSelectionModal, 'annotation' | 'textContent' | 'storeId'>,
   ) {
-    alert('implement me');
     ModalService.openModal<LemaSelectionModal, LinkLemmaModalResult>({
       component: LemaSelectionModal,
       props: {
         ...props,
+        mode: 'create',
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         onClose: (result: LinkLemmaModalResult) => {},
       },

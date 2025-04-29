@@ -42,6 +42,7 @@ const addLink = () => {
   ModalSelectionService.createLemma({
     annotation: properties.annotation,
     textContent: properties.textContent,
+    storeId: properties.storeId,
   });
 };
 

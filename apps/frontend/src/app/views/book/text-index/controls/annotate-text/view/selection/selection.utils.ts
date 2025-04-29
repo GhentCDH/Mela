@@ -1,21 +1,15 @@
-import type { AnnotationStartEnd } from '@mela/text/shared';
+import type { AnnotationStartEnd, AnnotationType } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import type z from 'zod';
 
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
-import {
-  findTextPositionSelector
-} from '@ghentcdh/annotations/core';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import { findTextPositionSelector } from '@ghentcdh/annotations/core';
 
-
-import type { AnnotationType } from '../../../identify.color';
-
+import type { AnnotationType as type } from '../../../identify.color';
 
 export const createSelection = (
   selection: AnnotationStartEnd,
-  annotationType: AnnotationType,
+  annotationType: type,
   annotation: W3CAnnotation,
   sourceModel: SourceModel,
   schema: z.Schema<AnnotationType>,

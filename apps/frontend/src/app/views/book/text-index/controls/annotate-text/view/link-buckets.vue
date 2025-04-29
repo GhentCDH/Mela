@@ -4,7 +4,6 @@
     entity="linkBucket"
     :purpose="PURPOSE_LINK_BUCKETS"
     :display-value="displayValue"
-    :annotation="activeAnnotation"
     :links="links"
     :new-link="linkBucket"
     @add-link="addLink"
@@ -40,7 +39,6 @@ import type {
 import { findBodyType } from '@ghentcdh/annotations/core';
 import { Btn, SelectComponent } from '@ghentcdh/ui';
 
-import activeAnnotation from '../active-annotation.vue';
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';

@@ -14,43 +14,31 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      <Btn
-        :icon="IconEnum.Plus"
-        @click="createLemma"
-      >
-        Create new Lemma
-      </Btn>
+      <Btn :icon="IconEnum.Plus" @click="createLemma"> Create new Lemma </Btn>
     </template>
     <template #custom-actions>
-      <Btn
-        :disabled="!selection || !lemma.id"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="!selection || !lemma?.id" @click="onSubmit"> Save </Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
 
 <script setup lang="ts">
-import type {
-  AnnotationStartEnd} from '@mela/text/shared';
+import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
-  LemmaFormSchema,
   getAnnotationUri,
+  LemmaFormSchema,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, ref } from 'vue';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
 import {
   type FormModalResult,
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  type AutoCompleteConfig,
   Autocomplete,
+  type AutoCompleteConfig,
   Btn,
   IconEnum,
 } from '@ghentcdh/ui';
@@ -71,17 +59,7 @@ const emits = defineEmits(['closeModal']);
 const annotationStore = useAnnotationStore(properties.storeId);
 const textBody = computed(() => findTextValue(properties.annotation));
 const annotationUri = computed(() => getAnnotationUri(properties.annotation));
-const source = computed(() => {
-  return {
-    id: '1',
-    uri: annotationUri.value,
-    type: 'text',
-    content: {
-      text: textBody.value.value,
-      processingLanguage: textBody.value.language,
-    },
-  } as SourceModel;
-});
+
 const lemma = ref();
 
 const lemmaConfig: AutoCompleteConfig = {
@@ -121,6 +99,7 @@ const onSubmit = () => {
 
   const annotationId =
     properties.mode === 'create' ? null : properties.annotation.id;
+
   annotationStore.saveOrCreateAnnotation(annotationId, data);
 
   emits('closeModal', { valid: true, data });

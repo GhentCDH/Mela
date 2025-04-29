@@ -35,14 +35,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
-
 import type { TreeProp } from '../utils/tree';
 
 const open = ref(true);
 const properties = defineProps<{
   property: TreeProp;
-  source: SourceModel;
 }>();
 
 const emits = defineEmits<{
