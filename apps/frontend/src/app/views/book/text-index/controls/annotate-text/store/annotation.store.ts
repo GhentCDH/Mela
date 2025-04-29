@@ -3,7 +3,6 @@ import type {
   AnnotationType,
   TextContentDto,
 } from '@mela/text/shared';
-import { getAnnotationUri } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -19,17 +18,15 @@ import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { AnnotationUtils } from '../utils/annotations.utils';
 import { generateW3CAnnotationBlocks } from '../utils/generate-blocks';
-import { mapRelationsToLinks } from '../utils/links';
 import { SourceUtils, createSourceFromTextContent } from '../utils/source';
 import { AnnotationTester } from '../utils/tester';
 import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
-
-type SelectedIds = { textContentUri: string; annotationId: string };
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
     const filter = ref<AnnotationFilter>({
       annotationType: [],
+      annotationId: undefined,
     });
 
     // This filter is used for selection depending on an action made in the frontend. f.e. adding an example can only be an example annotation
@@ -39,28 +36,6 @@ export const useAnnotationStore = (id: string) =>
 
     const textId = ref<string>(null);
     const sources = ref<SourceModel[]>([]);
-
-    const selectedIds = ref<SelectedIds | null>(null);
-    const activeAnnotation = computed(() =>
-      AnnotationUtils(annotations.value).byId(selectedIds.value?.annotationId),
-    );
-    const activeTextContent = computed(() =>
-      SourceUtils(sources.value).getSourceByUri(
-        selectedIds.value.textContentUri,
-      ),
-    );
-
-    const activeAnnotationLinks = computed(() => {
-      const annotationId = selectedIds.value?.annotationId;
-      if (!annotationId) return [];
-
-      const sourceUri = getAnnotationUri({ id: annotationId });
-
-      return mapRelationsToLinks(
-        sourceUri,
-        annotationService.annotations.value,
-      );
-    });
 
     const newAnnotations = ref<W3CAnnotation[]>([]);
     const annotations = computed(() =>
@@ -95,27 +70,12 @@ export const useAnnotationStore = (id: string) =>
 
       newAnnotations.value = [newAnnotation];
 
-      selectAnnotation({
-        textContentUri: sourceUri,
-        annotationId: newAnnotation.id,
-      });
+      // selectAnnotation({
+      //   textContentUri: sourceUri,
+      //   annotationId: newAnnotation.id,
+      // });
 
       return newAnnotation;
-    };
-
-    const selectAnnotation = (ids: {
-      annotationId: string | undefined | null;
-      textContentUri: string | undefined | null;
-    }) => {
-      resetSelection();
-      if (!ids || !ids.textContentUri || !ids.annotationId) {
-        // TODO  showAllTranslations();
-        selectedIds.value = null;
-        return null;
-      }
-
-      selectedIds.value = ids;
-      return ids;
     };
 
     const autoGenerateBlocks = (sourceId: string) => {
@@ -134,10 +94,6 @@ export const useAnnotationStore = (id: string) =>
         w3cAnnotationsToAnnotationSelectors(newAnnotations.value),
       );
 
-    const resetSelection = () => {
-      selectedIds.value = null;
-    };
-
     const saveOrCreateAnnotation = async (
       id: string | null,
       annotation: AnnotationType,
@@ -150,6 +106,9 @@ export const useAnnotationStore = (id: string) =>
 
     const deleteAnnotation = async (annotationId: string) => {
       if (AnnotationTester({ id: annotationId }).isNew()) {
+        newAnnotations.value = newAnnotations.value.filter(
+          (a) => a.id !== annotationId,
+        );
         return;
       }
 
@@ -168,22 +127,18 @@ export const useAnnotationStore = (id: string) =>
       loading: annotationService.loading,
       sources,
       annotations: filteredAnnotations,
+      allAnnotations: annotations,
 
       init,
       saveOrCreateAnnotation,
       deleteAnnotation,
 
       createAnnotation,
-      selectAnnotation,
       autoGenerateBlocks,
       saveGeneratedBlocks,
 
       getAnnotation: (id: string) =>
         AnnotationUtils(annotations.value).byId(id),
-
-      activeAnnotation,
-      activeTextContent,
-      activeAnnotationLinks,
 
       changeFilter,
       changeSelectionFilter,

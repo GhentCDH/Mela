@@ -1,75 +1,85 @@
 <template>
   <div class="flex gap-3">
-    <div class="w-[200px]">
+    <div class="w-[300px] h-full pr-2">
       <AnnotationTree
-        :filter="store.filter"
-        @change-filter="store.changeFilter"
+        :store-id="storeId"
+        :filter="annotationStore.filter"
+        :annotations="annotationStore.annotations"
+        :chapters="bookStore.chapters"
+        :active-chapter="bookStore.chapter"
+        :sources="annotationStore.sources"
+        @change-filter="annotationStore.changeFilter"
       />
     </div>
-    <div class="flex-grow w-full">
+    <div class="flex-1 w-full">
       <GhentCdhAnnotations
         :config="annotationConfig"
-        :sources="store.sources"
-        :annotations="store.annotations"
+        :sources="annotationStore.sources"
+        :annotations="annotations"
         :annotation-actions="annotationActions"
         :selected-annotations="selectedAnnotations"
         :use-snapper="useWordSnapper"
-        :cols="store.sources.length"
+        :cols="annotationStore.sources.length"
         @on-event="eventHandler"
       />
     </div>
-    <div class="w-[500px]">
-      <template v-if="store.activeAnnotation">
+    <div class="w-[300px]">
+      <template v-if="activeAnnotationStore.activeAnnotation">
         <ActiveAnnotation
-          :active-annotation="store.activeAnnotation"
-          :links="store.activeAnnotationLinks"
+          :active-annotation="activeAnnotationStore.activeAnnotation"
+          :store-id="storeId"
+          :links="activeAnnotationStore.activeAnnotationLinks"
           :text="textStore.text"
-          :text-content="store.activeTextContent"
-          @save-annotation="saveAnnotation"
-          @delete-annotation="deleteAnnotation"
-          @close-annotation="closeAnnotation"
-          @change-select-filter="emits('changeSelectFilter', $event)"
+          :text-content="activeAnnotationStore.activeTextContent"
+          @change-select-filter="annotationStore.changeSelectionFilter"
         />
+      </template>
+      <template v-else>
+        <div class="flex flex-col gap-2">
+          <Btn
+            v-for="source of annotationStore.sources"
+            :key="source.id"
+            :outline="true"
+            @click="createAnnotation(source)"
+          >
+            Create Paragraph for
+            <strong>{{ source.content.label.toLowerCase() }}</strong>
+          </Btn>
+        </div>
       </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { SourceModel } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
-  AnnotationEventType} from '@ghentcdh/annotations/vue';
-import {
-  GhentCdhAnnotations,
-  useWordSnapper,
+  AnnotationEventType,
 } from '@ghentcdh/annotations/vue';
+import { GhentCdhAnnotations, useWordSnapper } from '@ghentcdh/annotations/vue';
+import { Btn } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { IdentifyColorMap } from '../identify.color';
 import ActiveAnnotation from './active-annotation.vue';
 import { CREATE_MODES } from './props';
+import { useActiveAnnotationStore } from './store/active-annotation.store';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
-import type { AnnotationFilter } from './utils/annotations.utils';
 import AnnotationTree from './view/annotation-tree.vue';
+import { useBookStore } from '../../../book.store';
+import { ModalSelectionService } from './view/selection/modal-selection.service';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
-
-const emits = defineEmits<{
-  deleteAnnotation: [W3CAnnotation];
-  saveAnnotation: [id: string | null, AnnotationType];
-  closeAnnotation: [];
-  changeSelectFilter: [Partial<AnnotationFilter>];
-}>();
+const bookStore = useBookStore();
 
 const annotationConfig: AnnotationConfig = {
   mapColor: (annotation) => {
@@ -78,6 +88,8 @@ const annotationConfig: AnnotationConfig = {
   },
   mapTarget: (annotation) => {
     const type = findTagging(annotation);
+    const mode = modeStore.activeMode;
+    if (mode == 'adjust_annotation') return 'text';
     return type?.value === 'paragraph' ? 'gutter' : 'text';
   },
 };
@@ -87,13 +99,13 @@ const isCreateMode = computed(() =>
 );
 
 const selectedAnnotations = computed(() => {
-  const sources = store.sources;
+  const sources = annotationStore.sources;
   const activeAnnotations = new Set();
 
-  if (store.activeAnnotation?.id) {
-    activeAnnotations.add(store.activeAnnotation?.id);
+  if (activeAnnotationStore.activeAnnotation?.id) {
+    activeAnnotations.add(activeAnnotationStore.activeAnnotation?.id);
 
-    store.activeAnnotationLinks.forEach((a) => {
+    activeAnnotationStore.activeAnnotationLinks.forEach((a) => {
       activeAnnotations.add(a.annotation.id);
       a.relations.forEach((r) => {
         activeAnnotations.add(r.id);
@@ -108,22 +120,28 @@ const selectedAnnotations = computed(() => {
   };
 });
 const annotationActions = computed(() => {
-  const sources = store.sources;
+  const sources = annotationStore.sources;
 
   return {
     [sources[0]?.uri]: {
       edit: false,
       create: isCreateMode.value,
     },
-    [sources[1]?.uri]: { edit: false, create: isCreateMode.value },
+    [sources[1]?.uri]: {
+      edit: false,
+      create: isCreateMode.value,
+    },
   };
 });
 
 // TODO add id
 const listenerStore = useAnnotationListenerStore()();
 const textStore = useTextStore();
-const store = useAnnotationStore(properties.storeId);
+const annotationStore = useAnnotationStore(properties.storeId);
+const activeAnnotationStore = useActiveAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
+
+const annotations = computed(() => annotationStore.annotations);
 
 const eventHandler = (
   e: AnnotationEventType,
@@ -138,15 +156,11 @@ const eventHandler = (
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
-      store.createAnnotation(
+      annotationStore.createAnnotation(
         payload.target,
         annotation,
         modeStore.activeMode === 'create-annotation' ? 'phrase' : 'example',
       );
-
-      break;
-    // default:
-    // console.debug('event not handled', e);
   }
 };
 
@@ -155,7 +169,7 @@ const onSelectAnnotation = async (
   textContentUri: string | null,
   annotationId: string | null,
 ) => {
-  listenerStore.onClickAnnotation(store.getAnnotation(annotationId));
+  listenerStore.onClickAnnotation(annotationStore.getAnnotation(annotationId));
 
   if (modeStore.activeMode) {
     return;
@@ -165,32 +179,23 @@ const onSelectAnnotation = async (
 
   if (!confirmed.confirmed) return;
 
-  store.selectAnnotation({ textContentUri, annotationId });
+  activeAnnotationStore.selectAnnotation({ textContentUri, annotationId });
 };
 
-const closeAnnotation = () => {
-  modeStore.changeMode(null, () => emits('closeAnnotation'));
+const createAnnotation = (source: SourceModel) => {
+  ModalSelectionService.createSelection({
+    source: source,
+    annotationType: 'paragraph',
+    storeId: properties.storeId,
+    onClose: (result) => {
+      if (result.valid) {
+        const annotation = result.data;
+        activeAnnotationStore.selectAnnotation({
+          textContentUri: source.uri,
+          annotationId: annotation.id,
+        });
+      }
+    },
+  });
 };
-
-const saveAnnotation = (id: string | null, annotation: AnnotationType) => {
-  emits('saveAnnotation', id, annotation);
-};
-
-const deleteAnnotation = (annotation: W3CAnnotation) => {
-  emits('deleteAnnotation', annotation);
-};
-
-const MD = () => {
-  const parse = (text: string) => {
-    if (!text) return text;
-
-    return text
-      .replace(/\n/g, '<br />')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<i>$1</i>');
-  };
-
-  return { parse };
-};
-const markdown = MD();
 </script>

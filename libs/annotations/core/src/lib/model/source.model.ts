@@ -8,6 +8,7 @@ export const SourceTextSchema = z.object({
   text: z.string(),
   textDirection: z.enum(['ltr', 'rtl']).default('ltr'),
   processingLanguage: z.string().default('en'),
+  label: z.string().optional(),
 });
 
 export const SourceModelSchema = z.object({

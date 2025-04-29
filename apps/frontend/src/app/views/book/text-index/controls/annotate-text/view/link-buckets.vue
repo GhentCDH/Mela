@@ -4,7 +4,6 @@
     entity="linkBucket"
     :purpose="PURPOSE_LINK_BUCKETS"
     :display-value="displayValue"
-    :annotation="activeAnnotation"
     :links="links"
     :new-link="linkBucket"
     @add-link="addLink"
@@ -30,7 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import type { AnnotationType } from '@mela/text/shared';
 import { LinkBucketsSchema, PURPOSE_LINK_BUCKETS } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
@@ -39,12 +37,13 @@ import type {
   W3CAnnotation,
 } from '@ghentcdh/annotations/core';
 import { findBodyType } from '@ghentcdh/annotations/core';
+import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, SelectComponent } from '@ghentcdh/ui';
 
-import activeAnnotation from '../active-annotation.vue';
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';
 import { useAnnotationListenerStore } from '../store/annotation-listener.store';
+import { useAnnotationStore } from '../store/annotation.store';
 import { useModeStore } from '../store/mode.store';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { findTextValue } from '../utils/translation';
@@ -63,14 +62,14 @@ type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
   text: Text;
+  storeId: string;
 };
 const properties = defineProps<Properties>();
 const emits = defineEmits<{
-  save: [string | null, AnnotationType];
-  delete: [W3CAnnotation];
   changeSelectFilter: [Partial<AnnotationFilter>];
 }>();
 
+const annotationStore = useAnnotationStore(properties.storeId);
 const linkedBucket = ref();
 
 effect(() => {
@@ -111,7 +110,7 @@ const addLink = () => {
 };
 
 const deleteAnnotation = (annotation: W3CAnnotation) => {
-  emits('delete', annotation);
+  annotationStore.deleteAnnotation(annotation.id);
 };
 
 const saveBucket = () => {
@@ -121,10 +120,11 @@ const saveBucket = () => {
     value: { linkType: linkType.value.value },
   });
 
-  emits('save', null, link);
+  annotationStore.saveOrCreateAnnotation(null, link);
 
   modeStore.resetModeNoEffect();
 
   linkedBucket.value = null;
+  emits('changeSelectFilter', {});
 };
 </script>

@@ -6,19 +6,16 @@
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
-      @save-annotation="saveAnnotation"
       @close-annotation="closeAnnotation"
-      @delete-annotation="deleteAnnotation"
-      @change-select-filter="annotationStore.changeSelectionFilter"
     />
   </div>
   <div
     v-if="modeToast"
-    class="toast toast-center"
+    class="toast toast-center z-[3000]"
   >
     <div
       role="alert"
-      class="alert alert-success bg-white"
+      class="alert border-primary bg-white"
     >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
@@ -42,7 +39,6 @@
 <script setup lang="ts">
 import { computed, effect, onMounted } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useWordSnapper } from '@ghentcdh/annotations/vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
@@ -52,12 +48,14 @@ import { useAnnotationStore } from './controls/annotate-text/store/annotation.st
 import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useTextStore } from './text.store';
 import { useBookMenuStore } from '../book-menu.store';
+import { useActiveAnnotationStore } from './controls/annotate-text/store/active-annotation.store';
 
 const textStore = useTextStore();
 // Create a new store each time we have a new text
 const storeId = `identify_and_translate_${Date.now()}`;
 
 const annotationStore = useAnnotationStore(storeId);
+const activeAnnotationStore = useActiveAnnotationStore(storeId);
 const modeStore = useModeStore();
 const bookMenuStore = useBookMenuStore();
 
@@ -71,14 +69,6 @@ effect(() => {
           label: `Generate blocks ${s.text_type}`,
           action: () => generateBlocks(s.id),
         })),
-        {
-          label: 'Create annotation',
-          action: () => createAnnotation(),
-        },
-        {
-          label: 'Create example',
-          action: () => createAnnotation('create-example'),
-        },
       ].flat(),
     },
   ];
@@ -98,29 +88,6 @@ effect(() => {
       .filter((m) => !!m)
       .concat(),
   );
-});
-
-const menuElements = computed(() => {
-  return [];
-});
-
-const breadcrumbs = computed(() => {
-  return textStore.text
-    ? [
-        {
-          label: 'Texts',
-          routerLink: 'text-index',
-        },
-        {
-          label: `${textStore.text.name} (${textStore.text.author?.name})`,
-        },
-        modeStore.activeMode
-          ? {
-              label: modeStore.activeMode,
-            }
-          : null,
-      ].filter((m) => !!m)
-    : [];
 });
 
 const modeToasts: Record<
@@ -154,6 +121,14 @@ const modeToasts: Record<
     deny: () => modeStore.resetMode(),
     text: 'Select an annotation to link',
   },
+  adjust_annotation: {
+    deny: () => {
+      annotationStore.changeSelectionFilter({});
+      modeStore.changeMode('edit');
+    },
+
+    text: 'Adjust the selected annotation',
+  },
 };
 
 const modeToast = computed(() =>
@@ -172,7 +147,7 @@ const generateBlocks = (sourceId: string) => {
 };
 
 const saveGeneratedBlocks = () => {
-  annotationStore.selectAnnotation(null);
+  activeAnnotationStore.selectAnnotation(null);
   annotationStore.saveGeneratedBlocks();
   modeStore.resetMode();
 };
@@ -183,29 +158,22 @@ const cancelGeneratedBlocks = () => {
 
 const createAnnotation = (mode: MODES = 'create-annotation') => {
   modeStore.changeMode(mode, () => {
-    annotationStore.selectAnnotation(null);
+    activeAnnotationStore.selectAnnotation(null);
     // cancelGeneratedBlocks();
   });
 };
 
-const saveAnnotation = (id: string | null, annotation: W3CAnnotation) => {
-  annotationStore.saveOrCreateAnnotation(id, annotation);
-};
-
-const deleteAnnotation = (annotation: W3CAnnotation) => {
-  annotationStore.deleteAnnotation(annotation.id);
-};
-
 onMounted(() => {
   modeStore.registerOnResetFn(() => {
-    annotationStore.selectAnnotation(null);
+    activeAnnotationStore.selectAnnotation(null);
     annotationStore.changeSelectionFilter({});
     annotationStore.cancelNewAnnotations();
   });
+  closeAnnotation();
 });
 
 const closeAnnotation = () => {
-  annotationStore.selectAnnotation(null);
+  activeAnnotationStore.selectAnnotation(null);
   annotationStore.changeSelectionFilter({});
   annotationStore.cancelNewAnnotations();
   modeStore.resetMode();

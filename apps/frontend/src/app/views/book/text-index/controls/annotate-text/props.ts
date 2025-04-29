@@ -6,7 +6,8 @@ export type MODES =
   | 'create-example'
   | 'edit'
   | 'translate'
-  | 'link_buckets';
+  | 'link_buckets'
+  | 'adjust_annotation';
 
 export const CREATE_MODES: MODES[] = ['create-annotation', 'create-example'];
 

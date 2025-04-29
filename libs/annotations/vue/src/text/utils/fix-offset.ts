@@ -1,6 +1,6 @@
 import type { Snapper } from '../../snapper';
 
-type ACTIONS = 'updateCreating' | 'confirmStartUpdating';
+type ACTIONS = 'updateCreating' | 'confirmStartUpdating' | 'confirmUpdate';
 
 type State<ACTION> = {
   newStart: number;
@@ -9,10 +9,7 @@ type State<ACTION> = {
   [key: string]: any;
 };
 
-export const fixOffset = <
-  ACTION extends 'confirmStartUpdating' | 'updateCreating',
-  STATE extends State<ACTION>,
->(
+export const fixOffset = <ACTION extends ACTIONS, STATE extends State<ACTION>>(
   updateState: STATE,
   snapper: Snapper,
   action: ACTION,

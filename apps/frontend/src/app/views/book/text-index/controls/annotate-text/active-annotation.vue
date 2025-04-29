@@ -10,49 +10,65 @@
       </div>
     </template>
     <AnnotationMetadata
+      :store-id="storeId"
       :annotation="activeAnnotation"
-      :selected-text="selectedText"
-      :text-content="textContent"
-      @save="saveAnnotation"
-      @delete="deleteAnnotationAndClose"
+      :source="textContent"
     />
-    <hr
-      v-if="isExample"
-      class="text-gray-300 my-2"
-    >
-    <LinkLemma
-      v-if="isExample"
-      :annotation="activeAnnotation"
-      :links="links"
-      :text="text"
-      :text-content="textContent"
-      @save="saveAnnotation"
-      @delete="deleteAnnotation"
-    />
-    <hr
-      v-if="isExample"
-      class="text-gray-300 my-2"
-    >
-    <LinkBuckets
-      v-if="isExample"
-      :annotation="activeAnnotation"
-      :links="links"
-      :text="text"
-      @save="saveAnnotation"
-      @delete="deleteAnnotation"
-      @change-select-filter="emits('changeSelectFilter', $event)"
-    />
+    <template v-if="isNew">
+      <ToastMessage
+        message="Save the new annotations before more actions can be performed"
+        type="warning"
+      />
+    </template>
+    <template v-else>
+      <template v-if="children.length">
+        <hr class="text-gray-300 my-2">
+        <div class="flex gap-2 flex-wrap">
+          <Btn
+            v-for="child in children"
+            :key="child.key"
+            :outline="true"
+            @click="createAnnotation(child.key)"
+          >
+            Create {{ child.label }}
+          </Btn>
+        </div>
+      </template>
 
-    <hr class="text-gray-300 my-2">
+      <hr
+        v-if="isExample"
+        class="text-gray-300 my-2"
+      >
+      <LinkLemma
+        v-if="isExample"
+        :annotation="activeAnnotation"
+        :links="links"
+        :source="textContent"
+        :store-id="storeId"
+      />
+      <hr
+        v-if="isExample"
+        class="text-gray-300 my-2"
+      >
+      <LinkBuckets
+        v-if="isExample"
+        :annotation="activeAnnotation"
+        :links="links"
+        :text="text"
+        :store-id="storeId"
+        @change-select-filter="emits('changeSelectFilter', $event)"
+      />
 
-    <Translations
-      v-if="canTranslate"
-      :annotation="activeAnnotation"
-      :links="links"
-      :text="text"
-      @save="saveAnnotation"
-      @delete="deleteAnnotation"
-    />
+      <hr class="text-gray-300 my-2">
+
+      <Translations
+        v-if="canTranslate"
+        :annotation="activeAnnotation"
+        :links="links"
+        :text="text"
+        :store-id="storeId"
+      />
+    </template>
   </Card>
 </template>
 
@@ -61,22 +77,23 @@ import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import {
-  findTagging,
-  findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
+import { findTagging } from '@ghentcdh/annotations/core';
 import type { Text } from '@ghentcdh/mela/generated/types';
-import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
+import { Btn, Card, Color, IconEnum, ToastMessage } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
+import { AnnotationTypeLabelValue } from '../identify.color';
 import type { AnnotationFilter } from './utils/annotations.utils';
-import { getTextSelection } from './utils/translation';
+import { AnnotationTester } from './utils/tester';
+import { treeOrder } from './utils/tree';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
 import LinkLemma from './view/link-lemma.vue';
+import { ModalSelectionService } from './view/selection/modal-selection.service';
 import Translations from './view/translations.vue';
 
 type Properties = {
+  storeId: string;
   activeAnnotation: W3CAnnotation;
   links: AnnotationWithRelations[];
   text: Text;
@@ -85,41 +102,34 @@ type Properties = {
 const properties = defineProps<Properties>();
 
 const emits = defineEmits<{
-  deleteAnnotation: [W3CAnnotation];
-  saveAnnotation: [string | null, AnnotationType];
   changeSelectFilter: [Partial<AnnotationFilter>];
   closeAnnotation: [];
 }>();
 
-const deleteAnnotation = (annotation: W3CAnnotation) => {
-  emits('deleteAnnotation', annotation);
-};
-const deleteAnnotationAndClose = (annotation: W3CAnnotation) => {
-  deleteAnnotation(annotation);
-  closeAnnotation();
-};
-
-const saveAnnotation = (id: null | string, annotation: AnnotationType) => {
-  emits('saveAnnotation', id, annotation);
-};
-
 const annotationType = computed(
   () => findTagging(properties.activeAnnotation).value ?? 'phrase',
 );
+
+const children = computed(() => {
+  return treeOrder[annotationType.value]
+    .filter((t) => t !== 'lemma')
+    .map((child) => AnnotationTypeLabelValue[child]);
+});
 const isExample = computed(() => annotationType.value === 'example');
 const canTranslate = computed(() => annotationType.value !== 'lemma');
 
-const textAnnotation = computed(() => ({
-  id: properties.activeAnnotation.id,
-  ...findTextPositionSelector(properties.textContent.uri)(
-    properties.activeAnnotation,
-  )?.selector,
-}));
-const selectedText = computed(() =>
-  getTextSelection(properties.textContent, textAnnotation.value),
-);
-
 const closeAnnotation = async () => {
   emits('closeAnnotation');
+};
+const isNew = computed(() => {
+  return AnnotationTester(properties.activeAnnotation).isNew();
+});
+const createAnnotation = (annotationType: AnnotationType) => {
+  ModalSelectionService.createSelection({
+    parentAnnotation: properties.activeAnnotation,
+    source: properties.textContent,
+    annotationType,
+    storeId: properties.storeId,
+  });
 };
 </script>

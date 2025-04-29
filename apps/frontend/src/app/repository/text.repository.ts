@@ -29,9 +29,5 @@ export const useTextRepository = defineStore('textRepository', () => {
     return httpRequest.post(getAnnotationUri(textId), annotation);
   };
 
-  const createAnnotations = (textId: string, annotations: W3CAnnotation[]) => {
-    return Promise.all(annotations.map((a) => createAnnotation(textId, a)));
-  };
-
   return { getDataUri, getAnnotations };
 });

@@ -36,6 +36,7 @@ export const useBookStore = defineStore('bookStore', () => {
     },
   );
   const notificationStore = useNotificationStore();
+  const chapters = computed(() => book.value?.chapter ?? []);
 
   const defaultSource = {
     language: 'gr',
@@ -100,5 +101,5 @@ export const useBookStore = defineStore('bookStore', () => {
     return textSource as TextContentDto[];
   });
 
-  return { chapter, chapterId, saveOrUpdate, sources, book };
+  return { chapter, chapterId, saveOrUpdate, sources, book, chapters };
 });

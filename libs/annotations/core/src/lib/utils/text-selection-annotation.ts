@@ -8,8 +8,8 @@ import {
   TextualBodySchema,
   W3CAnnotationSchema,
 } from '../model';
-import { updateBody } from './body.utils';
-import { updateSelector } from './target.utils';
+import { getBody, updateBody } from './body.utils';
+import { getTarget, updateSelector } from './target.utils';
 
 type AnnotationUpdate = Pick<TextAnnotation, 'start' | 'end'> & { id?: string };
 
@@ -91,6 +91,39 @@ export const createTextSelectionAnnotation = <TEXT_TYPE>(
       createTextualBody(content.text, sourceUri, language, annotation),
     ],
     target: [createTextPositionSelector(sourceUri, language, annotation)],
+  });
+};
+
+export const updateTextSelectionAnnotation = <TEXT_TYPE>(
+  originalAnnotation: W3CAnnotation,
+  text: SourceModel,
+  annotation: AnnotationUpdate,
+): W3CAnnotation => {
+  // TODO add prefix and suffix from the text
+  const { uri: sourceUri, content } = text;
+  const { processingLanguage: language } = content;
+
+  const textualBody = createTextualBody(
+    content.text,
+    sourceUri,
+    language,
+    annotation,
+  );
+  const textPositionSelector = createTextPositionSelector(
+    sourceUri,
+    language,
+    annotation,
+  );
+
+  return W3CAnnotationSchema.parse({
+    // The W3C Annotation model
+    ...originalAnnotation,
+    body: getBody(originalAnnotation).map((b) =>
+      b.type === textualBody.type ? textualBody : b,
+    ),
+    target: getTarget(originalAnnotation).map((t) =>
+      t.type === textPositionSelector.type ? textPositionSelector : t,
+    ),
   });
 };
 

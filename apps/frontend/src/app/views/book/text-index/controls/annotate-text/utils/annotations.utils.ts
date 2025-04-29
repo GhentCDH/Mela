@@ -6,12 +6,16 @@ import type { Annotation } from '@ghentcdh/mela/generated/types';
 
 export type AnnotationFilter = {
   annotationType?: AnnotationMetadataType[];
+  annotationId?: string;
 };
 
 const filterAnnotation = (
   annotation: W3CAnnotation,
   filter: AnnotationFilter,
 ) => {
+  if (filter.annotationId) {
+    return filter.annotationId === annotation.id;
+  }
   if (filter.annotationType && filter.annotationType.length > 0) {
     const type = findTagging(annotation)?.value as AnnotationMetadataType;
 

@@ -1,6 +1,26 @@
 import { createAnnotationColors } from '@ghentcdh/annotations/vue';
 
-const Colors = {
+export type AnnotationType =
+  | 'title'
+  | 'subtitle'
+  | 'paragraph'
+  | 'phrase'
+  | 'example'
+  | 'lemma';
+
+export const AnnotationTypeLabelValue: Record<
+  AnnotationType,
+  { key: AnnotationType; label: string }
+> = {
+  title: { key: 'title', label: 'Title' },
+  subtitle: { key: 'subtitle', label: 'SubTitle' },
+  paragraph: { key: 'paragraph', label: 'Paragraph' },
+  phrase: { key: 'phrase', label: 'Phrase' },
+  example: { key: 'example', label: 'Example' },
+  lemma: { key: 'lemma', label: 'Lemma' },
+};
+
+const Colors: Record<AnnotationType, string> = {
   title: '#dd7777', // pastel red
   subtitle: '#FFB74D', // pastel orange
   paragraph: '#4d88ff', // pastel blue
@@ -19,6 +39,10 @@ export const IdentifyColorMap = createAnnotationColors(Colors, {
   },
 });
 
+// TODO delete whenever unused
+/**
+ * @deprecated use AnnotationTypeLabelValue
+ */
 export const IdentifyColor = [
   { label: 'Title', id: 'title' },
   { label: 'SubTitle', id: 'subtitle' },

@@ -80,6 +80,7 @@ const onSubmit = () => {
   bookStore.saveOrUpdate(formData.value).then(() => {
     formData.value = bookStore.chapter;
   });
+  alert('Chapter saved, for now the annotations are not updated');
 };
 
 const goToAnnotations = () => {
