@@ -1,22 +1,13 @@
 <template>
-  <div
-    v-if="textStore.text"
-    class="mt-2"
-  >
+  <div v-if="textStore.text" class="mt-2">
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div
-    v-if="modeToast"
-    class="toast toast-center z-[3000]"
-  >
-    <div
-      role="alert"
-      class="alert border-primary bg-white"
-    >
+  <div v-if="modeToast" class="toast toast-center z-[3000]">
+    <div role="alert" class="alert border-primary bg-white">
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -26,12 +17,7 @@
         >
           Close
         </Btn>
-        <Btn
-          v-if="modeToast.save"
-          @click="modeToast.save"
-        >
-          Save
-        </Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
       </div>
     </div>
   </div>
@@ -48,12 +34,14 @@ import { useAnnotationStore } from './controls/annotate-text/store/annotation.st
 import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useTextStore } from './text.store';
 import { useBookMenuStore } from '../book-menu.store';
+import { useActiveAnnotationStore } from './controls/annotate-text/store/active-annotation.store';
 
 const textStore = useTextStore();
 // Create a new store each time we have a new text
 const storeId = `identify_and_translate_${Date.now()}`;
 
 const annotationStore = useAnnotationStore(storeId);
+const activeAnnotationStore = useActiveAnnotationStore(storeId);
 const modeStore = useModeStore();
 const bookMenuStore = useBookMenuStore();
 
@@ -153,7 +141,7 @@ const generateBlocks = (sourceId: string) => {
 };
 
 const saveGeneratedBlocks = () => {
-  annotationStore.selectAnnotation(null);
+  activeAnnotationStore.selectAnnotation(null);
   annotationStore.saveGeneratedBlocks();
   modeStore.resetMode();
 };
@@ -164,21 +152,22 @@ const cancelGeneratedBlocks = () => {
 
 const createAnnotation = (mode: MODES = 'create-annotation') => {
   modeStore.changeMode(mode, () => {
-    annotationStore.selectAnnotation(null);
+    activeAnnotationStore.selectAnnotation(null);
     // cancelGeneratedBlocks();
   });
 };
 
 onMounted(() => {
   modeStore.registerOnResetFn(() => {
-    annotationStore.selectAnnotation(null);
+    activeAnnotationStore.selectAnnotation(null);
     annotationStore.changeSelectionFilter({});
     annotationStore.cancelNewAnnotations();
   });
+  closeAnnotation();
 });
 
 const closeAnnotation = () => {
-  annotationStore.selectAnnotation(null);
+  activeAnnotationStore.selectAnnotation(null);
   annotationStore.changeSelectionFilter({});
   annotationStore.cancelNewAnnotations();
   modeStore.resetMode();
