@@ -106,6 +106,9 @@ export const useAnnotationStore = (id: string) =>
 
     const deleteAnnotation = async (annotationId: string) => {
       if (AnnotationTester({ id: annotationId }).isNew()) {
+        newAnnotations.value = newAnnotations.value.filter(
+          (a) => a.id !== annotationId,
+        );
         return;
       }
 

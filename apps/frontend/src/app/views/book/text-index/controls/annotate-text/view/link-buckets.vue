@@ -37,6 +37,7 @@ import type {
   W3CAnnotation,
 } from '@ghentcdh/annotations/core';
 import { findBodyType } from '@ghentcdh/annotations/core';
+import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, SelectComponent } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';

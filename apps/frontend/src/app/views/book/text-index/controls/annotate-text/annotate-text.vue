@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-3">
-    <div class="w-[300px]">
+    <div class="w-[300px] h-full pr-2">
       <AnnotationTree
         :store-id="storeId"
         :filter="annotationStore.filter"
@@ -11,7 +11,7 @@
         @change-filter="annotationStore.changeFilter"
       />
     </div>
-    <div class="flex-grow w-full">
+    <div class="flex-1 w-full">
       <GhentCdhAnnotations
         :config="annotationConfig"
         :sources="annotationStore.sources"
@@ -23,7 +23,7 @@
         @on-event="eventHandler"
       />
     </div>
-    <div class="w-[500px]">
+    <div class="w-[300px]">
       <template v-if="activeAnnotationStore.activeAnnotation">
         <ActiveAnnotation
           :active-annotation="activeAnnotationStore.activeAnnotation"
@@ -34,6 +34,17 @@
           @change-select-filter="annotationStore.changeSelectionFilter"
         />
       </template>
+      <template v-else>
+        <div class="flex flex-col gap-2">
+          <Btn
+            v-for="source of annotationStore.sources"
+            :key="source.id"
+            @click="createAnnotation(source)"
+          >
+            Create Paragraph for {{ source.content.label }}
+          </Btn>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -41,11 +52,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+import type { SourceModel } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
 import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
   AnnotationEventType,
+  Btn,
 } from '@ghentcdh/annotations/vue';
 import { GhentCdhAnnotations, useWordSnapper } from '@ghentcdh/annotations/vue';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
@@ -60,14 +73,11 @@ import { useModeStore } from './store/mode.store';
 import { useTextStore } from '../../text.store';
 import AnnotationTree from './view/annotation-tree.vue';
 import { useBookStore } from '../../../book.store';
+import { ModalSelectionService } from './view/selection/modal-selection.service';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
 const bookStore = useBookStore();
-
-const emits = defineEmits<{
-  closeAnnotation: [];
-}>();
 
 const annotationConfig: AnnotationConfig = {
   mapColor: (annotation) => {
@@ -170,7 +180,12 @@ const onSelectAnnotation = async (
   activeAnnotationStore.selectAnnotation({ textContentUri, annotationId });
 };
 
-const selectAnnotation = (annotationId: string, textContentUri: string) => {
-  activeAnnotationStore.selectAnnotation({ annotationId, textContentUri });
+const createAnnotation = (source: SourceModel) => {
+  ModalSelectionService.createSelection({
+    source: source,
+    text: textStore.text,
+    annotationType: 'paragraph',
+    storeId: properties.storeId,
+  });
 };
 </script>

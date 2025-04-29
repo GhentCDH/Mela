@@ -24,7 +24,7 @@ import { ModalSelectionService } from './selection/modal-selection.service';
 type Properties = {
   annotation: W3CAnnotation;
   links: AnnotationWithRelations[];
-  textContent: SourceModel;
+  source: SourceModel;
   storeId: string;
 };
 const properties = defineProps<Properties>();
@@ -40,8 +40,8 @@ const displayValue = (link: AnnotationWithRelations): string => {
 
 const addLink = () => {
   ModalSelectionService.createLemma({
-    annotation: properties.annotation,
-    textContent: properties.textContent,
+    parentAnnotation: properties.annotation,
+    source: properties.source,
     storeId: properties.storeId,
   });
 };

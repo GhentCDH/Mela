@@ -69,14 +69,6 @@ effect(() => {
           label: `Generate blocks ${s.text_type}`,
           action: () => generateBlocks(s.id),
         })),
-        {
-          label: 'Create annotation',
-          action: () => createAnnotation(),
-        },
-        {
-          label: 'Create example',
-          action: () => createAnnotation('create-example'),
-        },
       ].flat(),
     },
   ];

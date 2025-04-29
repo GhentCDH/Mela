@@ -14,51 +14,60 @@
       :annotation="activeAnnotation"
       :source="textContent"
     />
-    <template v-if="children.length">
-      <hr class="text-gray-300 my-2">
-      <div class="flex gap-2 flex-wrap">
-        <Btn
-          v-for="child in children"
-          :key="child.key"
-          @click="createAnnotation(child.key)"
-        >
-          Create {{ child.label }}
-        </Btn>
-      </div>
+    <template v-if="isNew">
+      <ToastMessage
+        message="Save the new annotations before more actions can be performed"
+        type="warning"
+      />
     </template>
-    <hr
-      v-if="isExample"
-      class="text-gray-300 my-2"
-    >
-    <LinkLemma
-      v-if="isExample"
-      :annotation="activeAnnotation"
-      :links="links"
-      :text-content="textContent"
-      :store-id="storeId"
-    />
-    <hr
-      v-if="isExample"
-      class="text-gray-300 my-2"
-    >
-    <LinkBuckets
-      v-if="isExample"
-      :annotation="activeAnnotation"
-      :links="links"
-      :text="text"
-      :store-id="storeId"
-      @change-select-filter="emits('changeSelectFilter', $event)"
-    />
+    <template v-else>
+      <template v-if="children.length">
+        <hr class="text-gray-300 my-2">
+        <div class="flex gap-2 flex-wrap">
+          <Btn
+            v-for="child in children"
+            :key="child.key"
+            @click="createAnnotation(child.key)"
+          >
+            Create {{ child.label }}
+          </Btn>
+        </div>
+      </template>
 
-    <hr class="text-gray-300 my-2">
+      <hr
+        v-if="isExample"
+        class="text-gray-300 my-2"
+      >
+      <LinkLemma
+        v-if="isExample"
+        :annotation="activeAnnotation"
+        :links="links"
+        :source="textContent"
+        :store-id="storeId"
+      />
+      <hr
+        v-if="isExample"
+        class="text-gray-300 my-2"
+      >
+      <LinkBuckets
+        v-if="isExample"
+        :annotation="activeAnnotation"
+        :links="links"
+        :text="text"
+        :store-id="storeId"
+        @change-select-filter="emits('changeSelectFilter', $event)"
+      />
 
-    <Translations
-      v-if="canTranslate"
-      :annotation="activeAnnotation"
-      :links="links"
-      :text="text"
-      :store-id="storeId"
-    />
+      <hr class="text-gray-300 my-2">
+
+      <Translations
+        v-if="canTranslate"
+        :annotation="activeAnnotation"
+        :links="links"
+        :text="text"
+        :store-id="storeId"
+      />
+    </template>
   </Card>
 </template>
 
@@ -69,11 +78,12 @@ import { computed } from 'vue';
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import { findTagging } from '@ghentcdh/annotations/core';
 import type { Text } from '@ghentcdh/mela/generated/types';
-import { Btn, Card, Color, IconEnum } from '@ghentcdh/ui';
+import { Btn, Card, Color, IconEnum, ToastMessage } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
 import { AnnotationTypeLabelValue } from '../identify.color';
 import type { AnnotationFilter } from './utils/annotations.utils';
+import { AnnotationTester } from './utils/tester';
 import { treeOrder } from './utils/tree';
 import AnnotationMetadata from './view/annotation-metadata.vue';
 import LinkBuckets from './view/link-buckets.vue';
@@ -110,11 +120,13 @@ const canTranslate = computed(() => annotationType.value !== 'lemma');
 const closeAnnotation = async () => {
   emits('closeAnnotation');
 };
-
+const isNew = computed(() => {
+  return AnnotationTester(properties.activeAnnotation).isNew();
+});
 const createAnnotation = (annotationType: AnnotationType) => {
   ModalSelectionService.createSelection({
-    annotation: properties.activeAnnotation,
-    textContent: properties.textContent,
+    parentAnnotation: properties.activeAnnotation,
+    source: properties.textContent,
     annotationType,
     storeId: properties.storeId,
   });

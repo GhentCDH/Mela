@@ -36,18 +36,16 @@
 import { findExampleMetaData } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type {
-  SourceModel,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
   findTagging,
-  findTextPositionSelector
+  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import { ModalSelectionService } from './selection/modal-selection.service';
-import type { AnnotationType} from '../../identify.color';
+import type { AnnotationType } from '../../identify.color';
 import { AnnotationTypeLabelValue } from '../../identify.color';
 import { getTextSelection } from '../utils/translation';
 
@@ -100,8 +98,9 @@ const deleteAnnotation = () => {
 const editAnnotation = () => {
   ModalSelectionService.editSelection({
     // TODO parent
+    parentAnnotation: properties.annotation,
     annotation: properties.annotation,
-    textContent: properties.textContent,
+    source: properties.source,
     annotationType,
     storeId: properties.storeId,
   });

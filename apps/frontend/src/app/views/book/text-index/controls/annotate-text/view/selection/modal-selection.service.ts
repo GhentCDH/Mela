@@ -7,7 +7,6 @@ import type {
 } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
 import ExampleSelectionModal from './example-selection.modal.vue';
-import type { LinkLemmaModalResult } from './lema-selection-modal';
 import LemaSelectionModal from './lema-selection-modal.vue';
 import type { AnnotationType } from '../../../identify.color';
 
@@ -24,7 +23,7 @@ export class ModalSelectionService {
   static createSelection(
     props: Pick<
       AnnotationSelectionModalProps,
-      'annotation' | 'textContent' | 'annotationType' | 'storeId'
+      'parentAnnotation' | 'source' | 'annotationType' | 'storeId'
     >,
   ) {
     const component = modalSelection[props.annotationType];
@@ -49,8 +48,8 @@ export class ModalSelectionService {
   static editSelection(
     props: Pick<
       AnnotationSelectionModalProps,
-      'annotation' | 'textContent' | 'annotationType' | 'storeId'
-    > & { parent: W3CAnnotation },
+      'source' | 'annotationType' | 'storeId'
+    > & { parentAnnotation: W3CAnnotation; annotation: W3CAnnotation },
   ) {
     alert('implement me');
     const component = modalSelection[props.annotationType];
@@ -73,15 +72,15 @@ export class ModalSelectionService {
   }
 
   static createLemma(
-    props: Pick<LemaSelectionModal, 'annotation' | 'textContent' | 'storeId'>,
+    props: Pick<LemaSelectionModal, 'parentAnnotation' | 'source' | 'storeId'>,
   ) {
-    ModalService.openModal<LemaSelectionModal, LinkLemmaModalResult>({
+    ModalService.openModal<LemaSelectionModal, AnnotationSelectionModalResult>({
       component: LemaSelectionModal,
       props: {
         ...props,
         mode: 'create',
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onClose: (result: LinkLemmaModalResult) => {},
+        onClose: (result: AnnotationSelectionModalResult) => {},
       },
     });
   }

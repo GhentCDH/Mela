@@ -8,8 +8,8 @@ import type { AnnotationType as type } from '../../../identify.color';
 export type AnnotationSelectionModalProps = {
   onClose: (result: AnnotationSelectionModalResult) => void;
   parentAnnotation?: W3CAnnotation;
-  annotation: W3CAnnotation;
-  textContent: SourceModel;
+  annotation?: W3CAnnotation;
+  source: SourceModel;
   annotationType: type;
   storeId: string;
   schema?: z.Schema<AnnotationType>;
@@ -21,7 +21,7 @@ export type ExampleSelectionModalProps = {
   onClose: (result: AnnotationSelectionModalResult) => void;
   parentAnnotation?: W3CAnnotation;
   annotation: W3CAnnotation;
-  textContent: SourceModel;
+  source: SourceModel;
   storeId: string;
   mode?: 'create' | 'edit';
 };

@@ -14,7 +14,6 @@
         :uischema="ExampleFormSchema.schema.form.uiSchema"
         @valid="changeValid"
       />
-      {{ exampleMetadata }}
     </template>
     <template #custom-actions>
       <Btn
@@ -64,7 +63,7 @@ const onSubmit = () => {
     selection.value,
     'example',
     properties.annotation,
-    properties.textContent,
+    properties.source,
     schema,
     { example: exampleMetadata.value },
   );

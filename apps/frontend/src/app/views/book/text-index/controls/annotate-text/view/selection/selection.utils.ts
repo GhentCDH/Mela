@@ -10,7 +10,7 @@ import type { AnnotationType as type } from '../../../identify.color';
 export const createSelection = (
   selection: AnnotationStartEnd,
   annotationType: type,
-  annotation: W3CAnnotation,
+  annotation?: W3CAnnotation,
   sourceModel: SourceModel,
   schema: z.Schema<AnnotationType>,
   extraData: Record<string, any> = {},
@@ -18,12 +18,12 @@ export const createSelection = (
   selection.tagging = annotationType;
 
   // Add the original start and endpoint
-  const selector = findTextPositionSelector(sourceModel.uri)(
-    annotation,
-  )?.selector;
+  const selector = annotation
+    ? findTextPositionSelector(sourceModel.uri)(annotation)?.selector
+    : null;
 
-  selection.start += selector.start;
-  selection.end += selector.start;
+  selection.start += selector?.start ?? 0;
+  selection.end += selector?.start ?? 0;
 
   const annotationData = {
     annotation: selection,

@@ -92,9 +92,20 @@ const selectLabel =
     ? `Adjust ${type.label} selection`
     : `Select ${type.label} selection`;
 
-const textBody = computed(() => findTextValue(properties.annotation));
-const annotationUri = computed(() => getAnnotationUri(properties.annotation));
+const textBody = computed(() => findTextValue(properties.parentAnnotation));
+const annotationUri = computed(() =>
+  getAnnotationUri(properties.parentAnnotation),
+);
+
 const source = computed(() => {
+  if (!properties.parentAnnotation)
+    return {
+      ...properties.source,
+      id: '1',
+      uri: annotationUri.value,
+      type: 'text',
+    };
+
   return {
     id: '1',
     uri: annotationUri.value,
@@ -149,6 +160,7 @@ const eventHandler = (
 
 const annotations = computed(() => {
   if (!selection.value) {
+    createSelection;
     return [];
   }
   return [
@@ -169,13 +181,12 @@ const onSubmit = () => {
   const data = createSelection(
     selection.value,
     properties.annotationType,
-    properties.annotation,
-    properties.textContent,
+    properties.parentAnnotation,
+    properties.source,
     properties.schema,
   );
 
-  const annotationId =
-    properties.mode === 'create' ? null : properties.annotation.id;
+  const annotationId = properties.annotation?.id ?? null;
   annotationStore.saveOrCreateAnnotation(annotationId, data);
 
   emits('closeModal', { valid: true, data });

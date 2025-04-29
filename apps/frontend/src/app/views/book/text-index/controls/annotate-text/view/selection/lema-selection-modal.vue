@@ -14,20 +14,10 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      <Btn
-        :icon="IconEnum.Plus"
-        @click="createLemma"
-      >
-        Create new Lemma
-      </Btn>
+      <Btn :icon="IconEnum.Plus" @click="createLemma"> Create new Lemma </Btn>
     </template>
     <template #custom-actions>
-      <Btn
-        :disabled="!selection || !lemma?.id"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="!selection || !lemma?.id" @click="onSubmit"> Save </Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
@@ -37,18 +27,17 @@ import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
   LemmaFormSchema,
-  getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
 import {
   type FormModalResult,
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  type AutoCompleteConfig,
   Autocomplete,
+  type AutoCompleteConfig,
   Btn,
   IconEnum,
 } from '@ghentcdh/ui';
@@ -58,17 +47,13 @@ import type { LemaSelectionModalProps } from './lema-selection-modal';
 import { createSelection } from './selection.utils';
 import { useLemmaRepository } from '../../../../../../../repository/lemma.repository';
 import { useAnnotationStore } from '../../store/annotation.store';
-import { findTextValue } from '../../utils/translation';
 
 const properties = defineProps<LemaSelectionModalProps>();
-
 const selection = ref<AnnotationStartEnd>();
 const schema = AnnotationExampleLemmaSchema;
 
 const emits = defineEmits(['closeModal']);
 const annotationStore = useAnnotationStore(properties.storeId);
-const textBody = computed(() => findTextValue(properties.annotation));
-const annotationUri = computed(() => getAnnotationUri(properties.annotation));
 
 const lemma = ref();
 
@@ -98,17 +83,16 @@ const onSubmit = () => {
   const data = createSelection(
     selection.value,
     'lemma',
-    properties.annotation,
-    properties.textContent,
+    properties.parentAnnotation,
+    properties.source,
     schema,
     {
       lemma: lemma.value,
-      exampleAnnotation: pick(properties.annotation, 'id'),
+      exampleAnnotation: pick(properties.parentAnnotation, 'id'),
     },
   );
 
-  const annotationId =
-    properties.mode === 'create' ? null : properties.annotation.id;
+  const annotationId = properties.annotation?.id ?? null;
 
   annotationStore.saveOrCreateAnnotation(annotationId, data);
 
