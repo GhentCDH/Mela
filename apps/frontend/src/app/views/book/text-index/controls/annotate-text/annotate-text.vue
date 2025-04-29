@@ -2,13 +2,13 @@
   <div class="flex gap-3">
     <div class="w-[300px]">
       <AnnotationTree
+        :store-id="storeId"
         :filter="annotationStore.filter"
         :annotations="annotationStore.annotations"
         :chapters="bookStore.chapters"
         :active-chapter="bookStore.chapter"
         :sources="annotationStore.sources"
         @change-filter="annotationStore.changeFilter"
-        @select-annotation="selectAnnotation"
       />
     </div>
     <div class="flex-grow w-full">

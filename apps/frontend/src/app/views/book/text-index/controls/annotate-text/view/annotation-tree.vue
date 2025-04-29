@@ -11,9 +11,9 @@
     <annotation-source-tree
       v-for="source in sources"
       :key="source.uri"
+      :store-id="storeId"
       :source="source"
       :annotations="annotations"
-      @select-annotation="emits('select-annotation', $event, source.uri)"
     />
   </ul>
 </template>
@@ -40,11 +40,11 @@ const properties = defineProps<{
   activeChapter: Chapter;
   annotations: W3CAnnotation[];
   sources: SourceModel[];
+  storeId: string;
 }>();
 
 const emits = defineEmits<{
   changeFilter: [AnnotationFilter];
-  selectAnnotation: [string];
 }>();
 
 const changeFilter = () => {
