@@ -39,9 +39,11 @@
           <Btn
             v-for="source of annotationStore.sources"
             :key="source.id"
+            :outline="true"
             @click="createAnnotation(source)"
           >
-            Create Paragraph for {{ source.content.label }}
+            Create Paragraph for
+            <strong>{{ source.content.label.toLowerCase() }}</strong>
           </Btn>
         </div>
       </template>
@@ -58,9 +60,9 @@ import type {
   AnnotationConfig,
   AnnotationEventHandlerPayloadData,
   AnnotationEventType,
-  Btn,
 } from '@ghentcdh/annotations/vue';
 import { GhentCdhAnnotations, useWordSnapper } from '@ghentcdh/annotations/vue';
+import { Btn } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import { IdentifyColorMap } from '../identify.color';
@@ -183,9 +185,17 @@ const onSelectAnnotation = async (
 const createAnnotation = (source: SourceModel) => {
   ModalSelectionService.createSelection({
     source: source,
-    text: textStore.text,
     annotationType: 'paragraph',
     storeId: properties.storeId,
+    onClose: (result) => {
+      if (result.valid) {
+        const annotation = result.data;
+        activeAnnotationStore.selectAnnotation({
+          textContentUri: source.uri,
+          annotationId: annotation.id,
+        });
+      }
+    },
   });
 };
 </script>

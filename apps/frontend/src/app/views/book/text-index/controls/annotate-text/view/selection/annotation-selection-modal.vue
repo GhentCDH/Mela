@@ -80,6 +80,7 @@ const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
   mode: 'create',
   enableSave: true,
   schema: AnnotationSelectorSchema,
+  onClose: () => {},
 });
 const emits = defineEmits(['closeModal']);
 
@@ -93,22 +94,13 @@ const selectLabel =
     : `Select ${type.label} selection`;
 
 const textBody = computed(() => findTextValue(properties.parentAnnotation));
-const annotationUri = computed(() =>
-  getAnnotationUri(properties.parentAnnotation),
-);
 
 const source = computed(() => {
-  if (!properties.parentAnnotation)
-    return {
-      ...properties.source,
-      id: '1',
-      uri: annotationUri.value,
-      type: 'text',
-    };
+  if (!properties.parentAnnotation) return properties.source;
 
   return {
     id: '1',
-    uri: annotationUri.value,
+    uri: getAnnotationUri(properties.parentAnnotation),
     type: 'text',
     content: {
       text: textBody.value.value,
@@ -119,11 +111,6 @@ const source = computed(() => {
 });
 
 const sources = computed(() => {
-  const tb = textBody.value;
-  if (!tb) {
-    return [];
-  }
-
   return [source.value];
 });
 
@@ -131,7 +118,7 @@ const selection = defineModel<AnnotationStartEnd>();
 
 const annotationActions = computed(() => {
   return {
-    [annotationUri.value]: {
+    [source.value.uri]: {
       edit: false,
       create: true,
     },
@@ -160,7 +147,7 @@ const eventHandler = (
 
 const annotations = computed(() => {
   if (!selection.value) {
-    createSelection;
+    // createSelection;
     return [];
   }
   return [
@@ -177,7 +164,7 @@ const onCancel = () => {
   emits('closeModal', null);
 };
 
-const onSubmit = () => {
+const onSubmit = async () => {
   const data = createSelection(
     selection.value,
     properties.annotationType,
@@ -187,9 +174,12 @@ const onSubmit = () => {
   );
 
   const annotationId = properties.annotation?.id ?? null;
-  annotationStore.saveOrCreateAnnotation(annotationId, data);
+  const annotation = await annotationStore.saveOrCreateAnnotation(
+    annotationId,
+    data,
+  );
 
-  emits('closeModal', { valid: true, data });
+  emits('closeModal', { valid: true, data: annotation });
 };
 
 const disabled = computed(() => {

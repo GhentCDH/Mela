@@ -40,16 +40,25 @@ export class AnnotationService {
 
   public async create(newAnnotations: AnnotationType) {
     this.loading.value = true;
-    await this.annotationRepository.create(newAnnotations);
+    const createdAnnotation =
+      await this.annotationRepository.create(newAnnotations);
 
-    return this.reload();
+    void this.reload();
+
+    return createdAnnotation;
   }
 
   public async patch(annotationId: string, annotation: AnnotationType) {
     this.loading.value = true;
-    await this.annotationRepository.patch(annotationId, annotation);
 
-    return this.reload();
+    const createdAnnotation = await this.annotationRepository.patch(
+      annotationId,
+      annotation,
+    );
+
+    void this.reload();
+
+    return createdAnnotation;
   }
 
   public async delete(annotationId: string) {

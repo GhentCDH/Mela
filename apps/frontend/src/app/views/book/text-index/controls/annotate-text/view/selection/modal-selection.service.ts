@@ -24,7 +24,7 @@ export class ModalSelectionService {
     props: Pick<
       AnnotationSelectionModalProps,
       'parentAnnotation' | 'source' | 'annotationType' | 'storeId'
-    >,
+    > & { onClose?: (result: AnnotationSelectionModalResult) => void },
   ) {
     const component = modalSelection[props.annotationType];
 
@@ -39,8 +39,10 @@ export class ModalSelectionService {
       props: {
         ...props,
         mode: 'create',
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onClose: (result: AnnotationSelectionModalResult) => {},
+         
+        onClose: (result: AnnotationSelectionModalResult) => {
+          props.onClose?.(result);
+        },
       },
     });
   }
@@ -49,7 +51,9 @@ export class ModalSelectionService {
     props: Pick<
       AnnotationSelectionModalProps,
       'source' | 'annotationType' | 'storeId'
-    > & { parentAnnotation: W3CAnnotation; annotation: W3CAnnotation },
+    > & { parentAnnotation: W3CAnnotation; annotation: W3CAnnotation } & {
+      onClose?: (result: AnnotationSelectionModalResult) => void;
+    },
   ) {
     alert('implement me');
     const component = modalSelection[props.annotationType];
@@ -65,22 +69,29 @@ export class ModalSelectionService {
       props: {
         ...props,
         mode: 'edit',
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onClose: (result: AnnotationSelectionModalResult) => {},
+        onClose: (result: AnnotationSelectionModalResult) => {
+          props.onClose?.(result);
+        },
       },
     });
   }
 
   static createLemma(
-    props: Pick<LemaSelectionModal, 'parentAnnotation' | 'source' | 'storeId'>,
+    props: Pick<
+      LemaSelectionModal,
+      'parentAnnotation' | 'source' | 'storeId'
+    > & {
+      onClose?: (result: AnnotationSelectionModalResult) => void;
+    },
   ) {
     ModalService.openModal<LemaSelectionModal, AnnotationSelectionModalResult>({
       component: LemaSelectionModal,
       props: {
         ...props,
         mode: 'create',
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onClose: (result: AnnotationSelectionModalResult) => {},
+        onClose: (result: AnnotationSelectionModalResult) => {
+          props.onClose?.(result);
+        },
       },
     });
   }

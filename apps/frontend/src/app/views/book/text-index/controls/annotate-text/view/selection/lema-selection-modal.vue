@@ -14,10 +14,20 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      <Btn :icon="IconEnum.Plus" @click="createLemma"> Create new Lemma </Btn>
+      <Btn
+        :icon="IconEnum.Plus"
+        @click="createLemma"
+      >
+        Create new Lemma
+      </Btn>
     </template>
     <template #custom-actions>
-      <Btn :disabled="!selection || !lemma?.id" @click="onSubmit"> Save </Btn>
+      <Btn
+        :disabled="!selection || !lemma?.id"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
@@ -36,8 +46,8 @@ import {
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  Autocomplete,
   type AutoCompleteConfig,
+  Autocomplete,
   Btn,
   IconEnum,
 } from '@ghentcdh/ui';
@@ -79,7 +89,7 @@ const createLemma = () => {
   });
 };
 
-const onSubmit = () => {
+const onSubmit = async () => {
   const data = createSelection(
     selection.value,
     'lemma',
@@ -94,7 +104,10 @@ const onSubmit = () => {
 
   const annotationId = properties.annotation?.id ?? null;
 
-  annotationStore.saveOrCreateAnnotation(annotationId, data);
+  const annotation = await annotationStore.saveOrCreateAnnotation(
+    annotationId,
+    data,
+  );
 
   emits('closeModal', { valid: true, data });
 };

@@ -27,6 +27,7 @@
           <Btn
             v-for="child in children"
             :key="child.key"
+            :outline="true"
             @click="createAnnotation(child.key)"
           >
             Create {{ child.label }}

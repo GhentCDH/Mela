@@ -58,7 +58,7 @@ const changeValid = (v: boolean) => {
   valid.value = v;
 };
 
-const onSubmit = () => {
+const onSubmit = async () => {
   const data = createSelection(
     selection.value,
     'example',
@@ -70,7 +70,10 @@ const onSubmit = () => {
 
   const annotationId =
     properties.mode === 'create' ? null : properties.annotation.id;
-  annotationStore.saveOrCreateAnnotation(annotationId, data);
+  const annotation = await annotationStore.saveOrCreateAnnotation(
+    annotationId,
+    data,
+  );
 
   emits('closeModal', { valid: true, data });
 };

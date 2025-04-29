@@ -1,18 +1,17 @@
-import type { AnnotationType } from '@mela/text/shared';
 import type z from 'zod';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
-import type { AnnotationType as type } from '../../../identify.color';
+import type { AnnotationType as Type } from '../../../identify.color';
 
 export type AnnotationSelectionModalProps = {
   onClose: (result: AnnotationSelectionModalResult) => void;
   parentAnnotation?: W3CAnnotation;
   annotation?: W3CAnnotation;
   source: SourceModel;
-  annotationType: type;
+  annotationType: Type;
   storeId: string;
-  schema?: z.Schema<AnnotationType>;
+  schema?: z.ZodRawShape;
   mode?: 'create' | 'edit';
   enableSave?: boolean;
 };
@@ -27,6 +26,6 @@ export type ExampleSelectionModalProps = {
 };
 
 export type AnnotationSelectionModalResult<DATA = any> = {
-  data: any;
+  data: W3CAnnotation;
   valid: boolean;
 };
