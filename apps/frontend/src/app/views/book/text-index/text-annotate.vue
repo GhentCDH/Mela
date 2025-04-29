@@ -1,13 +1,22 @@
 <template>
-  <div v-if="textStore.text" class="mt-2">
+  <div
+    v-if="textStore.text"
+    class="mt-2"
+  >
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center z-[3000]">
-    <div role="alert" class="alert border-primary bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center z-[3000]"
+  >
+    <div
+      role="alert"
+      class="alert border-primary bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -17,7 +26,12 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save </Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>
