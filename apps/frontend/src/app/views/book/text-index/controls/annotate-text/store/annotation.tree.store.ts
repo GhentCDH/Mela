@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia';
 import { computed } from 'vue';
+
+import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+
 import { useAnnotationStore } from './annotation.store';
 import { AnnotationTree } from '../utils/tree';
-import { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 
 class AnnotationTrees {
   private readonly annotationTreeMap: Map<string, AnnotationTree>;
@@ -19,6 +21,13 @@ class AnnotationTrees {
 
   getTree(sourceId: string) {
     return this.annotationTreeMap.get(sourceId)?.tree ?? [];
+  }
+
+  getParent(sourceId: string, annotationId: string) {
+    return (
+      this.annotationTreeMap.get(sourceId)?.getTreeElement(annotationId)
+        ?.parent ?? null
+    );
   }
 }
 
@@ -57,5 +66,9 @@ export const useAnnotationTreeStore = (id: string) =>
       });
     });
 
-    return { trees };
+    const getParent = (sourceId: string, annotationId: string) => {
+      return annotationTreesMap.value.getParent(sourceId, annotationId);
+    };
+
+    return { trees, getParent };
   })();

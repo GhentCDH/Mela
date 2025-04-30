@@ -2,7 +2,10 @@
   <li>
     <div class="list-col-grow flex items-center gap-2">
       <div class="flex gap-2 items-center font-bold">
-        <Icon :icon="IconEnum.Text" :size="Size.sm" />
+        <Icon
+          :icon="IconEnum.Text"
+          :size="Size.sm"
+        />
         {{ source.content.label }}
       </div>
     </div>
@@ -29,7 +32,7 @@ import { Icon, IconEnum, Size } from '@ghentcdh/ui';
 
 import Tree from './tree.vue';
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
-import { TreeProp } from '../utils/tree';
+import type { TreeProp } from '../utils/tree';
 
 const properties = defineProps<{
   source: SourceModel;

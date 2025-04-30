@@ -29,8 +29,8 @@ import { MultiSelect } from '@ghentcdh/ui';
 
 import AnnotationSourceTree from './annotation-source-tree.vue';
 import { AnnotationTypeLabelValues } from '../../identify.color';
-import type { AnnotationFilter } from '../utils/annotations.utils';
 import { useAnnotationTreeStore } from '../store/annotation.tree.store';
+import type { AnnotationFilter } from '../utils/annotations.utils';
 
 const annotationTypes = AnnotationTypeLabelValues;
 

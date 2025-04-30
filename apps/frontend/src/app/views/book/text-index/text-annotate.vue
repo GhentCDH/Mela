@@ -1,13 +1,22 @@
 <template>
-  <div v-if="textStore.text" class="mt-2">
+  <div
+    v-if="textStore.text"
+    class="mt-2"
+  >
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div v-if="modeToast" class="toast toast-center z-[3000]">
-    <div role="alert" class="alert border-primary bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center z-[3000]"
+  >
+    <div
+      role="alert"
+      class="alert border-primary bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -17,7 +26,12 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>
@@ -25,6 +39,7 @@
 <script setup lang="ts">
 import { computed, effect, onMounted } from 'vue';
 
+import type { SourceModel } from '@ghentcdh/annotations/core';
 import { useWordSnapper } from '@ghentcdh/annotations/vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
@@ -36,7 +51,6 @@ import { useTextStore } from './text.store';
 import { useBookMenuStore } from '../book-menu.store';
 import { useActiveAnnotationStore } from './controls/annotate-text/store/active-annotation.store';
 import { ModalSelectionService } from './controls/annotate-text/view/selection/modal-selection.service';
-import { SourceModel } from '@ghentcdh/annotations/core';
 
 const textStore = useTextStore();
 // Create a new store each time we have a new text
