@@ -16,7 +16,12 @@
       />
     </template>
     <template #custom-actions>
-      <Btn :disabled="!selection || !valid" @click="onSubmit"> Save</Btn>
+      <Btn
+        :disabled="!selection || !valid"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </AnnotationSelectionModal>
 </template>

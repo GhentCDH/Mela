@@ -13,10 +13,21 @@
   </fieldset>
   <div class="flex gap-2 justify-between pb-4">
     <div>
-      <Btn v-if="allowEdit" :outline="true" @click="editAnnotation"> Edit</Btn>
+      <Btn
+        v-if="allowEdit"
+        :outline="true"
+        @click="editAnnotation"
+      >
+        Edit
+      </Btn>
     </div>
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteAnnotation"> Delete</Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteAnnotation"
+      >
+        Delete
+      </Btn>
     </div>
   </div>
 </template>
@@ -35,9 +46,9 @@ import { Btn, Color } from '@ghentcdh/ui';
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import { ModalSelectionService } from './selection/modal-selection.service';
 import { AnnotationTypeLabelValue } from '../../identify.color';
-import { getTextSelection } from '../utils/translation';
-import { AnnotationTester } from '../utils/tester';
 import { useAnnotationTreeStore } from '../store/annotation.tree.store';
+import { AnnotationTester } from '../utils/tester';
+import { getTextSelection } from '../utils/translation';
 
 type Properties = {
   storeId: string;
