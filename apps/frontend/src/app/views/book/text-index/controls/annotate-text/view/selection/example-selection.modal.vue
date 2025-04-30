@@ -16,12 +16,7 @@
       />
     </template>
     <template #custom-actions>
-      <Btn
-        :disabled="!selection || !valid"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="!selection || !valid" @click="onSubmit"> Save</Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
@@ -62,19 +57,19 @@ const onSubmit = async () => {
   const data = createSelection(
     selection.value,
     'example',
-    properties.annotation,
+    properties.parentAnnotation,
     properties.source,
     schema,
     { example: exampleMetadata.value },
   );
 
-  const annotationId =
-    properties.mode === 'create' ? null : properties.annotation.id;
+  const annotationId = properties.annotation?.id ?? null;
+
   const annotation = await annotationStore.saveOrCreateAnnotation(
     annotationId,
     data,
   );
 
-  emits('closeModal', { valid: true, data });
+  emits('closeModal', { valid: true, data: annotation });
 };
 </script>

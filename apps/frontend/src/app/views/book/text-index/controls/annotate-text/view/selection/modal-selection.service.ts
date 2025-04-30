@@ -39,7 +39,7 @@ export class ModalSelectionService {
       props: {
         ...props,
         mode: 'create',
-         
+
         onClose: (result: AnnotationSelectionModalResult) => {
           props.onClose?.(result);
         },
@@ -55,7 +55,6 @@ export class ModalSelectionService {
       onClose?: (result: AnnotationSelectionModalResult) => void;
     },
   ) {
-    alert('implement me');
     const component = modalSelection[props.annotationType];
 
     if (!component)

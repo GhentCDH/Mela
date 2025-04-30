@@ -7,11 +7,7 @@
     @close-modal="onCancel"
   >
     <template #content>
-      <ControlWrapper
-        :label="selectLabel"
-        :error="false"
-        :required="true"
-      >
+      <ControlWrapper :label="selectLabel" :error="false" :required="true">
         <div class="border border-1 border-gray-200 my-2">
           <GhentCdhAnnotations
             :sources="sources"
@@ -28,21 +24,11 @@
       </div>
     </template>
     <template #actions>
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn
-        v-if="enableSave"
-        :disabled="disabled"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn v-if="enableSave" :disabled="disabled" @click="onSubmit"> Save</Btn>
     </template>
   </Modal>
 </template>
@@ -57,8 +43,8 @@ import { pick } from 'lodash-es';
 import { computed } from 'vue';
 
 import {
-  type SourceModel,
   createTextSelectionAnnotation,
+  type SourceModel,
 } from '@ghentcdh/annotations/core';
 import {
   type AnnotationEventHandlerPayloadData,
@@ -119,8 +105,8 @@ const selection = defineModel<AnnotationStartEnd>();
 const annotationActions = computed(() => {
   return {
     [source.value.uri]: {
-      edit: false,
-      create: true,
+      edit: properties.mode === 'edit',
+      create: properties.mode === 'create',
     },
   };
 });
@@ -148,7 +134,7 @@ const eventHandler = (
 const annotations = computed(() => {
   if (!selection.value) {
     // createSelection;
-    return [];
+    return properties.mode === 'edit' ? [properties.annotation] : [];
   }
   return [
     createTextSelectionAnnotation(

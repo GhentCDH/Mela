@@ -23,9 +23,9 @@ class AnnotationTrees {
     return this.annotationTreeMap.get(sourceId)?.tree ?? [];
   }
 
-  getParent(sourceId: string, annotationId: string) {
+  getParent(source: SourceModel, annotation: W3CAnnotation) {
     return (
-      this.annotationTreeMap.get(sourceId)?.getTreeElement(annotationId)
+      this.annotationTreeMap.get(source.uri)?.getTreeElement(annotation.id)
         ?.parent ?? null
     );
   }
@@ -66,8 +66,11 @@ export const useAnnotationTreeStore = (id: string) =>
       });
     });
 
-    const getParent = (sourceId: string, annotationId: string) => {
-      return annotationTreesMap.value.getParent(sourceId, annotationId);
+    const getParent = (source: SourceModel, annotation: W3CAnnotation) => {
+      const parent = annotationTreesMap.value.getParent(source, annotation);
+
+      if (!parent) return null;
+      return annotationStore.getAnnotation(parent?.id);
     };
 
     return { trees, getParent };
