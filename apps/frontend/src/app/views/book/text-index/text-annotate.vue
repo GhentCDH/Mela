@@ -1,22 +1,13 @@
 <template>
-  <div
-    v-if="textStore.text"
-    class="mt-2"
-  >
+  <div v-if="textStore.text" class="mt-2">
     <annotate-text
       :store-id="storeId"
       :snapper="useWordSnapper"
       @close-annotation="closeAnnotation"
     />
   </div>
-  <div
-    v-if="modeToast"
-    class="toast toast-center z-[3000]"
-  >
-    <div
-      role="alert"
-      class="alert border-primary bg-white"
-    >
+  <div v-if="modeToast" class="toast toast-center z-[3000]">
+    <div role="alert" class="alert border-primary bg-white">
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -26,12 +17,7 @@
         >
           Close
         </Btn>
-        <Btn
-          v-if="modeToast.save"
-          @click="modeToast.save"
-        >
-          Save
-        </Btn>
+        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
       </div>
     </div>
   </div>
@@ -49,6 +35,8 @@ import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useTextStore } from './text.store';
 import { useBookMenuStore } from '../book-menu.store';
 import { useActiveAnnotationStore } from './controls/annotate-text/store/active-annotation.store';
+import { ModalSelectionService } from './controls/annotate-text/view/selection/modal-selection.service';
+import { SourceModel } from '@ghentcdh/annotations/core';
 
 const textStore = useTextStore();
 // Create a new store each time we have a new text
@@ -60,14 +48,18 @@ const modeStore = useModeStore();
 const bookMenuStore = useBookMenuStore();
 
 effect(() => {
-  const sources = textStore.sources;
+  const sources = annotationStore.sources;
   const elementsMenu = [
     {
       label: 'Elements',
       items: [
         sources.map((s) => ({
-          label: `Generate blocks ${s.text_type}`,
+          label: `Generate blocks ${s.content.label}`,
           action: () => generateBlocks(s.id),
+        })),
+        sources.map((s) => ({
+          label: `Create Paragraph for ${s.content.label}`,
+          action: () => createAnnotationParagraph(s),
         })),
       ].flat(),
     },
@@ -177,5 +169,22 @@ const closeAnnotation = () => {
   annotationStore.changeSelectionFilter({});
   annotationStore.cancelNewAnnotations();
   modeStore.resetMode();
+};
+
+const createAnnotationParagraph = (source: SourceModel) => {
+  ModalSelectionService.createSelection({
+    source: source,
+    annotationType: 'paragraph',
+    storeId: storeId,
+    onClose: (result) => {
+      if (result?.valid) {
+        const annotation = result.data;
+        activeAnnotationStore.selectAnnotation({
+          textContentUri: source.uri,
+          annotationId: annotation.id,
+        });
+      }
+    },
+  });
 };
 </script>

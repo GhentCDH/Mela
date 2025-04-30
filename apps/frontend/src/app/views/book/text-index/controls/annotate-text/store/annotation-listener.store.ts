@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 
 export const useAnnotationListenerStore = () =>
-  defineStore('', () => {
+  defineStore('annotationListenerStore', () => {
     const clickAnnotation = ref<W3CAnnotation>(null);
 
     const onClickAnnotation = (annotation: W3CAnnotation | null) => {

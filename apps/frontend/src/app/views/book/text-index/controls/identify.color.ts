@@ -18,7 +18,11 @@ export const AnnotationTypeLabelValue: Record<
   phrase: { key: 'phrase', label: 'Phrase' },
   example: { key: 'example', label: 'Example' },
   lemma: { key: 'lemma', label: 'Lemma' },
-};
+} as const;
+
+export const AnnotationTypeLabelValues = Object.values(
+  AnnotationTypeLabelValue,
+);
 
 const Colors: Record<AnnotationType, string> = {
   title: '#dd7777', // pastel red
@@ -38,16 +42,3 @@ export const IdentifyColorMap = createAnnotationColors(Colors, {
     gutter: 0.8,
   },
 });
-
-// TODO delete whenever unused
-/**
- * @deprecated use AnnotationTypeLabelValue
- */
-export const IdentifyColor = [
-  { label: 'Title', id: 'title' },
-  { label: 'SubTitle', id: 'subtitle' },
-  { label: 'Paragraph', id: 'paragraph' },
-  { label: 'Phrase', id: 'phrase' },
-  { label: 'Example', id: 'example' },
-  { label: 'Lemma', id: 'lemma' },
-] as const;

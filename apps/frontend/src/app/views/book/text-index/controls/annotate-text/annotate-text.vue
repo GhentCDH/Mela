@@ -35,7 +35,7 @@
         />
       </template>
       <template v-else>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 w-4/5">
           <Btn
             v-for="source of annotationStore.sources"
             :key="source.id"
@@ -188,7 +188,7 @@ const createAnnotation = (source: SourceModel) => {
     annotationType: 'paragraph',
     storeId: properties.storeId,
     onClose: (result) => {
-      if (result.valid) {
+      if (result?.valid) {
         const annotation = result.data;
         activeAnnotationStore.selectAnnotation({
           textContentUri: source.uri,
