@@ -4,15 +4,16 @@
     label="Filter by type"
     :options="annotationTypes"
     label-key="label"
-    value-key="id"
+    value-key="key"
     @change="changeFilter"
   />
   <ul>
     <annotation-source-tree
-      v-for="source in sources"
-      :key="source.uri"
+      v-for="tree in annotationTreeStore.trees"
+      :key="tree.source.uri"
       :store-id="storeId"
-      :source="source"
+      :source="tree.source"
+      :tree="tree.tree"
       :annotations="annotations"
     />
   </ul>
@@ -27,10 +28,11 @@ import type { Chapter } from '@ghentcdh/mela/generated/types';
 import { MultiSelect } from '@ghentcdh/ui';
 
 import AnnotationSourceTree from './annotation-source-tree.vue';
-import { IdentifyColor } from '../../identify.color';
+import { AnnotationTypeLabelValues } from '../../identify.color';
+import { useAnnotationTreeStore } from '../store/annotation.tree.store';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 
-const annotationTypes = IdentifyColor;
+const annotationTypes = AnnotationTypeLabelValues;
 
 const filterType = ref([]);
 
@@ -43,13 +45,17 @@ const properties = defineProps<{
   storeId: string;
 }>();
 
+const annotationTreeStore = useAnnotationTreeStore(properties.storeId);
+
 const emits = defineEmits<{
   changeFilter: [AnnotationFilter];
 }>();
 
 const changeFilter = () => {
   emits('changeFilter', {
-    annotationType: filterType.value.map((f) => f.id as AnnotationMetadataType),
+    annotationType: filterType.value.map(
+      (f) => f.key as AnnotationMetadataType,
+    ),
   });
 };
 
@@ -57,7 +63,7 @@ watch(
   () => properties.filter,
   () => {
     filterType.value = properties.filter?.annotationType?.map(
-      (f) => annotationTypes.find((a) => a.id === f) as any,
+      (f) => annotationTypes.find((a) => a.key === f) as any,
     );
   },
   { immediate: true },

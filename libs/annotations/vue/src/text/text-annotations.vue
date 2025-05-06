@@ -32,7 +32,7 @@ import '@ghentcdh/vue-component-annotated-text/style.css';
 
 import { filterAnnotationsForText } from './utils/filter';
 import { textToLines } from './utils/lines';
-import type { AnnotationEmits } from '../model/emits';
+import type { AnnotationEmits, AnnotationEventType } from '../model/emits';
 import type { AnnotationActions, AnnotationConfig } from '../model/properties';
 import type { UseSnapper } from '../snapper';
 import { fixOffset } from './utils/fix-offset';
@@ -56,7 +56,7 @@ const lines = computed(() => textToLines(properties.source.content.text));
 const annotationsForText = computed(() =>
   filterAnnotationsForText(
     properties.annotations ?? [],
-    properties.source.uri,
+    properties.source,
     properties.config,
   ),
 );
@@ -92,19 +92,11 @@ const onSelectAnnotation = (
 const onAnnotationCreateBegin = (event: CreateAnnotationState) => {
   event.init({});
 
-  emits('onEvent', 'create--start', {
-    target: properties.source.uri,
-    // annotationId: event.annotation.id,
-    payload: event,
-  });
+  emitEvent('create--start', event);
 };
 
 const onAnnotationCreateEnd = (event: CreateAnnotationState) => {
-  emits('onEvent', 'create--end', {
-    target: properties.source.uri,
-    // annotationId: event.annotation.id,
-    payload: event,
-  });
+  emitEvent('create--end', event, true);
 };
 
 const onAnnotationCreating = (event: CreateAnnotationState) => {
@@ -114,17 +106,14 @@ const onAnnotationCreating = (event: CreateAnnotationState) => {
     // annotationId: event.annotation.id,
     payload: event,
   });
+  emitEvent('update--start', event);
 };
 
 const onAnnotationUpdateBegin = (event: UpdateAnnotationState) => {
   // event.init({});
   fixOffset(event, snapper, 'confirmStartUpdating');
 
-  emits('onEvent', 'update--start', {
-    target: properties.source.uri,
-    annotationId: event.annotation.id,
-    payload: event,
-  });
+  emitEvent('update--start', event);
 };
 
 const onAnnotationUpdateEnd = (event: UpdateAnnotationState) => {
@@ -133,19 +122,33 @@ const onAnnotationUpdateEnd = (event: UpdateAnnotationState) => {
   event.getAnnotation = () => {
     return cloneDeep(event!.annotation);
   };
-  emits('onEvent', 'update--end', {
-    target: properties.source.uri,
-    annotationId: event.annotation.id,
-    payload: event,
-  });
+  emitEvent('update--end', event);
 };
 
 const onAnnotationUpdating = (event: UpdateAnnotationState) => {
   fixOffset(event, snapper, 'confirmUpdate');
-  emits('onEvent', 'update--changing', {
+  emitEvent('update--changing', event);
+};
+
+const emitEvent = <PAYLOAD extends any>(
+  type: AnnotationEventType,
+  payload: CreateAnnotationState | UpdateAnnotationState,
+) => {
+  payload.getAnnotation = () => {
+    const cloned = cloneDeep(payload.annotation);
+    const offset = properties.source.content.offset;
+    if (offset) {
+      cloned.start += offset;
+      cloned.end += offset;
+    }
+
+    return cloned;
+  };
+
+  emits('onEvent', type, {
     target: properties.source.uri,
-    annotationId: event.annotation.id,
-    payload: event,
+    annotationId: payload.annotation.id ?? null,
+    payload,
   });
 };
 </script>

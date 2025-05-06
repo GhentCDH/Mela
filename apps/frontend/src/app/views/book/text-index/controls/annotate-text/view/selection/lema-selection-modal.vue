@@ -109,6 +109,6 @@ const onSubmit = async () => {
     data,
   );
 
-  emits('closeModal', { valid: true, data });
+  emits('closeModal', { valid: true, data: annotation });
 };
 </script>

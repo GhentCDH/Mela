@@ -51,14 +51,14 @@
 import {
   AnnotationSelectorSchema,
   type AnnotationStartEnd,
-  getAnnotationUri,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed } from 'vue';
 
 import {
-  type SourceModel,
+  SourceModelSchema,
   createTextSelectionAnnotation,
+  findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import {
   type AnnotationEventHandlerPayloadData,
@@ -94,20 +94,21 @@ const selectLabel =
     : `Select ${type.label} selection`;
 
 const textBody = computed(() => findTextValue(properties.parentAnnotation));
+const parentSelector = computed(() =>
+  findTextPositionSelector(properties.source.uri)(properties.parentAnnotation),
+);
 
 const source = computed(() => {
   if (!properties.parentAnnotation) return properties.source;
-
-  return {
-    id: '1',
-    uri: getAnnotationUri(properties.parentAnnotation),
-    type: 'text',
+  return SourceModelSchema.parse({
+    ...properties.source,
     content: {
       text: textBody.value.value,
       schema: AnnotationSelectorSchema,
       processingLanguage: textBody.value.language,
+      offset: parentSelector.value.selector.start,
     },
-  } as SourceModel;
+  });
 });
 
 const sources = computed(() => {
@@ -119,8 +120,8 @@ const selection = defineModel<AnnotationStartEnd>();
 const annotationActions = computed(() => {
   return {
     [source.value.uri]: {
-      edit: false,
-      create: true,
+      edit: properties.mode === 'edit',
+      create: properties.mode === 'create',
     },
   };
 });
@@ -138,6 +139,7 @@ const eventHandler = (
       const annotation = (
         payload.payload as CreateAnnotationState
       ).getAnnotation();
+
       selection.value = annotation;
       break;
     default:
@@ -147,8 +149,7 @@ const eventHandler = (
 
 const annotations = computed(() => {
   if (!selection.value) {
-    // createSelection;
-    return [];
+    return properties.mode === 'edit' ? [properties.annotation] : [];
   }
   return [
     createTextSelectionAnnotation(
@@ -160,7 +161,6 @@ const annotations = computed(() => {
 });
 
 const onCancel = () => {
-  // ModalService.closeModal();
   emits('closeModal', null);
 };
 

@@ -14,7 +14,7 @@
   <div class="flex gap-2 justify-between pb-4">
     <div>
       <Btn
-        v-if="false"
+        v-if="allowEdit"
         :outline="true"
         @click="editAnnotation"
       >
@@ -45,8 +45,9 @@ import { Btn, Color } from '@ghentcdh/ui';
 
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import { ModalSelectionService } from './selection/modal-selection.service';
-import type { AnnotationType } from '../../identify.color';
 import { AnnotationTypeLabelValue } from '../../identify.color';
+import { useAnnotationTreeStore } from '../store/annotation.tree.store';
+import { AnnotationTester } from '../utils/tester';
 import { getTextSelection } from '../utils/translation';
 
 type Properties = {
@@ -56,8 +57,9 @@ type Properties = {
 };
 const properties = defineProps<Properties>();
 const activeAnnotationStore = useActiveAnnotationStore(properties.storeId);
+const treeStore = useAnnotationTreeStore(properties.storeId);
 
-const annotationType = computed<AnnotationType>(() => {
+const annotationType = computed(() => {
   const id = findTagging(properties.annotation).value ?? 'phrase';
 
   return AnnotationTypeLabelValue[id];
@@ -79,6 +81,10 @@ const selectedText = computed(() => {
   return getTextSelection(properties.source, textAnnotation.value);
 });
 
+const allowEdit = computed(
+  () => !AnnotationTester(properties.annotation).isNew(),
+);
+
 const metaData = computed(() => {
   return [
     {
@@ -97,11 +103,13 @@ const deleteAnnotation = () => {
 
 const editAnnotation = () => {
   ModalSelectionService.editSelection({
-    // TODO parent
-    parentAnnotation: properties.annotation,
+    parentAnnotation: treeStore.getParent(
+      properties.source,
+      properties.annotation,
+    ),
     annotation: properties.annotation,
     source: properties.source,
-    annotationType,
+    annotationType: annotationType.value.key,
     storeId: properties.storeId,
   });
 };
