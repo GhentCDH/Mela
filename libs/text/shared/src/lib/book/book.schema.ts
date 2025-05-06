@@ -2,17 +2,18 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   Size,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms/core';
 import { BookForm } from '@ghentcdh/mela/generated/forms';
 import type {
   Book,
   BookWithRelations,
-  Chapter} from '@ghentcdh/mela/generated/types';
+  Chapter,
+} from '@ghentcdh/mela/generated/types';
 import {
   AuthorSchema,
   BookSchema,
@@ -81,7 +82,10 @@ const dtoSchema = BookSchema.pick({
   .transform((value) => {
     return {
       ...value,
-      chapter: value.chapter.map((ch, index) => ({ ...ch, order: index })),
+      chapter: value.chapter.map((ch, index) => ({
+        ...ch,
+        chapter_order: index,
+      })),
     };
   });
 

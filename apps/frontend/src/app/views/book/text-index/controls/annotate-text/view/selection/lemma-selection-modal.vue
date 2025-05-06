@@ -17,7 +17,12 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      <Btn :icon="IconEnum.Plus" @click="createLema"> Create new Lemma</Btn>
+      <Btn
+        :icon="IconEnum.Plus"
+        @click="createLema"
+      >
+        Create new Lemma
+      </Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
@@ -26,8 +31,8 @@
 import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
-  findLemmaMetaData,
   LemmaFormSchema,
+  findLemmaMetaData,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, onMounted, ref } from 'vue';
@@ -37,8 +42,8 @@ import {
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  Autocomplete,
   type AutoCompleteConfig,
+  Autocomplete,
   Btn,
   IconEnum,
 } from '@ghentcdh/ui';
