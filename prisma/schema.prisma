@@ -186,4 +186,5 @@ enum AnnotationType {
   text_content
   annotation
   example
+  lemma
 }

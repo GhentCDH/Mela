@@ -7,7 +7,6 @@ import {
   PURPOSE_ANNOTATION_SELECT,
   PURPOSE_EXAMPLE,
   PURPOSE_LEMA,
-  PURPOSE_LINK_BUCKETS,
   PURPOSE_TRANSLATION,
 } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -16,13 +15,14 @@ import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import {
   Annotation,
   AnnotationWithRelations,
-  Lemma,
+  LemmaWithRelations,
   TextContent,
 } from '@ghentcdh/mela/generated/types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
 import { AnnotationTypeDto } from './annotation-type.schema';
 import { createExample } from './utils/create-example';
+import { createLemma } from './utils/create-lemma';
 import { createLinks } from './utils/create-links';
 import { createSelector, getTextSelection } from './utils/create-selector';
 import { ExampleRepository } from '../../example/example-repository.service';
@@ -36,41 +36,14 @@ export class AnnotationTypeRepository {
   ) {}
 
   async create(data: AnnotationTypeDto) {
-    let createdAnnotation: Annotation;
-    switch (data.type) {
-      case PURPOSE_TRANSLATION:
-      case PURPOSE_LINK_BUCKETS:
-        createdAnnotation = await this.updateLinks(
-          null,
-          data as AnnotationLink,
-        );
-        break;
-      case PURPOSE_ANNOTATION_SELECT:
-        createdAnnotation = await this.updateTextSelection(
-          null,
-          data as AnnotationSelector,
-        );
-        break;
-      case PURPOSE_EXAMPLE:
-        createdAnnotation = await this.updateExample(
-          null,
-          data as AnnotationExample,
-        );
-        break;
-      case PURPOSE_LEMA:
-        createdAnnotation = await this.updateLemma(
-          null,
-          data as AnnotationExampleLemma,
-        );
-        break;
-      default:
-        throw new BadRequestException('Invalid annotation type');
-    }
-
-    return this.annotationRepository.findOne(createdAnnotation.id);
+    return this.createOrUpdate(null, data);
   }
 
   async update(id: string, data: AnnotationTypeDto) {
+    return this.createOrUpdate(id, data);
+  }
+
+  private async createOrUpdate(id: string | null, data: AnnotationTypeDto) {
     let updatedAnnotation: Annotation;
     switch (data.type) {
       case PURPOSE_TRANSLATION:
@@ -86,6 +59,12 @@ export class AnnotationTypeRepository {
         updatedAnnotation = await this.updateExample(
           id,
           data as AnnotationExample,
+        );
+        break;
+      case PURPOSE_LEMA:
+        updatedAnnotation = await this.updateLemma(
+          id,
+          data as AnnotationExampleLemma,
         );
         break;
       default:
@@ -213,6 +192,7 @@ export class AnnotationTypeRepository {
     // 3. find or create the annotation for the lemma
     const selectionAnnotation = await this.updateLemmaExampleSelection(
       id,
+      lemma,
       textContent,
       data,
     );
@@ -221,7 +201,6 @@ export class AnnotationTypeRepository {
     return this.updateLemmaExampleLink(
       id,
       textContent,
-      lemma,
       exampleAnnotation,
       selectionAnnotation,
     );
@@ -229,13 +208,11 @@ export class AnnotationTypeRepository {
 
   private async updateLemmaExampleSelection(
     id: string | null,
+    lemma: LemmaWithRelations,
     textContent: TextContent,
     data: AnnotationExampleLemma,
   ) {
-    const annotation = createSelector(textContent, {
-      ...data.annotation,
-      tagging: PURPOSE_LEMA,
-    });
+    const annotation = createLemma(lemma, textContent, data.annotation);
 
     if (!id) return this.annotationRepository.create(annotation);
     return this.annotationRepository.update(id, annotation);
@@ -244,7 +221,6 @@ export class AnnotationTypeRepository {
   private async updateLemmaExampleLink(
     id: string | null,
     textContent: TextContent,
-    lemma: Lemma,
     exampleAnnotation: Annotation,
     selectionAnnotation: Annotation,
   ) {
@@ -254,7 +230,6 @@ export class AnnotationTypeRepository {
       { id: textContent.text_id },
       PURPOSE_LEMA,
       annotations,
-      lemma,
     );
 
     if (!id) return this.annotationRepository.create(linkedAnnotation);

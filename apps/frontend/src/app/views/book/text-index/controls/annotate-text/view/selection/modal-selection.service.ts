@@ -7,7 +7,7 @@ import type {
 } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
 import ExampleSelectionModal from './example-selection.modal.vue';
-import LemaSelectionModal from './lema-selection-modal.vue';
+import LemmaSelectionModal from './lemma-selection-modal.vue';
 import type { AnnotationType } from '../../../identify.color';
 
 const modalSelection: Record<AnnotationType, any> = {
@@ -16,7 +16,7 @@ const modalSelection: Record<AnnotationType, any> = {
   subtitle: AnnotationSelectionModal,
   paragraph: AnnotationSelectionModal,
   phrase: AnnotationSelectionModal,
-  lemma: null,
+  lemma: LemmaSelectionModal,
 };
 
 export class ModalSelectionService {
@@ -77,21 +77,12 @@ export class ModalSelectionService {
 
   static createLemma(
     props: Pick<
-      LemaSelectionModal,
+      LemmaSelectionModal,
       'parentAnnotation' | 'source' | 'storeId'
     > & {
       onClose?: (result: AnnotationSelectionModalResult) => void;
     },
   ) {
-    ModalService.openModal<LemaSelectionModal, AnnotationSelectionModalResult>({
-      component: LemaSelectionModal,
-      props: {
-        ...props,
-        mode: 'create',
-        onClose: (result: AnnotationSelectionModalResult) => {
-          props.onClose?.(result);
-        },
-      },
-    });
+    return this.createSelection({ ...props, annotationType: 'lemma' });
   }
 }

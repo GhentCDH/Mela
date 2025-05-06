@@ -13,7 +13,7 @@ export type AnnotationSelectionModalProps = {
   storeId: string;
   schema?: z.ZodRawShape;
   mode?: 'create' | 'edit';
-  enableSave?: boolean;
+  extraData?: any;
 };
 
 export type ExampleSelectionModalProps = {
@@ -23,6 +23,10 @@ export type ExampleSelectionModalProps = {
   source: SourceModel;
   storeId: string;
   mode?: 'create' | 'edit';
+};
+
+export type LemmaSelectionModalProps = AnnotationSelectionModalProps & {
+  parentAnnotation: W3CAnnotation;
 };
 
 export type AnnotationSelectionModalResult<DATA = any> = {

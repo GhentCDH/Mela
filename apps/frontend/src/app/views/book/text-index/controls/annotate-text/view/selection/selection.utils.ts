@@ -22,8 +22,8 @@ export const createSelection = (
     ? findTextPositionSelector(sourceModel.uri)(annotation)?.selector
     : null;
 
-  selection.start += selector?.start ?? 0;
-  selection.end += selector?.start ?? 0;
+  // selection.start += selector?.start ?? 0;
+  // selection.end += selector?.start ?? 0;
 
   const annotationData = {
     annotation: selection,
