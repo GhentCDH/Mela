@@ -70,11 +70,6 @@ export const useAnnotationStore = (id: string) =>
 
       newAnnotations.value = [newAnnotation];
 
-      // selectAnnotation({
-      //   textContentUri: sourceUri,
-      //   annotationId: newAnnotation.id,
-      // });
-
       return newAnnotation;
     };
 

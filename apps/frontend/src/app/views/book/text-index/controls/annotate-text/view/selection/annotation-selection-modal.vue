@@ -12,7 +12,7 @@
         :error="false"
         :required="true"
       >
-        <div class="border border-1 border-gray-200 my-2">
+        <div class="border border-1 border-gray-200 my-2 text-lg">
           <GhentCdhAnnotations
             :sources="sources"
             :annotations="annotations"
@@ -80,6 +80,7 @@ const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
   schema: AnnotationSelectorSchema,
   onClose: () => {},
   extraData: {},
+  valid: true,
 });
 const emits = defineEmits(['closeModal']);
 
@@ -195,6 +196,6 @@ const onSubmit = async () => {
 
 const disabled = computed(() => {
   // TODO if there is metadata needed validate it here!
-  return !selection.value;
+  return !properties.valid || !selection.value;
 });
 </script>

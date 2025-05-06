@@ -6,6 +6,8 @@
     :enable-save="false"
     :extra-data="extraData"
     :schema="schema"
+    :valid="valid"
+    @close-modal="closeModal"
   >
     <template #custom-content>
       <FormComponent
@@ -32,7 +34,6 @@ import { FormComponent } from '@ghentcdh/json-forms/vue';
 
 import type { ExampleSelectionModalProps } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
-import { useAnnotationStore } from '../../store/annotation.store';
 
 const valid = ref(false);
 
@@ -41,7 +42,6 @@ const properties = withDefaults(defineProps<ExampleSelectionModalProps>(), {
 });
 const emits = defineEmits(['closeModal']);
 
-const annotationStore = useAnnotationStore(properties.storeId);
 const exampleMetadata = ref({});
 const selection = ref<AnnotationStartEnd>();
 const schema = AnnotationExampleSchema;
@@ -60,4 +60,8 @@ onMounted(() => {
 const extraData = computed(() => {
   return { example: exampleMetadata.value };
 });
+
+const closeModal = (event) => {
+  emits('closeModal', event);
+};
 </script>

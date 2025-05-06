@@ -2,11 +2,10 @@ import type { Snapper, UseSnapper } from './snapper';
 import { tokenize } from './utils/text_utilities';
 
 export class WordSnapper implements Snapper {
-  private mapStartCharIndexToToken: { [index: number]: number } = {};
-  private mapStopCharIndexToToken: { [index: number]: number } = {};
+  private readonly mapStartCharIndexToToken: { [index: number]: number } = {};
+  private readonly mapStopCharIndexToToken: { [index: number]: number } = {};
 
-  constructor(private text: string) {
-    //console.log(text);
+  constructor(text: string) {
     tokenize(text).forEach((token: any) => {
       const start = token.pos;
       const end = token.pos + token.value.length - 1;
@@ -31,10 +30,10 @@ export class WordSnapper implements Snapper {
 
   fixOffset(newStart: number, newEnd: number) {
     const closestStart =
-      this.mapStartCharIndexToToken[newStart] ||
+      this.mapStartCharIndexToToken[newStart] ??
       this.mapStartCharIndexToToken[newEnd];
     const closestEnd =
-      this.mapStopCharIndexToToken[newEnd] ||
+      this.mapStopCharIndexToToken[newEnd] ??
       this.mapStopCharIndexToToken[newStart];
 
     return {

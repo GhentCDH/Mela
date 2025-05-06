@@ -6,6 +6,8 @@
     :enable-save="false"
     :schema="schema"
     :extra-data="extraData"
+    :valid="lemma?.id"
+    @close-modal="closeModal"
   >
     <template #custom-content>
       <Autocomplete
@@ -15,7 +17,6 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      {{ extraData }}
       <Btn
         :icon="IconEnum.Plus"
         @click="createLema"
@@ -92,4 +93,7 @@ const extraData = computed(() => {
     exampleAnnotation: pick(properties.parentAnnotation, 'id'),
   };
 });
+const closeModal = (event) => {
+  emits('closeModal', event);
+};
 </script>

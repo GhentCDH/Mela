@@ -14,6 +14,7 @@ export type AnnotationSelectionModalProps = {
   schema?: z.ZodRawShape;
   mode?: 'create' | 'edit';
   extraData?: any;
+  valid?: boolean;
 };
 
 export type ExampleSelectionModalProps = {

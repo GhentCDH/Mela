@@ -5,7 +5,7 @@ CREATE TYPE "TextType" AS ENUM ('SOURCE', 'TRANSLATION');
 CREATE TYPE "MotivationEnum" AS ENUM ('classifying', 'tagging');
 
 -- CreateEnum
-CREATE TYPE "AnnotationType" AS ENUM ('text_content', 'annotation', 'example');
+CREATE TYPE "AnnotationType" AS ENUM ('text_content', 'annotation', 'example', 'lemma');
 
 -- CreateTable
 CREATE TABLE "author" (
