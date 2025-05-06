@@ -1,6 +1,6 @@
 {
   "name": "@mela/source",
-  "version": "0.0.3-13",
+  "version": "0.0.3",
   "license": "MIT",
   "scripts": {
     "commitlint": "commit",
