@@ -22,8 +22,8 @@ datasource db {
 model Author {
   id   String @id @default(uuid())
   name String @unique
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   book Book[]
   @@map("author")
@@ -35,8 +35,8 @@ model Book{
   author_id   String
   author      Author        @relation(fields: [author_id], references: [id])
   year        Int
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   chapter Chapter[]
   @@map("book")
@@ -45,12 +45,12 @@ model Book{
 model Chapter {
   id          String        @id @default(uuid())
   chapter_number        String?
-  order Int?
+  chapter_order Int?
   name        String
   book_id     String
   book        Book          @relation(fields: [book_id], references: [id])
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   text Text[]
   @@map("chapter")
@@ -60,8 +60,8 @@ model Text {
   id          String        @id @default(uuid())
   annotations Annotation[]
   textContent TextContent[]
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   chapter_id String
   chapter Chapter @relation(fields: [chapter_id], references: [id])
@@ -76,8 +76,8 @@ model TextContent {
   content   String
   Example   Example[]
   text      Text      @relation(fields: [text_id], references: [id], onDelete: Cascade)
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   @@map("text_content")
 }
@@ -89,8 +89,8 @@ model Annotation {
   text             Text               @relation(fields: [text_id], references: [id])
   annotationBody   AnnotationBody[]
   annotationTarget AnnotationTarget[]
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   @@map("annotation")
 }
@@ -102,8 +102,8 @@ model AnnotationBody {
   source_type   AnnotationType?
   source_id     String?
   annotation    Annotation      @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   @@map("annotation_body")
 }
@@ -115,8 +115,8 @@ model AnnotationTarget {
   source_type   AnnotationType
   source_id     String
   annotation    Annotation     @relation(fields: [annotation_id], references: [id], onDelete: Cascade)
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   @@map("annotation_target")
 }
@@ -128,8 +128,8 @@ model Example {
   text_content_id String
   register        Register    @relation(fields: [register_id], references: [id])
   textContent     TextContent @relation(fields: [text_content_id], references: [id])
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
   lemmas Lemma[] @relation("example_lemma")
 
   @@map("example")
@@ -139,8 +139,8 @@ model Register {
   id       String    @id @default(uuid())
   name     String    @unique
   examples Example[]
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   @@map("register")
 }
@@ -149,8 +149,8 @@ model Speech {
   id   String @id @default(uuid())
   name String @unique
   lemma Lemma[]
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
 
   @@map("speech")
 }
@@ -165,8 +165,8 @@ model Lemma {
   participle  Boolean? @default(false)
   speech_id   String
   speech      Speech   @relation(fields: [speech_id], references: [id])
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt @default(now())
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
   examples Example[] @relation("example_lemma")
 
   @@map("lemma")

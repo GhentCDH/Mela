@@ -6,6 +6,8 @@
     :enable-save="false"
     :schema="schema"
     :extra-data="extraData"
+    :valid="lemma?.id"
+    @close-modal="closeModal"
   >
     <template #custom-content>
       <Autocomplete
@@ -15,13 +17,7 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
-      {{ extraData }}
-      <Btn
-        :icon="IconEnum.Plus"
-        @click="createLema"
-      >
-        Create new Lemma
-      </Btn>
+      <Btn :icon="IconEnum.Plus" @click="createLema"> Create new Lemma</Btn>
     </template>
   </AnnotationSelectionModal>
 </template>
@@ -30,8 +26,8 @@
 import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
-  LemmaFormSchema,
   findLemmaMetaData,
+  LemmaFormSchema,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import { computed, onMounted, ref } from 'vue';
@@ -41,8 +37,8 @@ import {
   FormModalService,
 } from '@ghentcdh/json-forms/vue';
 import {
-  type AutoCompleteConfig,
   Autocomplete,
+  type AutoCompleteConfig,
   Btn,
   IconEnum,
 } from '@ghentcdh/ui';
@@ -92,4 +88,7 @@ const extraData = computed(() => {
     exampleAnnotation: pick(properties.parentAnnotation, 'id'),
   };
 });
+const closeModal = (event) => {
+  emits('closeModal', event);
+};
 </script>
