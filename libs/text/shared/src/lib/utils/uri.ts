@@ -5,6 +5,7 @@ const prefixMap: Record<AnnotationTypeType, string> = {
   text_content: 'mela:text-content:',
   example: 'mela:example:',
   annotation: 'mela:annotation:',
+  lemma: 'mela:lemma:',
 };
 type PrefixType = keyof typeof prefixMap;
 
@@ -53,6 +54,9 @@ export const getTextContentIdFromUri = getIdFromUri('text_content');
 export const isTextContentUri = isUri('text_content');
 
 export const getExampleUri = createUri('example');
+export const getLemmaUri = createUri('lemma');
+export const isLemmaUri = isUri('lemma');
+
 export const getExampleIdFromUri = getIdFromUri('example');
 export const isExampleUri = isUri('example');
 

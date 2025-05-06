@@ -26,7 +26,7 @@
               v-if="isNew"
               class="text-warning"
             >NEW</span>
-            {{ property.type }} - {{ property.content }}
+            {{ property.type }} - <small>{{ property.content }}</small>
           </button>
           <Btn
             :icon="IconEnum.Delete"

@@ -4,6 +4,7 @@
     v-model="selection"
     annotation-type="example"
     :enable-save="false"
+    :extra-data="extraData"
     :schema="schema"
   >
     <template #custom-content>
@@ -15,14 +16,6 @@
         @valid="changeValid"
       />
     </template>
-    <template #custom-actions>
-      <Btn
-        :disabled="!selection || !valid"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
-    </template>
   </AnnotationSelectionModal>
 </template>
 
@@ -31,15 +24,14 @@ import {
   AnnotationExampleSchema,
   type AnnotationStartEnd,
   ExampleFormSchema,
+  findExampleMetaData,
 } from '@mela/text/shared';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import { FormComponent } from '@ghentcdh/json-forms/vue';
-import { Btn } from '@ghentcdh/ui';
 
 import type { ExampleSelectionModalProps } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
-import { createSelection } from './selection.utils';
 import { useAnnotationStore } from '../../store/annotation.store';
 
 const valid = ref(false);
@@ -58,23 +50,14 @@ const changeValid = (v: boolean) => {
   valid.value = v;
 };
 
-const onSubmit = async () => {
-  const data = createSelection(
-    selection.value,
-    'example',
-    properties.parentAnnotation,
-    properties.source,
-    schema,
-    { example: exampleMetadata.value },
-  );
+onMounted(() => {
+  if (!properties.annotation) return;
 
-  const annotationId = properties.annotation?.id ?? null;
+  const metadata = findExampleMetaData(properties.annotation)?.value;
+  exampleMetadata.value = metadata;
+});
 
-  const annotation = await annotationStore.saveOrCreateAnnotation(
-    annotationId,
-    data,
-  );
-
-  emits('closeModal', { valid: true, data: annotation });
-};
+const extraData = computed(() => {
+  return { example: exampleMetadata.value };
+});
 </script>

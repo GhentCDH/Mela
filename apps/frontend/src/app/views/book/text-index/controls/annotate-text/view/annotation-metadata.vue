@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { findExampleMetaData } from '@mela/text/shared';
+import { findExampleMetaData, findLemmaMetaData } from '@mela/text/shared';
 import { computed } from 'vue';
 
 import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
@@ -66,9 +66,18 @@ const annotationType = computed(() => {
 });
 
 const exampleMetaData = computed(() => {
-  if (annotationType.value.key !== 'example') return null;
+  if (annotationType.value.key !== 'example') return [];
 
-  return findExampleMetaData(properties.annotation)?.value;
+  const metadata = findExampleMetaData(properties.annotation)?.value;
+
+  return [{ label: 'Register', value: metadata.register.name ?? null }];
+});
+
+const lemmaMetadata = computed(() => {
+  if (annotationType.value.key !== 'lemma') return [];
+
+  const metadata = findLemmaMetaData(properties.annotation)?.value;
+  return [{ label: 'Lemma', value: metadata?.word ?? null }];
 });
 
 const textAnnotation = computed(() => ({
@@ -93,8 +102,10 @@ const metaData = computed(() => {
       valueOnNewLine: true,
     },
     { label: 'Annotation type', value: annotationType.value.label },
-    { label: 'Register', value: exampleMetaData.value?.register.name ?? null },
-  ].filter((v) => v.value != null);
+    exampleMetaData.value,
+
+    lemmaMetadata.value,
+  ].flat();
 });
 
 const deleteAnnotation = () => {

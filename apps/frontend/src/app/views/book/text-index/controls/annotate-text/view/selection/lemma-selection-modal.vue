@@ -5,6 +5,7 @@
     annotation-type="lemma"
     :enable-save="false"
     :schema="schema"
+    :extra-data="extraData"
   >
     <template #custom-content>
       <Autocomplete
@@ -14,19 +15,12 @@
         :placeholder="'Select lemma'"
         label-key="word"
       />
+      {{ extraData }}
       <Btn
         :icon="IconEnum.Plus"
-        @click="createLemma"
+        @click="createLema"
       >
         Create new Lemma
-      </Btn>
-    </template>
-    <template #custom-actions>
-      <Btn
-        :disabled="!selection || !lemma?.id"
-        @click="onSubmit"
-      >
-        Save
       </Btn>
     </template>
   </AnnotationSelectionModal>
@@ -37,9 +31,10 @@ import type { AnnotationStartEnd } from '@mela/text/shared';
 import {
   AnnotationExampleLemmaSchema,
   LemmaFormSchema,
+  findLemmaMetaData,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import {
   type FormModalResult,
@@ -52,27 +47,30 @@ import {
   IconEnum,
 } from '@ghentcdh/ui';
 
+import type { LemmaSelectionModalProps } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';
-import type { LemaSelectionModalProps } from './lema-selection-modal';
-import { createSelection } from './selection.utils';
 import { useLemmaRepository } from '../../../../../../../repository/lemma.repository';
-import { useAnnotationStore } from '../../store/annotation.store';
 
-const properties = defineProps<LemaSelectionModalProps>();
+const properties = defineProps<LemmaSelectionModalProps>();
 const selection = ref<AnnotationStartEnd>();
 const schema = AnnotationExampleLemmaSchema;
 
 const emits = defineEmits(['closeModal']);
-const annotationStore = useAnnotationStore(properties.storeId);
 
 const lemma = ref();
+
+onMounted(() => {
+  if (!properties.annotation) return;
+  const metadata = findLemmaMetaData(properties.annotation)?.value;
+  lemma.value = metadata;
+});
 
 const lemmaConfig: AutoCompleteConfig = {
   uri: LemmaFormSchema.schema.searchUri,
   dataField: 'data',
 };
 
-const createLemma = () => {
+const createLema = () => {
   const formSchema = LemmaFormSchema.schema;
   FormModalService.openModal({
     formSchema: formSchema.form,
@@ -88,27 +86,10 @@ const createLemma = () => {
     },
   });
 };
-
-const onSubmit = async () => {
-  const data = createSelection(
-    selection.value,
-    'lemma',
-    properties.parentAnnotation,
-    properties.source,
-    schema,
-    {
-      lemma: lemma.value,
-      exampleAnnotation: pick(properties.parentAnnotation, 'id'),
-    },
-  );
-
-  const annotationId = properties.annotation?.id ?? null;
-
-  const annotation = await annotationStore.saveOrCreateAnnotation(
-    annotationId,
-    data,
-  );
-
-  emits('closeModal', { valid: true, data: annotation });
-};
+const extraData = computed(() => {
+  return {
+    lemma: lemma.value,
+    exampleAnnotation: pick(properties.parentAnnotation, 'id'),
+  };
+});
 </script>

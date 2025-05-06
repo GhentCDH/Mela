@@ -37,7 +37,6 @@
       </Btn>
       <slot name="custom-actions" />
       <Btn
-        v-if="enableSave"
         :disabled="disabled"
         @click="onSubmit"
       >
@@ -53,7 +52,7 @@ import {
   type AnnotationStartEnd,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 import {
   SourceModelSchema,
@@ -78,9 +77,9 @@ import { findTextValue } from '../../utils/translation';
 // Schema for validation
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
   mode: 'create',
-  enableSave: true,
   schema: AnnotationSelectorSchema,
   onClose: () => {},
+  extraData: {},
 });
 const emits = defineEmits(['closeModal']);
 
@@ -109,6 +108,17 @@ const source = computed(() => {
       offset: parentSelector.value.selector.start,
     },
   });
+});
+
+onMounted(() => {
+  if (!properties.annotation) return;
+  const metadata = findTextPositionSelector(properties.source.uri)(
+    properties.annotation,
+  )?.selector;
+  selection.value = {
+    start: metadata.start,
+    end: metadata.end,
+  };
 });
 
 const sources = computed(() => {
@@ -171,6 +181,7 @@ const onSubmit = async () => {
     properties.parentAnnotation,
     properties.source,
     properties.schema,
+    properties.extraData,
   );
 
   const annotationId = properties.annotation?.id ?? null;
