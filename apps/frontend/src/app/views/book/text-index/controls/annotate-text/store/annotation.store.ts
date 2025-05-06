@@ -18,7 +18,7 @@ import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { AnnotationUtils } from '../utils/annotations.utils';
 import { generateW3CAnnotationBlocks } from '../utils/generate-blocks';
-import { SourceUtils, createSourceFromTextContent } from '../utils/source';
+import { createSourceFromTextContent, SourceUtils } from '../utils/source';
 import { AnnotationTester } from '../utils/tester';
 import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
 
@@ -69,11 +69,6 @@ export const useAnnotationStore = (id: string) =>
       );
 
       newAnnotations.value = [newAnnotation];
-
-      // selectAnnotation({
-      //   textContentUri: sourceUri,
-      //   annotationId: newAnnotation.id,
-      // });
 
       return newAnnotation;
     };
