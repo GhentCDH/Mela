@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
-  createSchema,
   LayoutBuilder,
   Size,
   TableBuilder,
   TextCellBuilder,
+  createSchema,
 } from '@ghentcdh/json-forms/core';
 import { BookForm } from '@ghentcdh/mela/generated/forms';
 import type {
