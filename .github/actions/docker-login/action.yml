@@ -7,7 +7,9 @@ runs:
       run: |
         echo "TAG=$(jq -r '.version' package.json)" >> $GITHUB_ENV
         echo "SOURCE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      shell: bash
     - name: Use the tag
       run: echo "The latest tag is ${{ env.TAG }}"
+      shell: bash
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
