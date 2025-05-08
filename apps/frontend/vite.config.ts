@@ -10,6 +10,8 @@ export default defineConfig({
   server: {
     port: 4200,
     host: '0.0.0.0',
+    // TODO when json forms is fixed just remove this
+    allowedHosts: ['tst.mela.ugent.be'],
   },
   preview: {
     port: 4300,
