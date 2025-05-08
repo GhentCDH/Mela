@@ -2,7 +2,11 @@ import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes: Readonly<RouteRecordRaw[]> = [
-  { path: '/', name: 'home', redirect: '/book' },
+  {
+    path: '/',
+    name: 'home',
+    component: () => import('./app/views/book/book-index.vue'),
+  },
   {
     path: '/form/:formId',
     name: 'form',

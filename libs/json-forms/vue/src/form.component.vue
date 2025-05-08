@@ -78,6 +78,7 @@ const renderers = Object.freeze([
     @on-submit="onSubmit"
   >
     <json-forms
+      :key="id"
       :data="formData"
       :schema="schema"
       :uischema="uischema"

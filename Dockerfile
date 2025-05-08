@@ -34,26 +34,19 @@ COPY --chown=app:app . /app
 WORKDIR /app
 
 # Frontend development
-FROM node-dev AS mela-frontend-build
+FROM node-dev AS mela-frontend
 
 WORKDIR /app
 
 #CMD SLEEP INFINITY
-RUN pnpm run generate:prisma  && \
-    npx nx run frontend:build:production
 
-# production stage
-FROM caddy:2.8.4-alpine as mela-frontend
 WORKDIR /app
 
-COPY --from=mela-frontend-build /app /app
+RUN ./tools/scripts/create-env.sh /app/apps/frontend/
 
-RUN apk add --no-cache bash
+CMD pnpm run generate:prisma  && \
+    npx nx run frontend:serve:production --port=9000
 
-
-CMD  cd /app/tools/scripts && ./startup.sh --dir=/app/dist/apps/frontend --port=9000
-
-EXPOSE 80 443 9000
 
 # Backend developmen
 FROM node-dev AS mela-backend
