@@ -3,7 +3,6 @@ import { z } from 'zod';
 import {
   ControlBuilder,
   LayoutBuilder,
-  Size,
   TableBuilder,
   TextCellBuilder,
   createSchema,
@@ -98,5 +97,5 @@ export const BookFormSchema = createSchema({
   jsonSchema: BookForm,
   tableSchema,
   uri: '/api/book',
-  modalSize: Size.lg,
+  modalSize: 'lg',
 });

@@ -29,7 +29,8 @@ const properties = withDefaults(
   }>(),
   {
     disabled: false,
-    renderers: [] as JsonFormsRendererRegistryEntry[],
+    renderers: undefined,
+    eventListener: undefined,
   },
 );
 
@@ -66,7 +67,7 @@ watch(
 
 provide('styles', myStyles);
 const renderers = Object.freeze([
-  ...properties.renderers,
+  ...(properties.renderers ?? []),
   ...tailwindRenderers,
 ]);
 </script>
@@ -74,9 +75,10 @@ const renderers = Object.freeze([
 <template>
   <form
     :id="id"
-    @submit="onSubmit"
+    @on-submit="onSubmit"
   >
     <json-forms
+      :key="id"
       :data="formData"
       :schema="schema"
       :uischema="uischema"

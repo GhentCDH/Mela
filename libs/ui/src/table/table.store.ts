@@ -10,7 +10,7 @@ type RequestData = any;
 
 // TODO add sorting
 
-export const useTableStore = (name) =>
+export const useTableStore = (name: string) =>
   defineStore(`ghentCDH_table_form_${name}`, () => {
     const route = useRoute();
     const router = useRouter();

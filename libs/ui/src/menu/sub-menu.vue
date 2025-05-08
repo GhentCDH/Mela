@@ -9,7 +9,7 @@
       <Icon
         v-if="!disableArrow"
         :icon="IconEnum.ChevronDown"
-        :size="Size.sm"
+        size="sm"
       />
     </div>
     <ul
@@ -30,7 +30,6 @@
 <script setup lang="ts">
 import MenuItem from './menu-item.vue';
 import type { MenuWithItems } from './menu.type';
-import { Size } from '../const';
 import { Icon, IconEnum } from '../icons';
 
 defineProps<MenuWithItems & { btnClass: string; disableArrow?: boolean }>();

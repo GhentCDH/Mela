@@ -3,7 +3,7 @@
     :modal-title="title"
     :open="true"
     :disable-close="false"
-    :width="Size.lg"
+    width="lg"
     @close-modal="onCancel"
   >
     <template #content>
@@ -65,7 +65,7 @@ import {
   GhentCdhAnnotations,
   useWordSnapper,
 } from '@ghentcdh/annotations/vue';
-import { Btn, Color, ControlWrapper, Modal, Size } from '@ghentcdh/ui';
+import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
 import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
 
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';

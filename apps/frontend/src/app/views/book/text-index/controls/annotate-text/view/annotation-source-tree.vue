@@ -4,7 +4,7 @@
       <div class="flex gap-2 items-center font-bold">
         <Icon
           :icon="IconEnum.Text"
-          :size="Size.sm"
+          size="sm"
         />
         {{ source.content.label }}
       </div>
@@ -28,7 +28,7 @@
 import { computed } from 'vue';
 
 import type { SourceModel } from '@ghentcdh/annotations/core';
-import { Icon, IconEnum, Size } from '@ghentcdh/ui';
+import { Icon, IconEnum } from '@ghentcdh/ui';
 
 import Tree from './tree.vue';
 import { useActiveAnnotationStore } from '../store/active-annotation.store';

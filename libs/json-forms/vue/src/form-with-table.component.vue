@@ -34,7 +34,7 @@ const properties = withDefaults(
     initialData?: Data;
     eventListener?: FormEventListener;
   }>(),
-  { initialData: {} as Data },
+  { initialData: {} as any },
 );
 const reload = ref(0);
 

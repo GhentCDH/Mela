@@ -69,3 +69,4 @@ CMD npx prisma migrate deploy && pnpm run generate:prisma && npx nx run backend:
 FROM caddy:2.8.4-alpine AS frontend
 
 EXPOSE 80 443
+

@@ -15,7 +15,7 @@
       <!--      </modal-form>-->
       <template v-if="filters.length">
         <Btn
-          :size="Size.xs"
+          size="xs"
           :outline="true"
           @click="onResetFilters"
         >
@@ -40,7 +40,7 @@
 import { ref, watch } from 'vue';
 
 import type { Filter, JsonFormsLayout } from '@ghentcdh/json-forms/core';
-import { Btn, BtnBadge, IconEnum, Size } from '@ghentcdh/ui';
+import { Btn, BtnBadge, IconEnum } from '@ghentcdh/ui';
 
 const formData = ref();
 

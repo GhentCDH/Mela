@@ -15,18 +15,30 @@
 </template>
 
 <script setup lang="ts">
-import { BadgeSize, Size } from '../const/size';
-import { Icon, IconEnum } from '../icons';
+import type { Size } from '../const/size';
+import { BadgeSize } from '../const/size';
+import type { IconEnum } from '../icons';
+import { Icon } from '../icons';
 import { ButtonType } from './const';
-import { BadgeColor, Color } from '../const/colors';
+import type { Color } from '../const/colors';
+import { BadgeColor } from '../const/colors';
 
-defineProps({
-  icon: { required: false, type: IconEnum, default: undefined },
-  type: { default: 'button', required: false, type: ButtonType },
-  color: { default: 'default', required: false, type: Color },
-  disabled: { default: false, required: false, type: Boolean },
-  size: { default: 'sm', required: false, type: Size },
-});
+withDefaults(
+  defineProps<{
+    icon?: IconEnum;
+    type?: ButtonType;
+    color?: Color;
+    disabled?: boolean;
+    size?: Size;
+  }>(),
+  {
+    icon: undefined,
+    type: ButtonType.button,
+    color: undefined,
+    disabled: false,
+    size: 'sm',
+  },
+);
 
 const emit = defineEmits(['click']);
 </script>

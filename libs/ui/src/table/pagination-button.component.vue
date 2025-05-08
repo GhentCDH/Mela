@@ -3,7 +3,6 @@ import { computed } from 'vue';
 
 import { Btn } from '../button';
 import { Color } from '../const/colors';
-import { Size } from '../const/size';
 
 export interface PageProps {
   currentPage: number;
@@ -36,7 +35,7 @@ const goToPage = () => {
   <Btn
     :disabled="disabled"
     :square="true"
-    :size="Size.xs"
+    size="xs"
     :color="color"
     @click="goToPage()"
   >

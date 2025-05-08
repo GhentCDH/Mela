@@ -1,8 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import type { MyStyles} from './styles';
+import type { MyStyles } from './styles';
 import { myStyles } from './styles';
-
 
 export type ControlProperties = {
   id?: string;
@@ -31,21 +30,10 @@ export const DefaultControlProperties = () => {
   } as ControlProperties;
 };
 
-export type ControlWrapperProperties = ControlProperties;
-
 export type SelectControlProperties = ControlProperties & {
-  options: Array<any>;
+  options: any[];
   valueKey?: string;
   labelKey?: string;
-};
-
-export const DefaultSelectProperties = () => {
-  return {
-    ...DefaultControlProperties(),
-    options: [] as any[],
-    valueKey: 'value',
-    labelKey: 'label',
-  };
 };
 
 export type AutoCompleteConfig = {

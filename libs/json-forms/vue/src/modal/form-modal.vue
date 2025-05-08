@@ -3,7 +3,7 @@
     v-bind="properties"
     :open="true"
     :disable-close="false"
-    :width="formSchema.modalSize ?? 'sm'"
+    :width="formSchema.modalSize"
     @close-modal="onCancel"
   >
     <template #content>
