@@ -24,7 +24,8 @@ import type { IconEnum } from '../icons';
 import { Icon } from '../icons';
 import { ButtonTag, ButtonType } from './const';
 import { ButtonColor, Color } from '../const/colors'; // TODO add properties for links
-import { ButtonSize, Size } from '../const/size';
+import type { Size } from '../const/size';
+import { ButtonSize } from '../const/size';
 
 // TODO add properties for links
 
@@ -47,7 +48,7 @@ const properties = withDefaults(defineProps<ButtonProps>(), {
   type: ButtonType.button,
   color: Color.primary,
   outline: false,
-  size: Size.sm,
+  size: 'sm',
   square: false,
 });
 

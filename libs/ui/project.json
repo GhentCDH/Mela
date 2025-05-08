@@ -6,5 +6,5 @@
   "tags": [
     "scope:ui"
   ],
-  "// targets": "to see all targets run: nx show project ui --web",
+  "// targets": "to see all targets run: nx show project ui --web"
 }

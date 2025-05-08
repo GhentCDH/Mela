@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 
-import { Size } from '../const';
+import type { Size } from '../const';
 
 // Dictionary of Modal size classes
 const ModalSize: Record<string, string> = {
@@ -48,7 +48,7 @@ const properties = withDefaults(
     disableClose?: boolean;
     width?: Size;
   }>(),
-  { open: false, disableClose: false, width: Size.sm },
+  { open: false, disableClose: false, width: 'sm' },
 );
 
 const id = `modal_${Math.floor(Math.random() * 1000)}`;

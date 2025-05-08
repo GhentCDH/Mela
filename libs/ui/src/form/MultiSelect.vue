@@ -29,7 +29,7 @@
               <Icon
                 v-if="hasKey(getValueField(result))"
                 :icon="IconEnum.Check"
-                :size="Size.sm"
+                size="sm"
               />
             </div>
             {{ getLabel(result) }}
@@ -43,17 +43,17 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 
-import { Size } from '../const';
 import { Icon, IconEnum } from '../icons';
 import ControlWrapper from './core/ControlWrapper.vue';
 import type { ControlEmits } from './core/emits';
 import type { SelectControlProperties } from './core/properties';
-import { DefaultSelectProperties } from './core/properties';
+import { DefaultControlProperties } from './core/properties';
 
-const properties = withDefaults(
-  defineProps<SelectControlProperties>(),
-  DefaultSelectProperties(),
-);
+const properties = withDefaults(defineProps<SelectControlProperties>(), {
+  ...DefaultControlProperties(),
+  valueKey: 'value',
+  labelKey: 'label',
+});
 
 const emit = defineEmits<ControlEmits>();
 const model = defineModel<any[]>();

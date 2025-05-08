@@ -4,7 +4,6 @@ import {
   CategoryBuilder,
   ControlBuilder,
   LayoutBuilder,
-  Size,
   createSchema,
 } from '@ghentcdh/json-forms/core'; // TODO add autocomplete for textschema
 import { TextForm } from '@ghentcdh/mela/generated/forms';
@@ -68,5 +67,5 @@ export const TextFormSchema = createSchema({
   responseSchema,
   jsonSchema: TextForm,
   uri: '/api/text',
-  modalSize: Size.xl,
+  modalSize: 'xl',
 });

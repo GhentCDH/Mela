@@ -25,8 +25,8 @@
           >{{ title }}</a>
         </div>
         <div class="navbar-end">
-          <Submenu
-            v-if="user"
+          <SubMenu
+            v-if="userMenu"
             v-bind="userMenu"
             :btn-class="''"
           />
@@ -68,7 +68,7 @@ import { computed } from 'vue';
 
 import type { ShellMenu, User } from './menu.type';
 import { Icon, IconEnum } from '../icons';
-import { Submenu } from '../menu';
+import { SubMenu } from '../menu';
 import { ModalWrapper } from '../modal';
 import Toast from '../toast/toast.vue';
 
@@ -96,6 +96,6 @@ const userMenu = computed(() => {
           },
         ],
       }
-    : [];
+    : null;
 });
 </script>
