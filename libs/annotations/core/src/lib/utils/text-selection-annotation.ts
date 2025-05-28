@@ -19,7 +19,7 @@ export const createTextualBody = (
   language: string,
   annotation: Pick<TextAnnotation, 'start' | 'end'> & { id?: string },
 ) => {
-  const textValue = text.substring(annotation.start, annotation.end);
+  const textValue = text.substring(annotation.start, annotation.end + 1);
   return TextualBodySchema.parse({
     language: language,
     value: textValue,

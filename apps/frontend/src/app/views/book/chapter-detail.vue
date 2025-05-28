@@ -77,8 +77,8 @@ const onCancel = () => {
 const onSubmit = () => {
   if (!valid.value) return;
 
-  bookStore.saveOrUpdate(formData.value).then(() => {
-    formData.value = bookStore.chapter;
+  bookStore.saveOrUpdate(formData.value).then((chapter) => {
+    textId.value = bookStore.chapter?.text[0].id;
   });
   alert(
     'Chapter saved, existing annotations are not updated, this is still a manual process',

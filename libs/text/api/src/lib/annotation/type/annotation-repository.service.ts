@@ -7,6 +7,7 @@ import {
   PURPOSE_ANNOTATION_SELECT,
   PURPOSE_EXAMPLE,
   PURPOSE_LEMA,
+  PURPOSE_LINK_BUCKETS,
   PURPOSE_TRANSLATION,
 } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -66,6 +67,9 @@ export class AnnotationTypeRepository {
           id,
           data as AnnotationExampleLemma,
         );
+        break;
+      case PURPOSE_LINK_BUCKETS:
+        updatedAnnotation = await this.updateLinks(id, data as AnnotationLink);
         break;
       default:
         throw new BadRequestException('Invalid annotation type');

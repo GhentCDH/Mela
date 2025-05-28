@@ -38,6 +38,7 @@ export const useModeStore = defineStore('annotation_mode_store', () => {
       const onChangeSuccess = () => {
         activeMode.value = mode;
         onSuccess?.();
+
         resolve(true);
       };
 

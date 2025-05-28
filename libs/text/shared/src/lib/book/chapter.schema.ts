@@ -64,6 +64,7 @@ const dtoSchema = ChapterSchema.pick({
       textContent: z.array(TextContentDtoSchema),
     }),
   ),
+  book: z.object({ id: z.string() }).optional(),
 });
 
 export const ChapterFormSchema = createSchema({
