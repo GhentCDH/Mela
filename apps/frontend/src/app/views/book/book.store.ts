@@ -2,21 +2,25 @@ import type { TextContentDto } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 import type {
   BookWithRelations,
+  Chapter,
   ChapterWithRelations,
   TextContentWithRelations,
 } from '@ghentcdh/mela/generated/types';
 import { useNotificationStore } from '@ghentcdh/ui';
 
+import router from '../../../router';
 import { useBookRepository } from '../../repository/book.repository';
 import { useChapterRepository } from '../../repository/chapter.repository';
+import { ReloadRef } from './text-index/controls/annotate-text/utils/reload';
+
+export const NEW_CHAPTER_ID = 'NEW_CHAPTER';
 
 export const useBookStore = defineStore('bookStore', () => {
   const route = useRoute();
-  const router = useRouter();
   const chapterRepository = useChapterRepository();
   const bookRepository = useBookRepository();
 
@@ -50,8 +54,21 @@ export const useBookStore = defineStore('bookStore', () => {
     text_type: 'TRANSLATION',
   };
 
+  const reload = ReloadRef();
+
   const chapter = computedAsync(() => {
+    const r = reload.watchReload.value;
+
     if (!chapterId.value) return null;
+
+    if (chapterId.value === NEW_CHAPTER_ID) {
+      return {
+        chapter_number: '',
+        name: '',
+        text: [{ textContent: [defaultSource, defaultTranslation] }],
+        book: { id: bookId.value },
+      };
+    }
 
     return chapterRepository
       .get(chapterId.value)
@@ -70,7 +87,10 @@ export const useBookStore = defineStore('bookStore', () => {
               ...defaultTranslation,
             } as TextContentWithRelations),
         ];
-        return { ...chapter, text: [{ ...text, textContent }] };
+        return {
+          ...chapter,
+          text: [{ ...text, textContent }],
+        };
       });
   });
 
@@ -80,8 +100,31 @@ export const useBookStore = defineStore('bookStore', () => {
     return bookRepository.get(bookId.value) as Promise<BookWithRelations>;
   });
 
+  const create = async (chapter: Partial<ChapterWithRelations>) => {
+    const createdChapter = (await chapterRepository.create(chapter)) as Chapter;
+
+    void router.push({
+      name: 'chapter-detail',
+      params: { chapterId: createdChapter.id, bookId: bookId.value },
+    });
+
+    return createdChapter;
+  };
+
+  const update = async (chapter: Partial<ChapterWithRelations>) => {
+    const updatedChapter = await chapterRepository.patch(
+      chapterId.value,
+      chapter,
+    );
+    reload.reload();
+
+    return updatedChapter;
+  };
+
   const saveOrUpdate = (chapter: Partial<ChapterWithRelations>) => {
-    return chapterRepository.patch(chapterId.value, chapter);
+    return chapterId.value === NEW_CHAPTER_ID
+      ? create(chapter)
+      : update(chapter);
   };
 
   const sources = computed(() => {

@@ -51,7 +51,7 @@ const dtoSchema = LemmaSchema.pick({
   superlative: true,
   participle: true,
 }).extend({
-  speech: SpeechSchema.omit({ createdAt: true, updatedAt: true }).extend({
+  speech: SpeechSchema.omit({ created_at: true, updated_at: true }).extend({
     id: z.string().optional(),
   }),
   grammatical: z.boolean().optional().default(false),

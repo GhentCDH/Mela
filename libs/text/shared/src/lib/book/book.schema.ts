@@ -64,16 +64,14 @@ const dtoSchema = BookSchema.pick({
   year: true,
 })
   .extend({
-    author: AuthorSchema.omit({ createdAt: true, updatedAt: true }).extend({
+    author: AuthorSchema.omit({ created_at: true, updated_at: true }).extend({
       id: z.string().optional(),
     }),
     chapter: z
       .array(
-        ChapterSchema.pick({
-          name: true,
-          chapter_number: true,
-        }).extend({
+        ChapterSchema.pick({ name: true, chapter_number: true }).extend({
           id: z.string().optional(),
+          chapter_order: z.number().nullish().optional(),
         }),
       )
       .min(1),

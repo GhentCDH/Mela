@@ -17,7 +17,7 @@ export const findTextValue = (annotations: W3CAnnotation) => {
 
 export const getTextSelection = (
   text: SourceModel,
-  annotation: TextAnnotation,
+  annotation: Pick<TextAnnotation, 'start' | 'end'>,
 ) => {
   return text.content.text.substring(annotation.start, annotation.end + 1);
 };

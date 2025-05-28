@@ -25,6 +25,14 @@
           </Btn>
         </div>
       </li>
+      <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">
+        <Btn
+          :icon="IconEnum.Plus"
+          @click="createChapter"
+        >
+          Create chapter
+        </Btn>
+      </li>
     </ul>
   </div>
 </template>
@@ -34,7 +42,7 @@ import { onMounted } from 'vue';
 import { Btn, IconEnum } from '@ghentcdh/ui';
 
 import { useBookMenuStore } from './book-menu.store';
-import { useBookStore } from './book.store';
+import { NEW_CHAPTER_ID, useBookStore } from './book.store';
 import router from '../../../router';
 
 const bookStore = useBookStore();
@@ -51,4 +59,8 @@ onMounted(() => {
   bookMenuStore.resetMenu();
   bookMenuStore.resetBreadcrumbs();
 });
+
+const createChapter = () => {
+  editChapter({ id: NEW_CHAPTER_ID });
+};
 </script>

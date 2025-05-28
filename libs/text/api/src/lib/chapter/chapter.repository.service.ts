@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { omit } from 'lodash-es';
 import { ZodSchema } from 'zod';
 
 import { ChapterDto } from '@ghentcdh/mela/generated/dtos';
@@ -45,14 +46,20 @@ export class ChapterRepository extends AbstractRepository<
     return selectDetail;
   }
 
+  override async create(dto: CreateChapter): Promise<Chapter> {
+    const created = await this.prisma.chapter.create({
+      data: { ...omit(dto, 'text'), book: { connect: dto.book } },
+    });
+
+    return this.update(created.id, omit(dto, 'book'));
+  }
+
   protected override async connectUpdate(
     id: string,
     dto: CreateChapter,
   ): Promise<Partial<ChapterDto>> {
     return {
       text: { connect: await this.connectOrCreateTexts(id, dto) },
-      // author: await this.createOrConnectAuthor(dto),
-      // chapter: { connect: await this.createOrConnectChapter(id, dto) },
     };
   }
 
