@@ -7,7 +7,11 @@
     @close-modal="onCancel"
   >
     <template #content>
-      <ControlWrapper :label="selectLabel" :error="false" :required="true">
+      <ControlWrapper
+        :label="selectLabel"
+        :error="false"
+        :required="true"
+      >
         <div class="border border-1 border-gray-200 my-2 text-lg">
           <GhentCdhAnnotations
             :sources="sources"
@@ -17,7 +21,12 @@
             :cols="1"
             @on-event="eventHandler"
           />
-          <Btn :outline="true" @click="selectAll"> Select all text </Btn>
+          <Btn
+            :outline="true"
+            @click="selectAll"
+          >
+            Select all text
+          </Btn>
         </div>
       </ControlWrapper>
       <div class="flex gap-2 items-center">
@@ -25,11 +34,20 @@
       </div>
     </template>
     <template #actions>
-      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+      <Btn
+        :color="Color.secondary"
+        :outline="true"
+        @click="onCancel"
+      >
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
+      <Btn
+        :disabled="disabled"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -43,9 +61,9 @@ import { pick } from 'lodash-es';
 import { computed, onMounted } from 'vue';
 
 import {
+  SourceModelSchema,
   createTextSelectionAnnotation,
   findTextPositionSelector,
-  SourceModelSchema,
 } from '@ghentcdh/annotations/core';
 import {
   type AnnotationEventHandlerPayloadData,
