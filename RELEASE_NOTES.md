@@ -1,9 +1,9 @@
-## [0.0.6](https://github.com/GhentCDH/Mela/compare/v0.0.5...v0.0.6) (2025-05-09)
+## [0.0.7](https://github.com/GhentCDH/Mela/compare/v0.0.6...v0.0.7) (2025-05-28)
 
 
-### Bug Fixes
+### Features
 
-* production build ([7e9c418](https://github.com/GhentCDH/Mela/commit/7e9c4182b70118559fdf9da4c962bbfb5125cad8))
+* small improvements ([#86](https://github.com/GhentCDH/Mela/issues/86)) ([1b7cec7](https://github.com/GhentCDH/Mela/commit/1b7cec77d5758ea50be1f21690e54f2228cd5e6d))
 
 
 
