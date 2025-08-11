@@ -65,6 +65,9 @@ export const AnnotationContext = z
   .enum(['http://www.w3.org/ns/anno.jsonld'])
   .default('http://www.w3.org/ns/anno.jsonld');
 
+/**
+ * @deprecated
+ */
 export const W3CAnnotationSchema = z.object({
   id: z.string(),
   '@context': z.string().default('http://www.w3.org/ns/anno.jsonld'),
@@ -72,4 +75,7 @@ export const W3CAnnotationSchema = z.object({
   body: z.array(W3CAnnotationBodySchema).or(W3CAnnotationBodySchema),
   target: z.array(W3CAnnotationTargetSchema).or(W3CAnnotationTargetSchema),
 });
+/**
+ * @deprecated
+ */
 export type W3CAnnotation = z.infer<typeof W3CAnnotationSchema>;

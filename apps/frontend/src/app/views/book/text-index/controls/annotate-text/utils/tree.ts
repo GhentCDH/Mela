@@ -1,8 +1,8 @@
+import type { Annotation } from '@ghentcdh/mela/generated/types';
 import {
   findTagging,
   findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
-import type { Annotation } from '@ghentcdh/mela/generated/types';
+} from '@ghentcdh/vue-component-annotated-text';
 
 import { findTextValue } from './translation';
 import type { AnnotationType } from '../../identify.color';

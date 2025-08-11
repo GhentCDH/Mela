@@ -13,14 +13,15 @@
         :required="true"
       >
         <div class="border border-1 border-gray-200 my-2 text-lg">
-          <GhentCdhAnnotations
-            :sources="sources"
-            :annotations="annotations"
-            :annotation-actions="annotationActions"
-            :use-snapper="useWordSnapper"
-            :cols="1"
-            @on-event="eventHandler"
-          />
+          <div :id="id" />
+          <!--          <GhentCdhAnnotations-->
+          <!--            :sources="sources"-->
+          <!--            :annotations="annotations"-->
+          <!--            :annotation-actions="annotationActions"-->
+          <!--            :use-snapper="useWordSnapper"-->
+          <!--            :cols="1"-->
+          <!--            @on-event="eventHandler"-->
+          <!--          />-->
           <Btn
             :outline="true"
             @click="selectAll"
@@ -53,32 +54,30 @@
 </template>
 
 <script setup lang="ts">
-import {
-  AnnotationSelectorSchema,
-  type AnnotationStartEnd,
-} from '@mela/text/shared';
-import { pick } from 'lodash-es';
-import { computed, onMounted } from 'vue';
+import { AnnotationSelectorSchema } from '@mela/text/shared';
+import { v4 as uuidv4 } from 'uuid';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import {
-  SourceModelSchema,
+import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
+import type {
+  AnnotatedText,
+  MarkdownTextAdapter,
+  type W3CAnnotation,
+  W3CAnnotationAdapter,
+  WordSnapper,
+  createAnnotatedText,
   createTextSelectionAnnotation,
   findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
-import {
-  type AnnotationEventHandlerPayloadData,
-  type AnnotationEventType,
-  GhentCdhAnnotations,
-  useWordSnapper,
-} from '@ghentcdh/annotations/vue';
-import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
-import type { CreateAnnotationState } from '@ghentcdh/vue-component-annotated-text/dist/src';
+  updateTextSelectionAnnotation,
+} from '@ghentcdh/vue-component-annotated-text';
 
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
 import { createSelection } from './selection.utils';
-import { AnnotationTypeLabelValue } from '../../../identify.color';
+import {
+  AnnotationTypeLabelValue,
+  IdentifyColorMap,
+} from '../../../identify.color';
 import { useAnnotationStore } from '../../store/annotation.store';
-import { findTextValue } from '../../utils/translation';
 
 // Schema for validation
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
@@ -89,6 +88,7 @@ const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
   valid: true,
 });
 const emits = defineEmits(['closeModal']);
+const id = `annotated-view--${uuidv4()}`;
 
 const annotationStore = useAnnotationStore(properties.storeId);
 const type = AnnotationTypeLabelValue[properties.annotationType];
@@ -99,82 +99,73 @@ const selectLabel =
     ? `Adjust ${type.label} selection`
     : `Select ${type.label} selection`;
 
-const textBody = computed(() => findTextValue(properties.parentAnnotation));
-const parentSelector = computed(() =>
-  findTextPositionSelector(properties.source.uri)(properties.parentAnnotation),
-);
+let annotatedText: AnnotatedText<W3CAnnotation>;
+const annotation = ref<W3CAnnotation | null>(null);
 
-const source = computed(() => {
-  if (!properties.parentAnnotation) return properties.source;
-  return SourceModelSchema.parse({
-    ...properties.source,
-    content: {
-      text: textBody.value.value,
-      schema: AnnotationSelectorSchema,
-      processingLanguage: textBody.value.language,
-      offset: parentSelector.value.selector.start,
-    },
-  });
+onUnmounted(() => {
+  annotatedText?.destroy();
 });
 
-onMounted(() => {
-  if (!properties.annotation) return;
-  const metadata = findTextPositionSelector(properties.source.uri)(
-    properties.annotation,
-  )?.selector;
-  selection.value = {
-    start: metadata.start,
-    end: metadata.end,
-  };
-});
-
-const sources = computed(() => {
-  return [source.value];
-});
-
-const selection = defineModel<AnnotationStartEnd>();
-
-const annotationActions = computed(() => {
-  return {
-    [source.value.uri]: {
-      edit: properties.mode === 'edit',
-      create: properties.mode === 'create',
-    },
-  };
-});
-const eventHandler = (
-  e: AnnotationEventType,
-  payload: AnnotationEventHandlerPayloadData<unknown>,
-) => {
-  switch (e) {
-    case 'click-annotation':
-    case 'click-outside':
-      // onSelectAnnotation(payload.target, payload.annotationId);
-      break;
-    case 'create--end':
-    case 'update--end':
-      const annotation = (
-        payload.payload as CreateAnnotationState
-      ).getAnnotation();
-
-      selection.value = annotation;
-      break;
-    default:
-      console.warn('event not handled', e);
+const getMainAnnotation = () => {
+  if (properties.parentAnnotation) return properties.parentAnnotation;
+  if (properties.mode === 'edit') {
+    return properties.parentAnnotation;
   }
+  return properties.annotation;
 };
 
-const annotations = computed(() => {
-  if (!selection.value) {
-    return properties.mode === 'edit' ? [properties.annotation] : [];
-  }
-  return [
-    createTextSelectionAnnotation(
-      source.value,
-      pick(selection.value, ['start', 'end']),
-      'lemma',
-    ),
-  ];
+const textPositionSelector = () => {
+  const parent = getMainAnnotation();
+  if (!parent) return null;
+
+  const sourceUri = properties.source.uri;
+
+  return findTextPositionSelector(sourceUri)(parent)?.selector;
+};
+
+onMounted(() => {
+  annotation.value = properties.mode === 'edit' ? properties.annotation : null;
+  const annotations = properties.mode === 'edit' ? [properties.annotation] : [];
+  const language = properties.source.content.processingLanguage;
+  const sourceUri = properties.source.uri;
+  const text = properties.source.content.text;
+
+  let selector = textPositionSelector();
+
+  const limit = selector
+    ? {
+        start: selector.start,
+        end: selector.end,
+        ignoreLines: true,
+      }
+    : undefined;
+
+  const type = properties.annotationType;
+  const color = IdentifyColorMap[type ?? 'paragraph'];
+
+  annotatedText = createAnnotatedText(id, {
+    text: MarkdownTextAdapter({
+      limit,
+    }),
+    annotation: W3CAnnotationAdapter({
+      sourceUri: sourceUri,
+      language: language,
+      edit: true,
+      create: properties.mode === 'create',
+      snapper: new WordSnapper(),
+      colorFn: (w3cAnnotation: W3CAnnotation) => color,
+    }),
+  })
+    .setText(text, false)
+    .setAnnotations(annotations)
+    .on('annotation-create--end', ({ mouseEvent, event, data }) => {
+      annotatedText.changeAnnotationAdapterConfig('create', false);
+      annotatedText.changeAnnotationAdapterConfig('edit', true);
+      annotation.value = data.annotation;
+    })
+    .on('annotation-update--end', ({ mouseEvent, event, data }) => {
+      annotation.value = data.annotation;
+    });
 });
 
 const onCancel = () => {
@@ -183,32 +174,53 @@ const onCancel = () => {
 
 const onSubmit = async () => {
   const data = createSelection(
-    selection.value,
+    annotation.value,
     properties.annotationType,
-    properties.parentAnnotation,
     properties.source,
     properties.schema,
     properties.extraData,
   );
 
   const annotationId = properties.annotation?.id ?? null;
-  const annotation = await annotationStore.saveOrCreateAnnotation(
+  const result = await annotationStore.saveOrCreateAnnotation(
     annotationId,
     data,
   );
 
-  emits('closeModal', { valid: true, data: annotation });
+  emits('closeModal', { valid: true, data: result });
 };
 
 const disabled = computed(() => {
   // TODO if there is metadata needed validate it here!
-  return !properties.valid || !selection.value;
+  return !properties.valid || !annotation.value;
 });
 
 const selectAll = () => {
-  selection.value = {
+  const source = properties.source;
+  const selector = textPositionSelector() ?? {
     start: 0,
-    end: properties.source.content.text.length,
+    end: source.content.text.length,
   };
+  if (annotation.value) {
+    annotation.value = updateTextSelectionAnnotation(
+      annotation.value,
+      source.uri,
+      source.content.processingLanguage,
+      source.content.text,
+      selector,
+    );
+  } else {
+    annotation.value = createTextSelectionAnnotation(
+      source.uri,
+      source.content.processingLanguage,
+      source.content.text,
+      { ...selector, id: `NEW-${uuidv4()}` },
+    );
+  }
+
+  annotatedText
+    .setAnnotations([annotation.value])
+    .changeAnnotationAdapterConfig('create', false)
+    .changeAnnotationAdapterConfig('edit', true);
 };
 </script>

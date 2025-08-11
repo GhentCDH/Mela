@@ -1,4 +1,8 @@
 <template>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend">Selected text</legend>
+    <div :id="id" />
+  </fieldset>
   <fieldset
     v-for="item in metaData"
     :key="item.label"
@@ -13,42 +17,41 @@
   </fieldset>
   <div class="flex gap-2 justify-between pb-4">
     <div>
-      <Btn
-        v-if="allowEdit"
-        :outline="true"
-        @click="editAnnotation"
-      >
-        Edit
-      </Btn>
+      <Btn v-if="allowEdit" :outline="true" @click="editAnnotation"> Edit </Btn>
     </div>
     <div class="flex gap-2 justify-end pb-4">
-      <Btn
-        :color="Color.error"
-        @click="deleteAnnotation"
-      >
-        Delete
-      </Btn>
+      <Btn :color="Color.error" @click="deleteAnnotation"> Delete </Btn>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { findExampleMetaData, findLemmaMetaData } from '@mela/text/shared';
-import { computed } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
+import { computed, onMounted, onUnmounted, watch } from 'vue';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { SourceModel } from '@ghentcdh/annotations/core';
 import {
   findTagging,
   findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import { Btn, Color } from '@ghentcdh/ui';
+import type {
+  type AnnotatedText,
+  createAnnotatedText,
+  MarkdownTextAdapter,
+  W3CAnnotation,
+  W3CAnnotationAdapter,
+} from '@ghentcdh/vue-component-annotated-text';
 
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import { ModalSelectionService } from './selection/modal-selection.service';
-import { AnnotationTypeLabelValue } from '../../identify.color';
+import {
+  AnnotationTypeLabelValue,
+  colorForAnnotationType,
+} from '../../identify.color';
 import { useAnnotationTreeStore } from '../store/annotation.tree.store';
 import { AnnotationTester } from '../utils/tester';
-import { getTextSelection } from '../utils/translation';
 
 type Properties = {
   storeId: string;
@@ -86,10 +89,6 @@ const textAnnotation = computed(() => ({
     ?.selector,
 }));
 
-const selectedText = computed(() => {
-  return getTextSelection(properties.source, textAnnotation.value);
-});
-
 const allowEdit = computed(
   () => !AnnotationTester(properties.annotation).isNew(),
 );
@@ -97,11 +96,10 @@ const allowEdit = computed(
 const metaData = computed(() => {
   return [
     {
-      label: 'Selected text',
-      value: selectedText.value,
-      valueOnNewLine: true,
+      label: 'Annotation type',
+      value: annotationType.value.label,
+      valueOnNewLine: false,
     },
-    { label: 'Annotation type', value: annotationType.value.label },
     exampleMetaData.value,
 
     lemmaMetadata.value,
@@ -124,4 +122,38 @@ const editAnnotation = () => {
     storeId: properties.storeId,
   });
 };
+const id = `annotated-metadata-view--${uuidv4()}`;
+
+let annotatedText: AnnotatedText<W3CAnnotation>;
+
+const getLimit = () => {
+  return {
+    start: textAnnotation.value.start,
+    end: textAnnotation.value.end,
+    ignoreLines: true,
+  };
+};
+
+onMounted(() => {
+  annotatedText = createAnnotatedText(id, {
+    text: MarkdownTextAdapter({
+      limit: getLimit(),
+    }),
+    annotation: W3CAnnotationAdapter({
+      source: properties.source.uri,
+      // TODO add annotation colors
+      colorFn: colorForAnnotationType,
+    }),
+  }).setText(properties.source.content.text);
+});
+watch(
+  () => properties.annotation,
+  (newVal, oldVal) => {
+    annotatedText?.changeTextAdapterConfig('limit', getLimit());
+  },
+);
+
+onUnmounted(() => {
+  annotatedText?.destroy();
+});
 </script>

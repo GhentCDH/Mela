@@ -12,21 +12,6 @@ export const getTarget = (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
     : [annotation.target];
 };
 
-export const findSourceInTargets = (sourceUri: string) => {
-  return (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
-    const targets = getTarget(annotation);
-
-    return targets.filter((target) => target.source === sourceUri);
-  };
-};
-
-export const hasSourceInTargets = (sourceUri: string) => {
-  return (annotation: W3CAnnotation): boolean => {
-    const targets = getTarget(annotation);
-    return targets.some((target) => target.source === sourceUri);
-  };
-};
-
 export const findTargetType = <B extends W3CAnnotationTarget>(
   type: W3CAnnotationTargetType,
   validator: (body: B) => boolean,
@@ -74,28 +59,4 @@ export const updateSelector = (
   annotation.target = targets;
 
   return annotation;
-};
-
-export const findRelatedAnnotation =
-  (
-    annotations: W3CAnnotation[],
-    getIdFromUri: (uri: string | undefined) => string | undefined,
-  ) =>
-  (annotation: W3CAnnotation): W3CAnnotation[] => {
-    return getTarget(annotation)
-      .map((a) => {
-        const id = getIdFromUri(a.source);
-
-        if (!id) return null;
-
-        return annotations.find((a) => a.id === id);
-      })
-      .filter((a) => !!a);
-  };
-
-export const findAnnotations = (annotations: W3CAnnotation[]) => {
-  return {
-    findInTargetSource: (sourceUri: string): W3CAnnotation[] =>
-      annotations.filter(hasSourceInTargets(sourceUri)),
-  };
 };

@@ -1,7 +1,7 @@
 import type { TextContentDto } from '@mela/text/shared';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
 import {
+  type SourceModel,
   SourceModelSchema,
   SourceTextSchema,
 } from '@ghentcdh/annotations/core';

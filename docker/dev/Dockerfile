@@ -25,7 +25,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY pnpm* ./
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+#RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 # Copy source files into application directory
 COPY --chown=app:app . /app

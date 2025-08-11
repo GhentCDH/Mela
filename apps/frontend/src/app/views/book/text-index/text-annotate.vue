@@ -5,7 +5,6 @@
   >
     <annotate-text
       :store-id="storeId"
-      :snapper="useWordSnapper"
       @close-annotation="closeAnnotation"
     />
   </div>
@@ -40,7 +39,6 @@
 import { computed, effect, onMounted } from 'vue';
 
 import type { SourceModel } from '@ghentcdh/annotations/core';
-import { useWordSnapper } from '@ghentcdh/annotations/vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import AnnotateText from './controls/annotate-text/annotate-text.vue';
