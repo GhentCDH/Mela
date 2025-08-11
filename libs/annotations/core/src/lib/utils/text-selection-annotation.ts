@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { SourceModel, TextAnnotation, W3CAnnotation } from '../model';
 import {
-  SpecificResourceSchema,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
   TextualBodySchema,
@@ -24,13 +23,6 @@ export const createTextualBody = (
     language: language,
     value: textValue,
     source: sourceUri,
-  });
-};
-
-export const createSpecificResource = (sourceUri: string, metaData: any) => {
-  return SpecificResourceSchema.parse({
-    source: sourceUri,
-    value: metaData,
   });
 };
 

@@ -11,8 +11,8 @@ import type {
   SourceModel,
   TextAnnotation,
   W3CAnnotation,
-} from '@ghentcdh/annotations/core';
-import { createTextSelectionAnnotation } from '@ghentcdh/annotations/core';
+} from '@ghentcdh/vue-component-annotated-text';
+import { createTextSelectionAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';

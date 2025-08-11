@@ -45,14 +45,6 @@ export const findByPurposeValue =
 
 export const findTagging = findByPurpose('tagging');
 
-export const findTextualBodyByLanguage =
-  (language: string) => (annotation: W3CAnnotation) => {
-    return findBodyType<TextualBody>(
-      'TextualBody',
-      (body: TextualBody) => body.language === language,
-    )(annotation);
-  };
-
 export const isSameBody = (
   body1: W3CAnnotationBody,
   body2: W3CAnnotationBody,

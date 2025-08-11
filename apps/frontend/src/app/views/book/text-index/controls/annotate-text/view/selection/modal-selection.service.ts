@@ -1,5 +1,5 @@
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { ModalService } from '@ghentcdh/ui';
+import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 import type {
   AnnotationSelectionModalProps,

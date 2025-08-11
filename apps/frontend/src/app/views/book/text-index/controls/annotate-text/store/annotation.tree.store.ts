@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed } from 'vue';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { SourceModel } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 import { useAnnotationStore } from './annotation.store';
 import { AnnotationTree } from '../utils/tree';
