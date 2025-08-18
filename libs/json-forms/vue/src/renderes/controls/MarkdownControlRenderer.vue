@@ -1,5 +1,8 @@
 <template>
-  <control-wrapper v-bind="controlWrapper" :styles="styles">
+  <control-wrapper
+    v-bind="controlWrapper"
+    :styles="styles"
+  >
     <div :id="mdId" />
   </control-wrapper>
 </template>
