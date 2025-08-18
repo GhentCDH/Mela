@@ -22,8 +22,9 @@ import type { RendererProps } from '@jsonforms/vue';
 import { rendererProps, useJsonFormsControl } from '@jsonforms/vue';
 import { defineComponent } from 'vue';
 
-import { Autocomplete, useVanillaControlCustom } from '@ghentcdh/ui';
+import { Autocomplete } from '@ghentcdh/ui';
 
+import { useVanillaControlCustom } from '../../../utils/vanillaControl';
 import { isAutoCompleteControl } from '../../tester';
 
 const controlRenderer = defineComponent({
