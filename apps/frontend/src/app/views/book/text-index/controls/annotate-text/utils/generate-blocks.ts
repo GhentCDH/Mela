@@ -1,9 +1,12 @@
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
 import {
+  type SourceModel,
   createTextSelectionFromText,
+} from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
+import {
   findTagging,
   findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
+} from '@ghentcdh/vue-component-annotated-text';
 
 export const PREFIX_GENERATED = 'generated-';
 

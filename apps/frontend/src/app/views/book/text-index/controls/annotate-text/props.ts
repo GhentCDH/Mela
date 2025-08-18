@@ -1,4 +1,4 @@
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 export type MODES =
   | 'generate'

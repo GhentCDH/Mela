@@ -1,4 +1,10 @@
-import { createAnnotationColors } from '@ghentcdh/annotations/vue';
+import { findTagging } from '@ghentcdh/annotations/core';
+import type {
+  ColorFn,
+  W3CAnnotation} from '@ghentcdh/vue-component-annotated-text';
+import {
+  createAnnotationColors
+} from '@ghentcdh/vue-component-annotated-text';
 
 export type AnnotationType =
   | 'title'
@@ -42,3 +48,10 @@ export const IdentifyColorMap = createAnnotationColors(Colors, {
     gutter: 0.8,
   },
 });
+
+export const colorForAnnotationType: ColorFn<W3CAnnotation> = (
+  w3cAnnotation: W3CAnnotation,
+) => {
+  const type = findTagging(w3cAnnotation);
+  return IdentifyColorMap[type?.value ?? 'paragraph'];
+};

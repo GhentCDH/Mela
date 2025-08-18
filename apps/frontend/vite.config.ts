@@ -12,6 +12,13 @@ export default defineConfig({
     host: '0.0.0.0',
     // TODO when json forms is fixed just remove this
     allowedHosts: ['tst.mela.ugent.be', 'qas.mela.ugent.be', 'mela.ugent.be'],
+
+    proxy: {
+      '/api': {
+        target: 'http://localhost',
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
     port: 4300,
