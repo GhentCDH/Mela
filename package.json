@@ -26,7 +26,7 @@
     "@ghentcdh/authentication-vue": "0.0.2-20",
     "@ghentcdh/tools-api": "0.0.2-10",
     "@ghentcdh/ui": "0.0.2-20",
-    "@ghentcdh/vue-component-annotated-text": "2.0.0-beta.14",
+    "@ghentcdh/vue-component-annotated-text": "0.4.12",
     "@jsonforms/vue": "^3.6.0",
     "@jsonforms/vue-vanilla": "^3.6.0",
     "@nestjs/axios": "^4.0.1",
