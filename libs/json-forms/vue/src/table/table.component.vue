@@ -8,9 +8,10 @@ import type {
 } from '@ghentcdh/json-forms/core';
 import { findColumnDef } from '@ghentcdh/json-forms/core';
 import type { TableAction } from '@ghentcdh/ui';
-import { Table, TextCell, useTableStore } from '@ghentcdh/ui';
+import { Table, TextCell } from '@ghentcdh/ui';
 
 import TableFilter from './filter/table-filter.vue';
+import { useTableStore } from './table.store';
 
 const properties = defineProps<{
   id: string;

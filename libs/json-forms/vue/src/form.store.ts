@@ -3,14 +3,13 @@ import { ref } from 'vue';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
-import { useNotificationStore } from '@ghentcdh/ui';
+import { NotificationService } from '@ghentcdh/ui';
 
 // TODO add warnings, success, ....
 
 export const useFormStore = (name: string) =>
   defineStore(`ghentCDH_form_${name}`, () => {
     const uri = ref<string | null>(null);
-    const notificationStore = useNotificationStore();
 
     const httpRequest = useHttpRequest();
 
@@ -23,12 +22,12 @@ export const useFormStore = (name: string) =>
 
       return promise
         .then(() => {
-          notificationStore.success('Data saved');
+          NotificationService.success('Data saved');
         })
         .catch((error) => {
           console.error(error);
 
-          notificationStore.error('Error saving data');
+          NotificationService.error('Error saving data');
         });
     };
 
@@ -41,12 +40,12 @@ export const useFormStore = (name: string) =>
       await httpRequest
         .delete(`${uri.value}/${data.id}`)
         .then(() => {
-          notificationStore.success('Data deleted');
+          NotificationService.success('Data deleted');
         })
         .catch((error) => {
           console.error(error);
 
-          notificationStore.error('Error deleting data');
+          NotificationService.error('Error deleting data');
         });
     };
 

@@ -10,7 +10,7 @@ import type {
   ChapterWithRelations,
   TextContentWithRelations,
 } from '@ghentcdh/mela/generated/types';
-import { useNotificationStore } from '@ghentcdh/ui';
+import { NotificationService } from '@ghentcdh/ui';
 
 import router from '../../../router';
 import { useBookRepository } from '../../repository/book.repository';
@@ -39,7 +39,6 @@ export const useBookStore = defineStore('bookStore', () => {
       if (newId !== oldId) bookId.value = newId as string;
     },
   );
-  const notificationStore = useNotificationStore();
   const chapters = computed(() => book.value?.chapter ?? []);
 
   const defaultSource = {
@@ -74,7 +73,7 @@ export const useBookStore = defineStore('bookStore', () => {
       .get(chapterId.value)
       .then((chapter: ChapterWithRelations) => {
         if (chapter.book_id !== bookId.value) {
-          notificationStore.error('Chapter is no part of the book');
+          NotificationService.error('Chapter is no part of the book');
           return null;
         }
         // for now we only support one text per chapter

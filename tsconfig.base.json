@@ -48,9 +48,6 @@
       "@ghentcdh/tools/logging/frontend": [
         "libs/tools/logging/frontend/src/index.ts"
       ],
-      "@ghentcdh/ui": [
-        "libs/ui/src/index.ts"
-      ],
       "@mela/text/api": [
         "libs/text/api/src/index.ts"
       ],

@@ -1,6 +1,9 @@
-@use '../../../libs/ui/src/styles' as *;
-//@use '../../../link/vue_component_annotated_text/src/style/style' as *;
+@use '../../../libs/ui/src/_scss/tailwind' as *;
 @use '@ghentcdh/vue-component-annotated-text/style.css' as *;
+
+//@use '../../../link/vue_component_annotated_text/src/style/style' as *;
+
+@import '@ghentcdh/ui/index.css';
 
 @source "../../../apps/frontend";
 @source "../../../libs";
