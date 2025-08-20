@@ -21,8 +21,8 @@ importers:
         specifier: 0.0.2-10
         version: 0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)
       '@ghentcdh/authentication-vue':
-        specifier: 0.1.0
-        version: 0.1.0(typescript@5.9.2)
+        specifier: 0.1.1-0
+        version: 0.1.1-0(typescript@5.9.2)
       '@ghentcdh/json-forms-api':
         specifier: ^0.0.1
         version: 0.0.1
@@ -30,14 +30,14 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1(openapi3-ts@4.5.0)
       '@ghentcdh/json-forms-vue':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: 0.1.1-0
+        version: 0.1.1-0
       '@ghentcdh/tools-api':
         specifier: 0.0.2-10
         version: 0.0.2-10(@babel/traverse@7.28.3)(@nestjs/core@11.1.6)(@prisma/client@6.14.0(prisma@6.14.0(magicast@0.3.5)(typescript@5.9.2))(typescript@5.9.2))(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@24.3.0)(axios@1.11.0)(less@4.4.1)(lightningcss@1.30.1)(nx@21.4.0(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17)))(reflect-metadata@0.2.2)(rxjs@7.8.2)(sass-embedded@1.90.0)(sass@1.90.0)(terser@5.43.1)(typescript@5.9.2)(verdaccio@6.1.6(typanion@3.14.0))(vitest@3.2.4)
       '@ghentcdh/ui':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.1.1-0
+        version: 0.1.1-0
       '@ghentcdh/vue-component-annotated-text':
         specifier: 0.4.12
         version: 0.4.12(vue@3.5.18(typescript@5.9.2))
@@ -1841,8 +1841,8 @@ packages:
   '@ghentcdh/authentication-api@0.0.2-10':
     resolution: {integrity: sha512-EDrRmpjcyGJEXli7/Pce/4Fxl6Ud02R+V/FvkYrnA47duJeso1D7T+mLp3yYU7a5E8YUU14LYP8HHRgo0xuSvA==}
 
-  '@ghentcdh/authentication-vue@0.1.0':
-    resolution: {integrity: sha512-slFsjzk8JClz8IFJRZhe58UOVgf2AgVGuSlZhzghqcbTEOcVEOt+/cqQFFUMElo5PWQx5zhDFl8n2n+P8dXqZg==}
+  '@ghentcdh/authentication-vue@0.1.1-0':
+    resolution: {integrity: sha512-o6dQ6HLnDfQNKsiUAODcIkeKuD6QtFHBOQANzjzfBl0CshDS1EdmCvZArCKADBncXR/4DWEz8B2wCaNpqEtVWQ==}
 
   '@ghentcdh/json-forms-api@0.0.1':
     resolution: {integrity: sha512-xeKnCrLZH60M0fWSmkIt9RUqr3eyJCTQANhikfHkpsg5Y4M/jWfQGvevpoBsfv1jAwcluePJmTNdZgZufo2P0A==}
@@ -1850,14 +1850,14 @@ packages:
   '@ghentcdh/json-forms-core@0.0.1':
     resolution: {integrity: sha512-m6abv9qqpCjU5Xv5u/FoPx+AAPztO4zQPouPaXqoHbOIubMH6VJiV22r6D/OP6MaSDfYN5Ft37jLf22prFD9DA==}
 
-  '@ghentcdh/json-forms-vue@0.1.0':
-    resolution: {integrity: sha512-pSs5K7F1HCk9KiEQvL79XrH0wZ+rHSCCW6Uql+HCzsREjgrvOXldhhEE2JatvLyFuAwZCtSZYgZ5xHcwbpxX5A==}
+  '@ghentcdh/json-forms-vue@0.1.1-0':
+    resolution: {integrity: sha512-iBGp1WVn/jgH6BlCec5EcmHsi5/xfQINKbbxGsBqDJS1ayeskQcORFWbp7wECh7tW3/NfOxA3AeVDrzXAvi7Hg==}
 
   '@ghentcdh/tools-api@0.0.2-10':
     resolution: {integrity: sha512-4s4dOvbPCKriRMyoE1mXjwTvayYCM/NmIrIK4F4yRw1JvYpbydNi8w6G65EeBRkqzIIUwYJKWDDyHg1J2vDdNA==}
 
-  '@ghentcdh/ui@0.1.0':
-    resolution: {integrity: sha512-9tUL0/upGrM8XSRpB/dZoCHZAe7Uo4vn7wAYmDKdA0P3VjWWYxlehwwVJtuammfgb7p2+eO95aU4SL8sd87CNA==}
+  '@ghentcdh/ui@0.1.1-0':
+    resolution: {integrity: sha512-stQ1kwp1yPLpSgXYzMH548xrCQSoNeQTXpm04eyKkXMr0sbt4hTRJlQG9VbWr35APQqZX7tvXB4ZbzyMDKk86g==}
 
   '@ghentcdh/vue-component-annotated-text@0.4.12':
     resolution: {integrity: sha512-cptxNV+4CXPjCFBee3rPGKe+0xBa0jwFZ+ZBBSHYUel52fzL61XPTQ0lO+brqCf9UX+ADBB5uDi7EWGL426LCg==}
@@ -12420,7 +12420,7 @@ snapshots:
       - reflect-metadata
       - supports-color
 
-  '@ghentcdh/authentication-vue@0.1.0(typescript@5.9.2)':
+  '@ghentcdh/authentication-vue@0.1.1-0(typescript@5.9.2)':
     dependencies:
       keycloak-js: 26.2.0
       vue: 3.5.18(typescript@5.9.2)
@@ -12440,7 +12440,7 @@ snapshots:
     transitivePeerDependencies:
       - openapi3-ts
 
-  '@ghentcdh/json-forms-vue@0.1.0': {}
+  '@ghentcdh/json-forms-vue@0.1.1-0': {}
 
   '@ghentcdh/tools-api@0.0.2-10(@babel/traverse@7.28.3)(@nestjs/core@11.1.6)(@prisma/client@6.14.0(prisma@6.14.0(magicast@0.3.5)(typescript@5.9.2))(typescript@5.9.2))(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@24.3.0)(axios@1.11.0)(less@4.4.1)(lightningcss@1.30.1)(nx@21.4.0(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17)))(reflect-metadata@0.2.2)(rxjs@7.8.2)(sass-embedded@1.90.0)(sass@1.90.0)(terser@5.43.1)(typescript@5.9.2)(verdaccio@6.1.6(typanion@3.14.0))(vitest@3.2.4)':
     dependencies:
@@ -12491,7 +12491,7 @@ snapshots:
       - verdaccio
       - vitest
 
-  '@ghentcdh/ui@0.1.0': {}
+  '@ghentcdh/ui@0.1.1-0': {}
 
   '@ghentcdh/vue-component-annotated-text@0.4.12(vue@3.5.18(typescript@5.9.2))':
     dependencies:
