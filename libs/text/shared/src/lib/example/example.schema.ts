@@ -6,7 +6,7 @@ import {
   TableBuilder,
   TextCellBuilder,
   createSchema,
-} from '@ghentcdh/json-forms/core';
+} from '@ghentcdh/json-forms-core';
 import { ExampleForm } from '@ghentcdh/mela/generated/forms';
 import type { ExampleWithRelations } from '@ghentcdh/mela/generated/types';
 

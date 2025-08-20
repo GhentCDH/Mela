@@ -24,15 +24,6 @@
       "@ghentcdh/annotations/vue": [
         "libs/annotations/vue/src/index.ts"
       ],
-      "@ghentcdh/json-forms/api": [
-        "libs/json-forms/api/src/index.ts"
-      ],
-      "@ghentcdh/json-forms/core": [
-        "libs/json-forms/core/src/index.ts"
-      ],
-      "@ghentcdh/json-forms/vue": [
-        "libs/json-forms/vue/src/index.ts"
-      ],
       "@ghentcdh/mela/generated/dtos": [
         "generated/types/dtos/index.ts"
       ],

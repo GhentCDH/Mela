@@ -40,7 +40,7 @@ import { computed, onMounted, ref } from 'vue';
 import {
   type FormModalResult,
   FormModalService,
-} from '@ghentcdh/json-forms/vue';
+} from '@ghentcdh/json-forms-vue';
 import {
   type AutoCompleteConfig,
   Autocomplete,

@@ -14,7 +14,7 @@ import {
   getBody,
   getTarget,
 } from '@ghentcdh/annotations/core';
-import { createResponseData } from '@ghentcdh/json-forms/api';
+import { createResponseData } from '@ghentcdh/json-forms-api';
 import {
   AnnotationBodyWithRelations,
   AnnotationTargetWithRelations,

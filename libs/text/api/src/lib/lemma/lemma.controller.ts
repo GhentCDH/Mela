@@ -16,7 +16,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { RequestDto } from '@ghentcdh/json-forms/api';
+import { RequestDto } from '@ghentcdh/json-forms-api';
 import { LemmaDto } from '@ghentcdh/mela/generated/dtos';
 import { LemmaWithRelations } from '@ghentcdh/mela/generated/types';
 

@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ZodSchema } from 'zod';
 
-import type { RequestDto } from '@ghentcdh/json-forms/api';
-import type { ResponseData } from '@ghentcdh/json-forms/core';
+import type { RequestDto } from '@ghentcdh/json-forms-api';
+import type { ResponseData } from '@ghentcdh/json-forms-core';
 
 import type { AbstractRepository } from './repository.service';
 

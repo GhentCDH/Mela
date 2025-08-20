@@ -1,7 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import { BookFormSchema } from '@mela/text/shared';
 
-import { createResponseData } from '@ghentcdh/json-forms/api';
+import { createResponseData } from '@ghentcdh/json-forms-api';
 import { BookSchema } from '@ghentcdh/mela/generated/types';
 
 export class CreateBookDto extends createZodDto(BookFormSchema.dtoSchema) {}

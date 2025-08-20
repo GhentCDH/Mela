@@ -1,5 +1,6 @@
 <template>
   <FormComponent
+    v-if="formData"
     :id="`modal-${id}`"
     v-model="formData"
     :schema="formSchema.schema"
@@ -8,24 +9,11 @@
     @change="onChange"
   />
   <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300">
-    <Btn
-      :color="Color.secondary"
-      :outline="true"
-      @click="onCancel"
-    >
+    <Btn :color="Color.secondary" :outline="true" @click="onCancel">
       Cancel
     </Btn>
-    <Btn
-      :disabled="!valid"
-      @click="onSubmit"
-    >
-      Save
-    </Btn>
-    <Btn
-      :outline="true"
-      :disabled="!textId"
-      @click="goToAnnotations"
-    >
+    <Btn :disabled="!valid" @click="onSubmit"> Save</Btn>
+    <Btn :outline="true" :disabled="!textId" @click="goToAnnotations">
       Create annotations
     </Btn>
   </div>
@@ -35,7 +23,7 @@ import { ChapterFormSchema } from '@mela/text/shared';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { FormComponent } from '@ghentcdh/json-forms/vue';
+import { FormComponent } from '@ghentcdh/json-forms-vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import { useBookMenuStore } from './book-menu.store';

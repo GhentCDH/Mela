@@ -1,4 +1,7 @@
-import type { BookWithRelations, Chapter } from '@ghentcdh/mela/generated/types';
+import type {
+  BookWithRelations,
+  Chapter,
+} from '@ghentcdh/mela/generated/types';
 
 export const computeBreadcrumb = (
   book: BookWithRelations,
@@ -12,13 +15,13 @@ export const computeBreadcrumb = (
     {
       label: `${book?.name} (${book?.author?.name})`,
       routerLink: 'book-detail',
-      params: { bookeId: book?.id },
+      params: { bookId: book?.id },
     },
     chapter
       ? {
           label: `${chapter?.chapter_number} - ${chapter?.name}`,
           routerLink: 'chapter-detail',
-          params: { bookeId: book?.id, chapterId: chapter?.id },
+          params: { bookId: book?.id, chapterId: chapter?.id },
         }
       : null,
   ].filter((m) => !!m);
