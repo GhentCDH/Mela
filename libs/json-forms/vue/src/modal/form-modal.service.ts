@@ -1,4 +1,4 @@
-import type { JsonFormsLayout } from '@ghentcdh/json-forms/core';
+import type { JsonFormsLayout } from '@ghentcdh/json-forms-core';
 import { ModalService } from '@ghentcdh/ui';
 
 import { FormModal, type FormModalProps, type FormModalResult } from './index';

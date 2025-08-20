@@ -8,7 +8,7 @@ import * as path from 'path';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../../node_modules/.vite/libs/json-forms/core',
+  cacheDir: '../../../node_modules/.vite/libs/json-forms-core',
   plugins: [
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['*.md']),
@@ -24,7 +24,7 @@ export default defineConfig({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: '../../../dist/libs/json-forms/core',
+    outDir: '../../../dist/libs/json-forms-core',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -51,7 +51,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../../coverage/libs/json-forms/core',
+      reportsDirectory: '../../../coverage/libs/json-forms-core',
       provider: 'v8',
     },
   },

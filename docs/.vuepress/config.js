@@ -32,8 +32,8 @@ export default defineUserConfig({
           '@ghentcdh/json-forms/core': fileURLToPath(
             new URL('../../libs/json-forms/core/src/index.ts', import.meta.url),
           ),
-          '@ghentcdh/json-forms/vue': fileURLToPath(
-            new URL('../../libs/json-forms/vue/src/index.ts', import.meta.url),
+          '@ghentcdh/json-forms-vue': fileURLToPath(
+            new URL('../../libs/json-forms-vue/src/index.ts', import.meta.url),
           ),
           '@ghentcdh/ui': fileURLToPath(
             new URL('../../libs/ui/src/index.ts', import.meta.url),

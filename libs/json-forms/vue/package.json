@@ -1,5 +1,5 @@
 {
-  "name": "@ghentcdh/json-forms/vue",
+  "name": "@ghentcdh/json-forms-vue",
   "version": "0.0.3-6",
   "main": "./index.js",
   "types": "./index.d.ts",

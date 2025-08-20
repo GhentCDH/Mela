@@ -6,7 +6,7 @@ import {
   TableBuilder,
   TextCellBuilder,
   createSchema,
-} from '@ghentcdh/json-forms/core';
+} from '@ghentcdh/json-forms-core';
 import { BookForm } from '@ghentcdh/mela/generated/forms';
 import type {
   Book,

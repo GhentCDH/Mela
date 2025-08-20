@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 
-import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
+import type { FormSchemaModel } from '@ghentcdh/json-forms-core';
 import type { TableAction } from '@ghentcdh/ui';
 import {
   Btn,

@@ -6,7 +6,7 @@ import {
   TableBuilder,
   TextCellBuilder,
   createSchema,
-} from '@ghentcdh/json-forms/core';
+} from '@ghentcdh/json-forms-core';
 import { LemmaForm } from '@ghentcdh/mela/generated/forms';
 import type { Lemma } from '@ghentcdh/mela/generated/types';
 import { LemmaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';

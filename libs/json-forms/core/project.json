@@ -1,7 +1,7 @@
 {
   "name": "json-forms-core",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/json-forms/core/src",
+  "sourceRoot": "libs/json-forms-core/src",
   "projectType": "library",
   "release": {
     "version": {

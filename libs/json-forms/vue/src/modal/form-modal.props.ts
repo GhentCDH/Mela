@@ -1,4 +1,4 @@
-import type { JsonFormsLayout } from '@ghentcdh/json-forms/core';
+import type { JsonFormsLayout } from '@ghentcdh/json-forms-core';
 
 import type { FormEventListener } from '../state/form.state';
 

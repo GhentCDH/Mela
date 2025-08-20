@@ -30,7 +30,7 @@ import {
 } from '@mela/text/shared';
 import { computed, onMounted, ref } from 'vue';
 
-import { FormComponent } from '@ghentcdh/json-forms/vue';
+import { FormComponent } from '@ghentcdh/json-forms-vue';
 
 import type { ExampleSelectionModalProps } from './annotation-selection-modal.props';
 import AnnotationSelectionModal from './annotation-selection-modal.vue';

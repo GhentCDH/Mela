@@ -10,7 +10,7 @@ import * as path from 'path';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../../node_modules/.vite/libs/json-forms/vue',
+  cacheDir: '../../../node_modules/.vite/libs/json-forms-vue',
   plugins: [
     vue(),
     nxViteTsPaths(),
@@ -28,7 +28,7 @@ export default defineConfig({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: '../../../dist/libs/json-forms/vue',
+    outDir: '../../../dist/libs/json-forms-vue',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {

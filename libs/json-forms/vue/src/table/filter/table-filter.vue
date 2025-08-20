@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import type { Filter, JsonFormsLayout } from '@ghentcdh/json-forms/core';
+import type { Filter, JsonFormsLayout } from '@ghentcdh/json-forms-core';
 import { Btn, BtnBadge, IconEnum } from '@ghentcdh/ui';
 
 const formData = ref();

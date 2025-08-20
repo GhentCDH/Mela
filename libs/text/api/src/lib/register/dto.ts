@@ -1,7 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import { RegisterFormSchema } from '@mela/text/shared';
 
-import { createResponseData } from '@ghentcdh/json-forms/api';
+import { createResponseData } from '@ghentcdh/json-forms-api';
 import { RegisterSchema } from '@ghentcdh/mela/generated/types';
 
 export class CreateRegisterDto extends createZodDto(

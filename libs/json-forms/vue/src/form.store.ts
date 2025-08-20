@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
+import type { FormSchemaModel } from '@ghentcdh/json-forms-core';
 import { NotificationService } from '@ghentcdh/ui';
 
 // TODO add warnings, success, ....

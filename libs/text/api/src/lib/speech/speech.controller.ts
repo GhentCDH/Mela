@@ -16,7 +16,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { RequestDto } from '@ghentcdh/json-forms/api';
+import { RequestDto } from '@ghentcdh/json-forms-api';
 import { SpeechDto } from '@ghentcdh/mela/generated/dtos';
 
 import { CreateSpeechDto, ListSpeechDto } from './dto';

@@ -1,6 +1,6 @@
 import type { Router } from 'vue-router';
 
-import type { ArrayAction, ArrayActionType } from '@ghentcdh/json-forms/core';
+import type { ArrayAction, ArrayActionType } from '@ghentcdh/json-forms-core';
 import { IconEnum } from '@ghentcdh/ui';
 
 export type Action = {

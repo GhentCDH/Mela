@@ -1,5 +1,5 @@
 {
-  "name": "@ghentcdh/json-forms/core",
+  "name": "@ghentcdh/json-forms-core",
   "version": "0.0.1",
   "dependencies": {
     "zod": "^3.24.1",

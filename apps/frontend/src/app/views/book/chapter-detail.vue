@@ -35,7 +35,7 @@ import { ChapterFormSchema } from '@mela/text/shared';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { FormComponent } from '@ghentcdh/json-forms/vue';
+import { FormComponent } from '@ghentcdh/json-forms-vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import { useBookMenuStore } from './book-menu.store';

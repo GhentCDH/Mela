@@ -1,4 +1,10 @@
-import { ControlBuilder, LayoutBuilder, TableBuilder, TextCellBuilder, createSchema } from '@ghentcdh/json-forms/core';
+import {
+  ControlBuilder,
+  LayoutBuilder,
+  TableBuilder,
+  TextCellBuilder,
+  createSchema,
+} from '@ghentcdh/json-forms-core';
 import { SpeechForm } from '@ghentcdh/mela/generated/forms';
 import type { Speech } from '@ghentcdh/mela/generated/types';
 import { SpeechSchema } from '@ghentcdh/mela/generated/types';

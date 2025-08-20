@@ -1,4 +1,4 @@
-import type { FormSchemaModel } from '@ghentcdh/json-forms/core';
+import type { FormSchemaModel } from '@ghentcdh/json-forms-core';
 
 type RequestOptions = {
   skipAuth?: boolean;

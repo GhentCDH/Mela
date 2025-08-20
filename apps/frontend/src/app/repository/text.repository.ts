@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 
 import type { W3CAnnotation } from '@ghentcdh/annotations/core';
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import { RequestSchema } from '@ghentcdh/json-forms/core';
+import { RequestSchema } from '@ghentcdh/json-forms-core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
 
 export const useTextRepository = defineStore('textRepository', () => {

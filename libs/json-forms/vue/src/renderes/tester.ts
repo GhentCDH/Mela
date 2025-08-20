@@ -6,7 +6,7 @@ import {
   schemaTypeIs,
 } from '@jsonforms/core/src/testers/testers';
 
-import { ControlType } from '@ghentcdh/json-forms/core';
+import { ControlType } from '@ghentcdh/json-forms-core';
 
 export const isAutoCompleteControl = and(
   // uiTypeIs('Control'),

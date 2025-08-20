@@ -16,7 +16,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 
-import { RequestDto } from '@ghentcdh/json-forms/api';
+import { RequestDto } from '@ghentcdh/json-forms-api';
 import { BookDto } from '@ghentcdh/mela/generated/dtos';
 
 import { BookRepository } from './book-repository.service';

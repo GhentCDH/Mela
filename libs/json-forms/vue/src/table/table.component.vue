@@ -5,8 +5,8 @@ import type {
   ColumnDef,
   JsonFormsLayout,
   TextCellType,
-} from '@ghentcdh/json-forms/core';
-import { findColumnDef } from '@ghentcdh/json-forms/core';
+} from '@ghentcdh/json-forms-core';
+import { findColumnDef } from '@ghentcdh/json-forms-core';
 import type { TableAction } from '@ghentcdh/ui';
 import { Table, TextCell } from '@ghentcdh/ui';
 
