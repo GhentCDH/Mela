@@ -18,8 +18,8 @@ importers:
         specifier: ^19.8.1
         version: 19.8.1(@types/node@24.3.0)(typescript@5.9.2)
       '@ghentcdh/annotated-text':
-        specifier: 0.5.0
-        version: 0.5.0(vue@3.5.18(typescript@5.9.2))
+        specifier: 0.5.2
+        version: 0.5.2
       '@ghentcdh/authentication-api':
         specifier: 0.0.2-10
         version: 0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)
@@ -1838,11 +1838,8 @@ packages:
   '@gerrit0/mini-shiki@3.11.0':
     resolution: {integrity: sha512-ooCDMAOKv71O7MszbXjSQGcI6K5T6NKlemQZOBHLq7Sv/oXCRfYbZ7UgbzFdl20lSXju6Juds4I3y30R6rHA4Q==}
 
-  '@ghentcdh/annotated-text@0.5.0':
-    resolution: {integrity: sha512-6ABRJwD3iqdzATrwpEITBe2vYtnPKvW/PRi/k2axYRqYEGxm6PQWIHWG1pJTlvr4EbR/7OXKS+9oYE75/8Mj2g==}
-    engines: {node: '>=22', pnpm: '>=10'}
-    peerDependencies:
-      vue: ^3.0.0
+  '@ghentcdh/annotated-text@0.5.2':
+    resolution: {integrity: sha512-xm80biE/0dVlEmkUMboQPH7NKv6IPCGV3CtSgzpyP0j0rWOFiTIjo72Dz9z7D1+oObPnDWKTqpQTTwu8DLXgRA==}
 
   '@ghentcdh/authentication-api@0.0.2-10':
     resolution: {integrity: sha512-EDrRmpjcyGJEXli7/Pce/4Fxl6Ud02R+V/FvkYrnA47duJeso1D7T+mLp3yYU7a5E8YUU14LYP8HHRgo0xuSvA==}
@@ -12546,14 +12543,13 @@ snapshots:
       '@shikijs/types': 3.11.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@ghentcdh/annotated-text@0.5.0(vue@3.5.18(typescript@5.9.2))':
+  '@ghentcdh/annotated-text@0.5.2':
     dependencies:
       d3: 7.9.0
       lodash-es: 4.17.21
       markdown-it: 14.1.0
       memoizee: 0.4.17
       tokenizr: 1.7.0
-      vue: 3.5.18(typescript@5.9.2)
       zod: 3.25.67
 
   '@ghentcdh/authentication-api@0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)':
