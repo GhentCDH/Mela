@@ -2,9 +2,9 @@ import type { AnnotationType } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 import type z from 'zod';
 
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findTextPositionSelector } from '@ghentcdh/annotated-text';
 import type { SourceModel } from '@ghentcdh/annotations/core';
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
-import { findTextPositionSelector } from '@ghentcdh/vue-component-annotated-text';
 
 import type { AnnotationType as type } from '../../../identify.color';
 

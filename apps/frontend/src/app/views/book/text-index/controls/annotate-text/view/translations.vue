@@ -30,9 +30,9 @@ import {
 } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn } from '@ghentcdh/ui';
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';

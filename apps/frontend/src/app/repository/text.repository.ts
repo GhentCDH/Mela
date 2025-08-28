@@ -1,10 +1,10 @@
 import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import { RequestSchema } from '@ghentcdh/json-forms-core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 export const useTextRepository = defineStore('textRepository', () => {
   const httpRequest = useHttpRequest();

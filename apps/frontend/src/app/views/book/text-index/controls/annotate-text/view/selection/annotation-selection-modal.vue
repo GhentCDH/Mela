@@ -58,18 +58,17 @@ import { AnnotationSelectorSchema } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
-import type {
-  AnnotatedText,
+import type { AnnotatedText, W3CAnnotation } from '@ghentcdh/annotated-text';
+import {
   MarkdownTextAdapter,
-  type W3CAnnotation,
   W3CAnnotationAdapter,
   WordSnapper,
   createAnnotatedText,
   createTextSelectionAnnotation,
   findTextPositionSelector,
   updateTextSelectionAnnotation,
-} from '@ghentcdh/vue-component-annotated-text';
+} from '@ghentcdh/annotated-text';
+import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
 
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
 import { createSelection } from './selection.utils';
@@ -154,6 +153,7 @@ onMounted(() => {
       create: properties.mode === 'create',
       snapper: new WordSnapper(),
       colorFn: (w3cAnnotation: W3CAnnotation) => color,
+      // defaultRender: 'underline',
     }),
   })
     .setText(text, false)

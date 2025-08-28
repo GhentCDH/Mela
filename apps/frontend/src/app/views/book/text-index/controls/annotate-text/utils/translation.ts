@@ -1,5 +1,5 @@
-import type { TextualBody, W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
-import { findBodyType } from '@ghentcdh/vue-component-annotated-text';
+import type { TextualBody, W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findBodyType } from '@ghentcdh/annotated-text';
 
 /**
  * @deprecated should use the one from the core library

@@ -1,10 +1,10 @@
 import { getAnnotationIdFromUri } from '@mela/text/shared';
 
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
   findAnnotations,
   findRelatedAnnotation,
-} from '@ghentcdh/vue-component-annotated-text';
+} from '@ghentcdh/annotated-text';
 
 export const mapRelationsToLinks = (
   sourceUri: string,

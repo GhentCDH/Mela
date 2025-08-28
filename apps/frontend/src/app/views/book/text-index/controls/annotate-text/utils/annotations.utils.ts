@@ -1,8 +1,8 @@
 import type { AnnotationMetadataType } from '@mela/text/shared';
 
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { findTagging } from '@ghentcdh/annotations/core';
 import type { Annotation } from '@ghentcdh/mela/generated/types';
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 export type AnnotationFilter = {
   annotationType?: AnnotationMetadataType[];

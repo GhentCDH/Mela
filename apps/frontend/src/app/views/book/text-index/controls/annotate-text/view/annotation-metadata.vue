@@ -1,6 +1,8 @@
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">Selected text</legend>
+    <legend class="fieldset-legend">
+      Selected text
+    </legend>
     <div :id="id" />
   </fieldset>
   <fieldset
@@ -17,10 +19,21 @@
   </fieldset>
   <div class="flex gap-2 justify-between pb-4">
     <div>
-      <Btn v-if="allowEdit" :outline="true" @click="editAnnotation"> Edit </Btn>
+      <Btn
+        v-if="allowEdit"
+        :outline="true"
+        @click="editAnnotation"
+      >
+        Edit
+      </Btn>
     </div>
     <div class="flex gap-2 justify-end pb-4">
-      <Btn :color="Color.error" @click="deleteAnnotation"> Delete </Btn>
+      <Btn
+        :color="Color.error"
+        @click="deleteAnnotation"
+      >
+        Delete
+      </Btn>
     </div>
   </div>
 </template>
@@ -30,19 +43,20 @@ import { findExampleMetaData, findLemmaMetaData } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, onMounted, onUnmounted, watch } from 'vue';
 
+import type {
+  AnnotatedText,
+  W3CAnnotation} from '@ghentcdh/annotated-text';
+import {
+  MarkdownTextAdapter,
+  W3CAnnotationAdapter,
+  createAnnotatedText,
+} from '@ghentcdh/annotated-text';
 import type { SourceModel } from '@ghentcdh/annotations/core';
 import {
   findTagging,
   findTextPositionSelector,
 } from '@ghentcdh/annotations/core';
 import { Btn, Color } from '@ghentcdh/ui';
-import type {
-  type AnnotatedText,
-  createAnnotatedText,
-  MarkdownTextAdapter,
-  W3CAnnotation,
-  W3CAnnotationAdapter,
-} from '@ghentcdh/vue-component-annotated-text';
 
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import { ModalSelectionService } from './selection/modal-selection.service';

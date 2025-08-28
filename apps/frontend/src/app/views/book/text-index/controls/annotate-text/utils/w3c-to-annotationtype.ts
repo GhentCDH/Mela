@@ -7,11 +7,8 @@ import {
 import type {
   W3CAnnotation,
   W3CAnnotationTarget,
-} from '@ghentcdh/vue-component-annotated-text';
-import {
-  findTagging,
-  findTargetType,
-} from '@ghentcdh/vue-component-annotated-text';
+} from '@ghentcdh/annotated-text';
+import { findTagging, findTargetType } from '@ghentcdh/annotated-text';
 
 export const w3cAnnotationToAnnotationSelector = (
   annotation: W3CAnnotation,

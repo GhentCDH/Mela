@@ -4,7 +4,7 @@ AnnotatedText
 
 # AnnotatedText
 
-This is a demo of the standalone `@ghentcdh/vue-component-annotated-text` component.
+This is a demo of the standalone `@ghentcdh/annotated-text` component.
 
 <script setup>
 
@@ -14,7 +14,7 @@ import {
   AnnotatedText,
   Debugger,
   UserActionState,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated-text";
 import { demoAnnotations } from '@demo/data';
 
 const lines = [

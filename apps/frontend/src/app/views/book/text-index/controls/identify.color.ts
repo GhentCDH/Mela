@@ -1,10 +1,6 @@
+import type { ColorFn, W3CAnnotation } from '@ghentcdh/annotated-text';
+import { createAnnotationColors } from '@ghentcdh/annotated-text';
 import { findTagging } from '@ghentcdh/annotations/core';
-import type {
-  ColorFn,
-  W3CAnnotation} from '@ghentcdh/vue-component-annotated-text';
-import {
-  createAnnotationColors
-} from '@ghentcdh/vue-component-annotated-text';
 
 export type AnnotationType =
   | 'title'
@@ -30,19 +26,23 @@ export const AnnotationTypeLabelValues = Object.values(
   AnnotationTypeLabelValue,
 );
 
+export const isParagraphAnnotationType = (annotation: W3CAnnotation) => {
+  return findTagging(annotation).value === 'paragraph';
+};
+
 const Colors: Record<AnnotationType, string> = {
   title: '#dd7777', // pastel red
   subtitle: '#FFB74D', // pastel orange
   paragraph: '#4d88ff', // pastel blue
-  phrase: '#CAB2D6', // pastel purple
+  phrase: '#9d1bd8', // pastel purple
   example: '#4fff66', // pastel green
-  lemma: '#f2ff64', // pastel yellow
+  lemma: '#7a8800', // pastel yellow
 };
 
 export const IdentifyColorMap = createAnnotationColors(Colors, {
   opacity: {
     background: 0.2,
-    border: 0.3,
+    border: 0.8,
     backgroundActive: 0.4,
     borderActive: 0.9,
     gutter: 0.8,

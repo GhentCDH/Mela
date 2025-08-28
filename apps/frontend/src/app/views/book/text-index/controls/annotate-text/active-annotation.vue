@@ -76,11 +76,10 @@
 import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findTagging } from '@ghentcdh/annotated-text';
 import type { SourceModel } from '@ghentcdh/annotations/core';
 import type { Text } from '@ghentcdh/mela/generated/types';
-import { Btn, Card, Color, IconEnum, ToastMessage } from '@ghentcdh/ui';
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
-import { findTagging } from '@ghentcdh/vue-component-annotated-text';
 import { Btn, Card, Color, IconEnum, NotificationMessage } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';

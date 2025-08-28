@@ -7,15 +7,20 @@ import { v4 as uuidv4 } from 'uuid';
 import { onMounted, onUnmounted, watch } from 'vue';
 
 import type {
-  type AnnotatedText,
-  MarkdownTextAdapter,
+  AnnotatedText,
   SourceModel,
   W3CAnnotation,
+} from '@ghentcdh/annotated-text';
+import {
+  MarkdownTextAdapter,
   W3CAnnotationAdapter,
   createAnnotatedText,
-} from '@ghentcdh/vue-component-annotated-text';
+} from '@ghentcdh/annotated-text';
 
-import { colorForAnnotationType } from '../identify.color';
+import {
+  colorForAnnotationType,
+  isParagraphAnnotationType,
+} from '../identify.color';
 import { useActiveAnnotationStore } from './store/active-annotation.store';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
@@ -38,6 +43,8 @@ onMounted(() => {
       sourceUri: properties.source.uri,
       // TODO add annotation colors
       colorFn: colorForAnnotationType,
+      defaultRender: 'underline',
+      gutterFn: isParagraphAnnotationType,
     }),
   })
     .setText(properties.source.content.text, false)

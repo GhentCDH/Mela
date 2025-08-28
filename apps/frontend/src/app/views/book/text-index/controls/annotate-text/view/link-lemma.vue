@@ -13,8 +13,8 @@
 <script setup lang="ts">
 import { PURPOSE_LEMA } from '@mela/text/shared';
 
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import type { SourceModel } from '@ghentcdh/annotations/core';
-import type { W3CAnnotation } from '@ghentcdh/vue-component-annotated-text';
 
 import type { AnnotationWithRelations } from '../props';
 import LinkComponent from './link-component.vue';
