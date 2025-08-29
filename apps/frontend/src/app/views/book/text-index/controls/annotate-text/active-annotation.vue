@@ -76,8 +76,9 @@
 import type { AnnotationType } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findTagging } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findTagging } from '@ghentcdh/annotated-text';
+import type { SourceModel } from '@ghentcdh/annotations/core';
 import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, Card, Color, IconEnum, NotificationMessage } from '@ghentcdh/ui';
 

@@ -40,8 +40,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
-import { findByPurposeValue } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findByPurposeValue } from '@ghentcdh/annotated-text';
 import { Btn, Color, IconEnum, ModalService } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';

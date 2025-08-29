@@ -23,7 +23,8 @@
 import { type AnnotationMetadataType } from '@mela/text/shared';
 import { ref, watch } from 'vue';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import type { SourceModel } from '@ghentcdh/annotations/core';
 import type { Chapter } from '@ghentcdh/mela/generated/types';
 import { MultiSelect } from '@ghentcdh/ui';
 

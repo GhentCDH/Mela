@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { effect, ref } from 'vue';
 
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 
 import { useModeStore } from './mode.store';
 

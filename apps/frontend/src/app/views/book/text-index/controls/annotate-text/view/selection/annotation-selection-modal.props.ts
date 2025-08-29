@@ -1,6 +1,7 @@
 import type z from 'zod';
 
-import type { SourceModel, W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import type { SourceModel } from '@ghentcdh/annotations/core';
 
 import type { AnnotationType as Type } from '../../../identify.color';
 

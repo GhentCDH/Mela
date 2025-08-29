@@ -21,9 +21,6 @@
       "@ghentcdh/annotations/core": [
         "libs/annotations/core/src/index.ts"
       ],
-      "@ghentcdh/annotations/vue": [
-        "libs/annotations/vue/src/index.ts"
-      ],
       "@ghentcdh/mela/generated/dtos": [
         "generated/types/dtos/index.ts"
       ],

@@ -1,12 +1,10 @@
 import { getAnnotationIdFromUri } from '@mela/text/shared';
 
-import type {
-  W3CAnnotation} from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
   findAnnotations,
-  findRelatedAnnotation
-} from '@ghentcdh/annotations/core';
-
+  findRelatedAnnotation,
+} from '@ghentcdh/annotated-text';
 
 export const mapRelationsToLinks = (
   sourceUri: string,

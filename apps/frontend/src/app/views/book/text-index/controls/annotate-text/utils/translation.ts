@@ -1,11 +1,10 @@
-import type {
-  SourceModel,
-  TextAnnotation,
-  TextualBody,
-  W3CAnnotation,
-} from '@ghentcdh/annotations/core';
-import { findBodyType } from '@ghentcdh/annotations/core';
+import type { TextualBody, W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findBodyType } from '@ghentcdh/annotated-text';
 
+/**
+ * @deprecated should use the one from the core library
+ * @param annotations
+ */
 export const findTextValue = (annotations: W3CAnnotation) => {
   if (!annotations) return null;
 
@@ -13,11 +12,4 @@ export const findTextValue = (annotations: W3CAnnotation) => {
     'TextualBody',
     (body: TextualBody) => !!body.language,
   )(annotations);
-};
-
-export const getTextSelection = (
-  text: SourceModel,
-  annotation: Pick<TextAnnotation, 'start' | 'end'>,
-) => {
-  return text.content.text.substring(annotation.start, annotation.end + 1);
 };

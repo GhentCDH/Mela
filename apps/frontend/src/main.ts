@@ -1,6 +1,6 @@
 import './styles.scss';
 import '@toast-ui/editor/dist/toastui-editor.css';
-
+import '@ghentcdh/annotated-text/annotated-text.css';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 

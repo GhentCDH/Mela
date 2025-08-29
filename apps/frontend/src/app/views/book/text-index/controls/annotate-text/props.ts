@@ -1,4 +1,4 @@
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 
 export type MODES =
   | 'generate'

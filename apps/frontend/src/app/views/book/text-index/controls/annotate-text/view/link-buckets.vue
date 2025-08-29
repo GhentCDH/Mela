@@ -32,11 +32,11 @@
 import { LinkBucketsSchema, PURPOSE_LINK_BUCKETS } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
-import type {
-  SpecificResource,
-  W3CAnnotation,
-} from '@ghentcdh/annotations/core';
-import { findBodyType } from '@ghentcdh/annotations/core';
+import {
+  type SpecificResource,
+  type W3CAnnotation,
+  findBodyType,
+} from '@ghentcdh/annotated-text';
 import type { Text } from '@ghentcdh/mela/generated/types';
 import { Btn, SelectComponent } from '@ghentcdh/ui';
 

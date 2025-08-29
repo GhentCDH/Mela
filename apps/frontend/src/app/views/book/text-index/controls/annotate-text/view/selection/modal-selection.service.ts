@@ -1,4 +1,4 @@
-import type { W3CAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { ModalService } from '@ghentcdh/ui';
 
 import type {

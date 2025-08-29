@@ -11,8 +11,8 @@ import type {
   SourceModel,
   TextAnnotation,
   W3CAnnotation,
-} from '@ghentcdh/annotations/core';
-import { createTextSelectionAnnotation } from '@ghentcdh/annotations/core';
+} from '@ghentcdh/annotated-text';
+import { createTextSelectionAnnotation } from '@ghentcdh/annotated-text';
 
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
