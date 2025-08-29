@@ -18,8 +18,8 @@ importers:
         specifier: ^19.8.1
         version: 19.8.1(@types/node@24.3.0)(typescript@5.9.2)
       '@ghentcdh/annotated-text':
-        specifier: 0.5.3
-        version: 0.5.3
+        specifier: 0.5.5
+        version: 0.5.5
       '@ghentcdh/authentication-api':
         specifier: 0.0.2-10
         version: 0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)
@@ -1838,8 +1838,8 @@ packages:
   '@gerrit0/mini-shiki@3.11.0':
     resolution: {integrity: sha512-ooCDMAOKv71O7MszbXjSQGcI6K5T6NKlemQZOBHLq7Sv/oXCRfYbZ7UgbzFdl20lSXju6Juds4I3y30R6rHA4Q==}
 
-  '@ghentcdh/annotated-text@0.5.3':
-    resolution: {integrity: sha512-0DexPqfcINe+Bel9tSNgGZDdSoL73qR2W44bksZGYuZ3SYsdOdA6axz7UgMwhIxwKkyKcVyArIKvZQkZ4dNewA==}
+  '@ghentcdh/annotated-text@0.5.5':
+    resolution: {integrity: sha512-9Kl0+su78KZv8GqPyTpNFNqGpxKK4XUIUyy4cacsB5UJ6eJm8jFa8XcoTVhlG0uAa0SX0LOu5tfs1cGiTNEt2A==}
 
   '@ghentcdh/authentication-api@0.0.2-10':
     resolution: {integrity: sha512-EDrRmpjcyGJEXli7/Pce/4Fxl6Ud02R+V/FvkYrnA47duJeso1D7T+mLp3yYU7a5E8YUU14LYP8HHRgo0xuSvA==}
@@ -12543,7 +12543,7 @@ snapshots:
       '@shikijs/types': 3.11.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@ghentcdh/annotated-text@0.5.3':
+  '@ghentcdh/annotated-text@0.5.5':
     dependencies:
       d3: 7.9.0
       lodash-es: 4.17.21
