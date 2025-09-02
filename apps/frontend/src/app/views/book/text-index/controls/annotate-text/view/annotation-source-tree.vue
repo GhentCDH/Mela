@@ -6,8 +6,7 @@
       </div>
       {{ source.content.label }}
     </div>
-    {{ activeAnnotationId }}
-    <TreeView :data="tree" @select="select" :active="activeAnnotationId" />
+    <TreeView :data="tree" :active="activeAnnotationId" @select="select" />
   </div>
 </template>
 
@@ -16,6 +15,7 @@ import { computed } from 'vue';
 
 import type { SourceModel } from '@ghentcdh/annotations/core';
 import { Icon, IconEnum, TreeView } from '@ghentcdh/ui';
+
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import type { TreeProp } from '../utils/tree';
 

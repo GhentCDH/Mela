@@ -7,17 +7,18 @@ import { pick } from 'lodash-es';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import type { SourceModel, TextAnnotation } from '@ghentcdh/annotations/core';
+import type {
+  W3CAnnotation} from '@ghentcdh/annotated-text';
 import {
-  createTextSelectionAnnotation,
-  W3CAnnotation,
+  createTextSelectionAnnotation
 } from '@ghentcdh/annotated-text';
+import type { SourceModel, TextAnnotation } from '@ghentcdh/annotations/core';
 
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { AnnotationUtils } from '../utils/annotations.utils';
 import { generateW3CAnnotationBlocks } from '../utils/generate-blocks';
-import { createSourceFromTextContent, SourceUtils } from '../utils/source';
+import { SourceUtils, createSourceFromTextContent } from '../utils/source';
 import { AnnotationTester } from '../utils/tester';
 import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
 

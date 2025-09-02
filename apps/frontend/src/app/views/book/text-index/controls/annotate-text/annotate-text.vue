@@ -1,5 +1,9 @@
 <template>
-  <Drawer class="h-full" :width-left="300" :width-right="300">
+  <Drawer
+    class="h-full"
+    :width-left="300"
+    :width-right="300"
+  >
     <template #left-drawer>
       <AnnotationTree
         :store-id="storeId"
@@ -45,7 +49,9 @@
         :key="source.id"
         class="p-2"
       >
-        <h2 class="p-2">{{ source.content.label }}</h2>
+        <h2 class="p-2">
+          {{ source.content.label }}
+        </h2>
         <AnnotationView
           :key="source.uri"
           :source="source"

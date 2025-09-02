@@ -1,9 +1,18 @@
 <template>
   <template v-if="textStore.text">
-    <annotate-text :store-id="storeId" @close-annotation="closeAnnotation" />
+    <annotate-text
+      :store-id="storeId"
+      @close-annotation="closeAnnotation"
+    />
   </template>
-  <div v-if="modeToast" class="toast toast-center z-[3000]">
-    <div role="alert" class="alert border-primary bg-white">
+  <div
+    v-if="modeToast"
+    class="toast toast-center z-[3000]"
+  >
+    <div
+      role="alert"
+      class="alert border-primary bg-white"
+    >
       <span>{{ modeToast.text }}</span>
       <div class="flex gap-2">
         <Btn
@@ -13,7 +22,12 @@
         >
           Close
         </Btn>
-        <Btn v-if="modeToast.save" @click="modeToast.save"> Save</Btn>
+        <Btn
+          v-if="modeToast.save"
+          @click="modeToast.save"
+        >
+          Save
+        </Btn>
       </div>
     </div>
   </div>
