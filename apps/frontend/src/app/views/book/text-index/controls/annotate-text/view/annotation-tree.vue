@@ -7,16 +7,14 @@
     value-key="key"
     @change="changeFilter"
   />
-  <ul>
-    <annotation-source-tree
-      v-for="tree in annotationTreeStore.trees"
-      :key="tree.source.uri"
-      :store-id="storeId"
-      :source="tree.source"
-      :tree="tree.tree"
-      :annotations="annotations"
-    />
-  </ul>
+  <annotation-source-tree
+    v-for="tree in annotationTreeStore.trees"
+    :key="tree.source.uri"
+    :store-id="storeId"
+    :source="tree.source"
+    :tree="tree.tree"
+    :annotations="annotations"
+  />
 </template>
 
 <script setup lang="ts">

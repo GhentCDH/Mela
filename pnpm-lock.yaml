@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@ghentcdh/ui': link:../../../Library/pnpm/global/5/node_modules/@ghentcdh/ui
+
 importers:
 
   .:
@@ -39,8 +42,8 @@ importers:
         specifier: 0.0.2-10
         version: 0.0.2-10(@babel/traverse@7.28.3)(@nestjs/core@11.1.6)(@prisma/client@6.14.0(prisma@6.14.0(magicast@0.3.5)(typescript@5.9.2))(typescript@5.9.2))(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@24.3.0)(axios@1.11.0)(less@4.4.1)(lightningcss@1.30.1)(nx@21.4.0(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17)))(reflect-metadata@0.2.2)(rxjs@7.8.2)(sass-embedded@1.90.0)(sass@1.90.0)(terser@5.43.1)(typescript@5.9.2)(verdaccio@6.1.6(typanion@3.14.0))(vitest@3.2.4)
       '@ghentcdh/ui':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: ^0.2.0
+        version: 0.2.0
       '@jsonforms/vue':
         specifier: ^3.6.0
         version: 3.6.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))
@@ -1859,8 +1862,8 @@ packages:
   '@ghentcdh/tools-api@0.0.2-10':
     resolution: {integrity: sha512-4s4dOvbPCKriRMyoE1mXjwTvayYCM/NmIrIK4F4yRw1JvYpbydNi8w6G65EeBRkqzIIUwYJKWDDyHg1J2vDdNA==}
 
-  '@ghentcdh/ui@0.1.1':
-    resolution: {integrity: sha512-kHZMJUk5Ge4bbwYOo3U+fNqGGZs0k06PJG9Smhr1LwexhD77fxshesKivssi1oqn5Veq+ct1uiL6dDp7dz1upQ==}
+  '@ghentcdh/ui@0.2.0':
+    resolution: {integrity: sha512-meD/QojxkK5+xmT7dEg8L0RoiZvGHiUnQd6L0OXoj9IqTUtbhJH+LGIKiTziq3MGCQC4g3JVIhUGAfMF9mZmSQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -12640,7 +12643,7 @@ snapshots:
       - verdaccio
       - vitest
 
-  '@ghentcdh/ui@0.1.1': {}
+  '@ghentcdh/ui@0.2.0': {}
 
   '@humanfs/core@0.19.1': {}
 

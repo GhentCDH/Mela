@@ -27,7 +27,7 @@ export const createSourceFromTextContent = (
     return SourceModelSchema.parse({
       content: SourceTextSchema.parse({
         text: c.content,
-        label: c.text_type,
+        label: c.text_type.toLocaleLowerCase(),
         processingLanguage: c.language,
       }),
       id: c.id,

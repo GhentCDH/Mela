@@ -34,6 +34,8 @@ export type TreeProp = {
   content: string;
   parent: TreeProp | null;
   children: TreeProp[];
+  label: string;
+  tag?: string;
 };
 
 const isParent = (value: TreeProp, parent: TreeProp) => {
@@ -114,6 +116,8 @@ export const createAnnotationTree = (
         content: text?.value,
         children: [],
         parent: null,
+        label: text?.value,
+        tag: purpose,
       };
 
       return property;

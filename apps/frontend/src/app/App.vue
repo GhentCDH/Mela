@@ -18,6 +18,7 @@ const user = computedAsync(async () => {
     :menu="menu()"
     :user="user"
     :version="mela_env.VERSION"
+    :width-sidebar="200"
     @click="auth.logout"
   >
     <RouterView />
