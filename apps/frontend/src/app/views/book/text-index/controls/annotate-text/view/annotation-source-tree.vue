@@ -2,11 +2,18 @@
   <div class="mb-2">
     <div class="flex items-center gap-2 font-bold">
       <div class="gap-2 items-center">
-        <Icon :icon="IconEnum.Text" size="sm" />
+        <Icon
+          :icon="IconEnum.Text"
+          size="sm"
+        />
       </div>
       {{ source.content.label }}
     </div>
-    <TreeView :data="tree" :active="activeAnnotationId" @select="select" />
+    <TreeView
+      :data="tree"
+      :active="activeAnnotationId"
+      @select="select"
+    />
   </div>
 </template>
 
