@@ -1,13 +1,10 @@
 <template>
-  <div
-    v-if="textStore.text"
-    class="mt-2"
-  >
+  <template v-if="textStore.text">
     <annotate-text
       :store-id="storeId"
       @close-annotation="closeAnnotation"
     />
-  </div>
+  </template>
   <div
     v-if="modeToast"
     class="toast toast-center z-[3000]"

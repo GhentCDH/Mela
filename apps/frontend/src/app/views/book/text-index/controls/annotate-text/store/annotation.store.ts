@@ -8,11 +8,11 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 import type {
-  SourceModel,
-  TextAnnotation,
-  W3CAnnotation,
+  W3CAnnotation} from '@ghentcdh/annotated-text';
+import {
+  createTextSelectionAnnotation
 } from '@ghentcdh/annotated-text';
-import { createTextSelectionAnnotation } from '@ghentcdh/annotated-text';
+import type { SourceModel, TextAnnotation } from '@ghentcdh/annotations/core';
 
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';

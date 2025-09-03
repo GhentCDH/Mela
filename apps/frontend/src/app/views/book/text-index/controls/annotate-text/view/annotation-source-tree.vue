@@ -1,36 +1,28 @@
 <template>
-  <li>
-    <div class="list-col-grow flex items-center gap-2">
-      <div class="flex gap-2 items-center font-bold">
+  <div class="mb-2">
+    <div class="flex items-center gap-2 font-bold">
+      <div class="gap-2 items-center">
         <Icon
           :icon="IconEnum.Text"
           size="sm"
         />
-        {{ source.content.label }}
       </div>
+      {{ source.content.label }}
     </div>
-
-    <ul class="w-full ml-8">
-      <Tree
-        v-for="annotation of tree"
-        :key="annotation.id"
-        :property="annotation"
-        :active-id="activeId"
-        :level="1"
-        @select-annotation="selectAnnotation"
-        @delete-annotation="deleteAnnotation"
-      />
-    </ul>
-  </li>
+    <TreeView
+      :data="tree"
+      :active="activeAnnotationId"
+      @select="select"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 
 import type { SourceModel } from '@ghentcdh/annotations/core';
-import { Icon, IconEnum } from '@ghentcdh/ui';
+import { Icon, IconEnum, TreeView } from '@ghentcdh/ui';
 
-import Tree from './tree.vue';
 import { useActiveAnnotationStore } from '../store/active-annotation.store';
 import type { TreeProp } from '../utils/tree';
 
@@ -41,6 +33,14 @@ const properties = defineProps<{
 }>();
 
 const store = useActiveAnnotationStore(properties.storeId);
+
+const activeAnnotationId = computed(() => store.activeAnnotation?.id ?? null);
+const select = (annotation: TreeProp) => {
+  store.selectAnnotation({
+    annotationId: annotation.id,
+    textContentUri: properties.source.uri,
+  });
+};
 
 const selectAnnotation = (annotationId: string) => {
   store.selectAnnotation({
