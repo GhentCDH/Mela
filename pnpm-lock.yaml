@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@ghentcdh/ui': link:../../../Library/pnpm/global/5/node_modules/@ghentcdh/ui
-
 importers:
 
   .:
@@ -21,8 +18,8 @@ importers:
         specifier: ^19.8.1
         version: 19.8.1(@types/node@24.3.0)(typescript@5.9.2)
       '@ghentcdh/annotated-text':
-        specifier: 0.5.5
-        version: 0.5.5
+        specifier: 0.6.0
+        version: 0.6.0
       '@ghentcdh/authentication-api':
         specifier: 0.0.2-10
         version: 0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)
@@ -1841,8 +1838,8 @@ packages:
   '@gerrit0/mini-shiki@3.11.0':
     resolution: {integrity: sha512-ooCDMAOKv71O7MszbXjSQGcI6K5T6NKlemQZOBHLq7Sv/oXCRfYbZ7UgbzFdl20lSXju6Juds4I3y30R6rHA4Q==}
 
-  '@ghentcdh/annotated-text@0.5.5':
-    resolution: {integrity: sha512-9Kl0+su78KZv8GqPyTpNFNqGpxKK4XUIUyy4cacsB5UJ6eJm8jFa8XcoTVhlG0uAa0SX0LOu5tfs1cGiTNEt2A==}
+  '@ghentcdh/annotated-text@0.6.0':
+    resolution: {integrity: sha512-2a2pJY36Q0Texk9x/r5Pe1iWjRSRcoCAO24pr8HVSEGH1dTKoKiaKhFhqw8HVBwSh8gB1828r2zYLzIm7stpLg==}
 
   '@ghentcdh/authentication-api@0.0.2-10':
     resolution: {integrity: sha512-EDrRmpjcyGJEXli7/Pce/4Fxl6Ud02R+V/FvkYrnA47duJeso1D7T+mLp3yYU7a5E8YUU14LYP8HHRgo0xuSvA==}
@@ -5129,8 +5126,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromedriver@139.0.3:
-    resolution: {integrity: sha512-NrSqRL2QWXsGk1/EXk5xf9q07mEUMsIA7szr9nxSOzENSdFOi+ZvEYq4H8P3tqQL61EKS0tS9m9TnVCJoQHn2Q==}
+  chromedriver@140.0.0:
+    resolution: {integrity: sha512-mv41C2fi4YX27muRMWP035HJUnKatu7gMJqBcVD1tSmufWDxDy0m38YaieKG3pa2aAIYNVhlXqiOnHkvnqNMcw==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -12546,7 +12543,7 @@ snapshots:
       '@shikijs/types': 3.11.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@ghentcdh/annotated-text@0.5.5':
+  '@ghentcdh/annotated-text@0.6.0':
     dependencies:
       d3: 7.9.0
       lodash-es: 4.17.21
@@ -16888,7 +16885,7 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromedriver@139.0.3:
+  chromedriver@140.0.0:
     dependencies:
       '@testim/chrome-version': 1.1.4
       axios: 1.11.0
@@ -19845,7 +19842,7 @@ snapshots:
     dependencies:
       jwk-to-pem: 2.0.7
     optionalDependencies:
-      chromedriver: 139.0.3
+      chromedriver: 140.0.0
     transitivePeerDependencies:
       - debug
       - supports-color

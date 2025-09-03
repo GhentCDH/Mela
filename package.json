@@ -22,7 +22,7 @@
     "@anatine/zod-nestjs": "^2.0.12",
     "@anatine/zod-openapi": "^2.2.8",
     "@commitlint/prompt-cli": "^19.8.1",
-    "@ghentcdh/annotated-text": "0.5.5",
+    "@ghentcdh/annotated-text": "0.6.0",
     "@ghentcdh/authentication-api": "0.0.2-10",
     "@ghentcdh/authentication-vue": "0.1.1",
     "@ghentcdh/json-forms-api": "^0.0.1",
