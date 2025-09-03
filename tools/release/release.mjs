@@ -1,15 +1,12 @@
 /* eslint-disable no-console */
-
-import conventionalChangelog from 'conventional-changelog';
-import { readJson, writeJson } from 'fs-extra';
-import type { ReleaseType } from 'semver';
-import * as semver from 'semver';
 import { simpleGit } from 'simple-git';
-import * as yargs from 'yargs';
+import fsExtra from 'fs-extra';
+import semver from 'semver';
+import yargs from 'yargs';
+import conventionalChangelog from 'conventional-changelog';
 import { hideBin } from 'yargs/helpers';
-
-import * as fs from 'fs';
-import * as path from 'path';
+import path from 'path';
+import fs from 'fs';
 
 const git = simpleGit();
 
@@ -28,22 +25,25 @@ async function generateChangelog() {
   });
 }
 
-async function bumpVersion(type: semver.ReleaseType) {
+async function bumpVersion(type) {
   const pkgPath = path.resolve(process.cwd(), 'package.json');
   console.log(pkgPath);
-  const pkg = await readJson(pkgPath);
-  const currentVersion = pkg.version;
-  const newVersion = semver.inc(currentVersion, type);
+  const pkg = await fsExtra.readJson(pkgPath);
 
+  const currentVersion = pkg.version;
+  console.log('currentVersion', currentVersion);
+  const newVersion = semver.inc(currentVersion, type);
+  console.log('newVersion', newVersion);
   if (!newVersion) throw new Error('Version bump failed');
 
   pkg.version = newVersion;
-  await writeJson(pkgPath, pkg, { spaces: 2 });
+  await fsExtra.writeJson(pkgPath, pkg, { spaces: 2 });
+
   console.log(`🔧 Bumped version: ${currentVersion} → ${newVersion}`);
   return newVersion;
 }
 
-async function gitCommitAndTag(version: string) {
+async function gitCommitAndTag(version) {
   return git
     .add('package.json')
     .add('RELEASE_NOTES.md')
@@ -57,35 +57,22 @@ async function gitCommitAndTag(version: string) {
     });
 }
 
-const dynamicReleaseTypes = (): ReleaseType[] => {
-  // You could fetch this from an API, file, logic, etc.
-  return [
-    'patch',
-    'minor',
-    'major',
-    'prepatch',
-    'prerelease',
-    'prerelease',
-    'release',
-  ];
-};
-
 (async () => {
+  console.log('🚀 Starting release process...');
   const options = yargs(hideBin(process.argv))
     .version(false)
     .option('version', {
       alias: 'v',
-      type: 'string',
-      description: 'Specify the release version type',
-      choices: dynamicReleaseTypes(), // 👈 dynamic options
+      // type: "string",
+      description: 'Specify the release type (semantic versioning)',
+      choices: ['patch', 'minor', 'major', 'prepatch', 'prerelease', 'release'],
       demandOption: true,
     })
     .help()
     .parseSync();
-  console.log(`🚀 Released version ${options.version}`);
 
   try {
-    const releaseType: ReleaseType = options.version;
+    const releaseType = options.version;
     if (!releaseType) {
       console.log('📭 No release needed based on recent commits.');
       return;
@@ -94,6 +81,7 @@ const dynamicReleaseTypes = (): ReleaseType[] => {
     const newVersion = await bumpVersion(releaseType);
     await generateChangelog();
     await gitCommitAndTag(newVersion);
+    console.log(`🚀 Released version ${options.version}`);
   } catch (err) {
     console.error('❌ Release failed:', err);
     process.exit(1);
