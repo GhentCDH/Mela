@@ -1,6 +1,6 @@
 {
   "name": "@mela/source",
-  "version": "0.0.8",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "commitlint": "commit",
@@ -13,9 +13,9 @@
     "generate:zod": "ts-node --project ./tools/tsconfig.tools.json ./tools/prisma/index.ts ",
     "generated:lint": "npx eslint generated/types/** --fix && && npx eslint generated/prisma/** --fix",
     "generate:prisma": "pnpm run generate:schema && pnpm run generate:zod",
-    "release": "ts-node --project tools/tsconfig.tools.json tools/release/release.ts",
     "create-env": "ts-node --project tools/tsconfig.tools.json tools/scripts/create-env.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "node tools/release/release.mjs"
   },
   "private": true,
   "dependencies": {
@@ -124,7 +124,7 @@
     "@vuepress/bundler-vite": "2.0.0-rc.19",
     "@vuepress/theme-default": "2.0.0-rc.76",
     "autoprefixer": "10.4.21",
-    "conventional-changelog": "^7.1.1",
+    "conventional-changelog": "^6.0.0",
     "daisyui": "5.0.50",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
