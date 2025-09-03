@@ -47,7 +47,7 @@ RUN ./tools/scripts/create-env.sh /app/apps/frontend/
 CMD pnpm run generate:prisma  && \
     npx nx run frontend:build:production  && \
     cd dist/apps/frontend && \
-    npx vite --port=9000
+    npx vite --port=9000 --host
 
 
 # Backend developmen
