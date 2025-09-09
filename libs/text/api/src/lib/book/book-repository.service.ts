@@ -5,7 +5,7 @@ import { PrismaService } from '@ghentcdh/mela/generated/prisma';
 import { Book, Chapter } from '@ghentcdh/mela/generated/types';
 
 import { AuthorRepository } from '../author/author-repository.service';
-import { AbstractRepository } from '../shared/repository.service';
+import { AbstractRepository, IncludeType } from '../shared/repository.service';
 import { CreateTextDto } from '../text/dto';
 
 @Injectable()
@@ -17,12 +17,25 @@ export class BookRepository extends AbstractRepository<Book, CreateBook> {
     super(prisma.book);
   }
 
-  protected override includeList(): Record<string, true> {
-    return { author: true, chapter: true };
+  protected override includeList(): IncludeType {
+    return {
+      author: true,
+    };
   }
 
-  protected override includeLDetail(): Record<string, true> {
-    return { author: true, chapter: true };
+  protected override includeLDetail(): IncludeType {
+    return {
+      author: true,
+      chapter: {
+        select: {
+          text: true,
+          id: true,
+          name: true,
+          chapter_number: true,
+          chapter_order: true,
+        },
+      },
+    };
   }
 
   protected override async connectCreate(

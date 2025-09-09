@@ -1,14 +1,19 @@
 <template>
-  <FormComponent
-    v-if="formData"
-    :id="`modal-${id}`"
-    v-model="formData"
-    :schema="formSchema.schema"
-    :uischema="formSchema.uiSchema"
-    @valid="onValid($event)"
-    @change="onChange"
-  />
-  <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300">
+  <Loading :loading="!formData" />
+  <div class="h-full overflow-y-auto mb-20">
+    <FormComponent
+      v-if="formData"
+      :id="`modal-${id}`"
+      v-model="formData"
+      :schema="formSchema.schema"
+      :uischema="formSchema.uiSchema"
+      @valid="onValid($event)"
+      @change="onChange"
+    />
+  </div>
+  <div
+    class="sticky bottom-0 bg-white flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]"
+  >
     <Btn
       :color="Color.secondary"
       :outline="true"
@@ -41,12 +46,13 @@ import { Btn, Color } from '@ghentcdh/ui';
 
 import { useBookMenuStore } from './book-menu.store';
 import { useBookStore } from './book.store';
+import Loading from '../../ui/loading.vue';
 
 const id = `chapter`;
 const bookStore = useBookStore();
 
 const valid = ref(false);
-const formData = ref({});
+const formData = ref(null);
 const formSchema = ChapterFormSchema.schema.form;
 const bookMenuStore = useBookMenuStore();
 const router = useRouter();
@@ -98,5 +104,6 @@ const goToAnnotations = () => {
 onMounted(() => {
   bookMenuStore.resetMenu();
   bookMenuStore.resetBreadcrumbs();
+  bookMenuStore.resetView();
 });
 </script>

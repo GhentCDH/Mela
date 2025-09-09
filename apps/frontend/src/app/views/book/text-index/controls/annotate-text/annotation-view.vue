@@ -16,6 +16,7 @@ import {
   W3CAnnotationAdapter,
   createAnnotatedText,
 } from '@ghentcdh/annotated-text';
+import { findTagging } from '@ghentcdh/annotations/core';
 
 import {
   colorForAnnotationType,
@@ -45,6 +46,16 @@ onMounted(() => {
       colorFn: colorForAnnotationType,
       defaultRender: 'underline',
       gutterFn: isParagraphAnnotationType,
+      tagConfig: {
+        enabled: true,
+        tagFn: (w3cAnnotation: W3CAnnotation) => {
+          const type = findTagging(w3cAnnotation);
+          if (!type || type.value === 'paragraph') {
+            return '';
+          }
+          return type.value;
+        },
+      },
     }),
   })
     .setText(properties.source.content.text, false)

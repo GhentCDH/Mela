@@ -15,13 +15,20 @@
         <div class="list-col-grow">
           <div>{{ chapter.name }}</div>
         </div>
-        <div>
+        <div class="flex gap-2">
           <Btn
             :icon="IconEnum.Edit"
             :outline="true"
             @click="editChapter(chapter)"
           >
             Edit
+          </Btn>
+          <Btn
+            :icon="IconEnum.Edit"
+            :outline="true"
+            @click="editAnnotations(chapter)"
+          >
+            Annotations
           </Btn>
         </div>
       </li>
@@ -52,6 +59,16 @@ const editChapter = (chapter: any) => {
   router.push({
     name: 'chapter-detail',
     params: { chapterId: chapter.id, bookId: bookStore.book.id },
+  });
+};
+const editAnnotations = (chapter: any) => {
+  router.push({
+    name: 'text-index-annotate',
+    params: {
+      chapterId: chapter.id,
+      bookId: bookStore.book.id,
+      textId: chapter.text[0].id,
+    },
   });
 };
 

@@ -1,4 +1,5 @@
 <template>
+  <Loading :loading="!textStore.text" />
   <template v-if="textStore.text">
     <annotate-text
       :store-id="storeId"
@@ -45,6 +46,7 @@ import { useModeStore } from './controls/annotate-text/store/mode.store';
 import { useTextStore } from './text.store';
 import { useBookMenuStore } from '../book-menu.store';
 import { useActiveAnnotationStore } from './controls/annotate-text/store/active-annotation.store';
+import Loading from '../../../ui/loading.vue';
 import { ModalSelectionService } from './controls/annotate-text/view/selection/modal-selection.service';
 
 const textStore = useTextStore();
@@ -165,6 +167,7 @@ const createAnnotation = (mode: MODES = 'create-annotation') => {
 };
 
 onMounted(() => {
+  bookMenuStore.setView('annotate');
   modeStore.registerOnResetFn(() => {
     activeAnnotationStore.selectAnnotation(null);
     annotationStore.changeSelectionFilter({});

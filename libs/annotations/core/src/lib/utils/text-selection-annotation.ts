@@ -1,11 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import type { SourceModel, TextAnnotation, W3CAnnotation } from '../model';
+import { W3CAnnotationSchema } from '@ghentcdh/annotated-text';
+
+import type {
+  SourceModel,
+  TextAnnotation,
+  W3CAnnotation} from '../model';
 import {
   TextTargetSchema,
   TextualBodyClassifyingSchema,
-  TextualBodySchema,
-  W3CAnnotationSchema,
+  TextualBodySchema
 } from '../model';
 import { getBody, updateBody } from './body.utils';
 import { getTarget, updateSelector } from './target.utils';
