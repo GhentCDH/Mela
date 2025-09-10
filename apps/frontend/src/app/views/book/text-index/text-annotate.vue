@@ -34,9 +34,9 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { SourceModel } from '@mela/text/shared';
 import { computed, effect, onMounted } from 'vue';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import AnnotateText from './controls/annotate-text/annotate-text.vue';

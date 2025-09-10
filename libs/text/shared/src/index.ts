@@ -12,3 +12,4 @@ export * from './lib/annotation/annotation-type.schema';
 
 export * from './lib/utils/uri';
 export * from './lib/example/example.schema';
+export * from './lib/source.model';

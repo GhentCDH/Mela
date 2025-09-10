@@ -39,23 +39,19 @@
 </template>
 
 <script setup lang="ts">
+import type { SourceModel } from '@mela/text/shared';
 import { findExampleMetaData, findLemmaMetaData } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, onMounted, onUnmounted, watch } from 'vue';
 
-import type {
-  AnnotatedText,
-  W3CAnnotation} from '@ghentcdh/annotated-text';
+import type { AnnotatedText, W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
   MarkdownTextAdapter,
   W3CAnnotationAdapter,
   createAnnotatedText,
-} from '@ghentcdh/annotated-text';
-import type { SourceModel } from '@ghentcdh/annotations/core';
-import {
   findTagging,
   findTextPositionSelector,
-} from '@ghentcdh/annotations/core';
+} from '@ghentcdh/annotated-text';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import { useActiveAnnotationStore } from '../store/active-annotation.store';

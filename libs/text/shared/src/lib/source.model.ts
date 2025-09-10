@@ -2,8 +2,6 @@ import { z } from 'zod';
 
 const SourceTypesList = ['text'] as const;
 
-export type SourceTypes = (typeof SourceTypesList)[number];
-
 export const SourceTextSchema = z.object({
   text: z.string(),
   textDirection: z.enum(['ltr', 'rtl']).default('ltr'),

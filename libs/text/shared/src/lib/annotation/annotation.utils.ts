@@ -1,8 +1,5 @@
-import type {
-  SpecificResource,
-  W3CAnnotation,
-} from '@ghentcdh/annotations/core';
-import { findBodyType } from '@ghentcdh/annotations/core';
+import type { SpecificResource, W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findBodyType } from '@ghentcdh/annotated-text';
 
 import { isExampleUri, isLemmaUri } from '../utils/uri';
 

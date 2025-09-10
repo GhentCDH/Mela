@@ -4,7 +4,7 @@ import { z } from 'zod';
 import {
   W3CAnnotationBodySchema,
   W3CAnnotationTargetSchema,
-} from '@ghentcdh/annotations/core';
+} from '@ghentcdh/annotated-text';
 import type {
   AnnotationBody,
   AnnotationTarget,

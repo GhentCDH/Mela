@@ -7,8 +7,9 @@ import {
 import type {
   W3CAnnotation,
   W3CAnnotationTarget,
+  findTagging,
+  findTargetType,
 } from '@ghentcdh/annotated-text';
-import { findTagging, findTargetType } from '@ghentcdh/annotated-text';
 
 export const w3cAnnotationToAnnotationSelector = (
   annotation: W3CAnnotation,

@@ -18,9 +18,9 @@
 </template>
 
 <script setup lang="ts">
+import type { SourceModel } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
 import { Icon, IconEnum, TreeView } from '@ghentcdh/ui';
 
 import { useActiveAnnotationStore } from '../store/active-annotation.store';

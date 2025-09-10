@@ -13,7 +13,7 @@ import {
   W3CAnnotationTarget,
   getBody,
   getTarget,
-} from '@ghentcdh/annotations/core';
+} from '@ghentcdh/annotated-text';
 import { createResponseData } from '@ghentcdh/json-forms-api';
 import {
   AnnotationBodyWithRelations,

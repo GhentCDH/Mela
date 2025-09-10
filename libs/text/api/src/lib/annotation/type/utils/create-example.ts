@@ -1,7 +1,7 @@
 import { AnnotationSelector, getExampleUri } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
-import { SpecificResourceSchema } from '@ghentcdh/annotations/core';
+import { SpecificResourceSchema } from '@ghentcdh/annotated-text';
 import type {
   AnnotationBody,
   ExampleWithRelations,

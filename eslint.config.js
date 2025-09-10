@@ -1,7 +1,16 @@
 const nx = require('@nx/eslint-plugin');
 const importPlugin = require('eslint-plugin-import');
+const pluginVue = require('eslint-plugin-vue');
 
 module.exports = [
+  {
+    name: 'app/files-to-lint',
+    files: ['**/*.{ts,mts,tsx,vue}'],
+  },
+  {
+    name: 'app/files-to-ignore',
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+  },
   // {
   //   files: ['**/*.json'],
   //   // Override or add rules here
@@ -11,10 +20,11 @@ module.exports = [
   //   },
   // },
 
+  ...pluginVue.configs['flat/essential'],
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
-  importPlugin.flatConfigs['recommended'],
+  importPlugin.flatConfigs.recommended,
   {
     ignores: ['**/dist', 'generated/prisma-client'],
   },
@@ -23,6 +33,9 @@ module.exports = [
     rules: {
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+
       '@nx/enforce-module-boundaries': [
         'error',
         {

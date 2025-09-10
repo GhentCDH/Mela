@@ -1,8 +1,9 @@
+import type { SourceModel } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
-import type { SourceModel } from '@ghentcdh/annotations/core';
+
 
 import { useAnnotationStore } from './annotation.store';
 import { AnnotationTree } from '../utils/tree';
