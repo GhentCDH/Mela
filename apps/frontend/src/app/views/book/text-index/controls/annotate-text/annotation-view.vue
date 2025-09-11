@@ -6,8 +6,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { onMounted, onUnmounted, watch } from 'vue';
 
-import type { AnnotatedText,
- SourceModel, W3CAnnotation  } from '@ghentcdh/annotated-text';
+import type { AnnotatedText, SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
   MarkdownTextAdapter,
   W3CAnnotationAdapter,
