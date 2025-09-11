@@ -20,6 +20,7 @@ export class BookRepository extends AbstractRepository<Book, CreateBook> {
   protected override includeList(): IncludeType {
     return {
       author: true,
+      chapter: true,
     };
   }
 
