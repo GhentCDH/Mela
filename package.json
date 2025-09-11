@@ -47,7 +47,7 @@
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/vue-editor": "^3.2.3",
     "@vueuse/core": "^13.7.0",
-    "annotated-text": "link:../../../Library/pnpm/global/5/node_modules/@ghentcdh/annotated-text",
+    "annotated-text": "0.7.6",
     "axios": "^1.11.0",
     "http-server": "^14.1.1",
     "keycloak-connect": "^26.1.1",
