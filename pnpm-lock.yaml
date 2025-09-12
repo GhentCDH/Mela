@@ -92,9 +92,6 @@ importers:
       '@vueuse/core':
         specifier: ^13.7.0
         version: 13.7.0(vue@3.5.18(typescript@5.9.2))
-      annotated-text:
-        specifier: link:../../../Library/pnpm/global/5/node_modules/@ghentcdh/annotated-text
-        version: link:../../../Library/pnpm/global/5/node_modules/@ghentcdh/annotated-text
       axios:
         specifier: ^1.11.0
         version: 1.11.0
@@ -5148,8 +5145,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromedriver@140.0.0:
-    resolution: {integrity: sha512-mv41C2fi4YX27muRMWP035HJUnKatu7gMJqBcVD1tSmufWDxDy0m38YaieKG3pa2aAIYNVhlXqiOnHkvnqNMcw==}
+  chromedriver@140.0.1:
+    resolution: {integrity: sha512-YFEKOaqxUMFTJkAJGj06/VizWegsokIYxgHqrs1h+/acFPCB9k0Pnnai4N0+eySf/ce04UG++xH1bnGw2U/71g==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -16977,7 +16974,7 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromedriver@140.0.0:
+  chromedriver@140.0.1:
     dependencies:
       '@testim/chrome-version': 1.1.4
       axios: 1.11.0
@@ -19988,7 +19985,7 @@ snapshots:
     dependencies:
       jwk-to-pem: 2.0.7
     optionalDependencies:
-      chromedriver: 140.0.0
+      chromedriver: 140.0.1
     transitivePeerDependencies:
       - debug
       - supports-color
