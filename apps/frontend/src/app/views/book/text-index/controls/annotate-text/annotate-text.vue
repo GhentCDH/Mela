@@ -65,9 +65,9 @@
 </template>
 
 <script setup lang="ts">
+import type { SourceModel } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import type { SourceModel } from '@ghentcdh/annotations/core';
 import { Btn, Drawer } from '@ghentcdh/ui';
 
 import ActiveAnnotation from './active-annotation.vue';

@@ -1,15 +1,26 @@
 import type { BookWithRelations } from '@ghentcdh/mela/generated/types';
 import type { MenuWithItems } from '@ghentcdh/ui';
 
-export const computeMenu = (book: BookWithRelations): MenuWithItems[] => {
+export type MenuView = 'annotate';
+
+export const computeMenu = (
+  book: BookWithRelations,
+  view: MenuView | null,
+): MenuWithItems[] => {
+  const routerLink =
+    view === 'annotate' ? 'text-index-annotate' : 'chapter-detail';
+
   return [
     {
       label: 'Chapters',
       items: book?.chapter?.map((chapter) => ({
         label: `${chapter.chapter_number} - ${chapter.name}`,
         action: {
-          routerLink: 'chapter-detail',
-          params: { chapterId: chapter.id },
+          routerLink,
+          params: {
+            chapterId: chapter.id,
+            textId: chapter.text[0]?.id,
+          },
         },
       })),
     },

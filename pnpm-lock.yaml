@@ -18,8 +18,8 @@ importers:
         specifier: ^19.8.1
         version: 19.8.1(@types/node@24.3.0)(typescript@5.9.2)
       '@ghentcdh/annotated-text':
-        specifier: 0.6.0
-        version: 0.6.0
+        specifier: 0.7.6
+        version: 0.7.6
       '@ghentcdh/authentication-api':
         specifier: 0.0.2-10
         version: 0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)
@@ -1850,8 +1850,8 @@ packages:
   '@gerrit0/mini-shiki@3.11.0':
     resolution: {integrity: sha512-ooCDMAOKv71O7MszbXjSQGcI6K5T6NKlemQZOBHLq7Sv/oXCRfYbZ7UgbzFdl20lSXju6Juds4I3y30R6rHA4Q==}
 
-  '@ghentcdh/annotated-text@0.6.0':
-    resolution: {integrity: sha512-2a2pJY36Q0Texk9x/r5Pe1iWjRSRcoCAO24pr8HVSEGH1dTKoKiaKhFhqw8HVBwSh8gB1828r2zYLzIm7stpLg==}
+  '@ghentcdh/annotated-text@0.7.6':
+    resolution: {integrity: sha512-vYDW5jS5yKTe79Fif3ibAK5zJXhN0adF3ICN6M0LNnRxG7LIdjKrUBp5IVoV1ohXNRBiGl47hn9aenQs8uxYGQ==}
 
   '@ghentcdh/authentication-api@0.0.2-10':
     resolution: {integrity: sha512-EDrRmpjcyGJEXli7/Pce/4Fxl6Ud02R+V/FvkYrnA47duJeso1D7T+mLp3yYU7a5E8YUU14LYP8HHRgo0xuSvA==}
@@ -5145,8 +5145,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromedriver@140.0.0:
-    resolution: {integrity: sha512-mv41C2fi4YX27muRMWP035HJUnKatu7gMJqBcVD1tSmufWDxDy0m38YaieKG3pa2aAIYNVhlXqiOnHkvnqNMcw==}
+  chromedriver@140.0.1:
+    resolution: {integrity: sha512-YFEKOaqxUMFTJkAJGj06/VizWegsokIYxgHqrs1h+/acFPCB9k0Pnnai4N0+eySf/ce04UG++xH1bnGw2U/71g==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -12628,7 +12628,7 @@ snapshots:
       '@shikijs/types': 3.11.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@ghentcdh/annotated-text@0.6.0':
+  '@ghentcdh/annotated-text@0.7.6':
     dependencies:
       d3: 7.9.0
       lodash-es: 4.17.21
@@ -16974,7 +16974,7 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromedriver@140.0.0:
+  chromedriver@140.0.1:
     dependencies:
       '@testim/chrome-version': 1.1.4
       axios: 1.11.0
@@ -19985,7 +19985,7 @@ snapshots:
     dependencies:
       jwk-to-pem: 2.0.7
     optionalDependencies:
-      chromedriver: 140.0.0
+      chromedriver: 140.0.1
     transitivePeerDependencies:
       - debug
       - supports-color

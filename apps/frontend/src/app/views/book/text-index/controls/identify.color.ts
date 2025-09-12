@@ -1,6 +1,5 @@
 import type { ColorFn, W3CAnnotation } from '@ghentcdh/annotated-text';
-import { createAnnotationColors } from '@ghentcdh/annotated-text';
-import { findTagging } from '@ghentcdh/annotations/core';
+import { createAnnotationColors, findTagging } from '@ghentcdh/annotated-text';
 
 export type AnnotationType =
   | 'title'

@@ -18,9 +18,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ghentcdh/annotations/core": [
-        "libs/annotations/core/src/index.ts"
-      ],
       "@ghentcdh/mela/generated/dtos": [
         "generated/types/dtos/index.ts"
       ],

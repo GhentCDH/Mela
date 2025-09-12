@@ -2,10 +2,9 @@ import { isExampleUri } from '@mela/text/shared';
 
 import type {
   SpecificResource,
-  W3CAnnotation} from '@ghentcdh/annotations/core';
-import {
-  findBodyType
-} from '@ghentcdh/annotations/core';
+  W3CAnnotation,
+  findBodyType,
+} from '@ghentcdh/annotated-text';
 import type { Register } from '@ghentcdh/mela/generated/types';
 
 const findExampleMetadata = (annotation: W3CAnnotation) => {

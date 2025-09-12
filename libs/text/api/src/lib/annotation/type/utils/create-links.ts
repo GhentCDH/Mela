@@ -4,7 +4,7 @@ import {
   SpecificResourceSchema,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
-} from '@ghentcdh/annotations/core';
+} from '@ghentcdh/annotated-text';
 import {
   Annotation,
   AnnotationTarget,

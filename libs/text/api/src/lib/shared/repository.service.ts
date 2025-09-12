@@ -1,6 +1,8 @@
 import { RequestDto } from '@ghentcdh/json-forms-api';
 import { buildFilter, buildSort } from '@ghentcdh/json-forms-core';
 
+export type IncludeType = Record<string, { string: true } | true | IncludeType>;
+
 export abstract class AbstractRepository<Entity, CreateDto = Entity> {
   protected constructor(private readonly prismaModel: any) {}
 
@@ -16,6 +18,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
     } else if (this.includeList()) {
       query['include'] = this.includeList();
     }
+
     return this.prismaModel.findMany(query);
   }
 
@@ -36,7 +39,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * Used in list function
    * @protected
    */
-  protected includeList(): Record<string, any> {
+  protected includeList(): IncludeType | null {
     return null;
   }
 
@@ -45,7 +48,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * Used in list function
    * @protected
    */
-  protected selectList(): Record<string, any> {
+  protected selectList(): IncludeType | null {
     return null;
   }
 
@@ -54,7 +57,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * Used in list function
    * @protected
    */
-  protected includeLDetail(): Record<string, true> {
+  protected includeLDetail(): IncludeType | null {
     return null;
   }
 
@@ -63,7 +66,7 @@ export abstract class AbstractRepository<Entity, CreateDto = Entity> {
    * Used in list function
    * @protected
    */
-  protected selectDetail(): Record<string, true> {
+  protected selectDetail(): RecorRecord<string, includeType> | null {
     return null;
   }
 

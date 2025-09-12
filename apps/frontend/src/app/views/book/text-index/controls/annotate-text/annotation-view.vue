@@ -6,16 +6,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { onMounted, onUnmounted, watch } from 'vue';
 
-import type {
-  AnnotatedText,
-  SourceModel,
-  W3CAnnotation,
-} from '@ghentcdh/annotated-text';
+import type { AnnotatedText, SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
   MarkdownTextAdapter,
   W3CAnnotationAdapter,
   createAnnotatedText,
-} from '@ghentcdh/annotated-text';
+  findTagging } from '@ghentcdh/annotated-text';
 
 import {
   colorForAnnotationType,
@@ -45,6 +41,16 @@ onMounted(() => {
       colorFn: colorForAnnotationType,
       defaultRender: 'underline',
       gutterFn: isParagraphAnnotationType,
+      tagConfig: {
+        enabled: true,
+        tagFn: (w3cAnnotation: W3CAnnotation) => {
+          const type = findTagging(w3cAnnotation);
+          if (!type || type.value === 'paragraph') {
+            return '';
+          }
+          return type.value;
+        },
+      },
     }),
   })
     .setText(properties.source.content.text, false)

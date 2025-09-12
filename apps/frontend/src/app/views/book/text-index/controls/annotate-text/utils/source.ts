@@ -1,10 +1,5 @@
-import type { TextContentDto } from '@mela/text/shared';
-
-import {
-  type SourceModel,
-  SourceModelSchema,
-  SourceTextSchema,
-} from '@ghentcdh/annotations/core';
+import type { SourceModel, TextContentDto } from '@mela/text/shared';
+import { SourceModelSchema, SourceTextSchema } from '@mela/text/shared';
 
 const getSource = (
   sources: SourceModel[],

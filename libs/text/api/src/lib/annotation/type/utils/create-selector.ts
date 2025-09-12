@@ -1,12 +1,11 @@
 import { AnnotationSelector, getTextContentUri } from '@mela/text/shared';
 
-import type { TextAnnotation } from '@ghentcdh/annotations/core';
 import {
   TextTargetSchema,
   TextualBodyClassifyingSchema,
   TextualBodySchema,
   createTextPositionSelector,
-} from '@ghentcdh/annotations/core';
+} from '@ghentcdh/annotated-text';
 import type {
   AnnotationBody,
   AnnotationTarget,

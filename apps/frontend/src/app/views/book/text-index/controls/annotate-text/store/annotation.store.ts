@@ -1,18 +1,12 @@
 import type {
-  AnnotationMetadataType,
   AnnotationType,
+  SourceModel,
   TextContentDto,
 } from '@mela/text/shared';
-import { pick } from 'lodash-es';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import type {
-  W3CAnnotation} from '@ghentcdh/annotated-text';
-import {
-  createTextSelectionAnnotation
-} from '@ghentcdh/annotated-text';
-import type { SourceModel, TextAnnotation } from '@ghentcdh/annotations/core';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
@@ -54,23 +48,6 @@ export const useAnnotationStore = (id: string) =>
       sources.value = createSourceFromTextContent(_sources);
       annotationService.load(_textId);
       newAnnotations.value = [];
-    };
-
-    const createAnnotation = (
-      sourceUri: string,
-      annotation: TextAnnotation,
-      type: AnnotationMetadataType,
-    ) => {
-      const source = SourceUtils(sources.value).getSourceByUri(sourceUri);
-      const newAnnotation = createTextSelectionAnnotation(
-        source,
-        pick(annotation, ['start', 'end']),
-        type,
-      );
-
-      newAnnotations.value = [newAnnotation];
-
-      return newAnnotation;
     };
 
     const autoGenerateBlocks = (sourceId: string) => {
@@ -128,10 +105,11 @@ export const useAnnotationStore = (id: string) =>
       saveOrCreateAnnotation,
       deleteAnnotation,
 
-      createAnnotation,
       autoGenerateBlocks,
       saveGeneratedBlocks,
 
+      getSource: (sourceId: string) =>
+        SourceUtils(sources.value).getSource(sourceId),
       getAnnotation: (id: string) =>
         AnnotationUtils(annotations.value).byId(id),
 

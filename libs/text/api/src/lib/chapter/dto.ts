@@ -1,11 +1,19 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import { ChapterFormSchema } from '@mela/text/shared';
+import { z } from 'zod';
 
 import { createResponseData } from '@ghentcdh/json-forms-api';
-import { ChapterSchema } from '@ghentcdh/mela/generated/types';
+import {
+  ChapterSchema,
+  TextWithRelationsSchema,
+} from '@ghentcdh/mela/generated/types';
 
 export class CreateChapterDto extends createZodDto(
   ChapterFormSchema.dtoSchema,
 ) {}
 
-export class ListChapterDto extends createResponseData(ChapterSchema) {}
+export const ChapterListSchema = ChapterSchema.extend({
+  text: z.lazy(() => TextWithRelationsSchema).array(),
+});
+
+export class ListChapterDto extends createResponseData(ChapterListSchema) {}

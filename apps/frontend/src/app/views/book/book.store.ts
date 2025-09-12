@@ -1,7 +1,7 @@
 import type { TextContentDto } from '@mela/text/shared';
 import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, effect, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import type {
@@ -54,10 +54,9 @@ export const useBookStore = defineStore('bookStore', () => {
   };
 
   const reload = ReloadRef();
+  const chapter = ref<ChapterWithRelations | null>(null);
 
-  const chapter = computedAsync(() => {
-    const r = reload.watchReload.value;
-
+  const getChapter = async () => {
     if (!chapterId.value) return null;
 
     if (chapterId.value === NEW_CHAPTER_ID) {
@@ -91,6 +90,19 @@ export const useBookStore = defineStore('bookStore', () => {
           text: [{ ...text, textContent }],
         };
       });
+  };
+
+  effect(() => {
+    const _chapterId = chapterId.value;
+    chapter.value = null;
+
+    getChapter().then((_chapter: ChapterWithRelations) => {
+      if (!_chapter) return;
+      if (!_chapter.id && _chapterId !== NEW_CHAPTER_ID) return;
+      if (_chapter.id !== chapterId.value) return;
+
+      chapter.value = _chapter;
+    });
   });
 
   const book = computedAsync(() => {

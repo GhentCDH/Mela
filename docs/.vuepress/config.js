@@ -20,7 +20,7 @@ export default defineUserConfig({
           '@demo/data': fileURLToPath(
             new URL('../data/index.ts', import.meta.url),
           ),
-          '@ghentcdh/annotations/core': fileURLToPath(
+          '@ghentcdh/annotated-text': fileURLToPath(
             new URL(
               '../../libs/annotations/core/src/index.ts',
               import.meta.url,

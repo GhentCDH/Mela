@@ -1,7 +1,6 @@
 import type { TextContentDto } from '@mela/text/shared';
-import { computedAsync } from '@vueuse/core';
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, effect, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
@@ -48,7 +47,9 @@ export const useTextStore = defineStore('textStore', () => {
     text_type: 'TRANSLATION',
   };
 
-  const text = computedAsync(() => {
+  const text = ref<TextWithRelations | null>(null);
+
+  const getText = () => {
     if (!textId.value) return null;
 
     if (textId.value === 'new')
@@ -70,6 +71,17 @@ export const useTextStore = defineStore('textStore', () => {
         ];
         return { ...text, textContent };
       });
+  };
+  effect(() => {
+    const _textId = textId.value;
+    text.value = null;
+
+    getText().then((_text: TextWithRelations) => {
+      if (!_textId || !_text) return;
+      if (_text.id !== textId.value) return;
+
+      text.value = _text;
+    });
   });
 
   const saveOrUpdate = (text: Partial<TextWithRelations>) => {
