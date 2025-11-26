@@ -48,3 +48,7 @@ Pieterjan De Potter, Joren Six @ GhentCDH, Bo Vandersteene, Ghent University.
 
 Development partly funded by the MELA project. MELA has received funding from the European Research Council (ERC) under
 the European Union’s Horizon 2020 research and innovation programme (grant agreement No 101001328)
+
+Development by [Ghent Centre for Digital Humanities - Ghent University](https://www.ghentcdh.ugent.be/). Funded by the [GhentCDH research projects](https://www.ghentcdh.ugent.be/projects).
+
+<img src="https://www.ghentcdh.ugent.be/ghentcdh_logo_blue_text_transparent_bg_landscape.svg" alt="Landscape" width="500">
