@@ -51,7 +51,9 @@ COPY --from=builder /app/prisma ./prisma
 
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nestjs
+    adduser --system --uid 1001 nestjs && \
+    mkdir -p logs && \
+    chown -R nestjs:nodejs /app
 
 # Switch to non-root user
 USER nestjs
