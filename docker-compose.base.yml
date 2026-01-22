@@ -1,34 +1,6 @@
 version: '3'
 
 services:
-
-  nx-app-base-dev:
-    restart: always
-    build:
-      context: .
-      dockerfile: $PWD/docker/dev/Dockerfile
-      target: node-dev
-    #    volumes:
-    #      - /app/node_modules
-    develop:
-      watch:
-        - action: rebuild
-          path: pnpm-lock.yaml
-          target: /app/pnpm-lock.yaml
-        - action: rebuild
-          path: prisma
-          target: /app/prisma
-        - action: sync
-          path: tsconfig.base.json
-          target: /app/tsconfig.base.json
-    volumes:
-      - ./docs:/app/docs
-      - ./libs:/app/libs
-      - ./apps:/app/apps
-      - ./link:/app/link
-      - ./prisma:/app/prisma
-      - /app/generated
-      - /app/node_modules
   database:
     image: postgres:latest
     restart: always

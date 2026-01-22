@@ -1,0 +1,36 @@
+# frontend/Dockerfile.dev (Development with hot reload)
+
+FROM node:23-alpine
+
+WORKDIR /app
+
+# Enable pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+ENV CI=true
+
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+
+# Install dependencies (including dev dependencies)
+RUN pnpm install
+
+
+# Copy Prisma schema
+COPY prisma ./prisma
+
+# Generate Prisma Client
+RUN pnpm prisma generate
+
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Expose Vite dev server port
+
+EXPOSE 9000
+
+# Start Vite dev server with hot reload
+# --host 0.0.0.0 allows access from outside container
+
+CMD pnpm exec nx serve frontend --host 0.0.0.0
