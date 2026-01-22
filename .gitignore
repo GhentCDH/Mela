@@ -70,3 +70,7 @@ storybook-static
 
 .env
 .env.prod
+
+/generated/types/src
+/generated/prisma/
+.pnpm-store
