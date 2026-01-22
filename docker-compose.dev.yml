@@ -25,7 +25,7 @@ services:
     volumes:
       - ./:/app/
       - /app/node_modules
-      - /app/generated/prisma
+      - /app/generated
       - /app/dist
     environment:
       - VITE_KEYCLOAK_HOST=$KEYCLOAK_HOST
@@ -59,7 +59,7 @@ services:
     volumes:
       - ./:/app/
       - /app/node_modules
-      - /app/generated/prisma
+      - /app/generated
       - /app/dist
       - ./var/logs/backend:/tmp/logs
 

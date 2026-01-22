@@ -28,7 +28,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV DATABASE_APP_URL=postgresql://demo:demo@postgres:5432/demo
 
 # Generate Prisma Client
-RUN pnpm prisma generate
+RUN pnpm run generate:prisma
 
 # Build TypeScript
 RUN NX_DAEMON=false pnpm exec nx build backend --prod
@@ -47,7 +47,6 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \

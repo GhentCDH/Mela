@@ -16,6 +16,8 @@ RUN pnpm install --frozen-lockfile
 # Copy source code
 COPY . .
 
+RUN pnpm run generate:prisma
+
 # Build the Vue app (creates /app/dist)
 RUN NX_DAEMON=false pnpm exec nx build frontend --prod
 
