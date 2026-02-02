@@ -24,8 +24,8 @@ importers:
         specifier: 0.0.2-10
         version: 0.0.2-10(@nestjs/core@11.1.6)(axios@1.11.0)(reflect-metadata@0.2.2)
       '@ghentcdh/authentication-vue':
-        specifier: 0.1.1
-        version: 0.1.1(typescript@5.9.2)
+        specifier: 0.2.0
+        version: 0.2.0(typescript@5.9.2)
       '@ghentcdh/json-forms-api':
         specifier: ^0.0.1
         version: 0.0.1
@@ -33,8 +33,8 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1(openapi3-ts@4.5.0)
       '@ghentcdh/json-forms-vue':
-        specifier: 0.1.1
-        version: 0.1.1
+        specifier: 0.2.0
+        version: 0.2.0
       '@ghentcdh/tools-api':
         specifier: 0.0.2-10
         version: 0.0.2-10(@babel/traverse@7.28.3)(@nestjs/core@11.1.6)(@prisma/client@6.14.0(prisma@6.14.0(magicast@0.3.5)(typescript@5.9.2))(typescript@5.9.2))(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@24.3.0)(axios@1.11.0)(less@4.4.1)(lightningcss@1.30.1)(nx@21.4.0(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17)))(reflect-metadata@0.2.2)(rxjs@7.8.2)(sass-embedded@1.90.0)(sass@1.90.0)(terser@5.43.1)(typescript@5.9.2)(verdaccio@6.1.6(typanion@3.14.0))(vitest@3.2.4)
@@ -42,11 +42,11 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0
       '@jsonforms/vue':
-        specifier: ^3.6.0
-        version: 3.6.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))
+        specifier: ^3.7.0
+        version: 3.7.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))
       '@jsonforms/vue-vanilla':
-        specifier: ^3.6.0
-        version: 3.6.0(@jsonforms/core@3.6.0)(@jsonforms/vue@3.6.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2)))(vue@3.5.18(typescript@5.9.2))
+        specifier: ^3.7.0
+        version: 3.7.0(@jsonforms/core@3.6.0)(@jsonforms/vue@3.7.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2)))(vue@3.5.18(typescript@5.9.2))
       '@nestjs/axios':
         specifier: ^4.0.1
         version: 4.0.1(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.11.0)(rxjs@7.8.2)
@@ -581,6 +581,10 @@ packages:
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/code-frame@7.29.0':
+    resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/compat-data@7.28.0':
     resolution: {integrity: sha512-60X7qkglvrap8mn1lh2ebxXdZYtUcpd7gsmy9kLaBJ4i/WdY8PqTSdxyA8qraikqKQK5C1KRBKXqznrVapyNaw==}
     engines: {node: '>=6.9.0'}
@@ -666,6 +670,10 @@ packages:
 
   '@babel/helper-validator-identifier@7.27.1':
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/helper-validator-identifier@7.28.5':
+    resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-option@7.27.1':
@@ -1173,6 +1181,10 @@ packages:
 
   '@babel/runtime@7.28.3':
     resolution: {integrity: sha512-9uIQ10o0WGdpP6GDhXcdOJPJuDgFtIDtN/9+ArJQ2NAfAmiuhTQdzkaTGR33v43GYS2UrSA0eX2pPPHoFVvpxA==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.28.6':
+    resolution: {integrity: sha512-05WQkdpL9COIMz4LjTxGpPNCdlpyimKppYNoJ5Di5EUObifl8t4tuLuUBBZEpoLYOmfvIWrsp9fCl0HoPRVTdA==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -1865,8 +1877,8 @@ packages:
   '@ghentcdh/authentication-api@0.0.2-10':
     resolution: {integrity: sha512-EDrRmpjcyGJEXli7/Pce/4Fxl6Ud02R+V/FvkYrnA47duJeso1D7T+mLp3yYU7a5E8YUU14LYP8HHRgo0xuSvA==}
 
-  '@ghentcdh/authentication-vue@0.1.1':
-    resolution: {integrity: sha512-gQwY0/rUqNZzKlU2TvpOl3gqNmOHtfCrSGI0b0d095gDuCckIAAFQisivxncKcOPJhkQ3Zn9b9nkSqe7dBvCag==}
+  '@ghentcdh/authentication-vue@0.2.0':
+    resolution: {integrity: sha512-QUIGFHS5AkRmnajuDAPOHORc6WJY+M0s5erwpxBL/w7QgUPJ+WPYp64nHj6QP59QAF5gDOh7HnOfas5DVlg/PQ==}
 
   '@ghentcdh/json-forms-api@0.0.1':
     resolution: {integrity: sha512-xeKnCrLZH60M0fWSmkIt9RUqr3eyJCTQANhikfHkpsg5Y4M/jWfQGvevpoBsfv1jAwcluePJmTNdZgZufo2P0A==}
@@ -1874,8 +1886,8 @@ packages:
   '@ghentcdh/json-forms-core@0.0.1':
     resolution: {integrity: sha512-m6abv9qqpCjU5Xv5u/FoPx+AAPztO4zQPouPaXqoHbOIubMH6VJiV22r6D/OP6MaSDfYN5Ft37jLf22prFD9DA==}
 
-  '@ghentcdh/json-forms-vue@0.1.1':
-    resolution: {integrity: sha512-xVejOllnaW8JK4VCeMC1f58JO/5oQmbOTXlFqNi0h57iFpucIDYakXgMkCZP81BUVLjp8nMhvpvM9PR49KH8GQ==}
+  '@ghentcdh/json-forms-vue@0.2.0':
+    resolution: {integrity: sha512-1HU7s2XdNd44F8pZem8r4n562Z32JKYug5//m46JKwNJR/25oUVyF1i60art4vhzf1OpDeQgneoy9ulS9IcIhA==}
 
   '@ghentcdh/tools-api@0.0.2-10':
     resolution: {integrity: sha512-4s4dOvbPCKriRMyoE1mXjwTvayYCM/NmIrIK4F4yRw1JvYpbydNi8w6G65EeBRkqzIIUwYJKWDDyHg1J2vDdNA==}
@@ -2066,18 +2078,18 @@ packages:
   '@jsonforms/core@3.6.0':
     resolution: {integrity: sha512-Qz7qJPf/yP4ybqknZ500zggIDZRJfcufu+3efp/xNWf05mpXvxN9TdfmA++BdXi5Nr4UAgjos2kFmQpZpQaCDw==}
 
-  '@jsonforms/vue-vanilla@3.6.0':
-    resolution: {integrity: sha512-fdvCTUVSEstnj0WFsUZohflAWxBBrkcpxUvo+scBUg6q0rcqtvT27ZZHj12EHP2YWCQo0uXZMP+ZNlO/AuzGDA==}
+  '@jsonforms/vue-vanilla@3.7.0':
+    resolution: {integrity: sha512-+wCnot4j0dXHx4cZg1bC7GunVhNCn0bYYCzsy+zJGJwQmdjQ/pdaDcF6CaS7crL/rO1lrEfW+03oJNBi50YDyw==}
     peerDependencies:
-      '@jsonforms/core': 3.6.0
-      '@jsonforms/vue': 3.6.0
-      vue: ^3.2.26
+      '@jsonforms/core': 3.7.0
+      '@jsonforms/vue': 3.7.0
+      vue: ^3.5.0
 
-  '@jsonforms/vue@3.6.0':
-    resolution: {integrity: sha512-KW74d2RBeGau15LseCXiSTiUZ+9nQEyxDgaHggD2iQssrGCBSMWHj2+tGw+hWRZrk4IK99j4j4PRT2mLdexJqw==}
+  '@jsonforms/vue@3.7.0':
+    resolution: {integrity: sha512-S5NXYeu6lTh2yfNmPz17TRo32dSYqAhOe8Co2mp0lmeq1ODJNBQs8SesXqBRdVMEmMK20ZW/1i7i/38J0TGjdw==}
     peerDependencies:
-      '@jsonforms/core': 3.6.0
-      vue: ^3.2.26
+      '@jsonforms/core': 3.7.0
+      vue: ^3.5.0
 
   '@jsonjoy.com/base64@1.1.2':
     resolution: {integrity: sha512-q6XAnWQDIMA3+FTiOYajoYqySkO+JSat0ytXGSuRdq9uXE7o92gzuQwQM14xaCRlBLGq3v5miDGC4vkVTn54xA==}
@@ -4833,6 +4845,9 @@ packages:
   axios@1.11.0:
     resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
 
+  axios@1.13.4:
+    resolution: {integrity: sha512-1wVkUaAO6WyaYtCkcYCOx12ZgpGf9Zif+qXa4n+oYzK558YryKqiL6UWwd5DqiH3VRW0GYhTZQ/vlgJrCoNQlg==}
+
   b4a@1.6.7:
     resolution: {integrity: sha512-OnAYlL5b7LEkALw87fUVafQw5rVR9RjwGd4KUwNQ6DrrNmaVaUCgLipfVlzrPQ4tWOR9P0IXGNOx50jYCCdSJg==}
 
@@ -4918,8 +4933,8 @@ packages:
     resolution: {integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==}
     engines: {node: '>= 0.8'}
 
-  basic-ftp@5.0.5:
-    resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
+  basic-ftp@5.1.0:
+    resolution: {integrity: sha512-RkaJzeJKDbaDWTIPiJwubyljaEPwpVWkm9Rt5h9Nd6h7tEXTJ3VB4qxdZBioV7JO5yLUaOKwz7vDOzlncUsegw==}
     engines: {node: '>=10.0.0'}
 
   batch@0.6.1:
@@ -5154,8 +5169,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromedriver@140.0.1:
-    resolution: {integrity: sha512-YFEKOaqxUMFTJkAJGj06/VizWegsokIYxgHqrs1h+/acFPCB9k0Pnnai4N0+eySf/ce04UG++xH1bnGw2U/71g==}
+  chromedriver@145.0.0:
+    resolution: {integrity: sha512-rnqHS3u+OEdhaS3PmV7V8KYHBLiIOrIKMkRZSEaQcQXnpqHQTPBrS/1x7r0MJvuywtv2qFQYNbd5yXUmuxFvmg==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -5601,6 +5616,9 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
   d3-array@3.2.4:
     resolution: {integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==}
     engines: {node: '>=12'}
@@ -5813,6 +5831,15 @@ packages:
 
   debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
+  debug@4.4.3:
+    resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
     peerDependencies:
       supports-color: '*'
@@ -6617,6 +6644,10 @@ packages:
     resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
 
+  form-data@4.0.5:
+    resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
+    engines: {node: '>= 6'}
+
   forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
@@ -7076,8 +7107,8 @@ packages:
     resolution: {integrity: sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==}
     engines: {node: '>=10.13.0'}
 
-  ip-address@10.0.1:
-    resolution: {integrity: sha512-NWv9YLW4PoW2B7xtzaS3NCot75m6nK7Icdv0o3lfMceJVRfSoQwqD4wEH5rLwoKJwUiZ/rfpiVBhnaF0FK4HoA==}
+  ip-address@10.1.0:
+    resolution: {integrity: sha512-XXADHxXmvT9+CRxhXg56LJovE+bmWnEWB78LB83VZTprKTmaC5QfruXocxzTZ2Kl0DNwKuBdlIhjL8LeY8Sf8Q==}
     engines: {node: '>= 12'}
 
   ip-regex@4.3.0:
@@ -7880,6 +7911,9 @@ packages:
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -10802,8 +10836,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.0.7:
-    resolution: {integrity: sha512-TvyUcFXmjZcXUvU+r1MOyn4/vv4iF+tPwg5Ig33l/FJ3myZkxeQpzzQMLMFWcQAjr6Xs7BRwVy/TwbmNZUA/4w==}
+  vue-component-type-helpers@3.2.4:
+    resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -11345,6 +11379,12 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
+  '@babel/code-frame@7.29.0':
+    dependencies:
+      '@babel/helper-validator-identifier': 7.28.5
+      js-tokens: 4.0.0
+      picocolors: 1.1.1
+
   '@babel/compat-data@7.28.0': {}
 
   '@babel/core@7.28.3':
@@ -11477,6 +11517,8 @@ snapshots:
   '@babel/helper-string-parser@7.27.1': {}
 
   '@babel/helper-validator-identifier@7.27.1': {}
+
+  '@babel/helper-validator-identifier@7.28.5': {}
 
   '@babel/helper-validator-option@7.27.1': {}
 
@@ -12098,6 +12140,8 @@ snapshots:
 
   '@babel/runtime@7.28.3': {}
 
+  '@babel/runtime@7.28.6': {}
+
   '@babel/template@7.27.2':
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -12663,7 +12707,7 @@ snapshots:
       - reflect-metadata
       - supports-color
 
-  '@ghentcdh/authentication-vue@0.1.1(typescript@5.9.2)':
+  '@ghentcdh/authentication-vue@0.2.0(typescript@5.9.2)':
     dependencies:
       keycloak-js: 26.2.0
       vue: 3.5.18(typescript@5.9.2)
@@ -12683,7 +12727,7 @@ snapshots:
     transitivePeerDependencies:
       - openapi3-ts
 
-  '@ghentcdh/json-forms-vue@0.1.1': {}
+  '@ghentcdh/json-forms-vue@0.2.0': {}
 
   '@ghentcdh/tools-api@0.0.2-10(@babel/traverse@7.28.3)(@nestjs/core@11.1.6)(@prisma/client@6.14.0(prisma@6.14.0(magicast@0.3.5)(typescript@5.9.2))(typescript@5.9.2))(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17))(@types/node@24.3.0)(axios@1.11.0)(less@4.4.1)(lightningcss@1.30.1)(nx@21.4.0(@swc-node/register@1.11.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)(typescript@5.9.2))(@swc/core@1.13.3(@swc/helpers@0.5.17)))(reflect-metadata@0.2.2)(rxjs@7.8.2)(sass-embedded@1.90.0)(sass@1.90.0)(terser@5.43.1)(typescript@5.9.2)(verdaccio@6.1.6(typanion@3.14.0))(vitest@3.2.4)':
     dependencies:
@@ -13027,17 +13071,17 @@ snapshots:
       ajv-formats: 2.1.1(ajv@8.17.1)
       lodash: 4.17.21
 
-  '@jsonforms/vue-vanilla@3.6.0(@jsonforms/core@3.6.0)(@jsonforms/vue@3.6.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2)))(vue@3.5.18(typescript@5.9.2))':
+  '@jsonforms/vue-vanilla@3.7.0(@jsonforms/core@3.6.0)(@jsonforms/vue@3.7.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2)))(vue@3.5.18(typescript@5.9.2))':
     dependencies:
       '@jsonforms/core': 3.6.0
-      '@jsonforms/vue': 3.6.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))
-      lodash: 4.17.21
+      '@jsonforms/vue': 3.7.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))
+      lodash: 4.17.23
       vue: 3.5.18(typescript@5.9.2)
 
-  '@jsonforms/vue@3.6.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))':
+  '@jsonforms/vue@3.7.0(@jsonforms/core@3.6.0)(vue@3.5.18(typescript@5.9.2))':
     dependencies:
       '@jsonforms/core': 3.6.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       vue: 3.5.18(typescript@5.9.2)
 
   '@jsonjoy.com/base64@1.1.2(tslib@2.8.1)':
@@ -13181,7 +13225,7 @@ snapshots:
       '@rushstack/rig-package': 0.5.3
       '@rushstack/terminal': 0.15.4(@types/node@24.3.0)
       '@rushstack/ts-command-line': 5.0.2(@types/node@24.3.0)
-      lodash: 4.17.21
+      lodash: 4.17.23
       minimatch: 10.0.3
       resolve: 1.22.10
       semver: 7.5.4
@@ -14584,7 +14628,7 @@ snapshots:
       storybook: 9.1.2(@testing-library/dom@10.4.1)(prettier@3.6.2)(vite@7.1.3(@types/node@24.3.0)(jiti@2.5.1)(less@4.4.1)(lightningcss@1.30.1)(sass-embedded@1.90.0)(sass@1.90.0)(terser@5.43.1)(yaml@2.8.1))
       type-fest: 2.19.0
       vue: 3.5.18(typescript@5.9.2)
-      vue-component-type-helpers: 3.0.7
+      vue-component-type-helpers: 3.2.4
 
   '@swc-node/core@1.14.1(@swc/core@1.13.3(@swc/helpers@0.5.17))(@swc/types@0.1.24)':
     dependencies:
@@ -14781,8 +14825,8 @@ snapshots:
 
   '@testing-library/dom@10.4.1':
     dependencies:
-      '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.28.3
+      '@babel/code-frame': 7.29.0
+      '@babel/runtime': 7.28.6
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       dom-accessibility-api: 0.5.16
@@ -15124,7 +15168,7 @@ snapshots:
   '@types/react@18.3.23':
     dependencies:
       '@types/prop-types': 15.7.15
-      csstype: 3.1.3
+      csstype: 3.2.3
 
   '@types/retry@0.12.2': {}
 
@@ -16562,6 +16606,15 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.13.4:
+    dependencies:
+      follow-redirects: 1.15.11
+      form-data: 4.0.5
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+    optional: true
+
   b4a@1.6.7: {}
 
   babel-jest@30.0.5(@babel/core@7.28.3):
@@ -16686,7 +16739,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.1.2
 
-  basic-ftp@5.0.5:
+  basic-ftp@5.1.0:
     optional: true
 
   batch@0.6.1: {}
@@ -16983,10 +17036,10 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromedriver@140.0.1:
+  chromedriver@145.0.0:
     dependencies:
       '@testim/chrome-version': 1.1.4
-      axios: 1.11.0
+      axios: 1.13.4
       compare-versions: 6.1.1
       extract-zip: 2.0.1
       proxy-agent: 6.5.0
@@ -17441,6 +17494,8 @@ snapshots:
 
   csstype@3.1.3: {}
 
+  csstype@3.2.3: {}
+
   d3-array@3.2.4:
     dependencies:
       internmap: 2.0.3
@@ -17659,6 +17714,11 @@ snapshots:
   debug@4.4.1:
     dependencies:
       ms: 2.1.3
+
+  debug@4.4.3:
+    dependencies:
+      ms: 2.1.3
+    optional: true
 
   decimal.js@10.6.0: {}
 
@@ -18462,7 +18522,7 @@ snapshots:
 
   extract-zip@2.0.1:
     dependencies:
-      debug: 4.4.1
+      debug: 4.4.3
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -18693,6 +18753,15 @@ snapshots:
       hasown: 2.0.2
       mime-types: 2.1.35
 
+  form-data@4.0.5:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
+      mime-types: 2.1.35
+    optional: true
+
   forwarded@0.2.0: {}
 
   frac@1.1.2: {}
@@ -18795,9 +18864,9 @@ snapshots:
 
   get-uri@6.0.5:
     dependencies:
-      basic-ftp: 5.0.5
+      basic-ftp: 5.1.0
       data-uri-to-buffer: 6.0.2
-      debug: 4.4.1
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -19227,7 +19296,7 @@ snapshots:
 
   interpret@3.1.1: {}
 
-  ip-address@10.0.1:
+  ip-address@10.1.0:
     optional: true
 
   ip-regex@4.3.0: {}
@@ -19994,7 +20063,7 @@ snapshots:
     dependencies:
       jwk-to-pem: 2.0.7
     optionalDependencies:
-      chromedriver: 140.0.1
+      chromedriver: 145.0.0
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -20179,6 +20248,8 @@ snapshots:
   lodash.upperfirst@4.3.1: {}
 
   lodash@4.17.21: {}
+
+  lodash@4.17.23: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -20891,7 +20962,7 @@ snapshots:
     dependencies:
       '@tootallnate/quickjs-emscripten': 0.23.0
       agent-base: 7.1.4
-      debug: 4.4.1
+      debug: 4.4.3
       get-uri: 6.0.5
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.6
@@ -21432,7 +21503,7 @@ snapshots:
   proxy-agent@6.5.0:
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.1
+      debug: 4.4.3
       http-proxy-agent: 7.0.2
       https-proxy-agent: 7.0.6
       lru-cache: 7.18.3
@@ -22199,7 +22270,7 @@ snapshots:
   socks-proxy-agent@8.0.5:
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.1
+      debug: 4.4.3
       socks: 2.8.7
     transitivePeerDependencies:
       - supports-color
@@ -22207,7 +22278,7 @@ snapshots:
 
   socks@2.8.7:
     dependencies:
-      ip-address: 10.0.1
+      ip-address: 10.1.0
       smart-buffer: 4.2.0
     optional: true
 
@@ -23379,7 +23450,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.0.7: {}
+  vue-component-type-helpers@3.2.4: {}
 
   vue-docgen-api@4.79.2(vue@3.5.18(typescript@5.9.2)):
     dependencies:

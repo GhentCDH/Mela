@@ -4,10 +4,7 @@ import { computed, effect, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import type {
-  TextContentWithRelations,
-  TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
+import type { TextContentWithRelations, TextWithRelations } from '@ghentcdh/mela/generated/types';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
@@ -76,7 +73,7 @@ export const useTextStore = defineStore('textStore', () => {
     const _textId = textId.value;
     text.value = null;
 
-    getText().then((_text: TextWithRelations) => {
+    getText()?.then((_text: TextWithRelations) => {
       if (!_textId || !_text) return;
       if (_text.id !== textId.value) return;
 
