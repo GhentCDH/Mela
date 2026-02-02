@@ -26,7 +26,9 @@ RUN ls -all
 
 CMD pnpm run generate:prisma  && \
     npx nx run frontend:serve:production --port=9000
-#
+
+
+# https://github.com/GhentCDH/Mela/issues/96
 ## Production stage with Caddy web server
 #FROM caddy:2-alpine
 #
