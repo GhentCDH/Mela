@@ -4,7 +4,10 @@ import { computed, effect, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useHttpRequest } from '@ghentcdh/authentication-vue';
-import type { TextContentWithRelations, TextWithRelations } from '@ghentcdh/mela/generated/types';
+import type {
+  TextContentWithRelations,
+  TextWithRelations,
+} from '@ghentcdh/mela/generated/types';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
