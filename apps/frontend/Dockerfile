@@ -19,18 +19,22 @@ COPY . .
 RUN pnpm run generate:prisma
 
 # Build the Vue app (creates /app/dist)
-RUN NX_DAEMON=false pnpm exec nx build frontend --prod
+RUN #NX_DAEMON=false pnpm exec nx build frontend --prod
 
 RUN ls -all
 
-# Production stage with Caddy web server
-FROM caddy:2-alpine
 
-# Copy Caddy configuration
-COPY --from=build /app/apps/frontend/Caddyfile /etc/caddy/Caddyfile
-
-# Copy built assets from build stage
-COPY --from=build /app/dist/apps/frontend /srv
-
-# Expose port 9000
-EXPOSE 9000
+CMD pnpm run generate:prisma  && \
+    npx nx run frontend:serve:production --port=9000
+#
+## Production stage with Caddy web server
+#FROM caddy:2-alpine
+#
+## Copy Caddy configuration
+#COPY --from=build /app/apps/frontend/Caddyfile /etc/caddy/Caddyfile
+#
+## Copy built assets from build stage
+#COPY --from=build /app/dist/apps/frontend /srv
+#
+## Expose port 9000
+#EXPOSE 9000
