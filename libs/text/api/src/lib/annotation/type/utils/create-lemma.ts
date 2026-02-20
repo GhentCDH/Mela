@@ -1,7 +1,7 @@
 import {
   AnnotationSelector,
-  PURPOSE_LEMA,
   getLemmaUri,
+  PURPOSE_LEMA,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
@@ -10,7 +10,7 @@ import {
   AnnotationBody,
   LemmaWithRelations,
   TextContent,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 import { createSelector } from './create-selector';
 import { CreateAnnotationDto } from '../../dto';

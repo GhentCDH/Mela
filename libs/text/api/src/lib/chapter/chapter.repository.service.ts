@@ -2,13 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { omit } from 'lodash-es';
 import { ZodSchema } from 'zod';
 
-import { ChapterDto } from '@ghentcdh/mela/generated/dtos';
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import {
-  Chapter,
-  ChapterSchema,
-  TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
+import { ChapterDto } from '@mela/generated-dtos';
+import { PrismaService } from '@mela/generated-prisma';
+import { Chapter, ChapterSchema, TextWithRelations } from '@mela/generated-types';
 
 import { AbstractRepository } from '../shared/repository.service';
 import { TextRepositoryService } from '../text/text-repository.service';

@@ -10,40 +10,14 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ghentcdh/mela/generated/dtos": [
-        "generated/types/dtos/index.ts"
-      ],
-      "@ghentcdh/mela/generated/forms": [
-        "generated/types/forms/index.ts"
-      ],
-      "@ghentcdh/mela/generated/prisma": [
-        "generated/prisma/index.ts"
-      ],
-      "@ghentcdh/mela/generated/types": [
-        "generated/types/index.ts"
-      ],
-      "@ghentcdh/tools/logging/frontend": [
-        "libs/tools/logging/frontend/src/index.ts"
-      ],
-      "@mela/text/api": [
-        "libs/text/api/src/index.ts"
-      ],
-      "@mela/text/shared": [
-        "libs/text/shared/src/index.ts"
-      ]
+      "@mela/text/api": ["libs/text/api/src/index.ts"],
+      "@mela/text/shared": ["libs/text/shared/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "generated"
-  ]
+  "exclude": ["node_modules", "tmp", "generated"]
 }

@@ -1,6 +1,6 @@
 # Multi-stage build: Build Vue app, then serve with Caddy
 
-FROM node:23-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /app
 

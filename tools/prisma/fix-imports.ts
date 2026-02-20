@@ -50,7 +50,7 @@ export const fixPrismaImports = (dir: string) => {
 
   fixImport(dir, files);
 
-  fs.writeFileSync(path.join(dir, `prisma.ts`), PrismaDeclarations);
+  fs.writeFileSync(path.join(dir, `src/prisma.ts`), PrismaDeclarations);
 
   // TODO fix all imports
 };

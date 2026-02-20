@@ -4,7 +4,7 @@ generator client {
 
 generator zod {
   provider                         = "zod-prisma-types"
-  output                           = "../generated/types"
+  output                           = "../generated/types/src"
   addInputTypeValidation           = "false"
   createInputTypes                 = "false"
   createModelTypes                 = "true"
@@ -16,7 +16,6 @@ generator zod {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_APP_URL")
 }
 
 model Author {

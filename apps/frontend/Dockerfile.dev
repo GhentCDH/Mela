@@ -1,17 +1,20 @@
 # frontend/Dockerfile.dev (Development with hot reload)
 
-FROM node:23-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
 # Enable pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
+ENV CI=true
 ENV VERSION=local-development
 
-
 # Copy package files
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/frontend/package.json ./apps/frontend/
+COPY libs/text/api/package.json ./libs/text/api/
+COPY generated/ ./generated/
 
 # Install dependencies (including dev dependencies)
 RUN pnpm install

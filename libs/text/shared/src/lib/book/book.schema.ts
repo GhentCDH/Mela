@@ -2,22 +2,14 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms-core';
-import { BookForm } from '@ghentcdh/mela/generated/forms';
-import type {
-  Book,
-  BookWithRelations,
-  Chapter,
-} from '@ghentcdh/mela/generated/types';
-import {
-  AuthorSchema,
-  BookSchema,
-  ChapterSchema,
-} from '@ghentcdh/mela/generated/types';
+import { BookForm } from '@mela/generated-forms';
+import type { Book, BookWithRelations, Chapter } from '@mela/generated-types';
+import { AuthorSchema, BookSchema, ChapterSchema } from '@mela/generated-types';
 
 import { AuthorFormSchema } from '../author/author.schema';
 

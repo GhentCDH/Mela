@@ -6,7 +6,7 @@ import { createResponseData } from '@ghentcdh/json-forms-api';
 import {
   ChapterSchema,
   TextWithRelationsSchema,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 export class CreateChapterDto extends createZodDto(
   ChapterFormSchema.dtoSchema,

@@ -1,13 +1,13 @@
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms-core';
-import { SpeechForm } from '@ghentcdh/mela/generated/forms';
-import type { Speech } from '@ghentcdh/mela/generated/types';
-import { SpeechSchema } from '@ghentcdh/mela/generated/types';
+import { SpeechForm } from '@mela/generated-forms';
+import type { Speech } from '@mela/generated-types';
+import { SpeechSchema } from '@mela/generated-types';
 
 const uiSchema = LayoutBuilder.vertical<Speech>()
   .addControls(ControlBuilder.properties('name'))

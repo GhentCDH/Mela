@@ -17,8 +17,8 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
-import { LemmaDto } from '@ghentcdh/mela/generated/dtos';
-import { LemmaWithRelations } from '@ghentcdh/mela/generated/types';
+import { LemmaDto } from '@mela/generated-dtos';
+import { LemmaWithRelations } from '@mela/generated-types';
 
 import { CreateLemmaDto, ListLemmaDto } from './dto';
 import { LemmaRepository } from './lemma-repository.service';

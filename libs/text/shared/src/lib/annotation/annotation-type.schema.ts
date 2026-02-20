@@ -6,7 +6,7 @@ import {
   RegisterSchema,
   TextContentSchema,
   TextSchema,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
 export const PURPOSE_EXAMPLE = 'AnnotationExample';

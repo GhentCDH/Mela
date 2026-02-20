@@ -7,8 +7,8 @@ export const generateForm = (dtoDir: string, formDir: string, model: any) => {
   if (fs.existsSync(dtoDir)) fs.rmSync(dtoDir, { recursive: true });
   if (fs.existsSync(formDir)) fs.rmSync(formDir, { recursive: true });
 
-  fs.mkdirSync(`${dtoDir}/lib`, { recursive: true });
-  fs.mkdirSync(`${formDir}/lib`, { recursive: true });
+  fs.mkdirSync(`${dtoDir}`, { recursive: true });
+  fs.mkdirSync(`${formDir}`, { recursive: true });
 
   const importsDto = [`import { createZodDto } from '@anatine/zod-nestjs';`];
 
@@ -37,7 +37,7 @@ export const generateForm = (dtoDir: string, formDir: string, model: any) => {
     const dtos = [
       importsDto,
       ' ',
-      `import { ${key} } from '../modelSchema';`,
+      `import { ${key} } from '@mela/generated-types';`,
       ' ',
       `export class ${nameDto} extends createZodDto(${key}) {}`,
     ]

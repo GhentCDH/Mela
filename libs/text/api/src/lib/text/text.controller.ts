@@ -19,8 +19,8 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
-import { TextWithRelationsDto } from '@ghentcdh/mela/generated/dtos';
-import { TextWithRelations } from '@ghentcdh/mela/generated/types';
+import { TextWithRelationsDto } from '@mela/generated-dtos';
+import { TextWithRelations } from '@mela/generated-types';
 
 import { CreateTextDto, ListTextDto } from './dto';
 import { TextRepositoryService } from './text-repository.service';
