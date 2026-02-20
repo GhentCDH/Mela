@@ -35,7 +35,16 @@ module.exports = [
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
-
+      '@nx/dependency-checks': [
+        'error',
+        {
+          buildTargets: ['build'],
+          ignoredDependencies: [],
+          checkMissingDependencies: true,
+          checkObsoleteDependencies: true,
+          checkVersionMismatches: true,
+        },
+      ],
       '@nx/enforce-module-boundaries': [
         'error',
         {

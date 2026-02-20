@@ -3,8 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/backend/src",
   "projectType": "application",
-  "tags": [
-    "app:api"
-  ],
+  "tags": ["app:api"],
+  "// targets": "to see all targets run: nx show project backend --web",
   "targets": {}
 }
