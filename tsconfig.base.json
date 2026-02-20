@@ -15,13 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ghentcdh/mela/generated/dtos": ["generated/types/dtos/index.ts"],
-      "@mela/generated-forms": ["generated/types/forms/index.ts"],
-      "@ghentcdh/mela/generated/prisma": ["generated/prisma/index.ts"],
-      "@mela/generated-types": ["generated/types/index.ts"],
-      "@ghentcdh/tools/logging/frontend": [
-        "libs/tools/logging/frontend/src/index.ts"
-      ],
       "@mela/text/api": ["libs/text/api/src/index.ts"],
       "@mela/text/shared": ["libs/text/shared/src/index.ts"]
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
+import { PrismaService } from '@mela/generated-prisma';
 import { Speech } from '@mela/generated-types';
 
 import { CreateSpeechDto } from './dto';

@@ -7,7 +7,7 @@
     "@ghentcdh/authentication-vue": "0.2.2",
     "@ghentcdh/json-forms-core": "0.0.1",
     "@ghentcdh/json-forms-vue": "0.2.2",
-    "@ghentcdh/ui": "0.2.2",
+    "@ghentcdh/ui": "0.4.0",
     "@jsonforms/vue": "3.7.0",
     "@jsonforms/vue-vanilla": "3.7.0",
     "@nx/vite": "22.5.1",
@@ -27,7 +27,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
-    "tailwindcss": "4.1.12",
-    "daisyui": "5.0.50"
+    "daisyui": "5.0.50",
+    "tailwindcss": "4.1.12"
   }
 }

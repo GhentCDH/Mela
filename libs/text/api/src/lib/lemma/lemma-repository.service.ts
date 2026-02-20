@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LemmaCreateManyInput } from '@prisma/client';
 
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
+import { PrismaService } from '@mela/generated-prisma';
 import { LemmaWithRelations } from '@mela/generated-types';
 
 import { CreateLemmaDto } from './dto';

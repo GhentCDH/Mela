@@ -6,7 +6,7 @@ import * as path from 'path';
 
 const prismaPackage = `@prisma/client`;
 const generatedDir = path.join(__dirname, '../../generated');
-const prismaDir = path.join(generatedDir, 'prisma');
+const prismaDir = path.join(generatedDir, 'prisma/src');
 const typesDir = path.join(generatedDir, 'types');
 const dtoDir = path.join(generatedDir, 'dtos/src');
 const formDir = path.join(generatedDir, 'forms/src');

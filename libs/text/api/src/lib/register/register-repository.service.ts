@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
+import { PrismaService } from '@mela/generated-prisma';
 import { Register } from '@mela/generated-types';
 
 import { CreateRegisterDto } from './dto';
