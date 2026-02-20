@@ -18,7 +18,7 @@ import {
   AnnotationWithRelations,
   LemmaWithRelations,
   TextContent,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
 import { AnnotationTypeDto } from './annotation-type.schema';

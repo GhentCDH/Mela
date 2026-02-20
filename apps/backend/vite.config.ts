@@ -10,12 +10,7 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',
   },
-  resolve: {
-    alias: {
-      '@ghentcdh/annotated-text':
-        '../../node_modules/@ghentcdh/annotated-text/index.cjs.js',
-    },
-  },
+  resolve: {},
   plugins: [
     ...VitePluginNode({
       adapter: 'nest',

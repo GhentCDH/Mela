@@ -1,16 +1,16 @@
 import { AnnotationSelector, getTextContentUri } from '@mela/text/shared';
 
 import {
+  createTextPositionSelector,
   TextTargetSchema,
   TextualBodyClassifyingSchema,
   TextualBodySchema,
-  createTextPositionSelector,
 } from '@ghentcdh/annotated-text';
 import type {
   AnnotationBody,
   AnnotationTarget,
   TextContent,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 import { CreateAnnotationDto } from '../../dto';
 

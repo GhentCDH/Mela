@@ -6,7 +6,7 @@ import type {
   AnnotationBody,
   ExampleWithRelations,
   TextContent,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 import { createSelector } from './create-selector';
 import { CreateAnnotationDto } from '../../dto';

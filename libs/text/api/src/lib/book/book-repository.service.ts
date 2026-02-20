@@ -2,7 +2,7 @@ import { CreateBook } from '@mela/text/shared';
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { Book, Chapter } from '@ghentcdh/mela/generated/types';
+import { Book, Chapter } from '@mela/generated-types';
 
 import { AuthorRepository } from '../author/author-repository.service';
 import { AbstractRepository, IncludeType } from '../shared/repository.service';

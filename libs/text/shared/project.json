@@ -1,5 +1,5 @@
 {
-  "name": "text/shared",
+  "name": "@ghentcdh/text-shared",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/text/shared/src",
   "projectType": "library",

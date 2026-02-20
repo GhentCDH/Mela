@@ -3,9 +3,9 @@ import * as path from 'path';
 
 export const generatePrismaService = (
   prismaClientPackage: string,
-  dir: string
+  dir: string,
 ) => {
-  if (fs.existsSync(dir)) fs.rmdirSync(dir, { recursive: true });
+  if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true });
 
   fs.mkdirSync(dir, { recursive: true });
 

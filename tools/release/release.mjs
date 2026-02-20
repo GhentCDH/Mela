@@ -3,7 +3,7 @@ import { simpleGit } from 'simple-git';
 import fsExtra from 'fs-extra';
 import semver from 'semver';
 import yargs from 'yargs';
-import conventionalChangelog from 'conventional-changelog';
+import { ConventionalChangelog } from 'conventional-changelog';
 import { hideBin } from 'yargs/helpers';
 import path from 'path';
 import fs from 'fs';
@@ -12,17 +12,16 @@ const git = simpleGit();
 
 async function generateChangelog() {
   const changelogStream = fs.createWriteStream(
-    path.resolve(process.cwd(), 'RELEASE_NOTES.md'),
+    path.resolve(process.cwd(), 'RELEASE_NOTES.md')
   );
-
-  const stream = conventionalChangelog({
-    preset: 'angular', // or 'angular', 'eslint', etc.
-    releaseCount: 1, // Only the latest release
-  });
-
-  stream.pipe(changelogStream).on('finish', () => {
-    console.log('📄 Release notes generated in RELEASE_NOTES.md');
-  });
+  new ConventionalChangelog()
+    .readPackage()
+    .loadPreset('angular')
+    .writeStream()
+    .pipe(changelogStream)
+    .on('finish', () => {
+      console.log('📄 Release notes generated in RELEASE_NOTES.md');
+    });
 }
 
 async function bumpVersion(type) {
@@ -39,7 +38,6 @@ async function bumpVersion(type) {
   pkg.version = newVersion;
   await fsExtra.writeJson(pkgPath, pkg, { spaces: 2 });
 
-  console.log(`🔧 Bumped version: ${currentVersion} → ${newVersion}`);
   return newVersion;
 }
 
@@ -66,7 +64,7 @@ async function gitCommitAndTag(version) {
       // type: "string",
       description: 'Specify the release type (semantic versioning)',
       choices: ['patch', 'minor', 'major', 'prepatch', 'prerelease', 'release'],
-      demandOption: true,
+      demandOption: true
     })
     .help()
     .parseSync();
@@ -81,7 +79,7 @@ async function gitCommitAndTag(version) {
     const newVersion = await bumpVersion(releaseType);
     await generateChangelog();
     await gitCommitAndTag(newVersion);
-    console.log(`🚀 Released version ${options.version}`);
+    console.log(`🚀 Released version ${newVersion}`);
   } catch (err) {
     console.error('❌ Release failed:', err);
     process.exit(1);

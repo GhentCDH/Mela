@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
-import { ChapterDto } from '@ghentcdh/mela/generated/dtos';
+import { ChapterDto } from '@mela/generated-dtos';
 
 import { ChapterRepository } from './chapter.repository.service';
 import { CreateChapterDto, ListChapterDto } from './dto';

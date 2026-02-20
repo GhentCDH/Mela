@@ -2,18 +2,18 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms-core';
-import { ChapterForm } from '@ghentcdh/mela/generated/forms';
+import { ChapterForm } from '@mela/generated-forms';
 import type {
   Chapter,
   TextContent,
   TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
-import { ChapterSchema } from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
+import { ChapterSchema } from '@mela/generated-types';
 
 import { TextContentDtoSchema } from '../text/text.schema';
 

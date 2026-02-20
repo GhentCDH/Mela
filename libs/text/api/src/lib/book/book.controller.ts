@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
-import { BookDto } from '@ghentcdh/mela/generated/dtos';
+import { BookDto } from '@mela/generated-dtos';
 
 import { BookRepository } from './book-repository.service';
 import { CreateBookDto, ListBookDto } from './dto';

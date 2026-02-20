@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { pick } from 'lodash-es';
 
 import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { Example, ExampleWithRelations } from '@ghentcdh/mela/generated/types';
+import { Example, ExampleWithRelations } from '@mela/generated-types';
 
 import { CreateExampleDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';

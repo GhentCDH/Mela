@@ -3,17 +3,14 @@ import { z } from 'zod';
 import {
   CategoryBuilder,
   ControlBuilder,
-  LayoutBuilder,
   createSchema,
+  LayoutBuilder,
 } from '@ghentcdh/json-forms-core'; // TODO add autocomplete for textschema
-import { TextForm } from '@ghentcdh/mela/generated/forms';
-import type {
-  TextContent,
-  TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
-import { TextContentSchema, TextSchema } from '@ghentcdh/mela/generated/types';
+import { TextForm } from '@mela/generated-forms';
+import type { TextContent, TextWithRelations } from '@mela/generated-types';
+import { TextContentSchema, TextSchema } from '@mela/generated-types';
 
-import { getTextContentUri } from '../utils/uri';
+import { getTextContentUri } from '../utils/uri'; // TODO add autocomplete for textschema
 
 // TODO add autocomplete for textschema
 

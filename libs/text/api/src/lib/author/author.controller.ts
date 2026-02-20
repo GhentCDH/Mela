@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
-import { AuthorDto } from '@ghentcdh/mela/generated/dtos';
+import { AuthorDto } from '@mela/generated-dtos';
 
 import { AuthorRepository } from './author-repository.service';
 import { CreateAuthorDto, ListAuthorDto } from './dto';

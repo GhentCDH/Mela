@@ -2,13 +2,13 @@ import type { z } from 'zod';
 
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms-core';
-import { ExampleForm } from '@ghentcdh/mela/generated/forms';
-import type { ExampleWithRelations } from '@ghentcdh/mela/generated/types';
+import { ExampleForm } from '@mela/generated-forms';
+import type { ExampleWithRelations } from '@mela/generated-types';
 
 import { AnnotationExampleExampleSchema } from '../annotation/annotation-type.schema';
 import { RegisterFormSchema } from '../register/register.schema';
