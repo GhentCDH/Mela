@@ -10,15 +10,19 @@ export const generatePrismaService = (
   fs.mkdirSync(dir, { recursive: true });
 
   const prismaService = `
-    import { Injectable, OnModuleInit } from '@nestjs/common';
-    import { PrismaClient } from '@prisma/client';
-    
-    @Injectable()
-    export class PrismaService extends PrismaClient implements OnModuleInit {
-      async onModuleInit() {
-        await this.$connect();
-      }
+ import {Injectable} from '@nestjs/common';
+import {PrismaClient} from '@prisma/client';
+import {PrismaPg} from '@prisma/adapter-pg'
+
+@Injectable()
+export class PrismaService extends PrismaClient {
+    constructor() {
+        const adapter = new PrismaPg({connectionString: process.env.DATABASE_APP_URL});
+
+        console.log('db app url', process.env.DATABASE_APP_URL)
+        super({adapter});
     }
+}
   `;
 
   fs.writeFileSync(path.join(dir, `prisma.service.ts`), prismaService);
