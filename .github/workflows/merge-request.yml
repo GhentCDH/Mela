@@ -21,8 +21,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   build:
     runs-on: ubuntu-latest
     needs: install-deps
@@ -31,12 +29,10 @@ jobs:
       - uses: ./.github/actions/use-cache
       - uses: nrwl/nx-set-shas@v4
       - run: DATABASE_APP_URL="postgresql://user:password@localhost:5432/dbname" npx nx run-many -t build -c production  --parallel --max-parallel=6 --verbose
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  lint:
-    runs-on: ubuntu-latest
-    needs: install-deps
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/use-cache
-      - run: npx nx run-many -t lint --parallel --max-parallel=6
+    lint:
+      runs-on: ubuntu-latest
+      needs: install-deps
+      steps:
+        - uses: actions/checkout@v4
+        - uses: ./.github/actions/use-cache
+        - run: npx nx run-many -t lint --parallel --max-parallel=6

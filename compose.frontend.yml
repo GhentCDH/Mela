@@ -1,0 +1,23 @@
+networks:
+  mela-net:
+
+services:
+  frontend:
+    container_name: mela.app.frontend
+    restart: always
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile.dev
+    volumes:
+      - ./:/app/
+      - /app/node_modules
+      - /app/generated/prisma
+      - /app/dist
+    expose:
+      - "4200"
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    networks:
+      - mela-net
