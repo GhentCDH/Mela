@@ -2,12 +2,11 @@ import type { TextContentDto } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 import { computed, effect, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import type {
   TextContentWithRelations,
   TextWithRelations,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
+import { useApi } from '@ghentcdh/tools-vue';
 
 export const useTextStore = defineStore('textStore', () => {
   const route = useRoute();
@@ -33,7 +32,7 @@ export const useTextStore = defineStore('textStore', () => {
     textId.value = newId;
     return router.push({ params: { id: newId }, query: route.query });
   };
-  const httpRequest = useHttpRequest();
+  const httpRequest = useApi; //useHttpRequest();
 
   const defaultSource = {
     language: 'gr',

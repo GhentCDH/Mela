@@ -34,5 +34,5 @@ export const RegisterFormSchema = createSchema({
   filterSchema,
   jsonSchema: RegisterForm,
   tableSchema,
-  uri: '/api/register',
+  uri: '/register',
 });

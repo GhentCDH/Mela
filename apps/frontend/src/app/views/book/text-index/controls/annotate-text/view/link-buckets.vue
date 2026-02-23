@@ -9,9 +9,7 @@
     @add-link="addLink"
     @delete="deleteAnnotation"
   >
-    <p v-if="!linkedBucket">
-      Click on an annotation
-    </p>
+    <p v-if="!linkedBucket">Click on an annotation</p>
     <div v-if="linkedBucket">
       {{ translatedText?.value }}
       <SelectComponent
@@ -20,9 +18,7 @@
         :options="linkTypes"
       />
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveBucket">
-          Save LinkBucket
-        </Btn>
+        <Btn @click="saveBucket"> Save LinkBucket </Btn>
       </div>
     </div>
   </LinkComponent>
@@ -33,11 +29,11 @@ import { LinkBucketsSchema, PURPOSE_LINK_BUCKETS } from '@mela/text/shared';
 import { computed, effect, ref } from 'vue';
 
 import {
+  findBodyType,
   type SpecificResource,
   type W3CAnnotation,
-  findBodyType,
 } from '@ghentcdh/annotated-text';
-import type { Text } from '@ghentcdh/mela/generated/types';
+import type { Text } from '@mela/generated-types';
 import { Btn, SelectComponent } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';

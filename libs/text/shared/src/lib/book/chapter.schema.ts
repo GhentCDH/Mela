@@ -73,5 +73,5 @@ export const ChapterFormSchema = createSchema({
   filterSchema,
   jsonSchema: ChapterForm,
   tableSchema,
-  uri: '/api/chapter',
+  uri: '/chapter',
 });

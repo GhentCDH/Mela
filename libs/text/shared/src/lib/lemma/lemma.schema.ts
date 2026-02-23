@@ -16,7 +16,7 @@ const uiSchema = LayoutBuilder.vertical<Lemma>()
     ControlBuilder.properties('word'),
     ControlBuilder.properties('link'),
     ControlBuilder.asObject('speech').autocomplete({
-      uri: '/api/speech?filter=name:',
+      uri: '/speech?filter=name:',
       field: {
         id: 'id',
         label: 'name',
@@ -66,7 +66,7 @@ export const LemmaFormSchema = createSchema({
   filterSchema,
   jsonSchema: LemmaForm,
   tableSchema,
-  uri: '/api/lemma',
-  searchUri: '/api/lemma?filter=word:',
+  uri: '/lemma',
+  searchUri: '/lemma?filter=word:',
   modalSize: 'lg',
 });

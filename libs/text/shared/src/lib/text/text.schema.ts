@@ -63,6 +63,6 @@ export const TextFormSchema = createSchema({
   dtoSchema,
   responseSchema,
   jsonSchema: TextForm,
-  uri: '/api/text',
+  uri: '/text',
   modalSize: 'xl',
 });

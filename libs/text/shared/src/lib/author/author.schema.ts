@@ -34,5 +34,5 @@ export const AuthorFormSchema = createSchema({
   filterSchema,
   jsonSchema: AuthorForm,
   tableSchema,
-  uri: '/api/author',
+  uri: '/author',
 });

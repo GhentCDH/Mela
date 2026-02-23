@@ -34,5 +34,5 @@ export const SpeechFormSchema = createSchema({
   filterSchema,
   jsonSchema: SpeechForm,
   tableSchema,
-  uri: '/api/speech',
+  uri: '/speech',
 });

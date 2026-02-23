@@ -9,15 +9,11 @@
     @add-link="addLink"
     @delete="deleteAnnotation"
   >
-    <p v-if="!linkedTranslation">
-      Click on an annotation
-    </p>
+    <p v-if="!linkedTranslation">Click on an annotation</p>
     <div v-else>
       {{ translatedText?.value }}
       <div class="flex gap-2 justify-end py-4">
-        <Btn @click="saveTranslation">
-          Save translation
-        </Btn>
+        <Btn @click="saveTranslation"> Save translation </Btn>
       </div>
     </div>
   </LinkComponent>
@@ -31,7 +27,7 @@ import {
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
-import type { Text } from '@ghentcdh/mela/generated/types';
+import type { Text } from '@mela/generated-types';
 import { Btn } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';

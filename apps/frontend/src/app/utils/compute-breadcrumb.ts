@@ -1,7 +1,4 @@
-import type {
-  BookWithRelations,
-  Chapter,
-} from '@ghentcdh/mela/generated/types';
+import type { BookWithRelations, Chapter } from '@mela/generated-types';
 
 export const computeBreadcrumb = (
   book: BookWithRelations,

@@ -46,5 +46,5 @@ export const ExampleFormSchema = createSchema({
   filterSchema,
   jsonSchema: ExampleForm,
   tableSchema,
-  uri: '/api/example',
+  uri: '/example',
 });

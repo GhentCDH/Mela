@@ -2,12 +2,12 @@ import { TextFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
-import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import { RequestSchema } from '@ghentcdh/json-forms-core';
 import type { MelaAnnotationPage } from '@ghentcdh/mela/shared';
+import { useApi } from '@ghentcdh/tools-vue';
 
 export const useTextRepository = defineStore('textRepository', () => {
-  const httpRequest = useHttpRequest();
+  const httpRequest = useApi();
 
   const getDataUri = (textId: string, ...suffix: string[]) => {
     return [TextFormSchema.schema.uri, textId, ...suffix].join('/');

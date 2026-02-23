@@ -86,6 +86,6 @@ export const BookFormSchema = createSchema({
   filterSchema,
   jsonSchema: BookForm,
   tableSchema,
-  uri: '/api/book',
+  uri: '/book',
   modalSize: 'lg',
 });

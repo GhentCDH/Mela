@@ -73,6 +73,6 @@ export type MelaAnnotationPage = z.infer<typeof MelaAnnotationPageSchema>;
 
 export const AnnotationFormSchema = {
   schema: {
-    uri: '/api/annotation',
+    uri: '/annotation',
   },
 };

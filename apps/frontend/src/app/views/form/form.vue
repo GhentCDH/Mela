@@ -15,7 +15,7 @@ const formConfig = computed(() => {
 </script>
 
 <template>
-  <div class="max-w-screen-lg m-auto">
+  <div class="max-w-screen-lg m-auto p-4">
     <FormWithTableComponent
       v-if="formConfig"
       id="custom-form"

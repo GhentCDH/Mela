@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 
 import type { FormEventListener } from '@ghentcdh/json-forms-vue';
 import { FormWithTableComponent } from '@ghentcdh/json-forms-vue';
-import type { Book, Chapter } from '@ghentcdh/mela/generated/types';
+import type { Book, Chapter } from '@mela/generated-types';
 import { IconEnum } from '@ghentcdh/ui';
 
 const formId = 'book-index';
