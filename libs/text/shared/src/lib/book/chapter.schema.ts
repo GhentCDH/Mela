@@ -7,7 +7,6 @@ import {
   TableBuilder,
   TextCellBuilder,
 } from '@ghentcdh/json-forms-core';
-import { ChapterForm } from '@mela/generated-forms';
 import type {
   Chapter,
   TextContent,
@@ -71,7 +70,7 @@ export const ChapterFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: ChapterForm,
+  schema: ChapterSchema,
   tableSchema,
   uri: '/chapter',
 });

@@ -22,14 +22,17 @@ USER app
 # Install dependencies
 WORKDIR /app
 
-COPY package*.json ./
-COPY pnpm* ./
+COPY Mela/package*.json ./
+COPY Mela/pnpm* ./
+
+# Copy ghentcdh linked packages
+COPY ghentcdh/ /ghentcdh/
 
 #RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 # Copy source files into application directory
-COPY --chown=app:app . /app
+COPY --chown=app:app Mela/ /app
 
 WORKDIR /app
 
@@ -55,7 +58,7 @@ WORKDIR /app
 RUN ./tools/scripts/create-env.sh /app/apps/frontend/
 
 #CMD SLEEP INFINITY
-CMD  pnpm run generate:prisma && npx nx run frontend:serve
+CMD  npx nx run frontend:serve
 
 # Backend development
 FROM node-dev AS node-be-dev
@@ -64,7 +67,7 @@ WORKDIR /app
 
 
 #CMD SLEEP INFINITY
-CMD npx prisma migrate deploy && pnpm run generate:prisma && npx nx run backend:serve
+CMD npx prisma migrate deploy && npx nx run backend:serve
 
   # ====== RUN CADDY =======
 FROM caddy:2.8.4-alpine AS frontend

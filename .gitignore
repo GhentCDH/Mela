@@ -45,9 +45,6 @@ vite.config.*.timestamp*
 
 var
 /generated/**/src
-/generated/types/src
-/generated/forms/src
-/generated/prisma/
 
 **/logs/**
 **/*.log

@@ -6,13 +6,15 @@ services:
     container_name: mela.app.frontend
     restart: always
     build:
-      context: .
-      dockerfile: apps/frontend/Dockerfile.dev
+      context: ../
+      dockerfile: Mela/apps/frontend/Dockerfile.dev
     volumes:
       - ./:/app/
+      - ../ghentcdh:/ghentcdh/
       - /app/node_modules
       - /app/generated
       - /app/dist
+
     expose:
       - "4200"
     ports:

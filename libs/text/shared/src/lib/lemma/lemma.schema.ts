@@ -7,7 +7,6 @@ import {
   TableBuilder,
   TextCellBuilder,
 } from '@ghentcdh/json-forms-core';
-import { LemmaForm } from '@mela/generated-forms';
 import type { Lemma } from '@mela/generated-types';
 import { LemmaSchema, SpeechSchema } from '@mela/generated-types';
 
@@ -64,7 +63,7 @@ export const LemmaFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: LemmaForm,
+  schema: LemmaSchema,
   tableSchema,
   uri: '/lemma',
   searchUri: '/lemma?filter=word:',

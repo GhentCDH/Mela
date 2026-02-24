@@ -5,7 +5,6 @@ import {
   TableBuilder,
   TextCellBuilder,
 } from '@ghentcdh/json-forms-core';
-import { AuthorForm } from '@mela/generated-forms';
 import type { Author } from '@mela/generated-types';
 import { AuthorSchema } from '@mela/generated-types';
 
@@ -32,7 +31,7 @@ export const AuthorFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: AuthorForm,
   tableSchema,
+  schema: AuthorSchema,
   uri: '/author',
 });

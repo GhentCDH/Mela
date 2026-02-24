@@ -5,7 +5,6 @@ import {
   TableBuilder,
   TextCellBuilder,
 } from '@ghentcdh/json-forms-core';
-import { RegisterForm } from '@mela/generated-forms';
 import type { Register } from '@mela/generated-types';
 import { RegisterSchema } from '@mela/generated-types';
 
@@ -32,7 +31,7 @@ export const RegisterFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: RegisterForm,
+  schema: RegisterSchema,
   tableSchema,
   uri: '/register',
 });

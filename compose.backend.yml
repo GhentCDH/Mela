@@ -6,12 +6,13 @@ services:
     container_name: mela.app.backend
     restart: always
     build:
-      context: .
-      dockerfile: apps/backend/Dockerfile.dev
+      context: ../
+      dockerfile: Mela/apps/backend/Dockerfile.dev
     env_file:
       - .env
     volumes:
       - ./:/app/
+      - ../ghentcdh:/ghentcdh/
       - /app/node_modules
       - /app/generated
       - /app/dist

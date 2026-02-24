@@ -24,8 +24,7 @@ RUN #NX_DAEMON=false pnpm exec nx build frontend --prod
 RUN ls -all
 
 
-CMD pnpm run generate:prisma  && \
-    npx nx run frontend:serve:production --port=9000
+CMD npx nx run frontend:serve:production --port=9000
 
 
 # https://github.com/GhentCDH/Mela/issues/96

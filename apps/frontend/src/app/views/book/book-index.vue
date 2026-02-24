@@ -41,7 +41,7 @@ const tableActions = [
 </script>
 
 <template>
-  <div class="max-w-screen-lg m-auto">
+  <div class="max-w-screen-lg m-auto p-4">
     <FormWithTableComponent
       :id="`form_table_${formId}`"
       :create-title="'Create book'"

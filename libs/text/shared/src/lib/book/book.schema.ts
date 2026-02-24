@@ -1,13 +1,7 @@
 import { z } from 'zod';
 
-import {
-  ControlBuilder,
-  createSchema,
-  LayoutBuilder,
-  TableBuilder,
-  TextCellBuilder,
-} from '@ghentcdh/json-forms-core';
-import { BookForm } from '@mela/generated-forms';
+import { ControlBuilder, createSchema, LayoutBuilder, TableBuilder, TextCellBuilder } from '@ghentcdh/json-forms-core';
+
 import type { Book, BookWithRelations, Chapter } from '@mela/generated-types';
 import { AuthorSchema, BookSchema, ChapterSchema } from '@mela/generated-types';
 
@@ -84,8 +78,8 @@ export const BookFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: BookForm,
   tableSchema,
   uri: '/book',
+  schema: BookSchema,
   modalSize: 'lg',
 });

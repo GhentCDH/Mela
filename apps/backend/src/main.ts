@@ -36,7 +36,7 @@ async function bootstrapApp() {
   patchNestjsSwagger();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('doc', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
   //#endregion
 
   // Add logger

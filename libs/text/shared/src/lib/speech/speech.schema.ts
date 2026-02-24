@@ -5,7 +5,6 @@ import {
   TableBuilder,
   TextCellBuilder,
 } from '@ghentcdh/json-forms-core';
-import { SpeechForm } from '@mela/generated-forms';
 import type { Speech } from '@mela/generated-types';
 import { SpeechSchema } from '@mela/generated-types';
 
@@ -32,7 +31,7 @@ export const SpeechFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: SpeechForm,
+  schema: SpeechSchema,
   tableSchema,
   uri: '/speech',
 });

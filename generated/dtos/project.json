@@ -1,5 +1,5 @@
 {
-  "name": "generated-dtos",
+  "name": "generated-dto",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "generated/dtos/src",
   "projectType": "library",
@@ -10,7 +10,7 @@
       "dependsOn": ["generated-types:build"],
       "cache": false,
       "options": {
-        "command": "ts-node --project ./tools/tsconfig.tools.json ./tools/prisma/index.ts"
+        "command": "ts-node --project ./tools/tsconfig.tools.json ./tools/prisma/dto.ts"
       }
     }
   }

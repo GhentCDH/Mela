@@ -3,6 +3,7 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
   root: __dirname,
@@ -23,6 +24,30 @@ export default defineConfig({
   preview: {
     port: 4300,
     host: 'localhost',
+  },
+  resolve: {
+    alias: {
+      // Stub out @prisma/client for frontend builds
+      '@prisma/client': path.resolve(__dirname, 'src/stubs/prisma-client.ts'),
+    },
+    dedupe: [
+      'vue',
+      '@vueuse/core',
+      'vue-router',
+      'axios',
+      'uuid',
+      'lodash-es',
+      '@heroicons/vue',
+      '@jsonforms/core',
+      '@jsonforms/vue',
+      '@jsonforms/vue-vanilla',
+      '@toast-ui/editor',
+      '@anatine/zod-openapi',
+      '@ghentcdh/tools-vue',
+      '@ghentcdh/annotated-text',
+      '@ghentcdh/ui',
+      '@ghentcdh/json-forms-core',
+    ],
   },
   plugins: [vue(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md', 'assets/**'])],
   // Uncomment this if you are using workers.

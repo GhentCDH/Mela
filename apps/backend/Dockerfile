@@ -27,9 +27,6 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # Is needed for Prisma to work properly, it does not affect any database connections
 ENV DATABASE_APP_URL=postgresql://demo:demo@postgres:5432/demo
 
-# Generate Prisma Client
-RUN pnpm run generate:prisma
-
 # Build TypeScript
 RUN NX_DAEMON=false pnpm exec nx build backend --prod
 

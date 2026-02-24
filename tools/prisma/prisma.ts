@@ -47,3 +47,8 @@ export class PrismaService extends PrismaClient {
 
   fs.writeFileSync(path.join(dir, `index.ts`), index);
 };
+
+const generatedDir = path.join(__dirname, '../../generated');
+const prismaPackage = `@prisma/client`;
+const prismaDir = path.join(generatedDir, 'prisma/src');
+generatePrismaService(prismaPackage, prismaDir);
