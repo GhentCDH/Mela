@@ -1,4 +1,4 @@
-import type { AnnotationTypeType } from '@ghentcdh/mela/generated/types';
+import type { AnnotationTypeType } from '@mela/generated-types';
 
 const prefixMap: Record<AnnotationTypeType, string> = {
   text: 'mela:text:',

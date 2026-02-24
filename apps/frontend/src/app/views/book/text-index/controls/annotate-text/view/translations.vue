@@ -31,7 +31,7 @@ import {
 import { computed, effect, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
-import type { Text } from '@ghentcdh/mela/generated/types';
+import type { Text } from '@mela/generated-types';
 import { Btn } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from '../props';

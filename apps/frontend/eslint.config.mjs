@@ -1,16 +1,14 @@
-const vue = require('eslint-plugin-vue');
+import vue from 'eslint-plugin-vue';
+import baseConfig from '../../eslint.config.mjs';
 
-const baseConfig = require('../../eslint.config.js');
-
-
-module.exports = [
+export default [
   ...baseConfig,
   ...vue.configs['flat/recommended'],
   {
     files: ['**/*.vue'],
     languageOptions: {
       parserOptions: {
-        parser: require('@typescript-eslint/parser'),
+        parser: await import('@typescript-eslint/parser'),
       },
     },
   },

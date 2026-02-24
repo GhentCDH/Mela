@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import type { Chapter } from '@ghentcdh/mela/generated/types';
+import type { Chapter } from '@mela/generated-types';
 import type { Breadcrumb, MenuWithItems } from '@ghentcdh/ui';
 
 import { useBookStore } from './book.store';

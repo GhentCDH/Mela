@@ -5,11 +5,7 @@ import {
   TextTargetSchema,
   TextualBodyClassifyingSchema,
 } from '@ghentcdh/annotated-text';
-import {
-  Annotation,
-  AnnotationTarget,
-  Text,
-} from '@ghentcdh/mela/generated/types';
+import { Annotation, AnnotationTarget, Text } from '@mela/generated-types';
 
 import { CreateAnnotationDto } from '../../dto';
 

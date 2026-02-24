@@ -2,7 +2,7 @@ import {
   findTagging,
   findTextPositionSelector,
 } from '@ghentcdh/annotated-text';
-import type { Annotation } from '@ghentcdh/mela/generated/types';
+import type { Annotation } from '@mela/generated-types';
 
 import { findTextValue } from './translation';
 import type { AnnotationType } from '../../identify.color';

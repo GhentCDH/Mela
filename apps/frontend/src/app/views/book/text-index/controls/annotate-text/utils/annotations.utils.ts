@@ -2,7 +2,7 @@ import type { AnnotationMetadataType } from '@mela/text/shared';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { findTagging } from '@ghentcdh/annotated-text';
-import type { Annotation } from '@ghentcdh/mela/generated/types';
+import type { Annotation } from '@mela/generated-types';
 
 export type AnnotationFilter = {
   annotationType?: AnnotationMetadataType[];

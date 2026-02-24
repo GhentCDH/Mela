@@ -1,4 +1,4 @@
-import type { BookWithRelations } from '@ghentcdh/mela/generated/types';
+import type { BookWithRelations } from '@mela/generated-types';
 import type { MenuWithItems } from '@ghentcdh/ui';
 
 export type MenuView = 'annotate';

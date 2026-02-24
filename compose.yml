@@ -1,0 +1,5 @@
+include:
+  - compose.infra.yml
+  - compose.backend.yml
+  - compose.frontend.yml
+# - compose.keycloak.yml

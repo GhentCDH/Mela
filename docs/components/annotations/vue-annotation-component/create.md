@@ -4,7 +4,7 @@ AnnotatedText
 
 # AnnotatedText
 
-This is a demo of the standalone `@ghentcdh/annotated-text` component.
+This is a demo of the standalone `@mela/generated-dtos` component.
 
 <script setup>
 
@@ -14,7 +14,7 @@ import {
   AnnotatedText,
   Debugger,
   UserActionState,
-} from "@ghentcdh/annotated-text";
+} from "@mela/generated-dtos";
 import { demoAnnotations } from '@demo/data';
 
 const lines = [

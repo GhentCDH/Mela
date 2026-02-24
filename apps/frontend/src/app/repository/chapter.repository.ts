@@ -1,14 +1,11 @@
 import { ChapterFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
-
-import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import { createRepository } from '@ghentcdh/json-forms-vue';
 import { NotificationService } from '@ghentcdh/ui';
+import { useApi } from '@ghentcdh/tools-vue';
 
 export const useChapterRepository = defineStore('useChapterRepository', () => {
-  const httpRequest = useHttpRequest();
-
-  const repo = createRepository(ChapterFormSchema.schema, httpRequest, {
+  const repo = createRepository(ChapterFormSchema.schema, useApi(), {
     notification: {
       show: true,
       entityType: 'Chapter',

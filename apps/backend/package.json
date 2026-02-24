@@ -1,0 +1,26 @@
+{
+  "name": "@mela/backend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@anatine/zod-nestjs": "2.0.12",
+    "@ghentcdh/authentication-api": "0.0.2-10",
+    "@ghentcdh/json-forms-api": "0.0.1",
+    "@ghentcdh/json-forms-core": "0.0.1",
+    "@ghentcdh/tools-api": "0.0.2-10",
+    "@nestjs/axios": "4.0.1",
+    "@nestjs/common": "11.1.14",
+    "@nestjs/config": "4.0.3",
+    "@nestjs/core": "11.1.14",
+    "@nestjs/platform-express": "11.1.14",
+    "@nestjs/swagger": "11.2.6",
+    "@nx/vite": "22.5.1",
+    "lodash-es": "4.17.23",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1",
+    "vite": "7.3.1",
+    "vite-plugin-node": "7.0.0",
+    "zod": "4.3.6"
+  }
+}

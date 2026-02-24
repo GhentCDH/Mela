@@ -1,8 +1,8 @@
 import { TextCreate } from '@mela/text/shared';
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { TextWithRelations } from '@ghentcdh/mela/generated/types';
+import { PrismaService } from '@mela/generated-prisma';
+import { TextWithRelations } from '@mela/generated-types';
 
 import { AbstractRepository } from '../shared/repository.service';
 

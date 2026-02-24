@@ -1,24 +1,24 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import {
-  MelaAnnotationPageSchema,
-  MelaAnnotationSchema,
   getIdFromUri,
   getTextContentIdFromUri,
   getTypeFromUri,
+  MelaAnnotationPageSchema,
+  MelaAnnotationSchema,
 } from '@mela/text/shared';
 import { pick } from 'lodash-es';
 
 import {
-  W3CAnnotationBody,
-  W3CAnnotationTarget,
   getBody,
   getTarget,
+  W3CAnnotationBody,
+  W3CAnnotationTarget,
 } from '@ghentcdh/annotated-text';
 import { createResponseData } from '@ghentcdh/json-forms-api';
 import {
   AnnotationBodyWithRelations,
   AnnotationTargetWithRelations,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 const mapBody = (body: W3CAnnotationBody): AnnotationBodyWithRelations => {
   // const source_id = getSourceIdFromUri(uri);

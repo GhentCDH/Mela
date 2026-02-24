@@ -5,15 +5,12 @@ import {
   W3CAnnotationBodySchema,
   W3CAnnotationTargetSchema,
 } from '@ghentcdh/annotated-text';
-import type {
-  AnnotationBody,
-  AnnotationTarget,
-} from '@ghentcdh/mela/generated/types';
+import type { AnnotationBody, AnnotationTarget } from '@mela/generated-types';
 import {
   AnnotationBodySchema,
   AnnotationSchema,
   AnnotationTargetSchema,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 
 import { createUri } from '../utils/uri';
 
@@ -76,6 +73,6 @@ export type MelaAnnotationPage = z.infer<typeof MelaAnnotationPageSchema>;
 
 export const AnnotationFormSchema = {
   schema: {
-    uri: '/api/annotation',
+    uri: '/annotation',
   },
 };

@@ -21,6 +21,6 @@ const user = {};
     :width-sidebar="200"
     @click="auth.logout"
   >
-    <RouterView />
+    <router-view />
   </ShellComponent>
 </template>

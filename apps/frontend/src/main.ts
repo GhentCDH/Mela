@@ -4,25 +4,17 @@ import '@ghentcdh/annotated-text/annotated-text.css';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 
-import { ClickOutside } from '@ghentcdh/ui';
-
+// import { ClickOutside } from '@ghentcdh/ui';
 import App from './app/App.vue';
+import { loadRuntimeConfig } from '@ghentcdh/tools-vue';
 import router from './router';
 
 const app = createApp(App);
 
-app.use(createPinia());
-app.use(router);
+// app.directive('click-outside', ClickOutside);
 
-// app.use(
-//   createAuth({
-//     keycloak: {
-//       realm: import.meta.env.VITE_KEYCLOAK_REALM,
-//       url: import.meta.env.VITE_KEYCLOAK_HOST,
-//       clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-//     },
-//   }),
-// );
-app.directive('click-outside', ClickOutside);
-
-app.mount('#root');
+loadRuntimeConfig().then(() => {
+  app.use(createPinia());
+  app.use(router);
+  app.mount('#root');
+});

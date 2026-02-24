@@ -78,7 +78,7 @@ import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { findTagging } from '@ghentcdh/annotated-text';
-import type { Text } from '@ghentcdh/mela/generated/types';
+import type { Text } from '@mela/generated-types';
 import { Btn, Card, Color, IconEnum, NotificationMessage } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';

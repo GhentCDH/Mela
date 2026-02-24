@@ -1,14 +1,13 @@
 import { BookFormSchema } from '@mela/text/shared';
 import { defineStore } from 'pinia';
-
-import { useHttpRequest } from '@ghentcdh/authentication-vue';
 import { createRepository } from '@ghentcdh/json-forms-vue';
 import { NotificationService } from '@ghentcdh/ui';
+import { useApi } from '@ghentcdh/tools-vue';
 
 export const useBookRepository = defineStore('useBookRepository', () => {
-  const httpRequest = useHttpRequest();
+  const httpRequest = useApi();
 
-  const repo = createRepository(BookFormSchema.schema, httpRequest, {
+  const repo = createRepository(BookFormSchema.schema, api, {
     notification: {
       show: true,
       entityType: 'Book',

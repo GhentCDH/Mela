@@ -2,21 +2,20 @@ import { z } from 'zod';
 
 import {
   ControlBuilder,
+  createSchema,
   LayoutBuilder,
   TableBuilder,
   TextCellBuilder,
-  createSchema,
 } from '@ghentcdh/json-forms-core';
-import { LemmaForm } from '@ghentcdh/mela/generated/forms';
-import type { Lemma } from '@ghentcdh/mela/generated/types';
-import { LemmaSchema, SpeechSchema } from '@ghentcdh/mela/generated/types';
+import type { Lemma } from '@mela/generated-types';
+import { LemmaSchema, SpeechSchema } from '@mela/generated-types';
 
 const uiSchema = LayoutBuilder.vertical<Lemma>()
   .addControls(
     ControlBuilder.properties('word'),
     ControlBuilder.properties('link'),
     ControlBuilder.asObject('speech').autocomplete({
-      uri: '/api/speech?filter=name:',
+      uri: '/speech?filter=name:',
       field: {
         id: 'id',
         label: 'name',
@@ -64,9 +63,9 @@ export const LemmaFormSchema = createSchema({
   uiSchema,
   dtoSchema,
   filterSchema,
-  jsonSchema: LemmaForm,
+  schema: LemmaSchema,
   tableSchema,
-  uri: '/api/lemma',
-  searchUri: '/api/lemma?filter=word:',
+  uri: '/lemma',
+  searchUri: '/lemma?filter=word:',
   modalSize: 'lg',
 });

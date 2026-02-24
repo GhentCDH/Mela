@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '@ghentcdh/mela/generated/prisma';
-import { Author } from '@ghentcdh/mela/generated/types';
+import { PrismaService } from '@mela/generated-prisma';
+import { Author } from '@mela/generated-types';
 
 import { CreateAuthorDto } from './dto';
 import { AbstractNameRepository } from '../shared/name.repository.service';

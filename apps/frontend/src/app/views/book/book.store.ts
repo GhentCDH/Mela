@@ -9,7 +9,7 @@ import type {
   Chapter,
   ChapterWithRelations,
   TextContentWithRelations,
-} from '@ghentcdh/mela/generated/types';
+} from '@mela/generated-types';
 import { NotificationService } from '@ghentcdh/ui';
 
 import router from '../../../router';

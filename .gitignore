@@ -44,9 +44,7 @@ Thumbs.db
 vite.config.*.timestamp*
 
 var
-/generated/types/
-/generated/prisma-client/
-/generated/prisma/
+/generated/**/src
 
 **/logs/**
 **/*.log
@@ -71,6 +69,17 @@ storybook-static
 .env
 .env.prod
 
-/generated/types/src
-/generated/prisma/
+.nx/installation
+
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+/docker/inception/export/
 .pnpm-store
+/apps/docker/caddy/certs
+/docker/init-kottster/data/
+/docker/init-kottster/Dockerfile
+app.db
+
+# npm auth token (use .env for NPM_TOKEN)
+.npmrc.resolved
