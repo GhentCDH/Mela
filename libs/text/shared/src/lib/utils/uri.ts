@@ -49,8 +49,8 @@ export const getTypeFromUri = (uri: string) => {
   return type;
 };
 
-export const getTextContentUri = createUri('text_content');
-export const getTextContentIdFromUri = getIdFromUri('text_content');
+export const getTextTranslationUri = createUri('text_translation');
+export const getTextTranslationIdFromUri = getIdFromUri('text_translation');
 export const isTextContentUri = isUri('text_content');
 
 export const getExampleUri = createUri('example');

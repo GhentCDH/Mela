@@ -24,50 +24,50 @@ model Author {
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  book Book[]
+  work Work[]
   @@map("author")
 }
 
-model Book{
+model Work{
   id          String        @id @default(uuid())
-  name        String
+  title        String
   author_id   String
   author      Author        @relation(fields: [author_id], references: [id])
   year        Int
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  chapter Chapter[]
-  @@map("book")
+  section Section[]
+  @@map("work")
 }
 
-model Chapter {
+model Section {
   id          String        @id @default(uuid())
-  chapter_number        String?
-  chapter_order Int?
-  name        String
-  book_id     String
-  book        Book          @relation(fields: [book_id], references: [id])
+  section_number        String?
+  section_order Int?
+  title        String?
+  work_id     String
+  work        Work          @relation(fields: [work_id], references: [id])
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
   text Text[]
-  @@map("chapter")
+  @@map("section")
 }
 
 model Text {
   id          String        @id @default(uuid())
   annotations Annotation[]
-  textContent TextContent[]
+  textTranslation TextTranslation[]
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  chapter_id String
-  chapter Chapter @relation(fields: [chapter_id], references: [id])
+  section_id String
+  section Section @relation(fields: [section_id], references: [id])
   @@map("text")
 }
 
-model TextContent {
+model TextTranslation {
   id        String    @id @default(uuid())
   text_id   String
   text_type TextType
@@ -78,7 +78,7 @@ model TextContent {
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  @@map("text_content")
+  @@map("text_translation")
 }
 
 model Annotation {
@@ -124,9 +124,9 @@ model Example {
   id              String      @id @default(uuid())
   name            String
   register_id     String
-  text_content_id String
+  text_translation_id String
   register        Register    @relation(fields: [register_id], references: [id])
-  textContent     TextContent @relation(fields: [text_content_id], references: [id])
+  textTranslation     TextTranslation @relation(fields: [text_translation_id], references: [id])
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
   lemmas Lemma[] @relation("example_lemma")
@@ -182,7 +182,7 @@ enum MotivationEnum {
 }
 
 enum AnnotationType {
-  text_content
+  text_translation
   annotation
   example
   lemma

@@ -4,8 +4,8 @@ import {
   AnnotationSchema,
   LemmaSchema,
   RegisterSchema,
-  TextContentSchema,
   TextSchema,
+  TextTranslationSchema,
 } from '@mela/generated-types';
 
 export const PURPOSE_ANNOTATION_SELECT = 'AnnotationSelector';
@@ -24,7 +24,7 @@ export type AnnotationStartEnd = z.infer<typeof AnnotationStartEndSchema>;
 
 export const AnnotationSelectorSchema = z.object({
   annotation: AnnotationStartEndSchema,
-  textContent: TextContentSchema.pick({ id: true }),
+  textContent: TextTranslationSchema.pick({ id: true }),
   type: z.enum([PURPOSE_ANNOTATION_SELECT]).default(PURPOSE_ANNOTATION_SELECT),
 });
 export type AnnotationSelector = z.infer<typeof AnnotationSelectorSchema>;
@@ -65,7 +65,7 @@ export const AnnotationExampleLemmaSchema = z.object({
   exampleAnnotation: AnnotationSchema.pick({ id: true }),
   lemma: LemmaSchema.pick({ id: true }),
   id: z.string().optional(),
-  textContent: TextContentSchema.pick({ id: true }),
+  textTranslation: TextTranslationSchema.pick({ id: true }),
   type: z.enum([PURPOSE_LEMA]).default(PURPOSE_LEMA),
 });
 export type AnnotationExampleLemma = z.infer<

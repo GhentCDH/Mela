@@ -1,7 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import {
   getIdFromUri,
-  getTextContentIdFromUri,
+  getTextTranslationIdFromUri,
   getTypeFromUri,
   MelaAnnotationPageSchema,
   MelaAnnotationSchema,
@@ -32,7 +32,7 @@ const mapBody = (body: W3CAnnotationBody): AnnotationBodyWithRelations => {
 };
 
 const getSourceId = (target: W3CAnnotationTarget) => {
-  if (target.source) return getTextContentIdFromUri(target.source);
+  if (target.source) return getTextTranslationIdFromUri(target.source);
 
   return null;
 };

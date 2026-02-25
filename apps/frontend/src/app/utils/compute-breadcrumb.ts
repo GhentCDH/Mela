@@ -1,24 +1,24 @@
-import type { BookWithRelations, Chapter } from '@mela/generated-types';
+import type { Section, WorkWithRelations } from '@mela/generated-types';
 
 export const computeBreadcrumb = (
-  book: BookWithRelations,
-  chapter: Chapter,
+  work: WorkWithRelations,
+  section: Section,
 ) => {
   return [
     {
-      label: 'Books',
-      routerLink: 'book-index',
+      label: 'Works',
+      routerLink: 'work-index',
     },
     {
-      label: `${book?.name} (${book?.author?.name})`,
-      routerLink: 'book-detail',
-      params: { bookId: book?.id },
+      label: `${work?.name} (${work?.author?.name})`,
+      routerLink: 'work-detail',
+      params: { workId: work?.id },
     },
-    chapter
+    section
       ? {
-          label: `${chapter?.chapter_number} - ${chapter?.name}`,
-          routerLink: 'chapter-detail',
-          params: { bookId: book?.id, chapterId: chapter?.id },
+          label: `${section?.section_number} - ${section?.name}`,
+          routerLink: 'section-detail',
+          params: { workId: work?.id, sectionId: section?.id },
         }
       : null,
   ].filter((m) => !!m);

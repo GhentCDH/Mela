@@ -1,9 +1,4 @@
-import {
-  AuthorFormSchema,
-  LemmaFormSchema,
-  RegisterFormSchema,
-  SpeechFormSchema,
-} from '@mela/text/shared';
+import { AuthorFormSchema, LemmaFormSchema, RegisterFormSchema, SpeechFormSchema } from '@mela/text/shared';
 
 import type { FormSchemaModel } from '@ghentcdh/json-forms-core';
 
@@ -37,7 +32,7 @@ export const FormDictionary: Record<FormKey, FormDef> = {
   speech: {
     formId: 'speech',
     formSchema: SpeechFormSchema.schema,
-    tableTitle: 'Speech',
+    tableTitle: 'Part of speech',
     title: 'Speech',
   },
   lemma: {

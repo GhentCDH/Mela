@@ -8,7 +8,11 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "dependsOn": ["generated-types:build", "generated-prisma:build", "generated-dto:build"],
+      "dependsOn": [
+        "generated-types:build",
+        "generated-prisma:build",
+        "generated-dto:build"
+      ],
       "outputs": ["{workspaceRoot}/dist/apps/backend"],
       "options": {
         "commands": ["cd apps/backend && vite build"]
@@ -24,5 +28,6 @@
         "cwd": "apps/backend"
       }
     }
-  }
+  },
+  "implicitDependencies": ["generated-types", "generated-prisma", "generated-dto"]
 }
