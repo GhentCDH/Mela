@@ -13,10 +13,16 @@
       <template #list>
         <CollapseRow v-if="workStore.sections.length < 0">
           <div class="list-col-grow">
-            <Alert message="No sections defined yet" type="info" />
+            <Alert
+              message="No sections defined yet"
+              type="info"
+            />
           </div>
         </CollapseRow>
-        <CollapseRow v-for="section in workStore.sections" :key="section.id">
+        <CollapseRow
+          v-for="section in workStore.sections"
+          :key="section.id"
+        >
           <div class="text-xl font-thin opacity-30 tabular-nums">
             {{ section.section_number }}
           </div>
@@ -50,7 +56,10 @@
           </div>
         </CollapseRow>
         <CollapseRow>
-          <Btn :icon="IconEnum.Plus" @click="createChapter">
+          <Btn
+            :icon="IconEnum.Plus"
+            @click="createChapter"
+          >
             Create section
           </Btn>
         </CollapseRow>

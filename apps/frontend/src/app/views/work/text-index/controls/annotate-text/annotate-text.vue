@@ -1,5 +1,9 @@
 <template>
-  <Drawer class="h-full" :width-left="300" :width-right="300">
+  <Drawer
+    class="h-full"
+    :width-left="300"
+    :width-right="300"
+  >
     <template #left-drawer>
       <AnnotationTree
         :store-id="storeId"
@@ -54,7 +58,8 @@
           :annotations="annotations"
           :selected-annotations="selectedAnnotationIds"
           :store-id="storeId"
-      /></Collapse>
+        />
+      </Collapse>
     </div>
   </Drawer>
 </template>
