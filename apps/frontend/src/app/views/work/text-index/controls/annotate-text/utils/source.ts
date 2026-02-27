@@ -1,5 +1,10 @@
-import type { SourceModel, TextContentDto } from '@mela/text/shared';
-import { SourceModelSchema, SourceTextSchema } from '@mela/text/shared';
+import {
+  getSectionTextUri,
+  SourceModel,
+  SourceModelSchema,
+  SourceTextSchema,
+} from '@mela/text/shared';
+import { SectionText } from '@mela/generated-types';
 
 const getSource = (
   sources: SourceModel[],
@@ -15,9 +20,7 @@ const getSourceByUri = (
   return sources.find((s) => s.uri === sourceId);
 };
 
-export const createSourceFromTextContent = (
-  sources: TextContentDto[],
-): SourceModel[] => {
+export const createSourceContent = (sources: SectionText[]): SourceModel[] => {
   return sources.map((c) => {
     return SourceModelSchema.parse({
       content: SourceTextSchema.parse({
@@ -27,7 +30,7 @@ export const createSourceFromTextContent = (
       }),
       id: c.id,
       type: 'text',
-      uri: c.uri,
+      uri: getSectionTextUri(c),
     });
   });
 };

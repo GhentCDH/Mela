@@ -1,16 +1,12 @@
 <template>
-  <Drawer
-    class="h-full"
-    :width-left="300"
-    :width-right="300"
-  >
+  <Drawer class="h-full" :width-left="300" :width-right="300">
     <template #left-drawer>
       <AnnotationTree
         :store-id="storeId"
         :filter="annotationStore.filter"
         :annotations="annotationStore.annotations"
         :sections="workStore.sections"
-        :active-section="workStore.section"
+        :active-section="sectionStore.section"
         :sources="annotationStore.sources"
         @change-filter="annotationStore.changeFilter"
       />
@@ -18,14 +14,14 @@
     <template #right-drawer>
       <div class="mt-6">
         <template v-if="activeAnnotationStore.activeAnnotation">
-          <ActiveAnnotation
-            :active-annotation="activeAnnotationStore.activeAnnotation"
-            :store-id="storeId"
-            :links="activeAnnotationStore.activeAnnotationLinks"
-            :text="textStore.text"
-            :text-content="activeAnnotationStore.activeTextContent"
-            @change-select-filter="annotationStore.changeSelectionFilter"
-          />
+          <!--          <ActiveAnnotation-->
+          <!--            :active-annotation="activeAnnotationStore.activeAnnotation"-->
+          <!--            :store-id="storeId"-->
+          <!--            :links="activeAnnotationStore.activeAnnotationLinks"-->
+          <!--            :text="sectionStore.section"-->
+          <!--            :text-content="activeAnnotationStore.activeTextContent"-->
+          <!--            @change-select-filter="annotationStore.changeSelectionFilter"-->
+          <!--          />-->
         </template>
         <template v-else>
           <div class="flex flex-col gap-2 w-4/5">
@@ -33,6 +29,7 @@
               v-for="source of annotationStore.sources"
               :key="source.id"
               :outline="true"
+              `
               @click="createAnnotation(source)"
             >
               Create Paragraph for
@@ -43,23 +40,21 @@
       </div>
     </template>
 
-    <div class="grid grid-cols-2 px-6">
-      <div
-        v-for="source in annotationStore.sources"
+    <Loading :loading="!sectionStore.section" />
+    <div class="grid grid-cols-2 gap-2 m-2">
+      <Collapse
+        v-for="source in sectionStore.sources"
         :key="source.id"
-        class="p-2"
+        :title="source.content.label"
+        :default-opened="true"
       >
-        <h2 class="p-2">
-          {{ source.content.label }}
-        </h2>
         <AnnotationView
           :key="source.uri"
           :source="source"
           :annotations="annotations"
           :selected-annotations="selectedAnnotationIds"
           :store-id="storeId"
-        />
-      </div>
+      /></Collapse>
     </div>
   </Drawer>
 </template>
@@ -68,21 +63,20 @@
 import type { SourceModel } from '@mela/text/shared';
 import { computed } from 'vue';
 
-import { Btn, Drawer } from '@ghentcdh/ui';
-
-import ActiveAnnotation from './active-annotation.vue';
+import { Btn, Collapse, Drawer, Loading } from '@ghentcdh/ui';
 import AnnotationView from './annotation-view.vue';
 import { useActiveAnnotationStore } from './store/active-annotation.store';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
-import { useWorkStore } from '../../../work.store';
-import { useTextStore } from '../../text.store';
-import AnnotationTree from './view/annotation-tree.vue';
 import { ModalSelectionService } from './view/selection/modal-selection.service';
+import { useSectionStore } from '../../../section-store';
+import { useWorkStore } from '../../../work.store';
+import AnnotationTree from './view/annotation-tree.vue';
 
 type Properties = { storeId: string };
 const properties = defineProps<Properties>();
+const sectionStore = useSectionStore();
 const workStore = useWorkStore();
 
 const selectedAnnotationIds = computed(() => {
@@ -93,7 +87,7 @@ const selectedAnnotationIds = computed(() => {
 
 // TODO add id
 const listenerStore = useAnnotationListenerStore()();
-const textStore = useTextStore();
+// const textStore = useTextStore();
 const annotationStore = useAnnotationStore(properties.storeId);
 const activeAnnotationStore = useActiveAnnotationStore(properties.storeId);
 const modeStore = useModeStore();

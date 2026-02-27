@@ -14,8 +14,8 @@ const router = useRouter();
 
 const openChapter = (data: Section) => {
   router.push({
-    name: 'section-detail',
-    params: { sectionId: data.id, workId: data.work_id },
+    name: 'work-detail',
+    params: { sectionId: data.id, workId: data.id },
   });
 };
 
@@ -32,7 +32,7 @@ const tableActions = [
     icon: IconEnum.View,
     action: (data: Work) => {
       router.push({
-        name: 'section-detail',
+        name: 'work-detail',
         params: { workId: data.id },
       });
     },

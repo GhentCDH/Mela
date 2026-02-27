@@ -43,33 +43,22 @@ CREATE TABLE "section" (
 );
 
 -- CreateTable
-CREATE TABLE "text" (
+CREATE TABLE "section_text" (
     "id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "section_id" TEXT NOT NULL,
-
-    CONSTRAINT "text_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "text_translation" (
-    "id" TEXT NOT NULL,
-    "text_id" TEXT NOT NULL,
     "text_type" "TextType" NOT NULL,
     "language" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "text_translation_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "section_text_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "annotation" (
     "id" TEXT NOT NULL,
     "motivation" "MotivationEnum" NOT NULL,
-    "text_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -107,7 +96,7 @@ CREATE TABLE "example" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "register_id" TEXT NOT NULL,
-    "text_translation_id" TEXT NOT NULL,
+    "section_text_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -180,13 +169,7 @@ ALTER TABLE "work" ADD CONSTRAINT "work_author_id_fkey" FOREIGN KEY ("author_id"
 ALTER TABLE "section" ADD CONSTRAINT "section_work_id_fkey" FOREIGN KEY ("work_id") REFERENCES "work"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "text" ADD CONSTRAINT "text_section_id_fkey" FOREIGN KEY ("section_id") REFERENCES "section"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "text_translation" ADD CONSTRAINT "text_translation_text_id_fkey" FOREIGN KEY ("text_id") REFERENCES "text"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "annotation" ADD CONSTRAINT "annotation_text_id_fkey" FOREIGN KEY ("text_id") REFERENCES "text"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "section_text" ADD CONSTRAINT "section_text_section_id_fkey" FOREIGN KEY ("section_id") REFERENCES "section"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "annotation_body" ADD CONSTRAINT "annotation_body_annotation_id_fkey" FOREIGN KEY ("annotation_id") REFERENCES "annotation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -198,7 +181,7 @@ ALTER TABLE "annotation_target" ADD CONSTRAINT "annotation_target_annotation_id_
 ALTER TABLE "example" ADD CONSTRAINT "example_register_id_fkey" FOREIGN KEY ("register_id") REFERENCES "register"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "example" ADD CONSTRAINT "example_text_translation_id_fkey" FOREIGN KEY ("text_translation_id") REFERENCES "text_translation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "example" ADD CONSTRAINT "example_section_text_id_fkey" FOREIGN KEY ("section_text_id") REFERENCES "section_text"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "lemma" ADD CONSTRAINT "lemma_speech_id_fkey" FOREIGN KEY ("speech_id") REFERENCES "speech"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

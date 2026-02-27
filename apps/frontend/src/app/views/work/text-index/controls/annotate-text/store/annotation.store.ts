@@ -1,8 +1,4 @@
-import type {
-  AnnotationType,
-  SourceModel,
-  TextContentDto,
-} from '@mela/text/shared';
+import type { AnnotationType, SourceModel } from '@mela/text/shared';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -12,7 +8,7 @@ import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
 import { AnnotationUtils } from '../utils/annotations.utils';
 import { generateW3CAnnotationBlocks } from '../utils/generate-blocks';
-import { SourceUtils, createSourceFromTextContent } from '../utils/source';
+import { createSourceContent, SourceUtils } from '../utils/source';
 import { AnnotationTester } from '../utils/tester';
 import { w3cAnnotationsToAnnotationSelectors } from '../utils/w3c-to-annotationtype';
 
@@ -45,7 +41,7 @@ export const useAnnotationStore = (id: string) =>
 
     const init = (_sources: TextContentDto[], _textId: string) => {
       textId.value = _textId;
-      sources.value = createSourceFromTextContent(_sources);
+      sources.value = createSourceContent(_sources);
       annotationService.load(_textId);
       newAnnotations.value = [];
     };

@@ -11,7 +11,7 @@
       "dependsOn": ["generated-types:build"],
       "outputs": ["{workspaceRoot}/dist/apps/frontend"],
       "options": {
-        "commands": ["cd apps/frontend && vite build"]
+        "commands": ["cd apps/frontend && vue-tsc --noEmit -p tsconfig.app.json && vite build"]
       },
       "configurations": {
         "production": {}

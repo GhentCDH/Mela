@@ -1,8 +1,8 @@
 import type { AnnotationTypeType } from '@mela/generated-types';
 
 const prefixMap: Record<AnnotationTypeType, string> = {
-  text: 'mela:text:',
-  text_content: 'mela:text-content:',
+  section: 'mela:section:',
+  section_text: 'mela:section-text:',
   example: 'mela:example:',
   annotation: 'mela:annotation:',
   lemma: 'mela:lemma:',
@@ -44,14 +44,14 @@ export const getTypeFromUri = (uri: string) => {
 
   const type = split[1] as AnnotationTypeType;
 
-  if (type === 'text-content') return 'text_content';
+  if (type === 'text-section_text') return 'section_text';
 
   return type;
 };
 
-export const getTextTranslationUri = createUri('text_translation');
-export const getTextTranslationIdFromUri = getIdFromUri('text_translation');
-export const isTextContentUri = isUri('text_content');
+export const getSectionTextUri = createUri('section_text');
+export const getSectionTextIdFromUri = getIdFromUri('section_text');
+export const isSectionTextUri = isUri('section_text');
 
 export const getExampleUri = createUri('example');
 export const getLemmaUri = createUri('lemma');

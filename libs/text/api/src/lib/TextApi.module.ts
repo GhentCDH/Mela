@@ -22,8 +22,6 @@ import { RegisterRepository } from './register/register-repository.service';
 import { RegisterController } from './register/register.controller';
 import { SpeechRepository } from './speech/speech-repository.service';
 import { SpeechController } from './speech/speech.controller';
-import { TextRepositoryService } from './text/text-repository.service';
-import { TextController } from './text/text.controller';
 
 @Module({
   imports: [PrismaModule, HttpModule, ConfigModule],
@@ -32,7 +30,6 @@ import { TextController } from './text/text.controller';
     RegisterController,
     AnnotationTextController,
     AnnotationTypeController,
-    TextController,
     ExampleController,
     LemmaController,
     SpeechController,
@@ -42,7 +39,6 @@ import { TextController } from './text/text.controller';
   providers: [
     AnnotationTypeRepository,
     AuthorRepository,
-    TextRepositoryService,
     RegisterRepository,
     AnnotationRepository,
     ExampleRepository,
@@ -51,6 +47,6 @@ import { TextController } from './text/text.controller';
     WorkRepository,
     SectionRepository,
   ],
-  exports: [AuthorRepository, TextRepositoryService],
+  exports: [AuthorRepository],
 })
 export class TextApiModule {}

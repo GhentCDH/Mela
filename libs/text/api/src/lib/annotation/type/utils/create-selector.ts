@@ -1,4 +1,4 @@
-import { AnnotationSelector, getTextTranslationUri } from '@mela/text/shared';
+import { AnnotationSelector, getSectionTextUri } from '@mela/text/shared';
 
 import {
   createTextPositionSelector,
@@ -29,7 +29,7 @@ export const createSelector = (
   annotation: AnnotationSelector['annotation'],
   bodyFn?: () => AnnotationBody[],
 ): CreateAnnotationDto => {
-  const sourceUri = getTextTranslationUri(textContent) as string;
+  const sourceUri = getSectionTextUri(textContent) as string;
   const language = textContent.language;
 
   return {

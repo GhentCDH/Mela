@@ -40,20 +40,20 @@ const routes: Readonly<RouteRecordRaw[]> = [
                 // TODO  add texts here
               },
               {
-                path: 'text-index/:textId',
-                name: 'text-index-view',
+                path: 'annotations',
+                name: 'annotation-view',
                 children: [
                   {
                     path: '',
-                    name: 'text-index-annotate',
+                    name: 'annotation-editor',
                     component: () =>
-                      import('./app/views/work/text-index/text-annotate.vue'),
+                      import('./app/views/work/annotation/editor.vue'),
                   },
                   {
                     path: 'preview',
-                    name: 'text-index-preview',
+                    name: 'annotation-preview',
                     component: () =>
-                      import('./app/views/work/text-index/text-preview.vue'),
+                      import('./app/views/work/annotation/preview.vue'),
                   },
                 ],
               },

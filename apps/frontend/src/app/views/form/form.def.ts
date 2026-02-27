@@ -1,4 +1,9 @@
-import { AuthorFormSchema, LemmaFormSchema, RegisterFormSchema, SpeechFormSchema } from '@mela/text/shared';
+import {
+  AuthorFormSchema,
+  LemmaFormSchema,
+  RegisterFormSchema,
+  SpeechFormSchema,
+} from '@mela/text/shared';
 
 import type { FormSchemaModel } from '@ghentcdh/json-forms-core';
 

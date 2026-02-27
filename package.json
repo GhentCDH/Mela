@@ -87,9 +87,6 @@
     "onlyBuiltDependencies": [
       "better-sqlite3"
     ],
-    "__overrides": {
-      "@ghentcdh/json-forms-core": "link:../ghentcdh/dist/libs/json-forms/core"
-    },
     "_overrides": {
       "@ghentcdh/authentication-api": "link:../ghentcdh/dist/libs/authentication/api",
       "@ghentcdh/authentication-vue": "link:../ghentcdh/dist/libs/authentication/vue",
@@ -103,9 +100,9 @@
   },
   "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937",
   "dependencies": {
-    "@ghentcdh/annotated-text": "0.7.1",
-    "@ghentcdh/json-forms-api": "0.6.6",
-    "@ghentcdh/json-forms-core": "^0.6.6",
+    "@ghentcdh/annotated-text": "1.0.0",
+    "@ghentcdh/json-forms-api": "0.6.8",
+    "@ghentcdh/json-forms-core": "0.6.8",
     "@prisma/client": "^7.4.1",
     "lodash-es": "^4.17.23"
   }

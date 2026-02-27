@@ -22,7 +22,7 @@
     </template>
     <template v-else>
       <template v-if="children.length">
-        <hr class="text-gray-300 my-2">
+        <hr class="text-gray-300 my-2" />
         <div class="flex gap-2 flex-wrap">
           <Btn
             v-for="child in children"
@@ -35,10 +35,7 @@
         </div>
       </template>
 
-      <hr
-        v-if="isExample"
-        class="text-gray-300 my-2"
-      >
+      <hr v-if="isExample" class="text-gray-300 my-2" />
       <LinkLemma
         v-if="isExample"
         :annotation="activeAnnotation"
@@ -46,10 +43,7 @@
         :source="textContent"
         :store-id="storeId"
       />
-      <hr
-        v-if="isExample"
-        class="text-gray-300 my-2"
-      >
+      <hr v-if="isExample" class="text-gray-300 my-2" />
       <LinkBuckets
         v-if="isExample"
         :annotation="activeAnnotation"
@@ -59,7 +53,7 @@
         @change-select-filter="emits('changeSelectFilter', $event)"
       />
 
-      <hr class="text-gray-300 my-2">
+      <hr class="text-gray-300 my-2" />
 
       <Translations
         v-if="canTranslate"
@@ -78,7 +72,6 @@ import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { findTagging } from '@ghentcdh/annotated-text';
-import type { Text } from '@mela/generated-types';
 import { Btn, Card, Color, IconEnum, NotificationMessage } from '@ghentcdh/ui';
 
 import type { AnnotationWithRelations } from './props';
@@ -96,7 +89,6 @@ type Properties = {
   storeId: string;
   activeAnnotation: W3CAnnotation;
   links: AnnotationWithRelations[];
-  text: Text;
   textContent: SourceModel;
 };
 const properties = defineProps<Properties>();

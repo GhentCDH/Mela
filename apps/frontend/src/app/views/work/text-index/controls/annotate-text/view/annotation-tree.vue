@@ -20,9 +20,9 @@
 <script setup lang="ts">
 import type { AnnotationMetadataType, SourceModel } from '@mela/text/shared';
 import { ref, watch } from 'vue';
+import { Section } from '@mela/generated-types';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
-import type { Chapter } from '@mela/generated-types';
 import { MultiSelect } from '@ghentcdh/ui';
 
 import AnnotationSourceTree from './annotation-source-tree.vue';
@@ -36,8 +36,8 @@ const filterType = ref([]);
 
 const properties = defineProps<{
   filter: AnnotationFilter;
-  sections: Chapter[];
-  activeChapter: Chapter;
+  sections: Section[];
+  activeSection: Section;
   annotations: W3CAnnotation[];
   sources: SourceModel[];
   storeId: string;

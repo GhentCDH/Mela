@@ -2,7 +2,6 @@ import type { AnnotationMetadataType, AnnotationType } from '@mela/text/shared';
 import { ref } from 'vue';
 
 import { useAnnotationRepository } from '../../../../../../repository/annotation.repository';
-import { useTextRepository } from '../../../../../../repository/text.repository';
 
 export type Filter = {
   annotationType?: AnnotationMetadataType[];
@@ -13,7 +12,6 @@ export class AnnotationService {
   public readonly annotations = ref([]);
   public readonly loading = ref(true);
 
-  private readonly textRepository = useTextRepository();
   private readonly annotationRepository = useAnnotationRepository();
 
   public async load(textId: string) {
@@ -23,10 +21,11 @@ export class AnnotationService {
 
   public async reload() {
     this.loading.value = false;
-    const annotations = await this.textRepository.getAnnotations(this.textId);
+    // const annotations = await this.textRepository.getAnnotations(this.textId);
     this.loading.value = true;
-    this.annotations.value = annotations.items;
-    return annotations.items;
+    // this.annotations.value = annotations.items;
+    // return annotations.items;
+    return [] as any;
   }
 
   public async createMulti(newAnnotations: AnnotationType[]) {

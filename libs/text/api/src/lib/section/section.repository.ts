@@ -3,16 +3,11 @@ import { omit } from 'lodash-es';
 import { ZodSchema } from 'zod';
 
 import { PrismaService } from '@mela/generated-prisma';
-import {
-  Section,
-  SectionSchema,
-  TextWithRelations,
-} from '@mela/generated-types';
+import { Section, SectionSchema } from '@mela/generated-types';
+
+import type { SectionDto } from '@mela/text/shared';
 
 import { AbstractRepository } from '../shared/repository.service';
-import { TextRepositoryService } from '../text/text-repository.service';
-
-type CreateSection = any;
 
 const createSelectFromSchema = (schema: ZodSchema) => {
   const selectDetail: Record<string, any> = {};
@@ -26,18 +21,12 @@ const createSelectFromSchema = (schema: ZodSchema) => {
 const sectionSelect = createSelectFromSchema(SectionSchema);
 const selectDetail = {
   ...sectionSelect,
-  text: { include: { textContent: true } },
+  section_text: true,
 };
 
 @Injectable()
-export class SectionRepository extends AbstractRepository<
-  Section,
-  CreateSection
-> {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly textRepository: TextRepositoryService,
-  ) {
+export class SectionRepository extends AbstractRepository<Section, SectionDto> {
+  constructor(private readonly prisma: PrismaService) {
     super(prisma.section);
   }
 
@@ -45,9 +34,9 @@ export class SectionRepository extends AbstractRepository<
     return selectDetail;
   }
 
-  override async create(dto: CreateSection): Promise<Section> {
+  override async create(dto: SectionDto): Promise<Section> {
     const created = await this.prisma.section.create({
-      data: { ...omit(dto, 'text'), work: { connect: dto.work } },
+      data: { ...omit(dto, 'section_text'), work: { connect: dto.work } },
     });
 
     return this.update(created.id, omit(dto, 'work'));
@@ -55,25 +44,36 @@ export class SectionRepository extends AbstractRepository<
 
   protected override async connectUpdate(
     id: string,
-    dto: CreateSection,
+    dto: SectionDto,
   ): Promise<Partial<SectionDto>> {
     return {
-      text: { connect: await this.connectOrCreateTexts(id, dto) },
+      section_text: {
+        connect: await this.connectOrCreateSectionContent(id, dto),
+      },
+      work: { connect: dto.work },
     };
   }
 
-  private async connectOrCreateTexts(section_id: string, dto: CreateSection) {
+  private async connectOrCreateSectionContent(
+    section_id: string,
+    dto: SectionDto,
+  ) {
     const updates = await Promise.all(
-      dto.text.map((text: TextWithRelations) =>
-        text.id
-          ? this.textRepository.update(text.id, { ...text, section_id })
-          : this.textRepository.create({
-              ...text,
-              section_id,
-            }),
+      dto.section_text.map(async (section) =>
+        this.prisma.sectionText.upsert({
+          where: { id: section.id ?? '' },
+          create: {
+            ...omit(section, 'id'),
+            section_id,
+          },
+          update: {
+            content: section.content,
+          },
+        }),
       ),
     );
-
-    return updates.map((text) => ({ id: text.id }));
+    console.log(updates);
+    return updates;
+    // return updates.map((text) => ({ id: text.id }));
   }
 }

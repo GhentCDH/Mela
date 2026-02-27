@@ -8,18 +8,17 @@ export const computeMenu = (
   view: MenuView | null,
 ): MenuWithItems[] => {
   const routerLink =
-    view === 'annotate' ? 'text-index-annotate' : 'section-detail';
+    view === 'annotate' ? 'annotation-editor' : 'section-detail';
 
   return [
     {
-      label: 'Chapters',
+      label: 'Sections',
       items: work?.section?.map((section) => ({
-        label: `${section.section_number} - ${section.name}`,
+        label: `${section.section_number} - ${section.title}`,
         action: {
           routerLink,
           params: {
             sectionId: section.id,
-            textId: section.text[0]?.id,
           },
         },
       })),

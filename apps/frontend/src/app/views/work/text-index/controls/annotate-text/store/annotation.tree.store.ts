@@ -4,9 +4,9 @@ import { computed } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
 
-
 import { useAnnotationStore } from './annotation.store';
 import { AnnotationTree } from '../utils/tree';
+import { useSectionStore } from '../../../../section-store';
 
 class AnnotationTrees {
   private readonly annotationTreeMap: Map<string, AnnotationTree>;
@@ -36,6 +36,7 @@ class AnnotationTrees {
 export const useAnnotationTreeStore = (id: string) =>
   defineStore('annotationTreeStore', () => {
     const annotationStore = useAnnotationStore(id);
+    const sectionStore = useSectionStore(id);
 
     const annotationTreesMap = computed(() => {
       const annotationTreeMap = new Map<string, AnnotationTree>();
@@ -58,7 +59,7 @@ export const useAnnotationTreeStore = (id: string) =>
     });
 
     const trees = computed(() => {
-      const sources = annotationStore.sources;
+      const sources = sectionStore.sources;
 
       return sources.map((source) => {
         return {

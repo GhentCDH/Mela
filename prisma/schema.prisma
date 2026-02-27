@@ -51,41 +51,31 @@ model Section {
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  text Text[]
+  section_text SectionText[]
   @@map("section")
 }
 
-model Text {
-  id          String        @id @default(uuid())
-  annotations Annotation[]
-  textTranslation TextTranslation[]
-  created_at              DateTime            @default(now())
-  updated_at              DateTime            @updatedAt @default(now())
 
+model SectionText {
+  id        String    @id @default(uuid())
   section_id String
   section Section @relation(fields: [section_id], references: [id])
-  @@map("text")
-}
 
-model TextTranslation {
-  id        String    @id @default(uuid())
-  text_id   String
   text_type TextType
   language  String
   content   String
   Example   Example[]
-  text      Text      @relation(fields: [text_id], references: [id], onDelete: Cascade)
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  @@map("text_translation")
+  @@map("section_text")
 }
 
 model Annotation {
   id               String             @id @default(uuid())
   motivation       MotivationEnum
-  text_id          String
-  text             Text               @relation(fields: [text_id], references: [id])
+  // text_id          String
+  // text             Text               @relation(fields: [text_id], references: [id])
   annotationBody   AnnotationBody[]
   annotationTarget AnnotationTarget[]
   created_at              DateTime            @default(now())
@@ -124,9 +114,9 @@ model Example {
   id              String      @id @default(uuid())
   name            String
   register_id     String
-  text_translation_id String
+  section_text_id String
   register        Register    @relation(fields: [register_id], references: [id])
-  textTranslation     TextTranslation @relation(fields: [text_translation_id], references: [id])
+  section_text     SectionText @relation(fields: [section_text_id], references: [id])
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
   lemmas Lemma[] @relation("example_lemma")

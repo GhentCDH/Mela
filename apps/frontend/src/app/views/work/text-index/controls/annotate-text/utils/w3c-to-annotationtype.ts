@@ -1,7 +1,7 @@
 import {
   AnnotationSelector,
   AnnotationSelectorSchema,
-  getTextTranslationIdFromUri,
+  getSectionTextIdFromUri,
 } from '@mela/text/shared';
 
 import type {
@@ -21,7 +21,7 @@ export const w3cAnnotationToAnnotationSelector = (
   )(annotation);
   const tagging = findTagging(annotation);
 
-  const textTranslationId = getTextTranslationIdFromUri(
+  const textTranslationId = getSectionTextIdFromUri(
     textPositionSelector.source,
   );
 

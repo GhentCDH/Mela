@@ -1,39 +1,33 @@
 <template>
   <Loading :loading="!formData" />
-  <div class="h-full overflow-y-auto mb-20">
-    <FormComponent
-      v-if="formData"
-      :id="`modal-${id}`"
-      v-model="formData"
-      :schema="formSchema.schema"
-      :uischema="formSchema.uiSchema"
-      @valid="onValid($event)"
-      @change="onChange"
-    />
-  </div>
-  <div
-    class="sticky bottom-0 bg-white flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]"
-  >
-    <Btn
-      :color="Color.secondary"
-      :outline="true"
-      @click="onCancel"
+  <div class="h-full flex flex-col gap-2 overflow-hidden">
+    <div
+      class="bg-white w-full border border-gray-300 p-2 flex-grow overflow-y-auto"
     >
-      Cancel
-    </Btn>
-    <Btn
-      :disabled="!valid"
-      @click="onSubmit"
-    >
-      Save
-    </Btn>
-    <Btn
-      :outline="true"
-      :disabled="!textId"
-      @click="goToAnnotations"
-    >
-      Create annotations
-    </Btn>
+      <FormComponent
+        v-if="formData"
+        :id="`modal-${id}`"
+        v-model="formData"
+        :schema="formSchema.form.schema"
+        :uischema="formSchema.form.uiSchema"
+        @valid="onValid($event)"
+        @change="onChange"
+        @errors="onErrors"
+      />
+    </div>
+    <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]">
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+        Cancel
+      </Btn>
+      <Btn :disabled="!valid" @click="onSubmit"> Save </Btn>
+      <Btn
+        :outline="true"
+        :disabled="textId === NEW_SECTION_ID || !textId"
+        @click="goToAnnotations"
+      >
+        Create annotations
+      </Btn>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -45,31 +39,24 @@ import { FormComponent } from '@ghentcdh/json-forms-vue';
 import { Btn, Color } from '@ghentcdh/ui';
 
 import { useWorkMenu } from './work-menu.store';
-import { useWorkStore } from './work.store';
 import Loading from '../../ui/loading.vue';
+import { useSectionStore } from './section-store';
+import { NEW_SECTION_ID } from '../../utils/create-section';
 
 const id = `section`;
-const workStore = useWorkStore();
+const sectionStore = useSectionStore();
 
 const valid = ref(false);
 const formData = ref(null);
-const formSchema = SectionFormSchema.schema.form;
+const formSchema = SectionFormSchema.schema;
 const workMenuStore = useWorkMenu();
 const router = useRouter();
 
 const textId = ref(null);
 
-watch(
-  () => workStore.section,
-  () => {
-    formData.value = workStore.section;
-    textId.value = workStore.section?.text[0].id;
-    valid.value = false;
-  },
-  { immediate: true },
-);
-
 const onValid = (v: boolean) => {
+  console.table(formData.value);
+  console.table(formData.value.text);
   valid.value = v;
 };
 
@@ -78,17 +65,26 @@ const onChange = (data: any) => {
 };
 
 const onCancel = () => {
-  formData.value = workStore.section;
+  formData.value = sectionStore.section
+    ? SectionFormSchema.dtoSchema.parse(sectionStore.section)
+    : null;
+  textId.value = sectionStore.section?.id;
+  valid.value = false;
+};
+
+const onErrors = (errors: any) => {
+  console.table(errors);
 };
 
 const onSubmit = () => {
   if (!valid.value) return;
 
-  workStore.saveOrUpdate(formData.value).then((section) => {
-    textId.value = workStore.section?.text[0].id;
+  sectionStore.saveOrUpdate(formData.value).then((section) => {
+    textId.value = sectionStore.section?.id;
+    sectionStore.reload();
   });
   alert(
-    'Chapter saved, existing annotations are not updated, this is still a manual process',
+    'Section saved, existing annotations are not updated, this is still a manual process',
   );
 };
 
@@ -96,10 +92,18 @@ const goToAnnotations = () => {
   if (!textId.value) return;
 
   router.push({
-    name: 'text-index-annotate',
+    name: 'annotation-editor',
     params: { textId: textId.value },
   });
 };
+
+watch(
+  () => sectionStore.section,
+  () => {
+    onCancel();
+  },
+  { immediate: true },
+);
 
 onMounted(() => {
   workMenuStore.resetMenu();

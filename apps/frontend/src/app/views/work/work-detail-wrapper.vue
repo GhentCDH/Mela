@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col gap-2 h-full">
+  <div class="flex flex-col gap-2 h-[calc(100vh-5rem)] overflow-hidden">
     <Menu
       title="Elements"
       :menu="sectionMenuStore.menu"
       :breadcrumbs="sectionMenuStore.breadcrumbs"
     />
-    <div class="h-full min-h-0">
+    <div class="flex-1 min-h-0 overflow-auto">
       <RouterView />
     </div>
   </div>

@@ -10,32 +10,26 @@ import {
 import {
   Section,
   SectionSchema,
-  TextTranslation,
-  TextWithRelations,
+  SectionTextSchema,
 } from '@mela/generated-types';
 
-import { TextTranslationDtoSchema } from '../text/text.schema';
-
-const textContentStep =
-  LayoutBuilder.horizontal<TextWithRelations>().addControls(
-    ControlBuilder.properties('textContent')
-      .detailFixed(
-        LayoutBuilder.vertical<TextTranslation>().addControls(
-          ControlBuilder.properties('content').markdown(),
-        ),
+const textStep = ControlBuilder.properties('section_text')
+  .detailFixed(
+    LayoutBuilder.collapse<Section>()
+      .addControls(
+        ControlBuilder.properties('content')
+          .markdown()
+          .hideLabel()
+          .width('full'),
       )
-      .labelKey('text_type'),
-  );
-
-const textStep = LayoutBuilder.horizontal<TextWithRelations>().addControls(
-  ControlBuilder.properties('text')
-    .detailFixed(textContentStep)
-    .labelKey('text_type'),
-);
+      .titleKey('text_type'),
+    { layout: 'row' },
+  )
+  .hideLabel();
 
 const metaDataStep = LayoutBuilder.horizontal<Section>().addControls(
-  ControlBuilder.properties('section_number').width('sm'),
-  ControlBuilder.properties('title'),
+  ControlBuilder.properties('section_number').width('md'),
+  ControlBuilder.properties('title').width('full'),
 );
 
 const uiSchema = LayoutBuilder.vertical<Section>()
@@ -53,18 +47,20 @@ const filterSchema = LayoutBuilder.vertical<Section>()
   .addControls(ControlBuilder.properties('title'))
   .build();
 
+export const SectionTextDtoSchema = SectionTextSchema.pick({
+  language: true,
+  content: true,
+  text_type: true,
+}).extend({ id: z.string().optional().nullish() });
+
 const dtoSchema = SectionSchema.pick({
   title: true,
   section_number: true,
 }).extend({
-  text: z.array(
-    z.object({
-      id: z.string().optional(),
-      textContent: z.array(TextTranslationDtoSchema),
-    }),
-  ),
-  work: z.object({ id: z.string() }).optional(),
+  section_text: z.array(SectionTextDtoSchema).min(2),
+  work: z.object({ id: z.string() }),
 });
+export type SectionDto = z.infer<typeof dtoSchema>;
 
 export const SectionFormSchema = createSchema({
   uiSchema,

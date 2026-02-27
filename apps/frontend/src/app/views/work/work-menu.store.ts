@@ -8,15 +8,16 @@ import { useWorkStore } from './work.store';
 import { computeBreadcrumb } from '../../utils/compute-breadcrumb';
 import type { MenuView } from '../../utils/compute-menu';
 import { computeMenu } from '../../utils/compute-menu';
+import { useSectionStore } from './section-store';
 
 export const useWorkMenu = defineStore('workMenu', () => {
   const workStore = useWorkStore();
+  const sectionStore = useSectionStore();
   const view = ref<MenuView | null>(null);
 
   const extraMenu = ref([]);
 
   const defaultMenu = computed(() => {
-    const section = workStore.section;
     const work = workStore.work;
     const _view = view.value;
 
@@ -37,7 +38,7 @@ export const useWorkMenu = defineStore('workMenu', () => {
 
   const extraBreadcrumb = ref([]);
   const defaultBreadcrumbs = computed(() => {
-    const section = workStore.section;
+    const section = sectionStore.section;
     const work = workStore.work;
     return computeBreadcrumb(work, section as Section);
   });

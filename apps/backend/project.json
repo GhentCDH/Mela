@@ -15,7 +15,7 @@
       ],
       "outputs": ["{workspaceRoot}/dist/apps/backend"],
       "options": {
-        "commands": ["cd apps/backend && vite build"]
+        "commands": ["cd apps/backend && tsc --noEmit -p tsconfig.app.json && vite build"]
       },
       "configurations": {
         "production": {}

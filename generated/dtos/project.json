@@ -13,5 +13,6 @@
         "command": "ts-node --project ./tools/tsconfig.tools.json ./tools/prisma/dto.ts"
       }
     }
-  }
+  },
+  "implicitDependencies": ["generated-types"]
 }
