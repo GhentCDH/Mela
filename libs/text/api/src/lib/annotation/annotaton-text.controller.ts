@@ -1,5 +1,8 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { MelaAnnotationPage, MelaAnnotationPageSchema } from '@mela/text/shared';
+import {
+  MelaAnnotationPage,
+  MelaAnnotationPageSchema,
+} from '@mela/text/shared';
 import { Controller, Get, Param, Query, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 

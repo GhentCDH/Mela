@@ -1,5 +1,5 @@
-import type { ColorFn, W3CAnnotation } from '@ghentcdh/annotated-text';
-import { createAnnotationColors, findTagging } from '@ghentcdh/annotated-text';
+import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { findTagging } from '@ghentcdh/annotated-text';
 
 export type AnnotationType =
   | 'title'
@@ -38,19 +38,19 @@ const Colors: Record<AnnotationType, string> = {
   lemma: '#7a8800', // pastel yellow
 };
 
-export const IdentifyColorMap = createAnnotationColors(Colors, {
-  opacity: {
-    background: 0.2,
-    border: 0.8,
-    backgroundActive: 0.4,
-    borderActive: 0.9,
-    gutter: 0.8,
-  },
-});
-
-export const colorForAnnotationType: ColorFn<W3CAnnotation> = (
-  w3cAnnotation: W3CAnnotation,
-) => {
-  const type = findTagging(w3cAnnotation);
-  return IdentifyColorMap[type?.value ?? 'paragraph'];
-};
+// export const IdentifyColorMap = createAnnotationColors(Colors, {
+//   opacity: {
+//     background: 0.2,
+//     border: 0.8,
+//     backgroundActive: 0.4,
+//     borderActive: 0.9,
+//     gutter: 0.8,
+//   },
+// });
+//
+// export const colorForAnnotationType: ColorFn<W3CAnnotation> = (
+//   w3cAnnotation: W3CAnnotation,
+// ) => {
+//   const type = findTagging(w3cAnnotation);
+//   return IdentifyColorMap[type?.value ?? 'paragraph'];
+// };

@@ -78,7 +78,6 @@
     "vue-tsc": "^3.1.5",
     "webpack-cli": "^6.0.1",
     "yargs": "^18.0.0",
-    "zod": "^4.3.6",
     "zod-prisma-types": "^3.3.11"
   },
   "pnpm": {
@@ -104,6 +103,7 @@
     "@ghentcdh/json-forms-api": "0.6.8",
     "@ghentcdh/json-forms-core": "0.6.8",
     "@prisma/client": "^7.4.1",
-    "lodash-es": "^4.17.23"
+    "lodash-es": "^4.17.23",
+    "zod": "^4.3.6"
   }
 }

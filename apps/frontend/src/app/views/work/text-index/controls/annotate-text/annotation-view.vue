@@ -6,21 +6,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { onMounted, onUnmounted, watch } from 'vue';
 
-import type { AnnotatedText, SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
-import {
-  MarkdownTextAdapter,
-  W3CAnnotationAdapter,
-  createAnnotatedText,
-  findTagging } from '@ghentcdh/annotated-text';
+import type { AnnotatedText, W3CAnnotation } from '@ghentcdh/annotated-text';
+import { createAnnotatedText, findTagging, MarkdownTextAdapter, W3CAnnotationAdapter } from '@ghentcdh/annotated-text';
 
-import {
-  colorForAnnotationType,
-  isParagraphAnnotationType,
-} from '../identify.color';
 import { useActiveAnnotationStore } from './store/active-annotation.store';
 import { useAnnotationListenerStore } from './store/annotation-listener.store';
 import { useAnnotationStore } from './store/annotation.store';
 import { useModeStore } from './store/mode.store';
+import { SourceModel } from '@mela/text/shared';
+import { isParagraphAnnotationType } from '../identify.color';
 
 type Properties = {
   source: SourceModel;
@@ -33,27 +27,27 @@ const properties = defineProps<Properties>();
 let annotatedText: AnnotatedText<W3CAnnotation>;
 
 onMounted(() => {
-  annotatedText = createAnnotatedText(id, {
-    text: MarkdownTextAdapter(),
-    annotation: W3CAnnotationAdapter({
-      sourceUri: properties.source.uri,
-      // TODO add annotation colors
-      colorFn: colorForAnnotationType,
-      defaultRender: 'underline',
-      gutterFn: isParagraphAnnotationType,
-      tagConfig: {
-        enabled: true,
-        tagFn: (w3cAnnotation: W3CAnnotation) => {
-          const type = findTagging(w3cAnnotation);
-          if (!type || type.value === 'paragraph') {
-            return '';
-          }
-          return type.value;
-        },
-      },
-    }),
-  })
-    .setText(properties.source.content.text, false)
+  annotatedText = createAnnotatedText<W3CAnnotation>(id)
+    .setTextAdapter(MarkdownTextAdapter())
+    .setAnnotationAdapter(
+      W3CAnnotationAdapter({
+        sourceUri: properties.source.uri,
+      }),
+    )
+    .setRenderParams({
+      defaultRenderer: 'underline',
+      renderFn: (a) => (isParagraphAnnotationType(a) ? 'gutter' : 'underline'),
+    })
+    .setTagLabelFn((w3cAnnotation) => {
+      const type = findTagging(w3cAnnotation);
+      if (!type || type.value === 'paragraph') {
+        return '';
+      }
+      return type.value;
+    })
+
+    //colorFn: colorForAnnotationType,
+    .setText(properties.source.content.text)
     .setAnnotations(properties.annotations)
     .selectAnnotations(properties.selectedAnnotations ?? [])
     .on('click', onSelectAnnotation.bind(true));

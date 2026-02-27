@@ -7,11 +7,7 @@
     @close-modal="onCancel"
   >
     <template #content>
-      <ControlWrapper
-        :label="selectLabel"
-        :error="false"
-        :required="true"
-      >
+      <ControlWrapper :label="selectLabel" :error="false" :required="true">
         <div class="border border-1 border-gray-200 my-2 text-lg">
           <div :id="id" />
           <!--          <GhentCdhAnnotations-->
@@ -22,12 +18,7 @@
           <!--            :cols="1"-->
           <!--            @on-event="eventHandler"-->
           <!--          />-->
-          <Btn
-            :outline="true"
-            @click="selectAll"
-          >
-            Select all text
-          </Btn>
+          <Btn :outline="true" @click="selectAll"> Select all text </Btn>
         </div>
       </ControlWrapper>
       <div class="flex gap-2 items-center">
@@ -35,20 +26,11 @@
       </div>
     </template>
     <template #actions>
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn
-        :disabled="disabled"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
     </template>
   </Modal>
 </template>
@@ -60,22 +42,19 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import type { AnnotatedText, W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
-  MarkdownTextAdapter,
-  W3CAnnotationAdapter,
-  WordSnapper,
   createAnnotatedText,
   createTextSelectionAnnotation,
   findTextPositionSelector,
+  MarkdownTextAdapter,
   updateTextSelectionAnnotation,
+  W3CAnnotationAdapter,
+  WordSnapper,
 } from '@ghentcdh/annotated-text';
 import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
 
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
 import { createSelection } from './selection.utils';
-import {
-  AnnotationTypeLabelValue,
-  IdentifyColorMap,
-} from '../../../identify.color';
+import { AnnotationTypeLabelValue } from '../../../identify.color';
 import { useAnnotationStore } from '../../store/annotation.store';
 
 // Schema for validation
@@ -142,30 +121,27 @@ onMounted(() => {
   const type = properties.annotationType;
   const color = IdentifyColorMap[type ?? 'paragraph'];
 
-  annotatedText = createAnnotatedText(id, {
-    text: MarkdownTextAdapter({
-      limit,
-    }),
-    annotation: W3CAnnotationAdapter({
-      sourceUri: sourceUri,
-      language: language,
-      edit: true,
-      create: properties.mode === 'create',
-      snapper: new WordSnapper(),
-      colorFn: (w3cAnnotation: W3CAnnotation) => color,
-      // defaultRender: 'underline',
-    }),
-  })
+  // colorFn: ((w3cAnnotation: W3CAnnotation) => color,
+  annotatedText = createAnnotatedText<W3CAnnotation>(id)
+    .setTextAdapter(MarkdownTextAdapter({ limit }))
+    .setAnnotationAdapter(
+      W3CAnnotationAdapter({
+        sourceUri,
+        language,
+        edit: true,
+        create: properties.mode === 'create',
+      }),
+    )
+    .setSnapper(new WordSnapper())
     .setText(text, false)
-    .setAnnotations(annotations)
-    .on('annotation-create--end', ({ mouseEvent, event, data }) => {
-      annotatedText.changeAnnotationAdapterConfig('create', false);
-      annotatedText.changeAnnotationAdapterConfig('edit', true);
-      annotation.value = data.annotation;
-    })
-    .on('annotation-update--end', ({ mouseEvent, event, data }) => {
-      annotation.value = data.annotation;
-    });
+    .setAnnotations(annotations);
+  // .on('annotation-create--end', ({ mouseEvent, event, data }) => {
+  //   annotatedText.setAnnotationAdapter({create: false, edit: true});
+  //   annotation.value = data.annotation;
+  // })
+  // .on('annotation-update--end', ({ mouseEvent, event, data }) => {
+  //   annotation.value = data.annotation;
+  // })));
 });
 
 const onCancel = () => {
@@ -218,9 +194,8 @@ const selectAll = () => {
     );
   }
 
-  annotatedText
-    .setAnnotations([annotation.value])
-    .changeAnnotationAdapterConfig('create', false)
-    .changeAnnotationAdapterConfig('edit', true);
+  annotatedText.setAnnotations([annotation.value]);
+  // .changeAnnotationAdapterConfig('create', false)
+  // .changeAnnotationAdapterConfig('edit', true);
 };
 </script>

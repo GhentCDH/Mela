@@ -4,23 +4,19 @@ import {
   getSectionTextIdFromUri,
 } from '@mela/text/shared';
 
-import type {
+import {
+  findTagging,
+  findTextPositionSelector,
   W3CAnnotation,
-  W3CAnnotationTarget,
 } from '@ghentcdh/annotated-text';
-import { findTagging, findTargetType } from '@ghentcdh/annotated-text';
 
 export const w3cAnnotationToAnnotationSelector = (
   annotation: W3CAnnotation,
 ): AnnotationSelector => {
-  const textPositionSelector = findTargetType<W3CAnnotationTarget>(
-    'Text',
-    (body) => {
-      return body.selector?.type === 'TextPositionSelector';
-    },
-  )(annotation);
   const tagging = findTagging(annotation);
+  const textPositionSelector = findTextPositionSelector()(annotation);
 
+  throw new Error('Not implemented');
   const textTranslationId = getSectionTextIdFromUri(
     textPositionSelector.source,
   );

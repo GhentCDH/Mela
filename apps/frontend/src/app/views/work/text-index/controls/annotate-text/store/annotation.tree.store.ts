@@ -36,7 +36,7 @@ class AnnotationTrees {
 export const useAnnotationTreeStore = (id: string) =>
   defineStore('annotationTreeStore', () => {
     const annotationStore = useAnnotationStore(id);
-    const sectionStore = useSectionStore(id);
+    const sectionStore = useSectionStore();
 
     const annotationTreesMap = computed(() => {
       const annotationTreeMap = new Map<string, AnnotationTree>();
