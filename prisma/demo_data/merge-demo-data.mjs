@@ -47,9 +47,9 @@ const allFiles = [
   'register.sql',
   'speech.sql',
 
-  // initiate book
-  'book.sql',
-  'chapter.sql',
+  // initiate work
+  'work.sql',
+  'section.sql',
 
   'text.sql',
   'text_content.sql',

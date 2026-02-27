@@ -5,7 +5,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
   {
     path: '/',
     name: 'home',
-    component: () => import('./app/views/book/book-index.vue'),
+    component: () => import('./app/views/work/work-index.vue'),
   },
   {
     path: '/form/:formId',
@@ -13,47 +13,47 @@ const routes: Readonly<RouteRecordRaw[]> = [
     component: () => import('./app/views/form/form.vue'),
   },
   {
-    path: '/book',
+    path: '/work',
     children: [
       {
         path: '',
-        name: 'book-index',
-        component: () => import('./app/views/book/book-index.vue'),
+        name: 'work-index',
+        component: () => import('./app/views/work/work-index.vue'),
         // TODO  add texts here
       },
       {
-        path: ':bookId',
-        component: () => import('./app/views/book/book-detail-wrapper.vue'),
+        path: ':workId',
+        component: () => import('./app/views/work/work-detail-wrapper.vue'),
         children: [
           {
             path: '',
-            name: 'book-detail',
-            component: () => import('./app/views/book/book-detail.vue'),
+            name: 'work-detail',
+            component: () => import('./app/views/work/work-detail.vue'),
           },
           {
-            path: 'chapter/:chapterId',
+            path: 'section/:sectionId',
             children: [
               {
                 path: '',
-                name: 'chapter-detail',
-                component: () => import('./app/views/book/chapter-detail.vue'),
+                name: 'section-detail',
+                component: () => import('./app/views/work/section-detail.vue'),
                 // TODO  add texts here
               },
               {
-                path: 'text-index/:textId',
-                name: 'text-index-view',
+                path: 'annotations',
+                name: 'annotation-view',
                 children: [
                   {
                     path: '',
-                    name: 'text-index-annotate',
+                    name: 'annotation-editor',
                     component: () =>
-                      import('./app/views/book/text-index/text-annotate.vue'),
+                      import('./app/views/work/annotation/editor.vue'),
                   },
                   {
                     path: 'preview',
-                    name: 'text-index-preview',
+                    name: 'annotation-preview',
                     component: () =>
-                      import('./app/views/book/text-index/text-preview.vue'),
+                      import('./app/views/work/annotation/preview.vue'),
                   },
                 ],
               },

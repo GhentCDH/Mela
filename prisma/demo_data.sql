@@ -22,15 +22,15 @@ values ('e8841145-8315-4dc5-83f9-933499ec15f8', 'μνημονεύω',
         'https://www.perseus.tufts.edu/hopper/morph?l=front%CE%AFs&la=greek#lexicon', false, false, false, false,
         '4940c245-48c9-4513-b7b3-473f6fcdbd5d', '2025-05-06 21:14:31.634', '2025-05-06 21:14:31.634');
 
-insert into public.book (id, name, author_id, year, created_at, updated_at)
+insert into public.work (id, name, author_id, year, created_at, updated_at)
 values ('73180d07-da39-4b49-8bcc-bb3c1e76c441', 'Dictionary', '5906e0ba-634c-41d7-9403-39dcc99d34b5', 2025,
         '2025-05-06 19:36:04.827', '2025-05-06 19:36:04.827');
 
-insert into public.chapter (id, chapter_number, chapter_order, name, book_id, created_at, updated_at)
+insert into public.section (id, section_number, section_order, name, work_id, created_at, updated_at)
 values ('2012b396-d69a-471b-98e6-36c367b0a006', '1', 0, 'Chapter 1', '73180d07-da39-4b49-8bcc-bb3c1e76c441',
         '2025-05-06 19:36:04.827', '2025-05-06 19:37:08.721');
 
-insert into public.text (id, created_at, updated_at, chapter_id)
+insert into public.text (id, created_at, updated_at, section_id)
 values ('441e9c43-90a4-4449-b1f7-cb34864398aa', '2025-05-06 19:37:08.706', '2025-05-06 19:37:08.721',
         '2012b396-d69a-471b-98e6-36c367b0a006');
 
@@ -738,391 +738,865 @@ values ('e61e0604-bac0-42ba-8c7c-751e8549fd9c', '{
 
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('db04615d-2bf8-4cb4-8c20-123b82796571',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '6f05ce8f-6cc3-4a54-8171-537affe96ef5', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('3e1f0d00-3b57-4faa-a1e0-1a5de71c3fd6',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 604, "type": "TextPositionSelector", "start": 336}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 604,
+            "type": "TextPositionSelector",
+            "start": 336
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '6f05ce8f-6cc3-4a54-8171-537affe96ef5', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('e55eed07-b517-44b2-9f44-ec140f7b978d',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '882880f7-74a9-4faf-8e9f-f796a441cc9a', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('700f7e38-d12a-41bb-90f4-17b821074484',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 334, "type": "TextPositionSelector", "start": 241}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 334,
+            "type": "TextPositionSelector",
+            "start": 241
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '882880f7-74a9-4faf-8e9f-f796a441cc9a', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('382740ca-69a9-467a-a8e1-ecb241d75f99',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '29bf6b13-aa96-42ec-aad6-dc814950534f', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('da9a35e6-9bb2-46d3-98c9-6750126c1b92',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 604, "type": "TextPositionSelector", "start": 336}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 604,
+            "type": "TextPositionSelector",
+            "start": 336
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '29bf6b13-aa96-42ec-aad6-dc814950534f', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('8c6d9221-76fa-44e0-915f-c1417ce80287',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '38f616ca-70ee-4d48-8993-a3f3d838d321', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('9ab9b645-c268-4c0d-8804-d59bb090b19c',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 334, "type": "TextPositionSelector", "start": 241}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 334,
+            "type": "TextPositionSelector",
+            "start": 241
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '38f616ca-70ee-4d48-8993-a3f3d838d321', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('a3b945b2-2d5e-4de4-8733-ae037358a1b6',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         'cbda64bf-cc97-4824-9faa-cca470472102', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('0d9fa5c9-ac59-4de3-90d0-4a7f1b1a671c',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 423, "type": "TextPositionSelector", "start": 0}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 423,
+            "type": "TextPositionSelector",
+            "start": 0
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         'cbda64bf-cc97-4824-9faa-cca470472102', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('a3f7f4b1-0d74-4415-ac61-d44bcaddc1e9',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         '8a5c971e-a185-4eaf-9ef4-8ec3cf3198df', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('633bda07-6654-48f0-88c2-f6c5faa7640d',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 422, "type": "TextPositionSelector", "start": 0}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 422,
+            "type": "TextPositionSelector",
+            "start": 0
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         '8a5c971e-a185-4eaf-9ef4-8ec3cf3198df', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('df2c683f-1764-468f-8741-3b494d014388',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         '186eb204-efa4-4196-9676-6ff4ecef12b0', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('526a3be0-9882-4437-82ab-5c664b64e9fb',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         '7239b9d7-ec38-4578-bb4c-c318eeb73ae7', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('4d8c2d5c-a0bd-400e-9c87-f5204096395f',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 1490, "type": "TextPositionSelector", "start": 604}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 1490,
+            "type": "TextPositionSelector",
+            "start": 604
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         '186eb204-efa4-4196-9676-6ff4ecef12b0', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('28cc1feb-b523-4c8e-bdcf-fdaa66e621ff',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         '63284252-ed47-456f-90bc-28bae32168d5', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('0bd21ab0-af1b-46e7-9717-a7fc4473cb40',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 1259, "type": "TextPositionSelector", "start": 1195}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 1259,
+            "type": "TextPositionSelector",
+            "start": 1195
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         '63284252-ed47-456f-90bc-28bae32168d5', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('7509214b-75ea-4727-a017-2cbe8db3d7f2',
-        '{"type": "Text", "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"
+        }',
         '9344043e-1427-4c39-b122-15f22734caa0', 'annotation', '6f05ce8f-6cc3-4a54-8171-537affe96ef5',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('359fcb40-9cdf-4290-922c-4cecc91ad969',
-        '{"type": "Text", "source": "mela:annotation:7239b9d7-ec38-4578-bb4c-c318eeb73ae7"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:7239b9d7-ec38-4578-bb4c-c318eeb73ae7"
+        }',
         '9344043e-1427-4c39-b122-15f22734caa0', 'annotation', '7239b9d7-ec38-4578-bb4c-c318eeb73ae7',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('1f703332-a353-4d2c-a491-62fdf782cea3',
-        '{"type": "Text", "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"
+        }',
         '5a1e516f-072b-4350-8834-d325ba321510', 'annotation', '6f05ce8f-6cc3-4a54-8171-537affe96ef5',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('eee14944-a1a0-4335-a20e-d196b9a7f621',
-        '{"type": "Text", "source": "mela:annotation:d5b5e0b7-e4b5-4698-b4da-b1f150c55515"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:d5b5e0b7-e4b5-4698-b4da-b1f150c55515"
+        }',
         '5a1e516f-072b-4350-8834-d325ba321510', 'annotation', 'd5b5e0b7-e4b5-4698-b4da-b1f150c55515',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('ebf64373-0d71-45c9-84ff-69a74532c0b9',
-        '{"type": "Text", "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"
+        }',
         '71deda20-67e0-4bc8-834d-ac4a008b6066', 'annotation', '6f05ce8f-6cc3-4a54-8171-537affe96ef5',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('d7510546-2469-4c10-9110-f9de7747b38e',
-        '{"type": "Text", "source": "mela:annotation:63284252-ed47-456f-90bc-28bae32168d5"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:63284252-ed47-456f-90bc-28bae32168d5"
+        }',
         '71deda20-67e0-4bc8-834d-ac4a008b6066', 'annotation', '63284252-ed47-456f-90bc-28bae32168d5',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('f2b7e5e7-d58e-4c48-8197-b1494d510426',
-        '{"type": "Text", "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:6f05ce8f-6cc3-4a54-8171-537affe96ef5"
+        }',
         'e7d609cc-fdbe-4eeb-a056-3c2ad980ff11', 'annotation', '6f05ce8f-6cc3-4a54-8171-537affe96ef5',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('96703ad2-2c58-4c3c-9625-90466fde15ff',
-        '{"type": "Text", "source": "mela:annotation:7dba95bf-9ff7-4bb7-9d6c-2796b9aa4b32"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:7dba95bf-9ff7-4bb7-9d6c-2796b9aa4b32"
+        }',
         'e7d609cc-fdbe-4eeb-a056-3c2ad980ff11', 'annotation', '7dba95bf-9ff7-4bb7-9d6c-2796b9aa4b32',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('3a92100b-b2af-4bbb-98a5-e989cf8cd3f5',
-        '{"type": "Text", "source": "mela:annotation:38f616ca-70ee-4d48-8993-a3f3d838d321"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:38f616ca-70ee-4d48-8993-a3f3d838d321"
+        }',
         '8624c787-3500-452c-91c4-14c750b0ec16', 'annotation', '38f616ca-70ee-4d48-8993-a3f3d838d321',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('bf6b1b12-d349-4389-99b9-3a4c0bd307e7',
-        '{"type": "Text", "source": "mela:annotation:619a5c8c-d76f-44c6-b7d9-910f245509b7"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:619a5c8c-d76f-44c6-b7d9-910f245509b7"
+        }',
         '8624c787-3500-452c-91c4-14c750b0ec16', 'annotation', '619a5c8c-d76f-44c6-b7d9-910f245509b7',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('eeb94cf3-24cd-4bec-b6ff-875f9ba77c52',
-        '{"type": "Text", "source": "mela:annotation:0f6f40d7-3053-47bb-b4f0-7864b1bec260"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:0f6f40d7-3053-47bb-b4f0-7864b1bec260"
+        }',
         'e8cf384d-9120-48ce-b84f-903e035e33bf', 'annotation', '0f6f40d7-3053-47bb-b4f0-7864b1bec260',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('a79def95-c586-4b2e-8652-d352182d0efa',
-        '{"type": "Text", "source": "mela:annotation:8a5c971e-a185-4eaf-9ef4-8ec3cf3198df"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:8a5c971e-a185-4eaf-9ef4-8ec3cf3198df"
+        }',
         'e8cf384d-9120-48ce-b84f-903e035e33bf', 'annotation', '8a5c971e-a185-4eaf-9ef4-8ec3cf3198df',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('ebd35cb4-5c49-428e-be08-7faeb3cfccce',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         'd5b5e0b7-e4b5-4698-b4da-b1f150c55515', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('16f3c031-7ef2-42d3-b4a1-a47dbd495c6a',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 1194, "type": "TextPositionSelector", "start": 937}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 1194,
+            "type": "TextPositionSelector",
+            "start": 937
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         'd5b5e0b7-e4b5-4698-b4da-b1f150c55515', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('7fcf538d-6bf7-4ef8-abbb-8bb6824d1ae3',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         'd3ae2da0-829b-49b3-b56c-667dfbca6725', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('cc01976c-fe2b-48af-9dd8-03a66e9a4301',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 602, "type": "TextPositionSelector", "start": 425}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 602,
+            "type": "TextPositionSelector",
+            "start": 425
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         'd3ae2da0-829b-49b3-b56c-667dfbca6725', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('c584208d-d9c4-4886-8b72-d5dfe8b87a97',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 936, "type": "TextPositionSelector", "start": 604}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 936,
+            "type": "TextPositionSelector",
+            "start": 604
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         '7239b9d7-ec38-4578-bb4c-c318eeb73ae7', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('39915d85-43bd-443b-a381-f3bcba7a91ac',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         '7dba95bf-9ff7-4bb7-9d6c-2796b9aa4b32', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('a0a0466e-800e-4c7e-ae32-f8f37ad1cea8',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 1489, "type": "TextPositionSelector", "start": 1260}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 1489,
+            "type": "TextPositionSelector",
+            "start": 1260
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         '7dba95bf-9ff7-4bb7-9d6c-2796b9aa4b32', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('26d7181e-e0a7-47b0-92b9-0d75140fa6be',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "processingLanguage": "en"
+        }',
         '619a5c8c-d76f-44c6-b7d9-910f245509b7', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('d66c60a4-2190-4415-826b-baf2c0f8a845',
-        '{"type": "Text", "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823", "selector": {"end": 601, "type": "TextPositionSelector", "start": 425}, "textDirection": "ltr", "processingLanguage": "en"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:a9666b2e-28a2-49c4-9135-8fd0b0405823",
+          "selector": {
+            "end": 601,
+            "type": "TextPositionSelector",
+            "start": 425
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "en"
+        }',
         '619a5c8c-d76f-44c6-b7d9-910f245509b7', 'text_content', 'a9666b2e-28a2-49c4-9135-8fd0b0405823',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('9b48c756-2c7a-4071-a568-dbc7f5301252',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'd5bf673d-fabc-406c-914e-a2e2e59956b5', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('4ae92005-2af5-4b2f-8079-8f946dc3db19',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 238, "type": "TextPositionSelector", "start": 0}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 238,
+            "type": "TextPositionSelector",
+            "start": 0
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'd5bf673d-fabc-406c-914e-a2e2e59956b5', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('4f29ca56-9767-44ef-bc57-908d15c56cd1',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'c5d7ee09-4673-42c8-ae81-1dc965e29202', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('5dc9650f-8919-4831-8e45-92307e4c63f5',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 36, "type": "TextPositionSelector", "start": 17}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 36,
+            "type": "TextPositionSelector",
+            "start": 17
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'c5d7ee09-4673-42c8-ae81-1dc965e29202', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('ed11030f-8d4b-459d-bfd0-b25a7ddfd790',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'c989c8ca-d556-42b0-87ac-736eda2ca7f0', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('75f3755e-480c-42bc-a05d-2c9bd12ebc8a',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 72, "type": "TextPositionSelector", "start": 39}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 72,
+            "type": "TextPositionSelector",
+            "start": 39
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'c989c8ca-d556-42b0-87ac-736eda2ca7f0', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('c8413d92-3224-47a4-bbad-66c21be1ed25',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '2c941e47-9f87-43ad-a5f7-3baf156f4305', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('41324c5f-f462-4e44-b559-430fc58f2fc9',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 110, "type": "TextPositionSelector", "start": 87}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 110,
+            "type": "TextPositionSelector",
+            "start": 87
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '2c941e47-9f87-43ad-a5f7-3baf156f4305', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('49bbc3da-373e-4c31-a87a-a1e116b164d8',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '0f6f40d7-3053-47bb-b4f0-7864b1bec260', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('8b30abd5-3095-436e-9213-cc760f6a3795',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 237, "type": "TextPositionSelector", "start": 0}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 237,
+            "type": "TextPositionSelector",
+            "start": 0
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '0f6f40d7-3053-47bb-b4f0-7864b1bec260', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('079e372b-35c9-47f3-ae4b-f93bfe05afd6',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '849e706d-30d0-4eff-b44a-169decf05b55', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('0579aba6-94c1-4fb2-9e2f-5f01756aee4d',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 144, "type": "TextPositionSelector", "start": 132}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 144,
+            "type": "TextPositionSelector",
+            "start": 132
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '849e706d-30d0-4eff-b44a-169decf05b55', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('93487d1b-3193-4dff-898f-827a3e766de5',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'a0b0b852-97c0-4185-8b5d-77ef33c5f971', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('8be575ef-29cf-4136-866c-88e5ebd73b70',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 144, "type": "TextPositionSelector", "start": 132}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 144,
+            "type": "TextPositionSelector",
+            "start": 132
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'a0b0b852-97c0-4185-8b5d-77ef33c5f971', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('120d3a3e-5b2d-4d35-a93b-6093ef7c30be',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '33c6191b-b82d-4dc1-8db4-7ffa4574db97', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('fdd41f17-1a8a-4c61-8624-56b83c6d6408',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 161, "type": "TextPositionSelector", "start": 150}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 161,
+            "type": "TextPositionSelector",
+            "start": 150
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '33c6191b-b82d-4dc1-8db4-7ffa4574db97', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('ec3bc5ef-3a5e-4a2c-b6ea-f71365e16146',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'ac7a50f3-901f-41f1-bae3-01737dd99f24', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('91da213f-5317-4024-a12e-421a07b8a857',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 175, "type": "TextPositionSelector", "start": 167}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 175,
+            "type": "TextPositionSelector",
+            "start": 167
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'ac7a50f3-901f-41f1-bae3-01737dd99f24', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('042461b0-e8d6-4e92-bd74-47e66c9b8a6c',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '4346753d-c4dc-4970-a451-f0c66d28ed8a', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('b54d9ba9-ecd7-4a78-88b7-de11c2035f0f',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 193, "type": "TextPositionSelector", "start": 187}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 193,
+            "type": "TextPositionSelector",
+            "start": 187
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '4346753d-c4dc-4970-a451-f0c66d28ed8a', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('a78a399d-f043-4f35-8b58-634a3ea88087',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '34c0b727-5555-48a2-93ff-95fd6c828c48', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('1ed040bf-8aac-43f6-a2c4-71ceb94461f0',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 236, "type": "TextPositionSelector", "start": 233}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 236,
+            "type": "TextPositionSelector",
+            "start": 233
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '34c0b727-5555-48a2-93ff-95fd6c828c48', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('57a61e3a-7a85-4073-8e78-31739b79ad71',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'b1430d8b-ca61-4437-a29b-28015e7a5880', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('f2c9eb54-957e-4988-8ea0-085a6459536a',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 204, "type": "TextPositionSelector", "start": 199}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 204,
+            "type": "TextPositionSelector",
+            "start": 199
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'b1430d8b-ca61-4437-a29b-28015e7a5880', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('706ff14d-e11b-4a0b-87d8-38cda36c5257',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '2f00c587-94ee-408d-ab73-dc941d084ab6', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('d4253ac2-504d-4d26-a364-c10a1bba1cea',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 215, "type": "TextPositionSelector", "start": 210}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 215,
+            "type": "TextPositionSelector",
+            "start": 210
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '2f00c587-94ee-408d-ab73-dc941d084ab6', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('1d949369-9ec1-45ca-83d3-d895385106ff',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '4b574349-02a9-4a38-a926-47e81162864d', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('cffa7ca2-8366-44aa-93f2-07ac2ec511cd',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 227, "type": "TextPositionSelector", "start": 221}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 227,
+            "type": "TextPositionSelector",
+            "start": 221
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '4b574349-02a9-4a38-a926-47e81162864d', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('f40b8e82-bb70-493f-99fe-6581702bf3e4',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'a56ad06f-53c3-4540-9819-bf033c6ebd97', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('98adbd07-7382-493e-b5ee-6c6d5b3f6d5d',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 25, "type": "TextPositionSelector", "start": 17}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 25,
+            "type": "TextPositionSelector",
+            "start": 17
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'a56ad06f-53c3-4540-9819-bf033c6ebd97', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('fe215f42-ffd7-4517-a13e-62844c2f2d26',
-        '{"type": "Text", "source": "mela:annotation:c5d7ee09-4673-42c8-ae81-1dc965e29202"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:c5d7ee09-4673-42c8-ae81-1dc965e29202"
+        }',
         '6ec5cebb-dabd-40f6-8244-80da93b7a63d', 'annotation', 'c5d7ee09-4673-42c8-ae81-1dc965e29202',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('acb571bb-9d5b-4e5b-b552-8412177bc6d4',
-        '{"type": "Text", "source": "mela:annotation:a56ad06f-53c3-4540-9819-bf033c6ebd97"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:a56ad06f-53c3-4540-9819-bf033c6ebd97"
+        }',
         '6ec5cebb-dabd-40f6-8244-80da93b7a63d', 'annotation', 'a56ad06f-53c3-4540-9819-bf033c6ebd97',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('1678851f-330e-402a-b2a0-9e6783aa325b',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         'aed78aa3-5191-4487-8363-7a1a47ce2b72', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('b6dad2cc-9b3b-4d78-b426-1c28cf0d00f1',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 48, "type": "TextPositionSelector", "start": 43}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 48,
+            "type": "TextPositionSelector",
+            "start": 43
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         'aed78aa3-5191-4487-8363-7a1a47ce2b72', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('169e5b14-00c5-4369-bbdd-de3fb68fec5c',
-        '{"type": "Text", "source": "mela:annotation:c989c8ca-d556-42b0-87ac-736eda2ca7f0"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:c989c8ca-d556-42b0-87ac-736eda2ca7f0"
+        }',
         '1a1b16b8-a315-4b51-bd81-1c717f0e3058', 'annotation', 'c989c8ca-d556-42b0-87ac-736eda2ca7f0',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('5d0b54f6-3edc-460e-9d51-fdb8b4b73634',
-        '{"type": "Text", "source": "mela:annotation:aed78aa3-5191-4487-8363-7a1a47ce2b72"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:aed78aa3-5191-4487-8363-7a1a47ce2b72"
+        }',
         '1a1b16b8-a315-4b51-bd81-1c717f0e3058', 'annotation', 'aed78aa3-5191-4487-8363-7a1a47ce2b72',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('0c3e2fb2-5402-4793-97af-6b86c9f8f22a',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "processingLanguage": "gr"
+        }',
         '918cf1a2-32b3-4eb7-b49b-d1f7294f66e0', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('972ac303-5282-4db0-a1f4-88babf2f93c3',
-        '{"type": "Text", "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae", "selector": {"end": 95, "type": "TextPositionSelector", "start": 87}, "textDirection": "ltr", "processingLanguage": "gr"}',
+        '{
+          "type": "Text",
+          "source": "mela:text-content:cbf90100-245d-464a-8388-f1dd295ec4ae",
+          "selector": {
+            "end": 95,
+            "type": "TextPositionSelector",
+            "start": 87
+          },
+          "textDirection": "ltr",
+          "processingLanguage": "gr"
+        }',
         '918cf1a2-32b3-4eb7-b49b-d1f7294f66e0', 'text_content', 'cbf90100-245d-464a-8388-f1dd295ec4ae',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('d749037f-dc5a-4f80-977a-528694e21223',
-        '{"type": "Text", "source": "mela:annotation:2c941e47-9f87-43ad-a5f7-3baf156f4305"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:2c941e47-9f87-43ad-a5f7-3baf156f4305"
+        }',
         'b077dd1d-9a2f-49fe-9281-dff1102f3458', 'annotation', '2c941e47-9f87-43ad-a5f7-3baf156f4305',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');
 INSERT INTO public.annotation_target (id, value, annotation_id, source_type, source_id, created_at, updated_at)
 VALUES ('19aa9780-9f35-4491-b896-b022b14d8b4c',
-        '{"type": "Text", "source": "mela:annotation:918cf1a2-32b3-4eb7-b49b-d1f7294f66e0"}',
+        '{
+          "type": "Text",
+          "source": "mela:annotation:918cf1a2-32b3-4eb7-b49b-d1f7294f66e0"
+        }',
         'b077dd1d-9a2f-49fe-9281-dff1102f3458', 'annotation', '918cf1a2-32b3-4eb7-b49b-d1f7294f66e0',
         '2025-05-06 21:42:46.767', '2025-05-06 21:42:46.767');

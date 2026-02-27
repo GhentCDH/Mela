@@ -5,8 +5,8 @@ import { FormKey } from '../views/form/form.def';
 export const menu = (): ShellMenu => {
   return [
     {
-      label: 'Books',
-      routerLink: 'book-index',
+      label: 'Works',
+      routerLink: 'work-index',
     },
     {
       label: 'Authors',
@@ -14,17 +14,17 @@ export const menu = (): ShellMenu => {
       params: { formId: FormKey.author },
     },
     {
-      label: 'Register',
+      label: 'Registers',
       routerLink: 'form',
       params: { formId: FormKey.register },
     },
     {
-      label: 'Speech',
+      label: 'Parts of speech',
       routerLink: 'form',
       params: { formId: FormKey.speech },
     },
     {
-      label: 'Lemma',
+      label: 'Lemmas',
       routerLink: 'form',
       params: { formId: FormKey.lemma },
     },

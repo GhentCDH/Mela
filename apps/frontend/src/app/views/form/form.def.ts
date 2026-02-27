@@ -37,7 +37,7 @@ export const FormDictionary: Record<FormKey, FormDef> = {
   speech: {
     formId: 'speech',
     formSchema: SpeechFormSchema.schema,
-    tableTitle: 'Speech',
+    tableTitle: 'Part of speech',
     title: 'Speech',
   },
   lemma: {

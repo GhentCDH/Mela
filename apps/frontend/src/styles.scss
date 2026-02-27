@@ -1,4 +1,11 @@
+@import "tailwindcss";
+
+
+@plugin "daisyui" {
+  themes: ugent --default;
+}
 @import '@ghentcdh/ui/index.css';
+
 
 @source "../../../apps/frontend";
 @source "../../../libs";

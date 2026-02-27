@@ -18,6 +18,8 @@ async function bootstrapApp() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix(globalPrefix);
 
+  app.enableCors();
+
   //#region Add swagger
   const config = new DocumentBuilder()
     .setTitle('Mela backend')
