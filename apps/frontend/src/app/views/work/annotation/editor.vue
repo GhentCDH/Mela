@@ -1,5 +1,9 @@
 <template>
-  <Drawer class="_h-full" :width-left="300" :width-right="300">
+  <Drawer
+    class="_h-full"
+    :width-left="300"
+    :width-right="300"
+  >
     <Loading :loading="!sectionStore.section" />
     <div class="grid grid-cols-2 gap-2">
       <content-edit
@@ -10,7 +14,7 @@
         :annotations="annotationStore.annotations"
       />
     </div>
-    <template #left-drawer> </template>
+    <template #left-drawer />
   </Drawer>
 </template>
 <script setup lang="ts">
