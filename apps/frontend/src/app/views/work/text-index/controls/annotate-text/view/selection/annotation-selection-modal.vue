@@ -7,18 +7,17 @@
     @close-modal="onCancel"
   >
     <template #content>
-      <ControlWrapper :label="selectLabel" :error="false" :required="true">
+      <ControlWrapper
+        :label="selectLabel"
+        :error="false"
+        :required="true"
+        width="full"
+      >
         <div class="border border-1 border-gray-200 my-2 text-lg">
           <div :id="id" />
-          <!--          <GhentCdhAnnotations-->
-          <!--            :sources="sources"-->
-          <!--            :annotations="annotations"-->
-          <!--            :annotation-actions="annotationActions"-->
-          <!--            :use-snapper="useWordSnapper"-->
-          <!--            :cols="1"-->
-          <!--            @on-event="eventHandler"-->
-          <!--          />-->
-          <Btn :outline="true" @click="selectAll"> Select all text </Btn>
+          <Btn :outline="true" @click="selectAll" class="mt-2">
+            Select all text
+          </Btn>
         </div>
       </ControlWrapper>
       <div class="flex gap-2 items-center">
@@ -45,7 +44,6 @@ import {
   createAnnotatedText,
   createTextSelectionAnnotation,
   findTextPositionSelector,
-  MarkdownTextAdapter,
   updateTextSelectionAnnotation,
   W3CAnnotationAdapter,
   WordSnapper,
@@ -56,6 +54,10 @@ import type { AnnotationSelectionModalProps } from './annotation-selection-modal
 import { createSelection } from './selection.utils';
 import { AnnotationTypeLabelValue } from '../../../identify.color';
 import { useAnnotationStore } from '../../store/annotation.store';
+import {
+  annotationStyles,
+  defaultStyle,
+} from '../../../../../../../style/annotation.style';
 
 // Schema for validation
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
@@ -98,7 +100,7 @@ const textPositionSelector = () => {
 
   const sourceUri = properties.source.uri;
 
-  return findTextPositionSelector(sourceUri)(parent)?.selector;
+  return findTextPositionSelector(sourceUri)(parent);
 };
 
 onMounted(() => {
@@ -106,6 +108,7 @@ onMounted(() => {
   const annotations = properties.mode === 'edit' ? [properties.annotation] : [];
   const language = properties.source.content.processingLanguage;
   const sourceUri = properties.source.uri;
+  const textDirection = properties.source.content.textDirection;
   const text = properties.source.content.text;
 
   let selector = textPositionSelector();
@@ -117,13 +120,9 @@ onMounted(() => {
         ignoreLines: true,
       }
     : undefined;
-
-  const type = properties.annotationType;
-  const color = IdentifyColorMap[type ?? 'paragraph'];
-
   // colorFn: ((w3cAnnotation: W3CAnnotation) => color,
   annotatedText = createAnnotatedText<W3CAnnotation>(id)
-    .setTextAdapter(MarkdownTextAdapter({ limit }))
+    // .setTextAdapter(MarkdownTextAdapter({ limit, textDirection }))
     .setAnnotationAdapter(
       W3CAnnotationAdapter({
         sourceUri,
@@ -133,15 +132,19 @@ onMounted(() => {
       }),
     )
     .setSnapper(new WordSnapper())
-    .setText(text, false)
-    .setAnnotations(annotations);
-  // .on('annotation-create--end', ({ mouseEvent, event, data }) => {
-  //   annotatedText.setAnnotationAdapter({create: false, edit: true});
-  //   annotation.value = data.annotation;
-  // })
-  // .on('annotation-update--end', ({ mouseEvent, event, data }) => {
-  //   annotation.value = data.annotation;
-  // })));
+    .setStyleParams({
+      styleFn: defaultStyle,
+    })
+    .registerStyles(annotationStyles)
+    .setText(text)
+    .setAnnotations(annotations)
+    .on('annotation-create--end', ({ mouseEvent, event, data }) => {
+      annotatedText.setAnnotationAdapter({ create: false, edit: true });
+      annotation.value = data.annotation;
+    })
+    .on('annotation-edit--end', ({ mouseEvent, event, data }) => {
+      annotation.value = data.annotation;
+    });
 });
 
 const onCancel = () => {
@@ -149,6 +152,7 @@ const onCancel = () => {
 };
 
 const onSubmit = async () => {
+  console.log('onSubmit', annotation.value);
   const data = createSelection(
     annotation.value,
     properties.annotationType,

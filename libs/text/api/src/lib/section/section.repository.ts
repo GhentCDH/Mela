@@ -3,9 +3,9 @@ import { omit } from 'lodash-es';
 import { ZodSchema } from 'zod';
 
 import { PrismaService } from '@mela/generated-prisma';
-import { Section, SectionSchema } from '@mela/generated-types';
+import { type AnnotationNewWithRelations, Section, SectionSchema } from '@mela/generated-types';
 
-import type { SectionDto } from '@mela/text/shared';
+import { mapToW3CAnnotation, SectionDto } from '@mela/text/shared';
 
 import { AbstractRepository } from '../shared/repository.service';
 
@@ -72,8 +72,47 @@ export class SectionRepository extends AbstractRepository<Section, SectionDto> {
         }),
       ),
     );
-    console.log(updates);
     return updates;
     // return updates.map((text) => ({ id: text.id }));
+  }
+
+  public findAnnotations(id: string) {
+    //first get section text content ids
+    //then get related text ids
+
+    return this.prisma.section
+      .findUnique({
+        where: { id },
+        include: {
+          section_text: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      })
+      .then((section) => {
+        if (!section) return [];
+        const textIds = section.section_text.map((text) => text.id);
+
+        return this.prisma.annotationNew
+          .findMany({
+            include: {
+              textSelector: true,
+              type: true,
+            },
+            where: { section_text_id: { in: textIds } },
+          })
+          .then((annotations: AnnotationNewWithRelations[]) => {
+            const mappedAnnotations = annotations.map(mapToW3CAnnotation);
+
+            return mappedAnnotations;
+          });
+        // return this.prisma.annotationNew.findMany({
+        //   where: {
+        //     section_text_id: { in: textIds },
+        //   },
+        // });
+      });
   }
 }

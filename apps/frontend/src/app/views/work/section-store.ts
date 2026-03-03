@@ -41,6 +41,7 @@ export const useSectionStore = defineStore('sectionStore', () => {
   );
 
   const getSection = async () => {
+    const _r = reload.watchReload;
     if (!sectionId.value) return null;
 
     if (sectionId.value === NEW_SECTION_ID) {

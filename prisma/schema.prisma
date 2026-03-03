@@ -68,7 +68,50 @@ model SectionText {
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
+  annotations AnnotationNew[]
   @@map("section_text")
+}
+
+model AnnotationDef {
+  id   String @id
+  name String @unique
+  json_schema Json?
+  ui_schema Json?
+  color String
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
+
+  annotations AnnotationNew[]
+  @@map("annotation_def")
+}
+
+model AnnotationNew {
+  id               String             @id @default(uuid())
+  type AnnotationDef @relation(fields: [type_id], references: [id])
+  type_id String
+  textSelector AnnotationTextSelector @relation(fields:[text_selector_id], references: [id])
+  text_selector_id String
+  sectionText SectionText? @relation(fields: [section_text_id], references: [id])
+  section_text_id String?
+  value Json
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
+
+  @@map("annotation_new")
+}
+
+
+model AnnotationTextSelector {
+  id   String @id @default(uuid())
+  start Int
+  end Int
+  prefix String
+  suffix String
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt @default(now())
+
+  annotations AnnotationNew[]
+  @@map("annotation_text_selector")
 }
 
 model Annotation {

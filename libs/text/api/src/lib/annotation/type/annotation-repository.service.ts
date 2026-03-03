@@ -25,7 +25,7 @@ import { AnnotationTypeDto } from './annotation-type.schema';
 import { createExample } from './utils/create-example';
 import { createLemma } from './utils/create-lemma';
 import { createLinks } from './utils/create-links';
-import { createSelector, getTextSelection } from './utils/create-selector';
+import { getTextSelection } from './utils/create-selector';
 import { ExampleRepository } from '../../example/example-repository.service';
 
 @Injectable()
@@ -74,6 +74,10 @@ export class AnnotationTypeRepository {
       default:
         throw new BadRequestException('Invalid annotation type');
     }
+    console.log('created', updatedAnnotation);
+    return this.prisma.annotationNew.findFirstOrThrow({
+      where: { id: updatedAnnotation.id },
+    });
     return this.annotationRepository.findOne(updatedAnnotation.id);
   }
 
@@ -139,20 +143,78 @@ export class AnnotationTypeRepository {
 
   // endregion
 
+  private async getType(data: AnnotationSelector) {
+    console.log(data.type);
+    return this.prisma.annotationDef.findFirstOrThrow({
+      where: { id: data.annotation.tagging },
+    });
+  }
+
+  private async getSectionText(data: AnnotationSelector) {
+    return this.prisma.sectionText.findFirstOrThrow({
+      where: { id: data.textContent.id },
+    });
+  }
+
   // region textselection
   private async updateTextSelection(
     id: string | null,
     data: AnnotationSelector,
   ) {
-    const textContent = await this.prisma.textContent.findFirstOrThrow({
-      where: { id: data.textContent.id },
+    console.log('update text selection', data);
+    const [type, sectionText] = await Promise.all([
+      this.getType(data),
+      this.getSectionText(data),
+    ]);
+
+    const { start, end } = data.annotation;
+    const prefixStart = Math.max(start - 5, 0);
+    const prefix = sectionText.content.substring(
+      prefixStart,
+      data.annotation.start,
+    );
+    const suffixEnd = Math.min(end + 5, sectionText.content.length);
+    const suffix = sectionText.content.substring(
+      data.annotation.end,
+      suffixEnd,
+    );
+    const value = {};
+
+    if (!id) {
+      return this.prisma.annotationNew.create({
+        data: {
+          type: { connect: { id: type.id } },
+          sectionText: { connect: { id: sectionText.id } },
+          value,
+          textSelector: {
+            create: {
+              start,
+              end,
+              suffix,
+              prefix,
+            },
+          },
+        },
+      });
+    }
+
+    return this.prisma.annotationNew.update({
+      where: { id },
+      data: {
+        type: { connect: { id: type.id } },
+        sourceContent: { connect: { id: data.textContent.id } },
+        value,
+        textSelector: {
+          update: {
+            start,
+            end,
+            suffix,
+            prefix,
+          },
+        },
+      },
     });
-    const annotation = createSelector(textContent, data.annotation);
-
-    if (!id) return this.annotationRepository.create(annotation);
-    return this.annotationRepository.update(id, annotation);
   }
-
   // endregion
 
   // region links

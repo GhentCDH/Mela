@@ -51,6 +51,13 @@ export class SectionController extends AbstractController<
     return super.create(dto);
   }
 
+  @Get('/:id/annotation')
+  @ApiCreatedResponse({
+    type: SectionDto,
+  })
+  override async findAnnotations(@Param('id') id: string): Promise<SectionDto> {
+    return this.repository.findAnnotations(id);
+  }
   @Get('/:id')
   @ApiCreatedResponse({
     type: SectionDto,

@@ -41,7 +41,6 @@ export default defineConfig({
       '@jsonforms/core',
       '@jsonforms/vue',
       '@jsonforms/vue-vanilla',
-      '@toast-ui/editor',
       '@anatine/zod-openapi',
       '@ghentcdh/tools-vue',
       '@ghentcdh/annotated-text',

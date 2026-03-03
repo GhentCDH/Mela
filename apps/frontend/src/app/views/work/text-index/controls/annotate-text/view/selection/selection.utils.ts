@@ -16,7 +16,7 @@ export const createSelection = (
 ) => {
   // Add the original start and endpoint
   const selector = annotation
-    ? findTextPositionSelector(sourceModel.uri)(annotation)?.selector
+    ? findTextPositionSelector(sourceModel.uri)(annotation)
     : null;
 
   const selection = {

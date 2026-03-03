@@ -18,5 +18,11 @@ export const useSectionRepository = defineStore('useSectionRepository', () => {
     },
   );
 
-  return { ...repo };
+  const getAnnotations = async (sectionId: string) => {
+    return useApi()
+      .get(`/section/${sectionId}/annotation`)
+      .then((res) => res.data);
+  };
+
+  return { ...repo, getAnnotations };
 });
