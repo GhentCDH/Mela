@@ -23,7 +23,6 @@ export const useSectionStore = defineStore('sectionStore', () => {
       }
 
       return sectionRepository.get(id).then((data) => {
-        console.log(data);
         if (data.work_id !== params.workId) {
           NotificationService.error('Section is no part of the work');
           return null;

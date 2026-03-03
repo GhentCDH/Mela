@@ -21,7 +21,7 @@ export class DataStore<DATA, ITEM> {
 
       const id = this.id.value;
       if (!id) {
-        this.data.value = [];
+        this.data.value = null;
         return;
       }
 

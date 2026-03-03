@@ -154,7 +154,6 @@ const onCancel = () => {
 };
 
 const onSubmit = async () => {
-  console.log('onSubmit', annotation.value);
   const data = createSelection(
     annotation.value,
     properties.annotationType,

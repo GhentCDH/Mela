@@ -3,7 +3,6 @@ import {
   AnnotationExampleLemma,
   AnnotationLink,
   AnnotationSelector,
-  ExampleDto,
   PURPOSE_ANNOTATION_SELECT,
   PURPOSE_EXAMPLE,
   PURPOSE_LEMA,
@@ -22,18 +21,16 @@ import {
 
 import { AnnotationRepository } from '../annotation-repository.service';
 import { AnnotationTypeDto } from './annotation-type.schema';
-import { createExample } from './utils/create-example';
 import { createLemma } from './utils/create-lemma';
 import { createLinks } from './utils/create-links';
-import { getTextSelection } from './utils/create-selector';
-import { ExampleRepository } from '../../example/example-repository.service';
+import { RegisterRepository } from '../../register/register-repository.service';
 
 @Injectable()
 export class AnnotationTypeRepository {
   constructor(
     private readonly prisma: PrismaService,
     private readonly annotationRepository: AnnotationRepository,
-    private readonly exampleRepository: ExampleRepository,
+    private readonly registerRepository: RegisterRepository,
   ) {}
 
   async create(data: AnnotationTypeDto) {
@@ -118,30 +115,37 @@ export class AnnotationTypeRepository {
 
   // region example
   private async updateExample(id: string | null, data: AnnotationExample) {
-    const textContent = await this.prisma.textContent.findFirstOrThrow({
-      where: { id: data.textContent.id },
+    // const textContent = await this.prisma.textContent.findFirstOrThrow({
+    //   where: { id: data.textContent.id },
+    // });
+    //
+    // const exampledto = {
+    //   register: data.example.register,
+    //   name: getTextSelection(textContent, data.annotation),
+    //   textContent,
+    // } as ExampleDto;
+    //
+    // const example = await (data.example.id
+    //   ? this.exampleRepository.update(data.example.id!, exampledto)
+    //   : this.exampleRepository.create(exampledto));
+
+    const register = this.registerRepository.findOrCreate(
+      data.example.register,
+    );
+
+    return this.updateTextSelection(id, data, {
+      register,
     });
-
-    const exampledto = {
-      register: data.example.register,
-      name: getTextSelection(textContent, data.annotation),
-      textContent,
-    } as ExampleDto;
-
-    const example = await (data.example.id
-      ? this.exampleRepository.update(data.example.id!, exampledto)
-      : this.exampleRepository.create(exampledto));
-
-    const annotation = createExample(example, textContent, data.annotation);
-
-    if (!id) return this.annotationRepository.create(annotation);
-    return this.annotationRepository.update(id, annotation);
+    //
+    // const annotation = createExample(example, textContent, data.annotation);
+    //
+    // if (!id) return this.annotationRepository.create(annotation);
+    // return this.annotationRepository.update(id, annotation);
   }
 
   // endregion
 
   private async getType(data: AnnotationSelector) {
-    console.log(data.type);
     return this.prisma.annotationDef.findFirstOrThrow({
       where: { id: data.annotation.tagging },
     });
@@ -157,12 +161,14 @@ export class AnnotationTypeRepository {
   private async updateTextSelection(
     id: string | null,
     data: AnnotationSelector,
+    value: any = {},
   ) {
-    console.log('update text selection', data);
     const [type, sectionText] = await Promise.all([
       this.getType(data),
       this.getSectionText(data),
     ]);
+
+    // TODO validate value against json schema
 
     const { start, end } = data.annotation;
     const prefixStart = Math.max(start - 5, 0);
@@ -175,7 +181,6 @@ export class AnnotationTypeRepository {
       data.annotation.end,
       suffixEnd,
     );
-    const value = {};
 
     if (!id) {
       return this.prisma.annotationNew.create({

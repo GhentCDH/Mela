@@ -14,4 +14,19 @@ export class RegisterRepository extends AbstractRepository<
   constructor(private readonly prisma: PrismaService) {
     super(prisma.register);
   }
+
+  async findOrCreate({ id, name }: Partial<Register>) {
+    if (id) {
+      return this.findOne(id);
+    }
+
+    console.log('id', id);
+    console.log('name', name);
+
+    const findRegister = await this.prisma.register.findFirst({
+      where: { name },
+    });
+    console.log('findRegister', findRegister);
+    return findRegister ?? this.create({ name });
+  }
 }

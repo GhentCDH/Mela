@@ -26,6 +26,8 @@ import {
 } from '../../../../style/annotation.style';
 import { SourceModel } from '@mela/text/shared';
 import ContentNavbar from './content-navbar.vue';
+import { useModeStore } from '../../text-index/controls/annotate-text/store/mode.store';
+import { useAnnotationTranslation } from './annotation-translation/useAnnotationTranslation';
 
 const properties = defineProps<{
   source: SourceModel;
@@ -82,10 +84,10 @@ onMounted(() => {
     })
     .registerStyles(annotationStyles)
     .on('mouse-enter', (event) => {
-      annotationInfo.show(event.mouseEvent, {
-        annotation: event.data.annotation,
-        source: properties.source,
-      });
+      onMouseEnter(event.mouseEvent!, event.data.annotation);
+    })
+    .on('click', (event) => {
+      onMouseClick(event.mouseEvent!, event.data.annotation);
     });
 
   setTextContent();
@@ -94,4 +96,28 @@ onMounted(() => {
 onUnmounted(() => {
   textAnnotation?.destroy();
 });
+
+const modeStore = useModeStore();
+const onMouseEnter = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
+  // Don't do anything if some operation is active
+  if (modeStore.activeMode) return;
+
+  annotationInfo.show(mouseEvent, {
+    annotation: annotation,
+    source: properties.source,
+  });
+};
+
+const onMouseClick = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
+  switch (modeStore.activeMode) {
+    case 'link_buckets':
+      break;
+    case 'translate':
+      useAnnotationTranslation().selectTranslation(
+        annotation,
+        properties.storeId,
+      );
+      break;
+  }
+};
 </script>

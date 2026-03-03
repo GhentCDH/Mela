@@ -14,6 +14,8 @@ import {
 import {
   ModalSelectionService
 } from '../../../text-index/controls/annotate-text/view/selection/modal-selection.service';
+import { useModeStore } from '../../../text-index/controls/annotate-text/store/mode.store';
+import { useAnnotationTranslation } from '../annotation-translation/useAnnotationTranslation';
 
 const properties = defineProps<{
   position: { x: number; y: number };
@@ -34,6 +36,8 @@ onUnmounted(() => {
 });
 
 function handleOutsideClick(e: MouseEvent) {
+  if (useModeStore().activeMode) return;
+
   if (cardRef.value && !cardRef.value.contains(e.target as Node)) {
     emit('close');
   }
@@ -47,6 +51,7 @@ const purpose = computed(() => {
   return annotation.value ? findPurpose(annotation.value) : '';
 });
 const annotationStore = useAnnotationStore(properties.storeId);
+const modeStore = useModeStore();
 
 const sentenceActions = {
   children: [
@@ -72,10 +77,12 @@ const sentenceActions = {
 };
 
 const addActions = computed(() => {
+  const disabled = !!modeStore.activeMode;
   const actions = addActionsPerType[purpose.value];
   if (actions.length === 1)
     return {
       icon: IconEnum.Plus,
+      disabled,
       label: `Add ${AnnotationTypeLabelValue[actions[0]].label}`,
       action: () => {
         createAnnotation(actions[0]);
@@ -85,6 +92,7 @@ const addActions = computed(() => {
   return {
     icon: IconEnum.Plus,
     label: 'Add',
+    disabled,
     children: actions.map((action) => ({
       label: AnnotationTypeLabelValue[action].label,
       action: () => {
@@ -94,23 +102,37 @@ const addActions = computed(() => {
   };
 });
 
-const actions: NavbarAction = computed(() => [
-  addActions.value,
-  {
-    icon: IconEnum.Edit,
-    label: 'Edit',
-    action: () => {
-      editAnnotation(purpose.value);
+const actions: NavbarAction = computed(() => {
+  const disabled = !!modeStore.activeMode;
+  return [
+    addActions.value,
+    {
+      icon: IconEnum.Edit,
+      label: 'Edit',
+      disabled,
+      action: () => {
+        editAnnotation(purpose.value);
+      },
     },
-  },
-  {
-    icon: IconEnum.Delete,
-    label: 'Delete',
-    action: () => {
-      annotationStore.deleteAnnotation(annotation.value!);
+    {
+      icon: IconEnum.Edit,
+      // TODO icon: IconEnum.Translate,
+      label: 'Add translation link',
+      disabled,
+      action: () => {
+        useAnnotationTranslation().startTranslation(annotation.value);
+      },
     },
-  },
-]);
+    {
+      icon: IconEnum.Delete,
+      label: 'Delete',
+      disabled,
+      action: () => {
+        annotationStore.deleteAnnotation(annotation.value!);
+      },
+    },
+  ];
+});
 
 const createAnnotation = (annotationType: Type) => {
   ModalSelectionService.createSelection({
@@ -142,6 +164,7 @@ const editAnnotation = (annotationType: Type) => {
   >
     <div class="card-body p-2">
       <div><strong>Type:</strong> {{ purpose }}</div>
+      <div v-if="modeStore.activeMode">Action in progress</div>
       <Navbar :actions="actions" />
     </div>
   </div>

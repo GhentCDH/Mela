@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useSectionRepository } from '../../../../repository/section.repository';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { ModalService } from '@ghentcdh/ui';
 import { useAnnotationRepository } from '../../../../repository/annotation.repository';
@@ -8,6 +8,8 @@ import type { AnnotationType } from '@mela/text/shared';
 import { AnnotationTester } from '../../text-index/controls/annotate-text/utils/tester';
 import { DataStore } from '../../../../repository/data.store';
 import { useRouteParams } from '../../../../utils/useRouteParams';
+import { findPurposeLowerCase } from '../../../../style/annotation.style';
+import type { AnnotationType as AnnotationTypeLabel } from '../../text-index/controls/identify.color';
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
@@ -23,8 +25,17 @@ export const useAnnotationStore = (id: string) =>
     const allAnnotations = computed(() => {
       return annotationDataStore.data.value;
     });
+
+    const selectedAnnotationTypes = ref<AnnotationTypeLabel[]>([]);
+
     const annotations = computed(() => {
-      return allAnnotations.value;
+      if (selectedAnnotationTypes.value.length === 0) {
+        return allAnnotations.value;
+      }
+      return allAnnotations.value?.filter((annotation) => {
+        const purpose = findPurposeLowerCase(annotation) as AnnotationTypeLabel;
+        return selectedAnnotationTypes.value.includes(purpose);
+      });
     });
 
     annotationDataStore.setId(params.sectionId as string);
@@ -57,5 +68,10 @@ export const useAnnotationStore = (id: string) =>
       return annotationDataStore.patchItem(id, annotation);
     };
 
-    return { annotations, deleteAnnotation, saveOrCreateAnnotation };
+    return {
+      annotations,
+      selectedAnnotationTypes,
+      deleteAnnotation,
+      saveOrCreateAnnotation,
+    };
   })();

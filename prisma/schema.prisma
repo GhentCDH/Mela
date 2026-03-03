@@ -98,8 +98,6 @@ model AnnotationNew {
   @@map("annotation_new")
 }
 
-
-
 model AnnotationTextSelector {
   id   String @id @default(uuid())
   start Int

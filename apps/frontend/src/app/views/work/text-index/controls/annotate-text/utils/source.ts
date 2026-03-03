@@ -21,18 +21,20 @@ const getSourceByUri = (
 };
 
 export const createSourceContent = (sources: SectionText[]): SourceModel[] => {
-  return sources.map((c) => {
-    return SourceModelSchema.parse({
-      content: SourceTextSchema.parse({
-        text: c.content,
-        label: c.text_type.toLocaleLowerCase(),
-        processingLanguage: c.language,
-      }),
-      id: c.id,
-      type: 'text',
-      uri: getSectionTextUri(c),
+  return sources
+    .sort((s1, s2) => (s1.text_type === 'SOURCE' ? -1 : 1))
+    .map((c) => {
+      return SourceModelSchema.parse({
+        content: SourceTextSchema.parse({
+          text: c.content,
+          label: c.text_type.toLocaleLowerCase(),
+          processingLanguage: c.language,
+        }),
+        id: c.id,
+        type: 'text',
+        uri: getSectionTextUri(c),
+      });
     });
-  });
 };
 
 export const SourceUtils = (sources: SourceModel[]) => {
