@@ -184,7 +184,6 @@ export class AnnotationTypeRepository {
       return this.prisma.annotationNew.create({
         data: {
           type: { connect: { id: type.id } },
-          sectionText: { connect: { id: sectionText.id } },
           value,
           textSelector: {
             create: {
@@ -192,6 +191,7 @@ export class AnnotationTypeRepository {
               end,
               suffix,
               prefix,
+              sectionText: { connect: { id: sectionText.id } },
             },
           },
         },

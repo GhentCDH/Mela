@@ -18,7 +18,7 @@ const mapTarget = (
   annotation: AnnotationNewWithRelations,
 ): W3CAnnotation['target'] => {
   const { textSelector } = annotation;
-  const section_text_id = annotation.section_text_id;
+  const section_text_id = annotation.textSelector?.section_text_id;
   return {
     type: 'Text',
     source: section_text_id

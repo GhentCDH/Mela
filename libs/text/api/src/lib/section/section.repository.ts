@@ -3,7 +3,11 @@ import { omit } from 'lodash-es';
 import { ZodSchema } from 'zod';
 
 import { PrismaService } from '@mela/generated-prisma';
-import { type AnnotationNewWithRelations, Section, SectionSchema } from '@mela/generated-types';
+import {
+  type AnnotationNewWithRelations,
+  Section,
+  SectionSchema,
+} from '@mela/generated-types';
 
 import { mapToW3CAnnotation, SectionDto } from '@mela/text/shared';
 
@@ -101,7 +105,7 @@ export class SectionRepository extends AbstractRepository<Section, SectionDto> {
               textSelector: true,
               type: true,
             },
-            where: { section_text_id: { in: textIds } },
+            where: { textSelector: { section_text_id: { in: textIds } } },
           })
           .then((annotations: AnnotationNewWithRelations[]) => {
             const mappedAnnotations = annotations.map(mapToW3CAnnotation);

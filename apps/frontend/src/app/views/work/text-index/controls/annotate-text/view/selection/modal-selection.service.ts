@@ -26,7 +26,8 @@ export class ModalSelectionService {
       'parentAnnotation' | 'source' | 'annotationType' | 'storeId'
     > & { onClose?: (result: AnnotationSelectionModalResult) => void },
   ) {
-    const component = modalSelection[props.annotationType];
+    const component =
+      modalSelection[props.annotationType] ?? AnnotationSelectionModal;
 
     if (!component)
       throw new Error('No component found for this annotation type');

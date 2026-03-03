@@ -68,7 +68,7 @@ model SectionText {
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
-  annotations AnnotationNew[]
+  annotations AnnotationTextSelector[]
   @@map("section_text")
 }
 
@@ -91,8 +91,6 @@ model AnnotationNew {
   type_id String
   textSelector AnnotationTextSelector @relation(fields:[text_selector_id], references: [id])
   text_selector_id String
-  sectionText SectionText? @relation(fields: [section_text_id], references: [id])
-  section_text_id String?
   value Json
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
@@ -101,12 +99,15 @@ model AnnotationNew {
 }
 
 
+
 model AnnotationTextSelector {
   id   String @id @default(uuid())
   start Int
   end Int
   prefix String
   suffix String
+  sectionText SectionText? @relation(fields: [section_text_id], references: [id])
+  section_text_id String?
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
