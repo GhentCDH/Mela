@@ -8,8 +8,17 @@ export type AnnotationType =
   | 'phrase'
   | 'example'
   | 'lemma'
-  | 'sub-section';
+  | 'subsection';
 
+export const addActionsPerType: Record<AnnotationType, AnnotationType[]> = {
+  example: ['lemma'],
+  lemma: [],
+  paragraph: ['phrase', 'title', 'subtitle'],
+  phrase: ['example'],
+  subsection: ['phrase', 'title', 'subtitle'],
+  subtitle: ['example'],
+  title: ['example'],
+};
 export const AnnotationTypeLabelValue: Record<
   AnnotationType,
   { key: AnnotationType; label: string }
@@ -20,7 +29,7 @@ export const AnnotationTypeLabelValue: Record<
   phrase: { key: 'phrase', label: 'Phrase' },
   example: { key: 'example', label: 'Example' },
   lemma: { key: 'lemma', label: 'Lemma' },
-  'sub-section': { key: 'sub-section', label: 'Sub-section' },
+  subsection: { key: 'subsection', label: 'Sub-section' },
 } as const;
 
 export const AnnotationTypeLabelValues = Object.values(
@@ -32,20 +41,3 @@ export const isParagraphAnnotationType = (annotation: W3CAnnotation) => {
   console.log(findTagging(annotation));
   return findTagging(annotation).value === 'paragraph';
 };
-
-// export const IdentifyColorMap = createAnnotationColors(Colors, {
-//   opacity: {
-//     background: 0.2,
-//     border: 0.8,
-//     backgroundActive: 0.4,
-//     borderActive: 0.9,
-//     gutter: 0.8,
-//   },
-// });
-//
-// export const colorForAnnotationType: ColorFn<W3CAnnotation> = (
-//   w3cAnnotation: W3CAnnotation,
-// ) => {
-//   const type = findTagging(w3cAnnotation);
-//   return IdentifyColorMap[type?.value ?? 'paragraph'];
-// };

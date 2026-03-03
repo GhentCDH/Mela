@@ -1,10 +1,7 @@
 <template>
   <div>
     <Collapse :title="source.content.label">
-      <ContentNavbar
-        :source="source"
-        :store-id="storeId"
-      />
+      <ContentNavbar :source="source" :store-id="storeId" />
       <div :id="textUuid" />
     </Collapse>
   </div>
@@ -20,7 +17,7 @@ import {
 } from '@ghentcdh/annotated-text';
 import { Collapse } from '@ghentcdh/ui';
 import { v4 as uuid } from 'uuid';
-import { useAnnotationInfo } from './annotation-info/useAnnotationInfo';
+import { useAnnotationInfo } from './annotation-detail/useAnnotationInfo';
 import {
   annotationStyles,
   defaultRender,
@@ -84,9 +81,10 @@ onMounted(() => {
       styleFn: defaultStyle,
     })
     .registerStyles(annotationStyles)
-    .on('double-click', (event) => {
+    .on('mouse-enter', (event) => {
       annotationInfo.show(event.mouseEvent, {
         annotation: event.data.annotation,
+        source: properties.source,
       });
     });
 

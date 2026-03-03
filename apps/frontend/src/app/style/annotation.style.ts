@@ -1,4 +1,9 @@
-import { createHighlightStyle, CustomAnnotationStyle, findTagging, W3CAnnotation } from '@ghentcdh/annotated-text';
+import {
+  createHighlightStyle,
+  CustomAnnotationStyle,
+  findTagging,
+  W3CAnnotation,
+} from '@ghentcdh/annotated-text';
 import memoizee from 'memoizee';
 import { AnnotationType } from '../views/work/text-index/controls/identify.color';
 
@@ -18,7 +23,7 @@ export const annotationStyles: Record<
   paragraph: {
     default: createHighlightStyle('#4d88ff'),
   },
-  'sub-section': {
+  subsection: {
     default: createHighlightStyle('#4d88ff'),
   },
   phrase: {
@@ -52,7 +57,7 @@ export const findPurposeLowerCase = (a: W3CAnnotation) => {
 
 export const defaultRender = (annotation: W3CAnnotation): string | null => {
   const purpose = findPurposeLowerCase(annotation) as unknown as AnnotationType;
-  const gutterPurposes: AnnotationType[] = ['paragraph', 'sub-section'];
+  const gutterPurposes: AnnotationType[] = ['paragraph', 'subsection'];
   console.log('default renderer', purpose, gutterPurposes.includes(purpose));
   return gutterPurposes.includes(purpose) ? 'gutter' : 'underline';
 };

@@ -26,6 +26,7 @@ const sectionSelect = createSelectFromSchema(SectionSchema);
 const selectDetail = {
   ...sectionSelect,
   section_text: true,
+  work: true,
 };
 
 @Injectable()

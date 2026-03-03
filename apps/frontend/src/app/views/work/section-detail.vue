@@ -16,19 +16,10 @@
       />
     </div>
     <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]">
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
         Cancel
       </Btn>
-      <Btn
-        :disabled="!valid"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="!valid" @click="onSubmit"> Save </Btn>
       <Btn
         :outline="true"
         :disabled="textId === NEW_SECTION_ID || !textId"
@@ -74,6 +65,7 @@ const onChange = (data: any) => {
 };
 
 const onCancel = () => {
+  console.table(sectionStore.section);
   formData.value = sectionStore.section
     ? SectionFormSchema.dtoSchema.parse(sectionStore.section)
     : null;

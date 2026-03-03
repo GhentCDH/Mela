@@ -15,11 +15,7 @@
       >
         <div class="border border-1 border-gray-200 my-2 text-lg">
           <div :id="id" />
-          <Btn
-            :outline="true"
-            class="mt-2"
-            @click="selectAll"
-          >
+          <Btn :outline="true" class="mt-2" @click="selectAll">
             Select all text
           </Btn>
         </div>
@@ -29,20 +25,11 @@
       </div>
     </template>
     <template #actions>
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn
-        :disabled="disabled"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
     </template>
   </Modal>
 </template>
@@ -52,12 +39,14 @@ import { AnnotationSelectorSchema } from '@mela/text/shared';
 import { v4 as uuidv4 } from 'uuid';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import type { AnnotatedText, W3CAnnotation } from '@ghentcdh/annotated-text';
 import {
+  AnnotatedText,
   createAnnotatedText,
   createTextSelectionAnnotation,
   findTextPositionSelector,
+  MarkdownTextAdapter,
   updateTextSelectionAnnotation,
+  W3CAnnotation,
   W3CAnnotationAdapter,
   WordSnapper,
 } from '@ghentcdh/annotated-text';
@@ -66,11 +55,11 @@ import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
 import { createSelection } from './selection.utils';
 import { AnnotationTypeLabelValue } from '../../../identify.color';
-import { useAnnotationStore } from '../../store/annotation.store';
 import {
   annotationStyles,
   defaultStyle,
 } from '../../../../../../../style/annotation.style';
+import { useAnnotationStore } from '../../../../../annotation/store/anntotation.store';
 
 // Schema for validation
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
@@ -135,7 +124,7 @@ onMounted(() => {
     : undefined;
   // colorFn: ((w3cAnnotation: W3CAnnotation) => color,
   annotatedText = createAnnotatedText<W3CAnnotation>(id)
-    // .setTextAdapter(MarkdownTextAdapter({ limit, textDirection }))
+    .setTextAdapter(MarkdownTextAdapter({ limit, textDirection }))
     .setAnnotationAdapter(
       W3CAnnotationAdapter({
         sourceUri,

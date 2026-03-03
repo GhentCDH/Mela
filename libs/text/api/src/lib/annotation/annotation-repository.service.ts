@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@mela/generated-prisma';
-import { Annotation } from '@mela/generated-types';
+import { Annotation, AnnotationNew } from '@mela/generated-types';
 
 import { CreateAnnotationDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
 
 @Injectable()
 export class AnnotationRepository extends AbstractRepository<
-  Annotation,
-  CreateAnnotationDto
+  AnnotationNew,
+  null
 > {
   constructor(private readonly prisma: PrismaService) {
-    super(prisma.annotation);
+    super(prisma.annotationNew);
   }
 
   protected override async connect(
@@ -22,63 +22,14 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   protected override includeLDetail(): Record<string, true> {
-    return { annotationTarget: true, annotationBody: true };
+    return { textSelector: true, type: true };
   }
 
   protected override includeList(): Record<string, true> {
-    return { annotationTarget: true, annotationBody: true };
+    return { textSelector: true, type: true };
   }
 
-  protected override async connectCreate(
-    dto: CreateAnnotationDto,
-  ): Promise<Partial<CreateAnnotationDto>> {
-    return {
-      annotationTarget: await this.createOrConnectTarget(null, dto),
-      annotationBody: await this.createOrConnectBody(null, dto),
-    };
-  }
-
-  protected override async connectUpdate(
-    id: string | null,
-    dto: CreateAnnotationDto | null,
-  ): Promise<Partial<CreateAnnotationDto>> {
-    return {
-      annotationTarget: await this.createOrConnectTarget(id, dto),
-      annotationBody: await this.createOrConnectBody(id, dto),
-    };
-  }
-
-  private async createOrConnectTarget(
-    annotation_id: string | null,
-    dto: CreateAnnotationDto,
-  ) {
-    if (annotation_id)
-      // TODO decide if this is the best to do?
-      await this.prisma.annotationTarget.deleteMany({
-        where: {
-          annotation_id,
-        },
-      });
-
-    return { create: dto.annotationTarget };
-  }
-
-  private async createOrConnectBody(
-    annotation_id: string | null,
-    dto: CreateAnnotationDto,
-  ) {
-    if (annotation_id)
-      // TODO decide if this is the best to do?
-      await this.prisma.annotationBody.deleteMany({
-        where: {
-          annotation_id,
-        },
-      });
-
-    return { create: dto.annotationBody };
-  }
-
-  override async delete(id: string): Promise<Annotation> {
+  override async delete(id: string): Promise<AnnotationNew> {
     throw new Error('Use AnnotationtypeRepository.delete instead');
   }
 

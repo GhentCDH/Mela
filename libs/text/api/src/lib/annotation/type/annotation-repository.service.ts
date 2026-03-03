@@ -15,7 +15,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@mela/generated-prisma';
 import {
   Annotation,
-  AnnotationWithRelations,
+  AnnotationNewWithRelations,
   LemmaWithRelations,
   TextContent,
 } from '@mela/generated-types';
@@ -74,48 +74,45 @@ export class AnnotationTypeRepository {
       default:
         throw new BadRequestException('Invalid annotation type');
     }
-    console.log('created', updatedAnnotation);
-    return this.prisma.annotationNew.findFirstOrThrow({
-      where: { id: updatedAnnotation.id },
-    });
+
     return this.annotationRepository.findOne(updatedAnnotation.id);
   }
 
   async delete(id: string) {
     const annotation = (await this.annotationRepository.findOne(
       id,
-    )) as AnnotationWithRelations;
+    )) as AnnotationNewWithRelations;
 
     const relatedAnnotations = [
-      (
-        await this.prisma.annotationTarget.findMany({
-          where: {
-            source_id: id,
-            source_type: 'annotation',
-          },
-        })
-      ).map((a) => a.annotation_id),
+      //   (
+      //     await this.prisma.annotationTarget.findMany({
+      //       where: {
+      //         source_id: id,
+      //         source_type: 'annotation',
+      //       },
+      //     })
+      //   ).map((a) => a.annotation_id),
       id,
     ].flat();
 
-    const sources = [
-      annotation.annotationBody.filter((b) => b.source_type),
-      annotation.annotationTarget.filter((t) => t.source_type),
-    ].flat();
+    // const sources = [
+    //   annotation.annotationBody.filter((b) => b.source_type),
+    //   annotation.annotationTarget.filter((t) => t.source_type),
+    // ].flat();
 
-    const sourceTypeDelete = ['example'];
-
-    const deleteRelated = sources
-      .filter((s) => sourceTypeDelete.includes(s.source_type))
-      .map((s) => s.source_id) as string[];
+    // const sourceTypeDelete = ['example'];
+    //
+    // const deleteRelated = sources
+    //   .filter((s) => sourceTypeDelete.includes(s.source_type))
+    //   .map((s) => s.source_id) as string[];
 
     // TODO delete linked lemma annotation
 
     return Promise.all([
-      this.prisma.annotation.deleteMany({
+      this.prisma.annotationNew.deleteMany({
         where: { id: { in: relatedAnnotations } },
       }),
-      this.prisma.example.deleteMany({ where: { id: { in: deleteRelated } } }),
+      // this.prisma.example.deleteMany({ where: { id: { in: deleteRelated } } }),
     ]);
   }
 
@@ -202,10 +199,10 @@ export class AnnotationTypeRepository {
       where: { id },
       data: {
         type: { connect: { id: type.id } },
-        sourceContent: { connect: { id: data.textContent.id } },
         value,
         textSelector: {
           update: {
+            sectionText: { connect: { id: sectionText.id } },
             start,
             end,
             suffix,

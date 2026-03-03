@@ -1,41 +1,61 @@
 import { defineStore } from 'pinia';
-import { useRoute } from 'vue-router';
 import { useSectionRepository } from '../../../../repository/section.repository';
-import { computed, effect, ref, watch } from 'vue';
-import { ReloadRef } from '../../text-index/controls/annotate-text/utils/reload';
+import { computed, watch } from 'vue';
 import { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { ModalService } from '@ghentcdh/ui';
+import { useAnnotationRepository } from '../../../../repository/annotation.repository';
+import type { AnnotationType } from '@mela/text/shared';
+import { AnnotationTester } from '../../text-index/controls/annotate-text/utils/tester';
+import { DataStore } from '../../../../repository/data.store';
+import { useRouteParams } from '../../../../utils/useRouteParams';
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
-    const route = useRoute();
+    const params = useRouteParams();
     const sectionRepository = useSectionRepository();
+    const annotationRepository = useAnnotationRepository();
 
-    const sectionId = ref(route.params.sectionId as string);
-    const reload = ReloadRef();
-    const allAnnotations = ref<W3CAnnotation[]>([]);
+    const annotationDataStore = new DataStore<W3CAnnotation[], W3CAnnotation>({
+      get: sectionRepository.getAnnotations,
+      items: annotationRepository,
+    });
+
+    const allAnnotations = computed(() => {
+      return annotationDataStore.data.value;
+    });
     const annotations = computed(() => {
       return allAnnotations.value;
     });
+
+    annotationDataStore.setId(params.sectionId as string);
     watch(
-      () => route.params.sectionId,
+      () => params.sectionId,
       (newId, oldId) => {
-        if (newId !== oldId) sectionId.value = newId as string;
+        annotationDataStore.setId(params.sectionId);
       },
     );
 
-    effect(() => {
-      console.log('load annotations');
-      const _r = reload.watchReload;
-      const _sectionId = sectionId.value;
+    const deleteAnnotation = async (annotation: W3CAnnotation) => {
+      ModalService.showConfirm({
+        title: 'Delete link',
+        message: `Are you sure to delete this annotation?`,
+        onClose: (result) => {
+          if (result.confirmed) {
+            annotationDataStore.deleteItem(annotation.id);
+          }
+        },
+      });
+    };
+    const saveOrCreateAnnotation = async (
+      id: string | null,
+      annotation: AnnotationType,
+    ) => {
+      if (!id || AnnotationTester({ id }).isNew()) {
+        return annotationDataStore.createItem(annotation);
+      }
 
-      sectionRepository
-        .getAnnotations(_sectionId)
-        .then((_annotations: W3CAnnotation[]) => {
-          if (_sectionId !== sectionId.value) return;
+      return annotationDataStore.patchItem(id, annotation);
+    };
 
-          allAnnotations.value = _annotations;
-        });
-    });
-
-    return { annotations };
+    return { annotations, deleteAnnotation, saveOrCreateAnnotation };
   })();

@@ -1,10 +1,11 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { W3CAnnotation } from '@ghentcdh/annotated-text';
+import { SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
 
 export type AnnotationInfoState = {
-  annotation: W3CAnnotation,
-}
+  annotation: W3CAnnotation;
+  source: SourceModel;
+};
 
 export const useAnnotationInfo = defineStore('use-annotation-info', () => {
   const isVisible = ref(false);

@@ -9,7 +9,7 @@ const mapBody = (
     {
       type: 'TextualBody',
       purpose: 'tagging',
-      value: annotation.type.name,
+      value: annotation.type.id,
     },
   ];
 };

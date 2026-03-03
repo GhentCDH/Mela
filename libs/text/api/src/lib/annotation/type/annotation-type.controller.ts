@@ -1,5 +1,8 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { MelaAnnotationReturnSchema } from '@mela/text/shared';
+import {
+  mapToW3CAnnotation,
+  MelaAnnotationReturnSchema,
+} from '@mela/text/shared';
 import {
   Body,
   Controller,
@@ -17,12 +20,16 @@ import {
   AnnotationTypeDto,
   MelaAnnotationReturnDto,
 } from './annotation-type.schema';
+import { AnnotationRepository } from '../annotation-repository.service';
 
 @UsePipes(ZodValidationPipe)
 @Controller('annotation/type')
 @ApiBearerAuth()
 export class AnnotationTypeController {
-  constructor(private annotationTypeRepository: AnnotationTypeRepository) {}
+  constructor(
+    private annotationTypeRepository: AnnotationTypeRepository,
+    private annotationRepository: AnnotationRepository,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -31,6 +38,7 @@ export class AnnotationTypeController {
   async create(@Body() annotationType: AnnotationTypeDto) {
     const result = await this.annotationTypeRepository.create(annotationType);
 
+    return mapToW3CAnnotation(result);
     return MelaAnnotationReturnSchema.parse(result);
   }
 
@@ -46,7 +54,7 @@ export class AnnotationTypeController {
       id,
       annotationType,
     );
-    return MelaAnnotationReturnSchema.parse(result);
+    return mapToW3CAnnotation(result);
   }
 
   @Delete(':id')
