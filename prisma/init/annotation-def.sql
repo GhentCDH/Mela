@@ -8,3 +8,5 @@ VALUES ('title', 'title', '#dd7777'),
 insert into annotation_def (id, name, color)
 VALUES ('example', 'Example', '#4fff66'),
        ('lemma', 'Lemma', '#7a8800');
+insert into annotation_def (id, name, color)
+VALUES ('translation', 'Translation', '#4fff66')

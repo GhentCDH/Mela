@@ -89,13 +89,28 @@ model AnnotationNew {
   id               String             @id @default(uuid())
   type AnnotationDef @relation(fields: [type_id], references: [id])
   type_id String
-  textSelector AnnotationTextSelector @relation(fields:[text_selector_id], references: [id])
-  text_selector_id String
+  textSelector AnnotationTextSelector? @relation(fields:[text_selector_id], references: [id])
+  text_selector_id String?
   value Json
   created_at              DateTime            @default(now())
   updated_at              DateTime            @updatedAt @default(now())
 
+
+  relationsFrom    AnnotationRelation[] @relation("RelationFrom")
+  relationsTo      AnnotationRelation[] @relation("RelationTo")
+
   @@map("annotation_new")
+}
+
+model AnnotationRelation {
+  annotation_from_id  String
+  annotation_to_id    String
+
+  annotationFrom      AnnotationNew @relation("RelationFrom", fields: [annotation_from_id], references: [id])
+  annotationTo        AnnotationNew @relation("RelationTo", fields: [annotation_to_id], references: [id])
+
+  @@id([annotation_from_id, annotation_to_id])
+  @@map("annotation_relation")
 }
 
 model AnnotationTextSelector {

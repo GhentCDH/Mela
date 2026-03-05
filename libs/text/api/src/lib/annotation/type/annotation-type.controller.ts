@@ -1,12 +1,10 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import {
-  mapToW3CAnnotation,
-  MelaAnnotationReturnSchema,
-} from '@mela/text/shared';
+import { mapToW3CAnnotation } from '@mela/text/shared';
 import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
@@ -18,6 +16,7 @@ import { string } from 'zod';
 import { AnnotationTypeRepository } from './annotation-repository.service';
 import {
   AnnotationTypeDto,
+  LinkTypeDto,
   MelaAnnotationReturnDto,
 } from './annotation-type.schema';
 import { AnnotationRepository } from '../annotation-repository.service';
@@ -39,9 +38,17 @@ export class AnnotationTypeController {
     const result = await this.annotationTypeRepository.create(annotationType);
 
     return mapToW3CAnnotation(result);
-    return MelaAnnotationReturnSchema.parse(result);
   }
 
+  @Get(':id')
+  @ApiCreatedResponse({
+    type: MelaAnnotationReturnDto,
+  })
+  async get(@Param('id') id: string) {
+    const annotation = await this.annotationRepository.findOne(id);
+
+    return mapToW3CAnnotation(annotation);
+  }
   @Patch(':id')
   @ApiCreatedResponse({
     type: MelaAnnotationReturnDto,
@@ -63,5 +70,21 @@ export class AnnotationTypeController {
   })
   async delete(@Param('id') id: string) {
     return this.annotationTypeRepository.delete(id);
+  }
+
+  @Post(':id')
+  @ApiCreatedResponse({
+    type: MelaAnnotationReturnDto,
+  })
+  async createLink(@Body() link: LinkTypeDto) {
+    return this.annotationTypeRepository.updateLink(null, link);
+  }
+
+  @Patch('link/:id')
+  @ApiCreatedResponse({
+    type: MelaAnnotationReturnDto,
+  })
+  async patchLink(@Param('id') id: string, @Body() link: LinkTypeDto) {
+    return this.annotationTypeRepository.updateLink(id, link);
   }
 }

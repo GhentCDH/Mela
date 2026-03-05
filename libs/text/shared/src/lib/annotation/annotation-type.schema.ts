@@ -47,7 +47,6 @@ export type AnnotationExample = z.infer<typeof AnnotationExampleSchema>;
 
 export const LinkSchema = z.object({
   annotations: z.array(AnnotationSchema.pick({ id: true })),
-  text: SectionTextSchema.pick({ id: true }),
   type: z.string(),
   value: z.any().optional(),
 });

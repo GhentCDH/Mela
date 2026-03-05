@@ -3,11 +3,7 @@ import { omit } from 'lodash-es';
 import { ZodSchema } from 'zod';
 
 import { PrismaService } from '@mela/generated-prisma';
-import {
-  type AnnotationNewWithRelations,
-  Section,
-  SectionSchema,
-} from '@mela/generated-types';
+import { Section, SectionSchema } from '@mela/generated-types';
 
 import { mapToW3CAnnotation, SectionDto } from '@mela/text/shared';
 
@@ -81,43 +77,60 @@ export class SectionRepository extends AbstractRepository<Section, SectionDto> {
     // return updates.map((text) => ({ id: text.id }));
   }
 
-  public findAnnotations(id: string) {
+  public async findAnnotations(id: string) {
     //first get section text content ids
     //then get related text ids
 
-    return this.prisma.section
-      .findUnique({
-        where: { id },
-        include: {
-          section_text: {
-            select: {
-              id: true,
-            },
+    const section = await this.prisma.section.findUnique({
+      where: { id },
+      include: {
+        section_text: {
+          select: {
+            id: true,
           },
         },
-      })
-      .then((section) => {
-        if (!section) return [];
-        const textIds = section.section_text.map((text) => text.id);
+      },
+    });
 
-        return this.prisma.annotationNew
-          .findMany({
-            include: {
-              textSelector: true,
-              type: true,
-            },
-            where: { textSelector: { section_text_id: { in: textIds } } },
-          })
-          .then((annotations: AnnotationNewWithRelations[]) => {
-            const mappedAnnotations = annotations.map(mapToW3CAnnotation);
+    if (!section) return [];
+    const textIds = section.section_text.map((text) => text.id);
 
-            return mappedAnnotations;
-          });
-        // return this.prisma.annotationNew.findMany({
-        //   where: {
-        //     section_text_id: { in: textIds },
-        //   },
-        // });
-      });
+    const annotations = await this.prisma.annotationNew.findMany({
+      include: {
+        textSelector: true,
+        type: true,
+        relationsTo: true,
+      },
+      where: { textSelector: { section_text_id: { in: textIds } } },
+    });
+    const relationIds = annotations
+      .map((s) => s.relationsTo.map((r) => r.annotation_from_id))
+      .flat();
+
+    const relatedAnnotations = await this.prisma.annotationNew.findMany({
+      include: {
+        textSelector: true,
+        type: true,
+        relationsTo: true,
+      },
+      where: { id: { in: relationIds } },
+    });
+
+    // return { relationIds, relatedAnnotations };
+
+    return [annotations, relatedAnnotations].flat().map(mapToW3CAnnotation);
+
+    //
+    //
+    // .then((annotations: AnnotationNewWithRelations[]) => {
+    //   const mappedAnnotations = annotations.map(mapToW3CAnnotation);
+    //
+    //   return mappedAnnotations;
+    // });
+    // return this.prisma.annotationNew.findMany({
+    //   where: {
+    //     section_text_id: { in: textIds },
+    //   },
+    // });
   }
 }

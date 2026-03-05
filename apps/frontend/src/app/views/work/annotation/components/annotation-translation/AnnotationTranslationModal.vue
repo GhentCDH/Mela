@@ -7,13 +7,15 @@
     @close-modal="onCancel"
   >
     <template #content>
-      <Collapse
-        v-for="source in sectionStore.sources"
-        :key="source.id"
-        :title="source.content.label"
-      >
-        <div :id="editId + '_' + source.content.label" />
-      </Collapse>
+      <div class="flex flex-col gap-2">
+        <Collapse
+          v-for="source in sectionStore.sources"
+          :key="source.id"
+          :title="source.content.label"
+        >
+          <div :id="editId + '_' + source.content.label" />
+        </Collapse>
+      </div>
     </template>
     <template #actions>
       <Btn color="secondary" :outline="true" @click="onCancel"> Cancel </Btn>
@@ -56,9 +58,15 @@ const onCancel = () => {
 };
 
 const onSubmit = async () => {
+  annotationStore.linkAnnotations(
+    null,
+    [properties.annotation, properties.translation],
+    'translation',
+    {},
+  );
   alert('implement me please');
-  emits('closeModal', { valid: true });
-  useAnnotationTranslation().cancel();
+  // emits('closeModal', { valid: true });
+  // useAnnotationTranslation().cancel();
 };
 
 onMounted(() => {

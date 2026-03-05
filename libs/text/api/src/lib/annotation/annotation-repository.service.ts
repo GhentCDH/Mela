@@ -22,7 +22,12 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   protected override includeLDetail(): Record<string, true> {
-    return { textSelector: true, type: true };
+    return {
+      textSelector: true,
+      type: true,
+      relationsTo: true,
+      relationsFrom: true,
+    };
   }
 
   protected override includeList(): Record<string, true> {

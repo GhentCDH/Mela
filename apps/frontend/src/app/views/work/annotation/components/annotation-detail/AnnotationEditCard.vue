@@ -164,7 +164,9 @@ const editAnnotation = (annotationType: Type) => {
   >
     <div class="card-body p-2">
       <div><strong>Type:</strong> {{ purpose }}</div>
-      <div v-if="modeStore.activeMode">Action in progress</div>
+      <div v-if="modeStore.activeMode">
+        Action in progress
+      </div>
       <Navbar :actions="actions" />
     </div>
   </div>

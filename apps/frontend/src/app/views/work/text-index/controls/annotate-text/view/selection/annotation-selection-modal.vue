@@ -15,7 +15,11 @@
       >
         <div class="border border-1 border-gray-200 my-2 text-lg">
           <div :id="id" />
-          <Btn :outline="true" class="mt-2" @click="selectAll">
+          <Btn
+            :outline="true"
+            class="mt-2"
+            @click="selectAll"
+          >
             Select all text
           </Btn>
         </div>
@@ -25,11 +29,20 @@
       </div>
     </template>
     <template #actions>
-      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+      <Btn
+        :color="Color.secondary"
+        :outline="true"
+        @click="onCancel"
+      >
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
+      <Btn
+        :disabled="disabled"
+        @click="onSubmit"
+      >
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>
