@@ -15,6 +15,10 @@ export class AnnotationRepository extends AbstractRepository<
     super(prisma.annotationNew);
   }
 
+  public getDefs() {
+    return this.prisma.annotationDef.findMany();
+  }
+
   protected override async connect(
     dto: CreateAnnotationDto,
   ): Promise<Partial<CreateAnnotationDto>> {

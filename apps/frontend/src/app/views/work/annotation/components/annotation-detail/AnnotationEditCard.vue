@@ -16,6 +16,7 @@ import {
 } from '../../../text-index/controls/annotate-text/view/selection/modal-selection.service';
 import { useModeStore } from '../../../text-index/controls/annotate-text/store/mode.store';
 import { useAnnotationTranslation } from '../annotation-translation/useAnnotationTranslation';
+import { useAnnotationDefStore } from '../../store/annotation-def.store';
 
 const properties = defineProps<{
   position: { x: number; y: number };
@@ -29,10 +30,10 @@ const emit = defineEmits<{
 
 const cardRef = ref<HTMLElement>();
 onMounted(() => {
-  document.addEventListener('click', handleOutsideClick);
+  // document.addEventListener('click', handleOutsideClick);
 });
 onUnmounted(() => {
-  document.removeEventListener('click', handleOutsideClick);
+  // document.removeEventListener('click', handleOutsideClick);
 });
 
 function handleOutsideClick(e: MouseEvent) {
@@ -154,6 +155,11 @@ const editAnnotation = (annotationType: Type) => {
     onClose: (result) => {},
   });
 };
+
+const annotationDefStore = useAnnotationDefStore();
+const purposeLabel = computed(() => {
+  return annotationDefStore.getLabel(purpose.value).value;
+});
 </script>
 
 <template>
@@ -163,10 +169,8 @@ const editAnnotation = (annotationType: Type) => {
     :style="{ left: `${position.x}px`, top: `${position.y}px` }"
   >
     <div class="card-body p-2">
-      <div><strong>Type:</strong> {{ purpose }}</div>
-      <div v-if="modeStore.activeMode">
-        Action in progress
-      </div>
+      <div><strong>Type:</strong> {{ purposeLabel }}</div>
+      <div v-if="modeStore.activeMode">Action in progress</div>
       <Navbar :actions="actions" />
     </div>
   </div>

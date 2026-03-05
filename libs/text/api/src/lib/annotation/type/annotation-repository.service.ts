@@ -3,7 +3,7 @@ import {
   AnnotationExample,
   AnnotationExampleLemma,
   AnnotationLink,
-  PURPOSE_LEMA
+  PURPOSE_LEMA,
 } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
@@ -13,7 +13,7 @@ import {
   AnnotationDef,
   AnnotationNewWithRelations,
   LemmaWithRelations,
-  TextContent
+  TextContent,
 } from '@mela/generated-types';
 
 import { AnnotationRepository } from '../annotation-repository.service';

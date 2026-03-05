@@ -37,7 +37,5 @@ export const AnnotationTypeLabelValues = Object.values(
 );
 
 export const isParagraphAnnotationType = (annotation: W3CAnnotation) => {
-  console.log('is paragraph annotation type:');
-  console.log(findTagging(annotation));
   return findTagging(annotation).value === 'paragraph';
 };

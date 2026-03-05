@@ -1,20 +1,46 @@
-import { TextTargetSchema, W3CAnnotation } from '@ghentcdh/annotated-text';
+import {
+  SpecificResourceSchema,
+  TextTargetSchema,
+  W3CAnnotation,
+} from '@ghentcdh/annotated-text';
 import type {
   AnnotationNewWithRelations,
   AnnotationRelation,
 } from '@mela/generated-types';
 import { getAnnotationUri, getSectionTextUri } from '../utils/uri';
 
+const mapTextualBody = (
+  annotation: AnnotationNewWithRelations,
+): W3CAnnotation['body'] => {
+  return {
+    type: 'TextualBody',
+    purpose: 'tagging',
+    value: annotation.type.id,
+  };
+};
+
+const mapValue = (
+  annotation: AnnotationNewWithRelations,
+): W3CAnnotation['body'] => {
+  const value = annotation.value as Record<string, unknown> | null;
+
+  if (!value || Object.keys(value).length < 1)
+    return [] as W3CAnnotation['body'];
+
+  return SpecificResourceSchema.parse({
+    value,
+  });
+};
+
 const mapBody = (
   annotation: AnnotationNewWithRelations,
 ): W3CAnnotation['body'] => {
-  return [
-    {
-      type: 'TextualBody',
-      purpose: 'tagging',
-      value: annotation.type.id,
-    },
-  ];
+  const body: W3CAnnotation['body'] = [
+    mapTextualBody(annotation),
+    mapValue(annotation),
+  ].flat();
+
+  return body;
 };
 
 const mapTextTarget = (

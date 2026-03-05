@@ -15,11 +15,7 @@
       >
         <div class="border border-1 border-gray-200 my-2 text-lg">
           <div :id="id" />
-          <Btn
-            :outline="true"
-            class="mt-2"
-            @click="selectAll"
-          >
+          <Btn :outline="true" class="mt-2" @click="selectAll">
             Select all text
           </Btn>
         </div>
@@ -29,20 +25,11 @@
       </div>
     </template>
     <template #actions>
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
+      <Btn :color="Color.secondary" :outline="true" @click="onCancel">
         Cancel
       </Btn>
       <slot name="custom-actions" />
-      <Btn
-        :disabled="disabled"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
+      <Btn :disabled="disabled" @click="onSubmit"> Save </Btn>
     </template>
   </Modal>
 </template>
@@ -68,11 +55,9 @@ import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
 import { createSelection } from './selection.utils';
 import { AnnotationTypeLabelValue } from '../../../identify.color';
-import {
-  annotationStyles,
-  defaultStyle,
-} from '../../../../../../../style/annotation.style';
+import { defaultStyle } from '../../../../../../../style/annotation.style';
 import { useAnnotationStore } from '../../../../../annotation/store/anntotation.store';
+import { useAnnotationDefStore } from '../../../../../annotation/store/annotation-def.store';
 
 // Schema for validation
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
@@ -150,7 +135,7 @@ onMounted(() => {
     .setStyleParams({
       styleFn: defaultStyle,
     })
-    .registerStyles(annotationStyles)
+    .registerStyles(useAnnotationDefStore().styles)
     .setText(text)
     .setAnnotations(annotations)
     .on('annotation-create--end', ({ mouseEvent, event, data }) => {

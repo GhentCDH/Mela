@@ -22,9 +22,9 @@ import {
 import { AnnotationRepository } from '../annotation-repository.service';
 
 @UsePipes(ZodValidationPipe)
-@Controller('annotation/type')
+@Controller('annotation')
 @ApiBearerAuth()
-export class AnnotationTypeController {
+export class AnnotationController {
   constructor(
     private annotationTypeRepository: AnnotationTypeRepository,
     private annotationRepository: AnnotationRepository,
@@ -40,6 +40,14 @@ export class AnnotationTypeController {
     return mapToW3CAnnotation(result);
   }
 
+  @Get('def')
+  @ApiCreatedResponse({
+    type: MelaAnnotationReturnDto,
+  })
+  async getDefs() {
+    return this.annotationRepository.getDefs();
+  }
+
   @Get(':id')
   @ApiCreatedResponse({
     type: MelaAnnotationReturnDto,
@@ -47,7 +55,7 @@ export class AnnotationTypeController {
   async get(@Param('id') id: string) {
     const annotation = await this.annotationRepository.findOne(id);
 
-    return mapToW3CAnnotation(annotation);
+    return { w3cAnnotation: mapToW3CAnnotation(annotation), annotation };
   }
 
   @Patch(':id')

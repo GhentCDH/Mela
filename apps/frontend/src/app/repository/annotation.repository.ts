@@ -8,7 +8,7 @@ import { NotificationService } from '@ghentcdh/ui';
 export const useAnnotationRepository = defineStore(
   'annotationRepository',
   () => {
-    const uri = '/annotation/type';
+    const uri = '/annotation';
     const linkUrl = `${uri}/link`;
 
     const repo = createRepository({ uri }, useApi(), {

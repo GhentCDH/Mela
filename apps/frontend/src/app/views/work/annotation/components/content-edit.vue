@@ -1,10 +1,7 @@
 <template>
   <div>
     <Collapse :title="source.content.label">
-      <ContentNavbar
-        :source="source"
-        :store-id="storeId"
-      />
+      <ContentNavbar :source="source" :store-id="storeId" />
       <div :id="textUuid" />
     </Collapse>
   </div>
@@ -22,7 +19,6 @@ import { Collapse } from '@ghentcdh/ui';
 import { v4 as uuid } from 'uuid';
 import { useAnnotationInfo } from './annotation-detail/useAnnotationInfo';
 import {
-  annotationStyles,
   defaultRender,
   defaultStyle,
   findPurpose,
@@ -31,6 +27,7 @@ import { SourceModel } from '@mela/text/shared';
 import ContentNavbar from './content-navbar.vue';
 import { useModeStore } from '../../text-index/controls/annotate-text/store/mode.store';
 import { useAnnotationTranslation } from './annotation-translation/useAnnotationTranslation';
+import { useAnnotationDefStore } from '../store/annotation-def.store';
 
 const properties = defineProps<{
   source: SourceModel;
@@ -85,9 +82,9 @@ onMounted(() => {
     .setStyleParams({
       styleFn: defaultStyle,
     })
-    .registerStyles(annotationStyles)
+    .registerStyles(useAnnotationDefStore().styles)
     .on('mouse-enter', (event) => {
-      onMouseEnter(event.mouseEvent!, event.data.annotation);
+      // onMouseEnter(event.mouseEvent!, event.data.annotation);
     })
     .on('click', (event) => {
       onMouseClick(event.mouseEvent!, event.data.annotation);
@@ -111,16 +108,41 @@ const onMouseEnter = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
   });
 };
 
+const showInfoForAnnotation = (
+  mouseEvent: MouseEvent,
+  annotation: W3CAnnotation,
+) => {
+  console.log('show info for annotation', annotation);
+  annotationInfo.show(mouseEvent, {
+    annotation: annotation,
+    source: properties.source,
+  });
+};
+
+watch(
+  () => annotationInfo.data,
+  () => {
+    textAnnotation?.selectAnnotations([
+      annotationInfo.data?.annotation.id ?? '',
+    ]);
+  },
+);
+
 const onMouseClick = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
-  switch (modeStore.activeMode) {
-    case 'link_buckets':
-      break;
-    case 'translate':
-      useAnnotationTranslation().selectTranslation(
-        annotation,
-        properties.storeId,
-      );
-      break;
+  // Don't do anything if some operation is active
+  if (modeStore.activeMode) {
+    switch (modeStore.activeMode) {
+      case 'link_buckets':
+        break;
+      case 'translate':
+        useAnnotationTranslation().selectTranslation(
+          annotation,
+          properties.storeId,
+        );
+        break;
+    }
+  } else {
+    showInfoForAnnotation(mouseEvent, annotation);
   }
 };
 </script>

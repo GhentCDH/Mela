@@ -7,7 +7,6 @@ import { PrismaModule } from '@mela/generated-prisma';
 import { AnnotationRepository } from './annotation/annotation-repository.service';
 import { AnnotationTextController } from './annotation/annotaton-text.controller';
 import { AnnotationTypeRepository } from './annotation/type/annotation-repository.service';
-import { AnnotationTypeController } from './annotation/type/annotation-type.controller';
 import { AuthorRepository } from './author/author-repository.service';
 import { AuthorController } from './author/author.controller';
 import { WorkRepository } from './work/work.repository';
@@ -22,14 +21,15 @@ import { RegisterRepository } from './register/register-repository.service';
 import { RegisterController } from './register/register.controller';
 import { SpeechRepository } from './speech/speech-repository.service';
 import { SpeechController } from './speech/speech.controller';
+import { AnnotationController } from './annotation/type/annotation.controller';
 
 @Module({
   imports: [PrismaModule, HttpModule, ConfigModule],
   controllers: [
     AuthorController,
     RegisterController,
+    AnnotationController,
     AnnotationTextController,
-    AnnotationTypeController,
     ExampleController,
     LemmaController,
     SpeechController,
