@@ -1,5 +1,8 @@
 import { TextTargetSchema, W3CAnnotation } from '@ghentcdh/annotated-text';
-import type { AnnotationNewWithRelations, AnnotationRelation } from '@mela/generated-types';
+import type {
+  AnnotationNewWithRelations,
+  AnnotationRelation,
+} from '@mela/generated-types';
 import { getAnnotationUri, getSectionTextUri } from '../utils/uri';
 
 const mapBody = (

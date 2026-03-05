@@ -79,3 +79,18 @@ export const AnnotationTypeSchema = AnnotationSelectorSchema.or(
 
 export type AnnotationLink = z.infer<typeof LinkSchema>;
 export type AnnotationType = z.infer<typeof AnnotationTypeSchema>;
+
+const textSelector = z.object({
+  sectionTextId: z.string(),
+  start: z.number(),
+  end: z.number(),
+});
+
+export const annotationDto = z.object({
+  type: z.string(),
+  textSelector: textSelector.nullish(),
+  value: z.any().nullish(),
+  relations: z.array(z.string()).nullish(),
+});
+
+export type AnnotationDto = z.infer<typeof annotationDto>;

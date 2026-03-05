@@ -1,5 +1,4 @@
-import type { AnnotationType, SourceModel } from '@mela/text/shared';
-import { pick } from 'lodash-es';
+import { annotationDto, AnnotationType, SourceModel } from '@mela/text/shared';
 import type z from 'zod';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
@@ -19,20 +18,12 @@ export const createSelection = (
     ? findTextPositionSelector(sourceModel.uri)(annotation)
     : null;
 
-  const selection = {
-    ...selector,
-    tagging: annotationType,
-  };
-
-  // selection.start += selector?.start ?? 0;
-  // selection.end += selector?.start ?? 0;
-
-  const annotationData = {
-    annotation: selection,
-    id: annotation.id,
-    textContent: pick(sourceModel, 'id'),
-    ...extraData,
-  };
-
-  return schema.parse(annotationData);
+  return annotationDto.parse({
+    type: annotationType,
+    textSelector: {
+      ...selector,
+      sectionTextId: sourceModel.id,
+    },
+    value: extraData,
+  });
 };

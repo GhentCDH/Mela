@@ -1,10 +1,9 @@
 import {
+  AnnotationDto,
   AnnotationExample,
   AnnotationExampleLemma,
   AnnotationLink,
-  AnnotationSelector,
-  PURPOSE_ANNOTATION_SELECT,
-  PURPOSE_LEMA,
+  PURPOSE_LEMA
 } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
@@ -14,11 +13,10 @@ import {
   AnnotationDef,
   AnnotationNewWithRelations,
   LemmaWithRelations,
-  TextContent,
+  TextContent
 } from '@mela/generated-types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
-import { AnnotationTypeDto } from './annotation-type.schema';
 import { createLemma } from './utils/create-lemma';
 import { createLinks } from './utils/create-links';
 import { RegisterRepository } from '../../register/register-repository.service';
@@ -31,46 +29,12 @@ export class AnnotationTypeRepository {
     private readonly registerRepository: RegisterRepository,
   ) {}
 
-  async create(data: AnnotationTypeDto) {
+  async create(data: AnnotationDto) {
     return this.createOrUpdate(null, data);
   }
 
-  async update(id: string, data: AnnotationTypeDto) {
+  async update(id: string, data: AnnotationDto) {
     return this.createOrUpdate(id, data);
-  }
-
-  private async createOrUpdate(id: string | null, data: AnnotationTypeDto) {
-    let updatedAnnotation: Annotation;
-    switch (data.type) {
-      // case PURPOSE_TRANSLATION:
-      //   updatedAnnotation = await this.updateLinks(id, data as AnnotationLink);
-      //   break;
-      case PURPOSE_ANNOTATION_SELECT:
-        updatedAnnotation = await this.updateTextSelection(
-          id,
-          data as AnnotationSelector,
-        );
-        break;
-      // case PURPOSE_EXAMPLE:
-      //   updatedAnnotation = await this.updateExample(
-      //     id,
-      //     data as AnnotationExample,
-      //   );
-      //   break;
-      // case PURPOSE_LEMA:
-      //   updatedAnnotation = await this.updateLemma(
-      //     id,
-      //     data as AnnotationExampleLemma,
-      //   );
-      //   break;
-      // case PURPOSE_LINK_BUCKETS:
-      //   updatedAnnotation = await this.updateLinks(id, data as AnnotationLink);
-      //   break;
-      default:
-        throw new BadRequestException('Invalid annotation type');
-    }
-
-    return this.annotationRepository.findOne(updatedAnnotation.id);
   }
 
   async delete(id: string) {
@@ -79,6 +43,14 @@ export class AnnotationTypeRepository {
     )) as AnnotationNewWithRelations;
 
     const relatedAnnotations = [
+      // this.prisma.annotationRelation.findMany({
+      //   where:{
+      //     or:{
+      //       annotation_from_id: id,
+      //       annotation_to_id: id,
+      //     }
+      //   }
+      // })
       //   (
       //     await this.prisma.annotationTarget.findMany({
       //       where: {
@@ -103,6 +75,15 @@ export class AnnotationTypeRepository {
 
     // TODO delete linked lemma annotation
 
+    const deleteRelations = await this.prisma.annotationRelation.deleteMany({
+      where: {
+        OR: {
+          annotationFrom: { id: { in: relatedAnnotations } },
+          annotationTo: { id: { in: relatedAnnotations } },
+        },
+      },
+    });
+
     return Promise.all([
       this.prisma.annotationNew.deleteMany({
         where: { id: { in: relatedAnnotations } },
@@ -126,14 +107,6 @@ export class AnnotationTypeRepository {
     // const example = await (data.example.id
     //   ? this.exampleRepository.update(data.example.id!, exampledto)
     //   : this.exampleRepository.create(exampledto));
-
-    const register = this.registerRepository.findOrCreate(
-      data.example.register,
-    );
-
-    return this.updateTextSelection(id, data, {
-      register,
-    });
     //
     // const annotation = createExample(example, textContent, data.annotation);
     //
@@ -144,15 +117,23 @@ export class AnnotationTypeRepository {
   // endregion
 
   private async getType(type: string) {
-    return this.prisma.annotationDef.findFirstOrThrow({
-      where: { id: type },
-    });
+    return this.prisma.annotationDef
+      .findFirstOrThrow({
+        where: { id: type },
+      })
+      .catch((eror) => {
+        throw new BadRequestException(`Invalid annotation type: ${type}`);
+      });
   }
 
-  private async getSectionText(data: AnnotationSelector) {
-    return this.prisma.sectionText.findFirstOrThrow({
-      where: { id: data.textContent.id },
-    });
+  private async getSectionText(sectionTextId: string) {
+    return this.prisma.sectionText
+      .findFirstOrThrow({
+        where: { id: sectionTextId },
+      })
+      .catch((eror) => {
+        throw new BadRequestException(`Invalid text content: ${sectionTextId}`);
+      });
   }
 
   // region textselection
@@ -160,8 +141,20 @@ export class AnnotationTypeRepository {
     const [_type] = await Promise.all([this.getType(type)]);
 
     // TODO validate value against json schema
+    const valid = true;
 
-    return { type: _type, value };
+    // TODO validate register
+    // const register = this.registerRepository.findOrCreate(
+    //   data.example.register,
+    // );
+
+    if (!valid) {
+      throw new BadRequestException(
+        `Invalid value for annotation type: ${type}`,
+      );
+    }
+
+    return { type: _type, value: value ?? {} };
   }
 
   private async createAnnotation(
@@ -205,46 +198,42 @@ export class AnnotationTypeRepository {
     return annotation;
   }
 
-  private async updateTextSelection(
-    id: string | null,
-    data: AnnotationSelector,
-    _value: any = {},
-  ) {
-    const [{ type, value }, sectionText] = await Promise.all([
-      this.validateData(data.annotation.tagging!, _value),
-      this.getSectionText(data),
-    ]);
+  private async getTextSelector(data: AnnotationDto) {
+    const _textSelector = data.textSelector;
+    if (!_textSelector) return null;
 
-    // TODO validate value against json schema
-
-    const { start, end } = data.annotation;
+    const sectionText = await this.getSectionText(_textSelector.sectionTextId);
+    const { start, end } = _textSelector;
     const prefixStart = Math.max(start - 5, 0);
-    const prefix = sectionText.content.substring(
-      prefixStart,
-      data.annotation.start,
-    );
+    const prefix = sectionText.content.substring(prefixStart, start);
     const suffixEnd = Math.min(end + 5, sectionText.content.length);
-    const suffix = sectionText.content.substring(
-      data.annotation.end,
-      suffixEnd,
-    );
+    const suffix = sectionText.content.substring(end, suffixEnd);
 
-    const textSelector = {
+    return {
       start,
       end,
       suffix,
       prefix,
       sectionText: { connect: { id: sectionText.id } },
     };
+  }
 
+  private async _createAnnotation(
+    id: string | null,
+    type: AnnotationDef,
+    value: any,
+    textSelector: any | null,
+  ) {
     if (!id) {
       return this.prisma.annotationNew.create({
         data: {
           type: { connect: { id: type.id } },
           value,
-          textSelector: {
-            create: textSelector,
-          },
+          textSelector: textSelector
+            ? {
+                create: textSelector,
+              }
+            : undefined,
         },
       });
     }
@@ -254,30 +243,45 @@ export class AnnotationTypeRepository {
       data: {
         type: { connect: { id: type.id } },
         value,
-        textSelector: {
-          update: textSelector,
-        },
+        textSelector: textSelector
+          ? {
+              update: textSelector,
+            }
+          : {
+              delete: true,
+            },
       },
     });
   }
-  // endregion
 
-  // region links
-  private async updateLinks(id: string | null, data: AnnotationLink) {
-    const annotations = await this.annotationRepository.findAnnotations(
-      data.annotations,
+  public async createOrUpdate(
+    id: string | null,
+    data: AnnotationDto,
+  ): Promise<AnnotationNewWithRelations> {
+    const [{ type, value }, textSelector] = await Promise.all([
+      this.validateData(data.type, data.value),
+      this.getTextSelector(data),
+    ]);
+
+    const annotation = await this._createAnnotation(
+      id,
+      type,
+      value,
+      textSelector,
     );
 
-    const linkedAnnotation = createLinks(
-      data.text,
-      data.type,
-      annotations,
-      data.value,
-    );
+    if (!data.relations)
+      return this.annotationRepository.findOne(annotation.id);
 
-    if (!id) return this.annotationRepository.create(linkedAnnotation);
+    // create the relations, if it already exist skip it
+    await this.prisma.annotationRelation.createMany({
+      data: data.relations.map((id) => ({
+        annotation_from_id: annotation.id,
+        annotation_to_id: id,
+      })),
+    });
 
-    return this.annotationRepository.update(id, linkedAnnotation);
+    return this.annotationRepository.findOne(annotation.id);
   }
 
   // endregion

@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue';
 import { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { ModalService } from '@ghentcdh/ui';
 import { useAnnotationRepository } from '../../../../repository/annotation.repository';
-import { AnnotationType, LinkSchema } from '@mela/text/shared';
+import { AnnotationDto } from '@mela/text/shared';
 import { AnnotationTester } from '../../text-index/controls/annotate-text/utils/tester';
 import { DataStore } from '../../../../repository/data.store';
 import { useRouteParams } from '../../../../utils/useRouteParams';
@@ -59,7 +59,7 @@ export const useAnnotationStore = (id: string) =>
     };
     const saveOrCreateAnnotation = async (
       id: string | null,
-      annotation: AnnotationType,
+      annotation: AnnotationDto,
     ) => {
       if (!id || AnnotationTester({ id }).isNew()) {
         return annotationDataStore.createItem(annotation);
@@ -68,27 +68,10 @@ export const useAnnotationStore = (id: string) =>
       return annotationDataStore.patchItem(id, annotation);
     };
 
-    const linkAnnotations = async (
-      id: string | null,
-      annotations: W3CAnnotation[],
-      type: 'translation',
-      value: string,
-    ) => {
-      const data = LinkSchema.parse({ annotations, type, value });
-      const promise = id
-        ? annotationRepository.putLink(id, data)
-        : annotationRepository.postLink(data);
-
-      return promise.then((data) => {
-        annotationDataStore.reload();
-      });
-    };
-
     return {
       annotations,
       selectedAnnotationTypes,
       deleteAnnotation,
       saveOrCreateAnnotation,
-      linkAnnotations,
     };
   })();

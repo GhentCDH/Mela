@@ -18,9 +18,17 @@
       </div>
     </template>
     <template #actions>
-      <Btn color="secondary" :outline="true" @click="onCancel"> Cancel </Btn>
+      <Btn
+        color="secondary"
+        :outline="true"
+        @click="onCancel"
+      >
+        Cancel
+      </Btn>
       <slot name="custom-actions" />
-      <Btn @click="onSubmit"> Save </Btn>
+      <Btn @click="onSubmit">
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -38,6 +46,7 @@ import { useAnnotationStore } from '../../store/anntotation.store';
 import { useSectionStore } from '../../../section-store';
 import { onMounted } from 'vue';
 import { useAnnotationTranslation } from './useAnnotationTranslation';
+import { annotationDto } from '@mela/text/shared';
 
 export type AnnotationTranslationModalProps = {
   annotation: W3CAnnotation;
@@ -58,11 +67,12 @@ const onCancel = () => {
 };
 
 const onSubmit = async () => {
-  annotationStore.linkAnnotations(
+  annotationStore.saveOrCreateAnnotation(
     null,
-    [properties.annotation, properties.translation],
-    'translation',
-    {},
+    annotationDto.parse({
+      type: 'translation',
+      relations: [properties.annotation.id, properties.translation.id],
+    }),
   );
   alert('implement me please');
   // emits('closeModal', { valid: true });

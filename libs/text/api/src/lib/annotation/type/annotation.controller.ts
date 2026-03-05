@@ -49,6 +49,7 @@ export class AnnotationTypeController {
 
     return mapToW3CAnnotation(annotation);
   }
+
   @Patch(':id')
   @ApiCreatedResponse({
     type: MelaAnnotationReturnDto,
