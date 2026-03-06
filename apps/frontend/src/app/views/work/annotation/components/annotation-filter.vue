@@ -9,7 +9,7 @@
         <div
           class="w-5 border h-5 square"
           :style="{ backgroundColor: type.color }"
-        ></div>
+        />
         <Checkbox
           :label="type.name"
           :model-value="selectedTypes.includes(type.id)"

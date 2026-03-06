@@ -1,28 +1,25 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { AnnotationInfoState } from './useAnnotationInfo';
-import { getBody } from '@ghentcdh/annotated-text';
 import { findPurpose } from '../../../../../style/annotation.style';
 import { useAnnotationStore } from '../../store/anntotation.store';
 import Navbar, { NavbarAction } from '../navbar.vue';
 import { IconEnum } from '@ghentcdh/ui';
-import {
-  addActionsPerType,
-  AnnotationType as Type,
-  AnnotationTypeLabelValue
-} from '../../../text-index/controls/identify.color';
+import { addActionsPerType, AnnotationType as Type } from '../../../text-index/controls/identify.color';
 import {
   ModalSelectionService
 } from '../../../text-index/controls/annotate-text/view/selection/modal-selection.service';
 import { useModeStore } from '../../../text-index/controls/annotate-text/store/mode.store';
 import { useAnnotationTranslation } from '../annotation-translation/useAnnotationTranslation';
 import { useAnnotationDefStore } from '../../store/annotation-def.store';
+import { getMetadata } from '../../utils/metadata';
 
 const properties = defineProps<{
   position: { x: number; y: number };
   storeId: string;
   data?: AnnotationInfoState;
 }>();
+const annotationDefStore = useAnnotationDefStore();
 
 const emit = defineEmits<{
   close: [];
@@ -43,10 +40,12 @@ function handleOutsideClick(e: MouseEvent) {
     emit('close');
   }
 }
+const metadata = computed(() => {
+  const validation = annotationDefStore.schemaDefinitions[purpose.value];
 
-const body = computed(() => {
-  return getBody(properties?.data?.annotation);
+  return getMetadata(properties.data.annotation, validation);
 });
+
 const annotation = computed(() => properties.data?.annotation);
 const purpose = computed(() => {
   return annotation.value ? findPurpose(annotation.value) : '';
@@ -54,37 +53,16 @@ const purpose = computed(() => {
 const annotationStore = useAnnotationStore(properties.storeId);
 const modeStore = useModeStore();
 
-const sentenceActions = {
-  children: [
-    {
-      label: 'Add title',
-      action: () => {
-        createAnnotation('title');
-      },
-    },
-    {
-      label: 'Add subtitle',
-      action: () => {
-        createAnnotation('subtitle');
-      },
-    },
-    {
-      label: 'Add phrase',
-      action: () => {
-        createAnnotation('phrase');
-      },
-    },
-  ],
-};
-
 const addActions = computed(() => {
   const disabled = !!modeStore.activeMode;
   const actions = addActionsPerType[purpose.value];
+  const _labels = annotationDefStore.labels ?? {};
+
   if (actions.length === 1)
     return {
       icon: IconEnum.Plus,
       disabled,
-      label: `Add ${AnnotationTypeLabelValue[actions[0]].label}`,
+      label: `Add ${_labels[actions[0]]}`,
       action: () => {
         createAnnotation(actions[0]);
       },
@@ -95,7 +73,7 @@ const addActions = computed(() => {
     label: 'Add',
     disabled,
     children: actions.map((action) => ({
-      label: AnnotationTypeLabelValue[action].label,
+      label: _labels[action],
       action: () => {
         createAnnotation(action);
       },
@@ -156,9 +134,8 @@ const editAnnotation = (annotationType: Type) => {
   });
 };
 
-const annotationDefStore = useAnnotationDefStore();
 const purposeLabel = computed(() => {
-  return annotationDefStore.getLabel(purpose.value).value;
+  return annotationDefStore.labels[purpose.value];
 });
 </script>
 
@@ -170,6 +147,7 @@ const purposeLabel = computed(() => {
   >
     <div class="card-body p-2">
       <div><strong>Type:</strong> {{ purposeLabel }}</div>
+      <pre>{{ metadata }}</pre>
       <div v-if="modeStore.activeMode">Action in progress</div>
       <Navbar :actions="actions" />
     </div>

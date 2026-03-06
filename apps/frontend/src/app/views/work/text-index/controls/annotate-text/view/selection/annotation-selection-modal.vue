@@ -1,6 +1,6 @@
 <template>
   <Modal
-    :modal-title="title"
+    :modal-title="label.title"
     :open="true"
     :disable-close="false"
     width="lg"
@@ -8,7 +8,7 @@
   >
     <template #content>
       <ControlWrapper
-        :label="selectLabel"
+        :label="label.selectLabel"
         :error="false"
         :required="true"
         width="full"
@@ -20,6 +20,17 @@
           </Btn>
         </div>
       </ControlWrapper>
+      <FormComponent
+        v-if="formValidation"
+        :id="`annotation-selection-modal-${id}`"
+        v-model="formData"
+        :schema="formValidation.jsonSchema"
+        :uischema="formValidation.uiSchema"
+        @valid="onValid($event)"
+        @change="onChange"
+        @errors="onErrors"
+      />
+      {{ formData }}
       <div class="flex gap-2 items-center">
         <slot name="custom-content" />
       </div>
@@ -52,12 +63,32 @@ import {
 } from '@ghentcdh/annotated-text';
 import { Btn, Color, ControlWrapper, Modal } from '@ghentcdh/ui';
 
+import { FormComponent } from '@ghentcdh/json-forms-vue';
 import type { AnnotationSelectionModalProps } from './annotation-selection-modal.props';
 import { createSelection } from './selection.utils';
-import { AnnotationTypeLabelValue } from '../../../identify.color';
 import { defaultStyle } from '../../../../../../../style/annotation.style';
 import { useAnnotationStore } from '../../../../../annotation/store/anntotation.store';
 import { useAnnotationDefStore } from '../../../../../annotation/store/annotation-def.store';
+import { getMetadata } from '../../../../../annotation/utils/metadata';
+
+const formData = ref({});
+
+const onValid = (valid: boolean) => {
+  console.log('valid', valid);
+};
+const onChange = (data: any) => {};
+const onErrors = (errors: any) => {};
+
+const annotationDefStore = useAnnotationDefStore();
+const formValidation = computed(() => {
+  const validation =
+    annotationDefStore.schemaDefinitions[properties.annotationType];
+  console.log(properties.annotationType);
+  console.log('validation', validation);
+  if (!validation.uiSchema) return null;
+
+  return validation;
+});
 
 // Schema for validation
 const properties = withDefaults(defineProps<AnnotationSelectionModalProps>(), {
@@ -71,13 +102,19 @@ const emits = defineEmits(['closeModal']);
 const id = `annotated-view--${uuidv4()}`;
 
 const annotationStore = useAnnotationStore(properties.storeId);
-const type = AnnotationTypeLabelValue[properties.annotationType];
-const title =
-  properties.mode === 'edit' ? `Edit ${type.label}` : `Create ${type.label}`;
-const selectLabel =
-  properties.mode === 'edit'
-    ? `Adjust ${type.label} selection`
-    : `Select ${type.label} selection`;
+
+const label = computed(() => {
+  const _label = annotationDefStore.labels[properties.annotationType];
+  console.log(properties.annotationType, _label);
+
+  return {
+    title: properties.mode === 'edit' ? `Edit ${_label}` : `Create ${_label}`,
+    selectLabel:
+      properties.mode === 'edit'
+        ? `Adjust ${_label} selection`
+        : `Select ${_label} selection`,
+  };
+});
 
 let annotatedText: AnnotatedText<W3CAnnotation>;
 const annotation = ref<W3CAnnotation | null>(null);
@@ -104,6 +141,10 @@ const textPositionSelector = () => {
 };
 
 onMounted(() => {
+  formData.value = getMetadata(
+    properties.annotation,
+    annotationDefStore.schemaDefinitions[properties.annotationType],
+  );
   annotation.value = properties.mode === 'edit' ? properties.annotation : null;
   const annotations = properties.mode === 'edit' ? [properties.annotation] : [];
   const language = properties.source.content.processingLanguage;
@@ -152,12 +193,16 @@ const onCancel = () => {
 };
 
 const onSubmit = async () => {
+  const value = formValidation.value
+    ? formValidation.value.validation(formData.value)
+    : {};
   const data = createSelection(
     annotation.value,
     properties.annotationType,
     properties.source,
     properties.schema,
-    properties.extraData,
+    value,
+    // properties.extraData,
   );
 
   const annotationId = properties.annotation?.id ?? null;
@@ -170,6 +215,7 @@ const onSubmit = async () => {
 };
 
 const disabled = computed(() => {
+  return false;
   // TODO if there is metadata needed validate it here!
   return !properties.valid || !annotation.value;
 });
@@ -197,8 +243,8 @@ const selectAll = () => {
     );
   }
 
-  annotatedText.setAnnotations([annotation.value]);
-  // .changeAnnotationAdapterConfig('create', false)
-  // .changeAnnotationAdapterConfig('edit', true);
+  annotatedText
+    .setAnnotations([annotation.value])
+    .setAnnotationAdapter({ create: false, edit: true });
 };
 </script>

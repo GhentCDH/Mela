@@ -1,7 +1,10 @@
 <template>
   <div>
     <Collapse :title="source.content.label">
-      <ContentNavbar :source="source" :store-id="storeId" />
+      <ContentNavbar
+        :source="source"
+        :store-id="storeId"
+      />
       <div :id="textUuid" />
     </Collapse>
   </div>
