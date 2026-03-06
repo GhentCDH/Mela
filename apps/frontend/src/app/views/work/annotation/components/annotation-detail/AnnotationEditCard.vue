@@ -148,7 +148,9 @@ const purposeLabel = computed(() => {
     <div class="card-body p-2">
       <div><strong>Type:</strong> {{ purposeLabel }}</div>
       <pre>{{ metadata }}</pre>
-      <div v-if="modeStore.activeMode">Action in progress</div>
+      <div v-if="modeStore.activeMode">
+        Action in progress
+      </div>
       <Navbar :actions="actions" />
     </div>
   </div>
