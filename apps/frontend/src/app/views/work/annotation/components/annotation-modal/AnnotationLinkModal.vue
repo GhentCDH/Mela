@@ -1,6 +1,6 @@
 <template>
   <Modal
-    modal-title="Translate annotation"
+    modal-title="Link annotation"
     :open="true"
     :disable-close="false"
     width="lg"
@@ -9,11 +9,11 @@
     <template #content>
       <div class="flex flex-col gap-2">
         <Collapse
-          v-for="source in sectionStore.sources"
-          :key="source.id"
-          :title="source.content.label"
+          v-for="text in texts"
+          :key="text.id"
+          :title="text.text?.content.label"
         >
-          <div :id="editId + '_' + source.content.label" />
+          <div :id="editId + '_' + text.id" />
         </Collapse>
       </div>
     </template>
@@ -38,31 +38,33 @@ import { Btn, Collapse, Modal } from '@ghentcdh/ui';
 import {
   createAnnotatedText,
   findTextPositionSelector,
-  hasSourceInTargets,
+  getTarget,
   MarkdownTextAdapter,
   W3CAnnotation,
 } from '@ghentcdh/annotated-text';
 import { useAnnotationStore } from '../../store/anntotation.store';
 import { useSectionStore } from '../../../section-store';
-import { onMounted } from 'vue';
-import { useAnnotationTranslation } from './useAnnotationTranslation';
+import { computed, onMounted, ref } from 'vue';
+import { useAnnotationLink } from './useAnnotationLink';
 import { annotationDto } from '@mela/text/shared';
 
 export type AnnotationTranslationModalProps = {
   annotation: W3CAnnotation;
-  translation: W3CAnnotation;
+  annotation1: W3CAnnotation;
   storeId: string;
+  type: string;
 };
 const properties = defineProps<AnnotationTranslationModalProps>();
 const annotationStore = useAnnotationStore(properties.storeId);
 const sectionStore = useSectionStore();
+const formData = ref(null);
 
-console.log('the translation modal');
 const editId = `edit-annotation-${Date.now()}--`;
 const emits = defineEmits(['closeModal']);
+const annotationLink = useAnnotationLink();
 
 const onCancel = () => {
-  useAnnotationTranslation().cancel();
+  annotationLink.cancel();
   emits('closeModal', null);
 };
 
@@ -71,42 +73,38 @@ const onSubmit = async () => {
     null,
     annotationDto.parse({
       type: 'translation',
-      relations: [properties.annotation.id, properties.translation.id],
+      relations: [properties.annotation.id, properties.annotation1.id],
+      value: formData.value,
     }),
   );
-  alert('implement me please');
-  // emits('closeModal', { valid: true });
-  // useAnnotationTranslation().cancel();
+  emits('closeModal', { valid: true });
+  annotationLink.cancel();
 };
 
+const texts = computed(() => {
+  return [properties.annotation, properties.annotation1].map((a) => {
+    const sourceUri = getTarget(a).find((t) => t.source)?.source;
+    const textPositionSelector = findTextPositionSelector(sourceUri)(a)!;
+    const text = sectionStore.sources.find((s) => s.uri === sourceUri)!;
+
+    return {
+      id: a.id,
+      text: text,
+      limit: { ...textPositionSelector, ignoreLines: true },
+    };
+  });
+});
+
 onMounted(() => {
-  sectionStore.sources.forEach((source) => {
-    const sourceId = source.id;
-    const isAnnotation = hasSourceInTargets(sourceId)(properties.annotation);
-    const annotation = isAnnotation
-      ? properties.annotation
-      : properties.translation;
-    console.table(properties.annotation.target);
-    console.table(properties.translation.target);
-    const textPositionSelector = findTextPositionSelector()(annotation);
-
-    console.log('textPositionSelector', textPositionSelector);
-    if (!textPositionSelector) return;
-
-    createAnnotatedText(editId + '_' + source.content.label)
+  texts.value.forEach((text) => {
+    createAnnotatedText(editId + '_' + text.id)
       .setTextAdapter(
         MarkdownTextAdapter({
-          textDirection: source.content.textDirection,
-          limit: {
-            start: textPositionSelector!.start,
-            end: textPositionSelector!.end,
-            ignoreLines: true,
-          },
+          textDirection: text.text.content.textDirection,
+          limit: text.limit,
         }),
       )
-      .setText(source.content.text);
-    console.log('mounted', source);
-    // .setAnnotations([annotation]);
+      .setText(text.text.content.text);
   });
 });
 </script>

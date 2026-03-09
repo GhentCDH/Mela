@@ -1,29 +1,35 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue';
-import { AnnotationInfoState } from './useAnnotationInfo';
 import { findPurpose } from '../../../../../style/annotation.style';
 import { useAnnotationStore } from '../../store/anntotation.store';
 import Navbar, { NavbarAction } from '../navbar.vue';
-import { IconEnum } from '@ghentcdh/ui';
-import { addActionsPerType, AnnotationType as Type } from '../../../text-index/controls/identify.color';
-import {
-  ModalSelectionService
-} from '../../../text-index/controls/annotate-text/view/selection/modal-selection.service';
-import { useModeStore } from '../../../text-index/controls/annotate-text/store/mode.store';
-import { useAnnotationTranslation } from '../annotation-translation/useAnnotationTranslation';
-import { useAnnotationDefStore } from '../../store/annotation-def.store';
+import { Alert, IconEnum } from '@ghentcdh/ui';
+import { AnnotationType as Type } from '../../../text-index/controls/identify.color';
+import { useAnnotationLink } from '../annotation-modal/useAnnotationLink';
+import { AnnotationDefinition, useAnnotationDefStore } from '../../store/annotation-def.store';
 import { getMetadata } from '../../utils/metadata';
+import Metadata from './Metadata.vue';
+import { useAnnotationSelect } from '../annotation-modal/useAnnotationSelect';
+import { SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
+import { useToast } from '../mode/useToast';
 
 const properties = defineProps<{
   position: { x: number; y: number };
   storeId: string;
-  data?: AnnotationInfoState;
+  annotation: W3CAnnotation;
+  source: SourceModel;
 }>();
 const annotationDefStore = useAnnotationDefStore();
+const toastStore = useToast();
+const annotationLink = useAnnotationLink();
 
 const emit = defineEmits<{
   close: [];
 }>();
+
+const disabled = computed(() => {
+  return annotationLink.isActive;
+});
 
 const cardRef = ref<HTMLElement>();
 onMounted(() => {
@@ -34,108 +40,125 @@ onUnmounted(() => {
 });
 
 function handleOutsideClick(e: MouseEvent) {
-  if (useModeStore().activeMode) return;
+  if (disabled.value) return;
 
   if (cardRef.value && !cardRef.value.contains(e.target as Node)) {
     emit('close');
   }
 }
+const annotationDef = computed(() => {
+  return annotationDefStore.definition[purpose.value];
+});
+const validation = computed(() => {
+  return annotationDef.value.schema;
+});
+
 const metadata = computed(() => {
-  const validation = annotationDefStore.schemaDefinitions[purpose.value];
-
-  return getMetadata(properties.data.annotation, validation);
+  return getMetadata(properties.annotation, validation.value);
 });
 
-const annotation = computed(() => properties.data?.annotation);
+const annotation = computed(() => properties.annotation);
 const purpose = computed(() => {
-  return annotation.value ? findPurpose(annotation.value) : '';
+  return annotation.value ? findPurpose(annotation.value) : 'default';
 });
+
 const annotationStore = useAnnotationStore(properties.storeId);
-const modeStore = useModeStore();
 
-const addActions = computed(() => {
-  const disabled = !!modeStore.activeMode;
-  const actions = addActionsPerType[purpose.value];
-  const _labels = annotationDefStore.labels ?? {};
+const addActions = (definition: AnnotationDefinition, _disabled: boolean) => {
+  const actions = definition.allowedChildren;
 
-  if (actions.length === 1)
+  if (actions.length === 0) return null;
+
+  if (actions.length === 1) {
+    const action = actions[0];
     return {
       icon: IconEnum.Plus,
-      disabled,
-      label: `Add ${_labels[actions[0]]}`,
+      disabled: _disabled,
+      label: `Add ${action.label}`,
       action: () => {
-        createAnnotation(actions[0]);
+        createAnnotation(action.key);
       },
     };
+  }
 
   return {
     icon: IconEnum.Plus,
     label: 'Add',
     disabled,
     children: actions.map((action) => ({
-      label: _labels[action],
+      label: action.label,
       action: () => {
-        createAnnotation(action);
+        createAnnotation(action.key);
       },
     })),
   };
-});
+};
+
+const createActionLinks = (
+  definition: AnnotationDefinition,
+  disabled: boolean,
+) => {
+  return definition.allowedLinks.map((link) => ({
+    icon: link.icon ?? IconEnum.Link,
+    label: `Add ${link.label}`,
+    disabled,
+    action: () => {
+      useAnnotationLink().startLink(link.key, annotation.value);
+    },
+  }));
+};
 
 const actions: NavbarAction = computed(() => {
-  const disabled = !!modeStore.activeMode;
+  const definition = annotationDef.value;
+  const _disabled = disabled.value;
+  const _purpose = purpose.value;
   return [
-    addActions.value,
+    addActions(definition, _disabled),
     {
       icon: IconEnum.Edit,
       label: 'Edit',
-      disabled,
+      disabled: _disabled,
       action: () => {
-        editAnnotation(purpose.value);
+        editAnnotation(_purpose);
       },
     },
-    {
-      icon: IconEnum.Edit,
-      // TODO icon: IconEnum.Translate,
-      label: 'Add translation link',
-      disabled,
-      action: () => {
-        useAnnotationTranslation().startTranslation(annotation.value);
-      },
-    },
+    createActionLinks(definition, _disabled),
     {
       icon: IconEnum.Delete,
       label: 'Delete',
-      disabled,
+      disabled: _disabled,
       action: () => {
         annotationStore.deleteAnnotation(annotation.value!);
       },
     },
-  ];
+  ]
+    .filter((i) => !!i)
+    .flat();
 });
 
 const createAnnotation = (annotationType: Type) => {
-  ModalSelectionService.createSelection({
-    source: properties.data?.source,
-    parentAnnotation: properties.data?.annotation,
-    annotationType,
-    storeId: properties.storeId,
-    onClose: (result) => {},
+  useAnnotationSelect().createAnnotation({
+    source: properties.source,
+    parentAnnotation: properties.annotation,
+    type: annotationType,
   });
 };
-const editAnnotation = (annotationType: Type) => {
-  ModalSelectionService.editSelection({
-    source: properties.data?.source,
-    annotation: properties.data?.annotation,
-    // TODO find parent if there is one
-    // parentAnnotation: properties.data?.annotation,
-    annotationType,
-    storeId: properties.storeId,
-    onClose: (result) => {},
-  });
+const editAnnotation = () => {
+  const parentAnnotation =
+    annotationStore.utils.getParent(properties.annotation) ?? undefined;
+  console.log('parent', parentAnnotation);
+  useAnnotationSelect().editAnnotation(
+    {
+      source: properties.source,
+      type: purpose.value!,
+      parentAnnotation,
+    },
+    properties.annotation,
+  );
 };
 
 const purposeLabel = computed(() => {
-  return annotationDefStore.labels[purpose.value];
+  return annotationDef.value?.label;
 });
 </script>
 
@@ -147,10 +170,18 @@ const purposeLabel = computed(() => {
   >
     <div class="card-body p-2">
       <div><strong>Type:</strong> {{ purposeLabel }}</div>
-      <pre>{{ metadata }}</pre>
-      <div v-if="modeStore.activeMode">
-        Action in progress
-      </div>
+      <Metadata
+        v-if="metadata && validation.metaDataSchema"
+        :data="metadata"
+        :schema="validation.jsonSchema"
+        :ui-schema="validation.metaDataSchema"
+      />
+      <Alert
+        v-if="annotationLink.isActive"
+        type="info"
+        :message="toastStore.data?.toastMessage"
+      />
+
       <Navbar :actions="actions" />
     </div>
   </div>

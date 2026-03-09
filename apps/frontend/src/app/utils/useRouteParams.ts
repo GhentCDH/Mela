@@ -20,8 +20,6 @@ export const useRouteParams = defineStore(`route_params`, () => {
   const setValues = (params: Record<string, string>) => {
     setValue(sectionId, params.sectionId, sectionId.value);
     setValue(workId, params.workId, sectionId.value);
-
-    console.log(params);
   };
   setValues(route.params);
 

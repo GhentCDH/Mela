@@ -59,10 +59,12 @@ export const useActiveAnnotationStore = (id: string) =>
       selectAnnotation(null);
     };
 
-    const selectAnnotation = (ids: {
-      annotationId: string | undefined | null;
-      textContentUri: string | undefined | null;
-    }) => {
+    const selectAnnotation = (
+      ids: {
+        annotationId: string | undefined | null;
+        textContentUri: string | undefined | null;
+      } | null,
+    ) => {
       resetSelection();
       if (!ids || !ids.textContentUri || !ids.annotationId) {
         // TODO  showAllTranslations();

@@ -5,11 +5,11 @@ import { SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
 export type AnnotationInfoState = {
   annotation: W3CAnnotation;
   source: SourceModel;
+  position: { x: number; y: number };
 };
 
 export const useAnnotationInfo = defineStore('use-annotation-info', () => {
   const isVisible = ref(false);
-  const position = ref({ x: 0, y: 0 });
   const data = ref<AnnotationInfoState | null>(null);
 
   const show = (e: MouseEvent, popupData?: AnnotationInfoState) => {
@@ -17,8 +17,7 @@ export const useAnnotationInfo = defineStore('use-annotation-info', () => {
     const x = Math.min(e.clientX, window.innerWidth - 270);
     const y = Math.min(e.clientY, window.innerHeight - 200);
 
-    position.value = { x, y };
-    data.value = popupData;
+    data.value = { ...popupData, position: { x, y } };
     isVisible.value = true;
   };
 
@@ -27,5 +26,5 @@ export const useAnnotationInfo = defineStore('use-annotation-info', () => {
     data.value = null;
   };
 
-  return { isVisible, position, data, show, hide };
+  return { isVisible, data, show, hide };
 });

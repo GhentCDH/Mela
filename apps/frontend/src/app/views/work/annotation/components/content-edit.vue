@@ -28,9 +28,9 @@ import {
 } from '../../../../style/annotation.style';
 import { SourceModel } from '@mela/text/shared';
 import ContentNavbar from './content-navbar.vue';
-import { useModeStore } from '../../text-index/controls/annotate-text/store/mode.store';
-import { useAnnotationTranslation } from './annotation-translation/useAnnotationTranslation';
+import { useAnnotationLink } from './annotation-modal/useAnnotationLink';
 import { useAnnotationDefStore } from '../store/annotation-def.store';
+import { useToast } from './mode/useToast';
 
 const properties = defineProps<{
   source: SourceModel;
@@ -75,8 +75,10 @@ watch(
   },
   { immediate: true },
 );
+const annotationDefStore = useAnnotationDefStore();
 
 onMounted(() => {
+  console.log(annotationDefStore.definitions);
   textAnnotation = createAnnotatedText<W3CAnnotation>(textUuid)
     .setTagLabelFn(findPurpose)
     .setRenderParams({
@@ -85,7 +87,7 @@ onMounted(() => {
     .setStyleParams({
       styleFn: defaultStyle,
     })
-    .registerStyles(useAnnotationDefStore().styles)
+    .registerStyles(annotationDefStore.styles)
     .on('mouse-enter', (event) => {
       // onMouseEnter(event.mouseEvent!, event.data.annotation);
     })
@@ -100,22 +102,12 @@ onUnmounted(() => {
   textAnnotation?.destroy();
 });
 
-const modeStore = useModeStore();
-const onMouseEnter = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
-  // Don't do anything if some operation is active
-  if (modeStore.activeMode) return;
-
-  annotationInfo.show(mouseEvent, {
-    annotation: annotation,
-    source: properties.source,
-  });
-};
+const toastStore = useToast();
 
 const showInfoForAnnotation = (
   mouseEvent: MouseEvent,
   annotation: W3CAnnotation,
 ) => {
-  console.log('show info for annotation', annotation);
   annotationInfo.show(mouseEvent, {
     annotation: annotation,
     source: properties.source,
@@ -130,20 +122,11 @@ watch(
     ]);
   },
 );
-
+const annotationLink = useAnnotationLink();
 const onMouseClick = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
   // Don't do anything if some operation is active
-  if (modeStore.activeMode) {
-    switch (modeStore.activeMode) {
-      case 'link_buckets':
-        break;
-      case 'translate':
-        useAnnotationTranslation().selectTranslation(
-          annotation,
-          properties.storeId,
-        );
-        break;
-    }
+  if (annotationLink.isActive) {
+    annotationLink.selectLink(annotation);
   } else {
     showInfoForAnnotation(mouseEvent, annotation);
   }

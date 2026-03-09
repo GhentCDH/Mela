@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { DataStore } from '../../../../repository/data.store';
 import { useApi } from '@ghentcdh/tools-vue';
 import { computed, ref } from 'vue';
 import { AnnotationDef } from '@mela/generated-types';
@@ -7,70 +6,138 @@ import {
   createHighlightStyle,
   CustomAnnotationStyle,
 } from '@ghentcdh/annotated-text';
+import { IconEnum, IconEnumDef } from '@ghentcdh/ui';
 import { fromJSONSchema } from 'zod';
+import type { JsonFormsLayout } from '@ghentcdh/json-forms-core';
+import { UISchemaElement } from '@jsonforms/core';
 
 export type FormValidationDef = {
-  uiSchema: any;
-  jsonSchema: any;
+  uiSchema: UISchemaElement;
+  jsonSchema: JsonFormsLayout;
+  metaDataSchema: JsonFormsLayout;
   validation: (value: any) => any;
+};
+export const icons = {
+  link_buckets: IconEnum.Link,
+  translation: IconEnum.Language,
+};
+// TODO move this to shared
+export const allowedChildrenPerType: Record<string, string[]> = {
+  example: ['lemma'],
+  lemma: [],
+  paragraph: ['phrase', 'title', 'subtitle'],
+  phrase: ['example'],
+  subsection: ['phrase', 'title', 'subtitle'],
+  subtitle: ['example'],
+  title: ['example'],
+  root: ['subsection', 'paragraph'],
+};
+
+// TODO move this to shared
+export const allowedLinksPerType: Record<string, string[]> = {
+  example: ['link_buckets'],
+  lemma: ['translation'],
+  paragraph: ['translation'],
+  phrase: ['translation'],
+  subsection: ['translation'],
+  subtitle: ['translation'],
+  title: ['translation'],
+};
+
+type KeyLabel<KEY = string> = { key: KEY; label: string; icon?: IconEnumDef };
+export type AnnotationDefinition = {
+  id: string;
+  schema: FormValidationDef;
+  label: string;
+  style: CustomAnnotationStyle;
+  allowedChildren: Array<KeyLabel<string>>;
+  allowedLinks: Array<KeyLabel<'translation' | 'link_buckets'>>;
+};
+
+const getDefinition = (
+  def: AnnotationDef,
+  labels: KeyLabel[],
+): AnnotationDefinition => {
+  console.log('allowed links', def.id, allowedLinksPerType[def.id]);
+  return {
+    id: def.id,
+    schema: {
+      uiSchema: def.ui_schema,
+      jsonSchema: def.json_schema,
+      metaDataSchema: def.metadata_schema,
+      validation: (value: any) => {
+        if (value.jsonSchema) {
+          return fromJSONSchema(value.json_schema).parse(value.uiSchema);
+        }
+
+        return value;
+      },
+    },
+    label: def.name,
+    style: {
+      default: createHighlightStyle(def.color),
+      active: createHighlightStyle(def.color),
+    },
+    allowedChildren: (allowedChildrenPerType[def.id] ?? [])
+      .map((key) => labels.find((k) => k.key === key))
+      .filter(Boolean),
+    allowedLinks: (allowedLinksPerType[def.id] ?? [])
+      .map((key) => labels.find((k) => k.key === key))
+      .filter(Boolean),
+  } as AnnotationDefinition;
+};
+
+const groupById = <KEY extends keyof AnnotationDefinition>(
+  defs: AnnotationDefinition[],
+  valueKey?: KEY,
+) => {
+  return defs.reduce(
+    (acc, def) => {
+      acc[def.id] = valueKey ? def[valueKey] : def;
+      return acc;
+    },
+    {} as Record<string, AnnotationDefinition[KEY] | AnnotationDefinition>,
+  );
 };
 
 export const useAnnotationDefStore = defineStore('annotationDefStore', () => {
-  const schemaDefinitions = ref<Record<string, FormValidationDef>>({});
-  const labels = ref<Record<string, string>>({});
-  const styles = ref<Record<string, CustomAnnotationStyle>>({});
+  const annotationDefData = ref<AnnotationDef[]>();
 
-  const datastore = new DataStore<AnnotationDef[], null>({
-    get: () =>
-      useApi()
-        .get('/annotation/def')
-        .then((res) => {
-          const _labels: Record<string, any> = {};
-          const _schemaDefinitions: Record<string, FormValidationDef> = {};
-          const _styles: Record<string, CustomAnnotationStyle> = {};
+  const init = () =>
+    useApi()
+      .get('/annotation/def')
+      .then((res) => {
+        annotationDefData.value = res.data;
+      });
 
-          res.data.forEach((def: AnnotationDef) => {
-            const id = def.id as string;
-            _labels[id] = def.name;
-
-            _schemaDefinitions[id] = {
-              uiSchema: def.ui_schema,
-              jsonSchema: def.json_schema,
-              validation: (value: any) => {
-                if (value.jsonSchema) {
-                  return fromJSONSchema(value.json_schema).parse(
-                    value.uiSchema,
-                  );
-                }
-
-                return value;
-              },
-            };
-
-            _styles[id] = {
-              default: createHighlightStyle(def.color),
-              active: createHighlightStyle(def.color),
-            };
-          });
-
-          labels.value = _labels;
-          schemaDefinitions.value = _schemaDefinitions;
-          styles.value = _styles;
-
-          console.log(_labels);
-          console.log(_schemaDefinitions);
-          console.log(_schemaDefinitions);
-
-          return res.data;
-        }),
+  const definition = computed(() => {
+    return groupById(definitions.value) as Record<string, AnnotationDefinition>;
   });
 
-  datastore.setId('id');
+  const styles = computed(() => {
+    return groupById(definitions.value, 'style') as Record<
+      string,
+      CustomAnnotationStyle
+    >;
+  });
+
+  const definitions = computed(() => {
+    const defs = annotationDefData.value;
+    if (!defs) return [];
+    const keyLabels = defs.map((d) => ({
+      key: d.id,
+      label: d.name,
+      icon: icons[d.id],
+    }));
+    return defs.map((d) => getDefinition(d, keyLabels));
+  });
 
   return {
-    data: computed(() => datastore.data.value),
-    labels,
-    schemaDefinitions,
+    init,
+    definition,
+    definitions,
+    data: annotationDefData,
     styles,
+    allowedChildrenRoot: allowedChildrenPerType.root,
   };
 });

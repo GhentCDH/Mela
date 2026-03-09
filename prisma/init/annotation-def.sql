@@ -9,4 +9,6 @@ insert into annotation_def (id, name, color)
 VALUES ('example', 'Example', '#4fff66'),
        ('lemma', 'Lemma', '#7a8800');
 insert into annotation_def (id, name, color)
-VALUES ('translation', 'Translation', '#4fff66')
+VALUES ('translation', 'Translation', '#4fff66');
+insert into annotation_def (id, name, color)
+VALUES ('link_bucket', 'Linked Buckets', '#4fff66');

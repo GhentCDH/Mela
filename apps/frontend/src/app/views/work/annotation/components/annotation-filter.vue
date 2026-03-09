@@ -2,16 +2,19 @@
   <Collapse title="Annotation filter">
     <div class="flex flex-col gap-1">
       <div
-        v-for="type in annotationDefStore.data"
+        v-for="type in annotationDefStore.definitions"
         :key="type.id"
         class="flex gap-2"
       >
         <div
           class="w-5 border h-5 square"
-          :style="{ backgroundColor: type.color }"
+          :style="{
+            backgroundColor: type.style.default.backgroundColor,
+            borderColor: type.style.default.borderColor,
+          }"
         />
         <Checkbox
-          :label="type.name"
+          :label="type.label"
           :model-value="selectedTypes.includes(type.id)"
           @update:model-value="toggleType(type.id, $event)"
         />

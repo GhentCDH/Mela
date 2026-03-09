@@ -10,7 +10,7 @@ export type AnnotationType =
   | 'lemma'
   | 'subsection';
 
-export const addActionsPerType: Record<AnnotationType, AnnotationType[]> = {
+export const allowedChildrenPerType: Record<string, string[]> = {
   example: ['lemma'],
   lemma: [],
   paragraph: ['phrase', 'title', 'subtitle'],
@@ -19,6 +19,18 @@ export const addActionsPerType: Record<AnnotationType, AnnotationType[]> = {
   subtitle: ['example'],
   title: ['example'],
 };
+
+export const allowedLinksPerType: Record<
+  string,
+  Array<'translate' | 'link_buckets'>
+> = {
+  example: ['link_buckets'],
+  lemma: ['translate'],
+  paragraph: ['translate'],
+  phrase: ['translate'],
+  subsection: ['translate'],
+};
+
 export const AnnotationTypeLabelValue: Record<
   AnnotationType,
   { key: AnnotationType; label: string }

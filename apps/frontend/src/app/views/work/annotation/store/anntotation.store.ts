@@ -10,6 +10,7 @@ import { DataStore } from '../../../../repository/data.store';
 import { useRouteParams } from '../../../../utils/useRouteParams';
 import { findPurposeLowerCase } from '../../../../style/annotation.style';
 import type { AnnotationType as AnnotationTypeLabel } from '../../text-index/controls/identify.color';
+import { annotationUtils } from '../utils/annotation-utils';
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
@@ -27,6 +28,10 @@ export const useAnnotationStore = (id: string) =>
     });
 
     const selectedAnnotationTypes = ref<AnnotationTypeLabel[]>([]);
+
+    const utils = computed(() => {
+      return annotationUtils(allAnnotations.value);
+    });
 
     const annotations = computed(() => {
       if (selectedAnnotationTypes.value.length === 0) {
@@ -57,6 +62,7 @@ export const useAnnotationStore = (id: string) =>
         },
       });
     };
+
     const saveOrCreateAnnotation = async (
       id: string | null,
       annotation: AnnotationDto,
@@ -71,6 +77,7 @@ export const useAnnotationStore = (id: string) =>
     return {
       annotations,
       selectedAnnotationTypes,
+      utils,
       deleteAnnotation,
       saveOrCreateAnnotation,
     };

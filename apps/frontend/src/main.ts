@@ -7,6 +7,7 @@ import { createApp } from 'vue';
 import App from './app/App.vue';
 import { loadRuntimeConfig } from '@ghentcdh/tools-vue';
 import router from './router';
+import { useAnnotationDefStore } from './app/views/work/annotation/store/annotation-def.store';
 
 const app = createApp(App);
 
@@ -14,6 +15,10 @@ const app = createApp(App);
 
 loadRuntimeConfig().then(() => {
   app.use(createPinia());
-  app.use(router);
-  app.mount('#root');
+
+  const initialLoads = Promise.all([useAnnotationDefStore().init()]);
+  initialLoads.then(() => {
+    app.use(router);
+    app.mount('#root');
+  });
 });

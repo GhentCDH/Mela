@@ -10,10 +10,11 @@ export const getMetadata = (
   validationDef: FormValidationDef,
 ) => {
   if (!validationDef) return null;
+
   const specifiedResource = findBodyType<SpecificResource>(
     'SpecificResource',
     (body) => true,
   )(annotation);
 
-  return specifiedResource.value;
+  return specifiedResource?.value ?? null;
 };
