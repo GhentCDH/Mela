@@ -1,6 +1,5 @@
 import {
   SpecificResourceSchema,
-  TextTargetSchema,
   W3CAnnotation,
 } from '@ghentcdh/annotated-text';
 import type {
@@ -70,11 +69,8 @@ const mapRelationToTarget = (
 ): W3CAnnotation['target'] => {
   return {
     source_id: relation.annotation_to_id,
+    source: getAnnotationUri({ id: relation.annotation_to_id }),
     source_type: 'annotation',
-    value: TextTargetSchema.parse({
-      source: getAnnotationUri({ id: relation.annotation_to_id }),
-      // TODO is this needed? processingLanguage,
-    }),
   };
 };
 

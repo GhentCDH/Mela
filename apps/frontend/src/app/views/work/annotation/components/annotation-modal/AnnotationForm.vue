@@ -39,8 +39,6 @@ onMounted(() => {
     return;
   }
   formData.value = getMetadata(properties.annotation, schemaDefinition.value);
-
-  console.log('formdata', formData.value);
 });
 </script>
 <template>

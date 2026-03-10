@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { useToast } from '../mode/useToast';
 import { useAnnotationDefStore } from '../../store/annotation-def.store';
+import { useAnnotationEditStore } from '../annotation-detail/AnnotationEdit.store';
 
 type AnnotationLinkData = {
   annotation: W3CAnnotation;
@@ -13,26 +14,26 @@ type AnnotationLinkData = {
 export const useAnnotationLink = defineStore('use-annotation-link', () => {
   const data = ref<AnnotationLinkData | null>(null);
   const annotationDefStore = useAnnotationDefStore();
+  const annotationEditStore = useAnnotationEditStore();
   const toaster = useToast();
   const isVisible = ref(false);
-  const isActive = ref(false);
 
   const startLink = (type: string, annotation: W3CAnnotation) => {
     data.value = { annotation, type };
-    isActive.value = true;
+    annotationEditStore.start();
     const label = annotationDefStore.definition[type].label;
     toaster.showToastWithAction(`Select annotation to ${label}`, {
       label: 'Cancel',
       onClick: () => {
-        //
+        cancel();
       },
     });
   };
 
   const cancel = () => {
     isVisible.value = false;
-    isActive.value = false;
     data.value = null;
+    annotationEditStore.end();
     toaster.closeToast();
   };
 
@@ -42,7 +43,6 @@ export const useAnnotationLink = defineStore('use-annotation-link', () => {
   };
 
   return {
-    isActive,
     startLink,
     cancel,
     selectLink: selectLinkedAnnotation,

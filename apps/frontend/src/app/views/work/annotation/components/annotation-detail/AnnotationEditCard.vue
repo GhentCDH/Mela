@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { findPurpose } from '../../../../../style/annotation.style';
 import { useAnnotationStore } from '../../store/anntotation.store';
 import Navbar, { NavbarAction } from '../navbar.vue';
@@ -12,6 +12,8 @@ import Metadata from './Metadata.vue';
 import { useAnnotationSelect } from '../annotation-modal/useAnnotationSelect';
 import { SourceModel, W3CAnnotation } from '@ghentcdh/annotated-text';
 import { useToast } from '../mode/useToast';
+import LinksDetail from './LinksDetail.vue';
+import { useAnnotationEditStore } from './AnnotationEdit.store';
 
 const properties = defineProps<{
   position: { x: number; y: number };
@@ -21,29 +23,35 @@ const properties = defineProps<{
 }>();
 const annotationDefStore = useAnnotationDefStore();
 const toastStore = useToast();
-const annotationLink = useAnnotationLink();
+const annotationEditStore = useAnnotationEditStore();
 
 const emit = defineEmits<{
   close: [];
 }>();
-
-const disabled = computed(() => {
-  return annotationLink.isActive;
-});
-
+const closeNextClick = ref(true);
 const cardRef = ref<HTMLElement>();
 onMounted(() => {
-  // document.addEventListener('click', handleOutsideClick);
+  document.addEventListener('click', handleOutsideClick);
 });
 onUnmounted(() => {
-  // document.removeEventListener('click', handleOutsideClick);
+  document.removeEventListener('click', handleOutsideClick);
 });
 
+watch(
+  () => properties.annotation,
+  () => {
+    closeNextClick.value = false;
+    console.log('watch');
+    console.log(properties.annotation);
+  },
+);
+
 function handleOutsideClick(e: MouseEvent) {
-  if (disabled.value) return;
+  if (annotationEditStore.disabled) return;
 
   if (cardRef.value && !cardRef.value.contains(e.target as Node)) {
-    emit('close');
+    console.log('close');
+    // emit('close');
   }
 }
 const annotationDef = computed(() => {
@@ -84,7 +92,7 @@ const addActions = (definition: AnnotationDefinition, _disabled: boolean) => {
   return {
     icon: IconEnum.Plus,
     label: 'Add',
-    disabled,
+    disabled: _disabled,
     children: actions.map((action) => ({
       label: action.label,
       action: () => {
@@ -110,7 +118,7 @@ const createActionLinks = (
 
 const actions: NavbarAction = computed(() => {
   const definition = annotationDef.value;
-  const _disabled = disabled.value;
+  const _disabled = annotationEditStore.disabled;
   const _purpose = purpose.value;
   return [
     addActions(definition, _disabled),
@@ -128,7 +136,9 @@ const actions: NavbarAction = computed(() => {
       label: 'Delete',
       disabled: _disabled,
       action: () => {
-        annotationStore.deleteAnnotation(annotation.value!);
+        annotationStore.deleteAnnotation(annotation.value!).then((success) => {
+          if (success) emit('close');
+        });
       },
     },
   ]
@@ -146,7 +156,7 @@ const createAnnotation = (annotationType: Type) => {
 const editAnnotation = () => {
   const parentAnnotation =
     annotationStore.utils.getParent(properties.annotation) ?? undefined;
-  console.log('parent', parentAnnotation);
+
   useAnnotationSelect().editAnnotation(
     {
       source: properties.source,
@@ -176,8 +186,12 @@ const purposeLabel = computed(() => {
         :schema="validation.jsonSchema"
         :ui-schema="validation.metaDataSchema"
       />
+      <LinksDetail
+        :store-id="storeId"
+        :annotation="annotation"
+      />
       <Alert
-        v-if="annotationLink.isActive"
+        v-if="toastStore.isVisible"
         type="info"
         :message="toastStore.data?.toastMessage"
       />

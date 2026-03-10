@@ -86,7 +86,7 @@
     "onlyBuiltDependencies": [
       "better-sqlite3"
     ],
-    "__overrides": {
+    "overrides": {
       "@ghentcdh/json-forms-vue": "link:../ghentcdh/dist/libs/json-forms/vue",
       "@ghentcdh/ui": "link:../ghentcdh/dist/libs/ui"
     },

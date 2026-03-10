@@ -51,15 +51,20 @@ export const useAnnotationStore = (id: string) =>
       },
     );
 
-    const deleteAnnotation = async (annotation: W3CAnnotation) => {
-      ModalService.showConfirm({
-        title: 'Delete link',
-        message: `Are you sure to delete this annotation?`,
-        onClose: (result) => {
-          if (result.confirmed) {
-            annotationDataStore.deleteItem(annotation.id);
-          }
-        },
+    const deleteAnnotation = (annotation: W3CAnnotation): Promise<boolean> => {
+      return new Promise((resolve) => {
+        ModalService.showConfirm({
+          title: 'Delete link',
+          message: `Are you sure to delete this annotation?`,
+          onClose: async (result) => {
+            if (result.confirmed) {
+              await annotationDataStore.deleteItem(annotation.id);
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+        });
       });
     };
 

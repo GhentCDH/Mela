@@ -5,6 +5,11 @@ import {
 } from '@ghentcdh/annotated-text';
 import { findPurposeLowerCase } from '../../../../style/annotation.style';
 import { allowedChildrenPerType } from '../../text-index/controls/identify.color';
+import { getAnnotationUri } from '@mela/text/shared';
+import {
+  AnnotationLink,
+  mapRelationsToLinks,
+} from '../../text-index/controls/annotate-text/utils/links';
 
 type AnnotationPositionTree = {
   id: string;
@@ -73,10 +78,9 @@ const buildChildParentMap = (annotations: W3CAnnotation[]) => {
   );
   const childParentMap = new Map<string, W3CAnnotation | null>();
   const parentChildMap = new Map<string, W3CAnnotation[]>();
+  const linkedAnnotations = new Map<string, AnnotationLink[]>();
 
   annotationsWithPositons.forEach((annotation) => {
-    console.group(annotation.type);
-    console.log(annotation.start, annotation.end);
     // Find annotations that fully contain this annotation
     const parents = annotationsWithPositons
       .filter(
@@ -92,34 +96,35 @@ const buildChildParentMap = (annotations: W3CAnnotation[]) => {
         (a: AnnotationPositionTree, b: AnnotationPositionTree) =>
           a.end - a.start - (b.end - b.start),
       );
-    console.log(parents);
     const parentAnnotation = parents[0];
     const parentId = parentAnnotation?.id ?? rootId;
     const children = parentChildMap.get(parentId) ?? [];
+
     children.push(annotationIdMap.get(annotation.id)!);
     parentChildMap.set(parentAnnotation?.id ?? rootId, children);
     childParentMap.set(annotation.id, annotationIdMap.get(parentId) ?? null);
 
-    console.log(childParentMap.get(annotation.id));
-    console.log(parentId);
-    // parentChildMap.set(parentAnnotation.id, [annotation]);
-
-    console.groupEnd();
+    const annotationUri = getAnnotationUri(annotation);
+    linkedAnnotations.set(
+      annotation.id,
+      mapRelationsToLinks(annotationUri, annotations),
+    );
   });
 
-  return { childParentMap, parentChildMap, annotationIdMap };
+  return { childParentMap, parentChildMap, annotationIdMap, linkedAnnotations };
 };
 
 export const annotationUtils = (annotations: W3CAnnotation[]) => {
-  console.group('annotationUtils', annotations?.length);
-  const { childParentMap, parentChildMap, annotationIdMap } =
+  const { childParentMap, parentChildMap, annotationIdMap, linkedAnnotations } =
     buildChildParentMap(annotations);
-  console.groupEnd();
+
   return {
     getAnnotation: (id: string) => annotationIdMap.get(id),
     getParent: (annotation: W3CAnnotation) =>
       childParentMap.get(annotation.id) ?? null,
     getChildren: (annotation: W3CAnnotation) =>
       parentChildMap.get(annotation.id) ?? {},
+    annotationLinks: (annotation: W3CAnnotation) =>
+      linkedAnnotations.get(annotation.id) ?? [],
   };
 };

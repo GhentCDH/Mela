@@ -18,7 +18,7 @@ export type FormValidationDef = {
   validation: (value: any) => any;
 };
 export const icons = {
-  link_buckets: IconEnum.Link,
+  link_bucket: IconEnum.Link,
   translation: IconEnum.Language,
 };
 // TODO move this to shared
@@ -35,8 +35,8 @@ export const allowedChildrenPerType: Record<string, string[]> = {
 
 // TODO move this to shared
 export const allowedLinksPerType: Record<string, string[]> = {
-  example: ['link_buckets'],
-  lemma: ['translation'],
+  example: ['translation'],
+  lemma: ['link_bucket'],
   paragraph: ['translation'],
   phrase: ['translation'],
   subsection: ['translation'],
@@ -51,14 +51,13 @@ export type AnnotationDefinition = {
   label: string;
   style: CustomAnnotationStyle;
   allowedChildren: Array<KeyLabel<string>>;
-  allowedLinks: Array<KeyLabel<'translation' | 'link_buckets'>>;
+  allowedLinks: Array<KeyLabel<'translation' | 'link_bucket'>>;
 };
 
 const getDefinition = (
   def: AnnotationDef,
   labels: KeyLabel[],
 ): AnnotationDefinition => {
-  console.log('allowed links', def.id, allowedLinksPerType[def.id]);
   return {
     id: def.id,
     schema: {

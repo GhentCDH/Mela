@@ -38,9 +38,11 @@ export class AnnotationTypeRepository {
   }
 
   async delete(id: string) {
+    return this.annotationRepository.delete(id);
     const annotation = (await this.annotationRepository.findOne(
       id,
     )) as AnnotationNewWithRelations;
+    console.log(annotation);
 
     const relatedAnnotations = [
       // this.prisma.annotationRelation.findMany({
@@ -59,8 +61,12 @@ export class AnnotationTypeRepository {
       //       },
       //     })
       //   ).map((a) => a.annotation_id),
-      id,
+      annotation.relationsFrom.map((r) => r.id),
+      annotation.relationsTo.map((r) => r.id),
+      annotation.id,
     ].flat();
+
+    const relatedAnnotationsIds = [];
 
     // const sources = [
     //   annotation.annotationBody.filter((b) => b.source_type),
@@ -75,17 +81,17 @@ export class AnnotationTypeRepository {
 
     // TODO delete linked lemma annotation
 
-    const deleteRelations = await this.prisma.annotationRelation.deleteMany({
-      where: {
-        OR: {
-          annotationFrom: { id: { in: relatedAnnotations } },
-          annotationTo: { id: { in: relatedAnnotations } },
-        },
-      },
-    });
+    // const deleteRelations = await this.prisma.annotationRelation.deleteMany({
+    //   where: {
+    //     OR: {
+    //       annotationFrom: { id: { in: relatedAnnotations } },
+    //       annotationTo: { id: { in: relatedAnnotations } },
+    //     },
+    //   },
+    // });
 
     return Promise.all([
-      this.prisma.annotationNew.deleteMany({
+      this.prisma.annotation.deleteMany({
         where: { id: { in: relatedAnnotations } },
       }),
       // this.prisma.example.deleteMany({ where: { id: { in: deleteRelated } } }),

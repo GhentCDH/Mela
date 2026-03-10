@@ -10,7 +10,11 @@
       <div class="flex flex-col gap-2">
         <Collapse :title="label.selectLabel">
           <div :id="editId" />
-          <Btn :outline="true" class="mt-2" @click="selectAll">
+          <Btn
+            :outline="true"
+            class="mt-2"
+            @click="selectAll"
+          >
             Select all text
           </Btn>
         </Collapse>
@@ -23,8 +27,16 @@
       </div>
     </template>
     <template #actions>
-      <Btn color="secondary" :outline="true" @click="onCancel"> Cancel </Btn>
-      <Btn @click="onSubmit"> Save </Btn>
+      <Btn
+        color="secondary"
+        :outline="true"
+        @click="onCancel"
+      >
+        Cancel
+      </Btn>
+      <Btn @click="onSubmit">
+        Save
+      </Btn>
     </template>
   </Modal>
 </template>

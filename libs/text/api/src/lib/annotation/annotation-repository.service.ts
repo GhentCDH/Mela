@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@mela/generated-prisma';
-import { Annotation, AnnotationNew } from '@mela/generated-types';
+import { AnnotationNew } from '@mela/generated-types';
 
 import { CreateAnnotationDto } from './dto';
 import { AbstractRepository } from '../shared/repository.service';
@@ -35,18 +35,26 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   protected override includeList(): Record<string, true> {
-    return { textSelector: true, type: true };
+    return {
+      textSelector: true,
+      type: true,
+      textSelector: true,
+      type: true,
+      relationsTo: true,
+      relationsFrom: true,
+    };
   }
 
   override async delete(id: string): Promise<AnnotationNew> {
-    throw new Error('Use AnnotationtypeRepository.delete instead');
-  }
-
-  public findAnnotations(annotations: Array<Pick<Annotation, 'id'>>) {
-    return this.prisma.annotation.findMany({
+    await this.prisma.annotationRelation.deleteMany({
       where: {
-        id: { in: annotations.map((a) => a.id) },
+        OR: [
+          { annotation_from_id: id },
+          { annotation_to_id: id },
+        ],
       },
     });
+
+    return this.prisma.annotationNew.delete({ where: { id } });
   }
 }

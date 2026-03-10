@@ -31,6 +31,7 @@ import ContentNavbar from './content-navbar.vue';
 import { useAnnotationLink } from './annotation-modal/useAnnotationLink';
 import { useAnnotationDefStore } from '../store/annotation-def.store';
 import { useToast } from './mode/useToast';
+import { useAnnotationEditStore } from './annotation-detail/AnnotationEdit.store';
 
 const properties = defineProps<{
   source: SourceModel;
@@ -78,7 +79,6 @@ watch(
 const annotationDefStore = useAnnotationDefStore();
 
 onMounted(() => {
-  console.log(annotationDefStore.definitions);
   textAnnotation = createAnnotatedText<W3CAnnotation>(textUuid)
     .setTagLabelFn(findPurpose)
     .setRenderParams({
@@ -123,9 +123,11 @@ watch(
   },
 );
 const annotationLink = useAnnotationLink();
+const annotationEditStore = useAnnotationEditStore();
 const onMouseClick = (mouseEvent: MouseEvent, annotation: W3CAnnotation) => {
+  console.log('onMouseClick', annotation);
   // Don't do anything if some operation is active
-  if (annotationLink.isActive) {
+  if (annotationEditStore.isEditing) {
     annotationLink.selectLink(annotation);
   } else {
     showInfoForAnnotation(mouseEvent, annotation);

@@ -8,6 +8,7 @@ import { Section, SectionSchema } from '@mela/generated-types';
 import { mapToW3CAnnotation, SectionDto } from '@mela/text/shared';
 
 import { AbstractRepository } from '../shared/repository.service';
+import { AnnotationRepository } from '../annotation/annotation-repository.service';
 
 const createSelectFromSchema = (schema: ZodSchema) => {
   const selectDetail: Record<string, any> = {};
@@ -27,7 +28,10 @@ const selectDetail = {
 
 @Injectable()
 export class SectionRepository extends AbstractRepository<Section, SectionDto> {
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly annotationRepository: AnnotationRepository,
+  ) {
     super(prisma.section);
   }
 
@@ -100,6 +104,7 @@ export class SectionRepository extends AbstractRepository<Section, SectionDto> {
         textSelector: true,
         type: true,
         relationsTo: true,
+        relationsFrom: true,
       },
       where: { textSelector: { section_text_id: { in: textIds } } },
     });
@@ -112,6 +117,7 @@ export class SectionRepository extends AbstractRepository<Section, SectionDto> {
         textSelector: true,
         type: true,
         relationsTo: true,
+        relationsFrom: true,
       },
       where: { id: { in: relationIds } },
     });

@@ -1,6 +1,6 @@
 <template>
   <Modal
-    modal-title="Link annotation"
+    :modal-title="title"
     :open="true"
     :disable-close="false"
     width="lg"
@@ -8,13 +8,21 @@
   >
     <template #content>
       <div class="flex flex-col gap-2">
-        <Collapse
-          v-for="text in texts"
-          :key="text.id"
-          :title="text.text?.content.label"
-        >
-          <div :id="editId + '_' + text.id" />
-        </Collapse>
+        <AnnotationText
+          :store-id="storeId"
+          :annotation="properties.annotation"
+          :show-source="true"
+        />
+        <AnnotationText
+          :store-id="storeId"
+          :annotation="properties.annotation1"
+          :show-source="true"
+        />
+        <AnnotationForm
+          v-model="formData"
+          :annotation="properties.annotation"
+          :annotation-type="type"
+        />
       </div>
     </template>
     <template #actions>
@@ -34,19 +42,15 @@
 </template>
 
 <script setup lang="ts">
-import { Btn, Collapse, Modal } from '@ghentcdh/ui';
-import {
-  createAnnotatedText,
-  findTextPositionSelector,
-  getTarget,
-  MarkdownTextAdapter,
-  W3CAnnotation,
-} from '@ghentcdh/annotated-text';
+import { Btn, Modal } from '@ghentcdh/ui';
+import { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { useAnnotationStore } from '../../store/anntotation.store';
-import { useSectionStore } from '../../../section-store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useAnnotationLink } from './useAnnotationLink';
 import { annotationDto } from '@mela/text/shared';
+import { useAnnotationDefStore } from '../../store/annotation-def.store';
+import AnnotationText from '../annotation-detail/Annotation-text.vue';
+import AnnotationForm from './AnnotationForm.vue';
 
 export type AnnotationTranslationModalProps = {
   annotation: W3CAnnotation;
@@ -56,10 +60,15 @@ export type AnnotationTranslationModalProps = {
 };
 const properties = defineProps<AnnotationTranslationModalProps>();
 const annotationStore = useAnnotationStore(properties.storeId);
-const sectionStore = useSectionStore();
+const annotationDefStore = useAnnotationDefStore();
 const formData = ref(null);
+const annotationDef = computed(
+  () => annotationDefStore.definition[properties.type],
+);
+const title = computed(
+  () => `Link ${annotationDef.value?.label ?? properties.type}`,
+);
 
-const editId = `edit-annotation-${Date.now()}--`;
 const emits = defineEmits(['closeModal']);
 const annotationLink = useAnnotationLink();
 
@@ -80,31 +89,4 @@ const onSubmit = async () => {
   emits('closeModal', { valid: true });
   annotationLink.cancel();
 };
-
-const texts = computed(() => {
-  return [properties.annotation, properties.annotation1].map((a) => {
-    const sourceUri = getTarget(a).find((t) => t.source)?.source;
-    const textPositionSelector = findTextPositionSelector(sourceUri)(a)!;
-    const text = sectionStore.sources.find((s) => s.uri === sourceUri)!;
-
-    return {
-      id: a.id,
-      text: text,
-      limit: { ...textPositionSelector, ignoreLines: true },
-    };
-  });
-});
-
-onMounted(() => {
-  texts.value.forEach((text) => {
-    createAnnotatedText(editId + '_' + text.id)
-      .setTextAdapter(
-        MarkdownTextAdapter({
-          textDirection: text.text.content.textDirection,
-          limit: text.limit,
-        }),
-      )
-      .setText(text.text.content.text);
-  });
-});
 </script>
