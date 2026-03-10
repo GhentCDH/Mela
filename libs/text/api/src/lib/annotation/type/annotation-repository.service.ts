@@ -2,10 +2,7 @@ import { AnnotationDto, AnnotationLink } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@mela/generated-prisma';
-import {
-  AnnotationDef,
-  AnnotationNewWithRelations,
-} from '@mela/generated-types';
+import { AnnotationDef, AnnotationNewWithRelations } from '@mela/generated-types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
 
@@ -44,7 +41,6 @@ export class AnnotationTypeRepository {
       });
   }
 
-  // region textselection
   private async validateData(type: string, value: any) {
     const [_type] = await Promise.all([this.getType(type)]);
 
