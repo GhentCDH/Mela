@@ -1,32 +1,19 @@
-import {
-  AnnotationDto,
-  AnnotationExample,
-  AnnotationExampleLemma,
-  AnnotationLink,
-  PURPOSE_LEMA,
-} from '@mela/text/shared';
+import { AnnotationDto, AnnotationLink } from '@mela/text/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@mela/generated-prisma';
 import {
-  Annotation,
   AnnotationDef,
   AnnotationNewWithRelations,
-  LemmaWithRelations,
-  TextContent,
 } from '@mela/generated-types';
 
 import { AnnotationRepository } from '../annotation-repository.service';
-import { createLemma } from './utils/create-lemma';
-import { createLinks } from './utils/create-links';
-import { RegisterRepository } from '../../register/register-repository.service';
 
 @Injectable()
 export class AnnotationTypeRepository {
   constructor(
     private readonly prisma: PrismaService,
     private readonly annotationRepository: AnnotationRepository,
-    private readonly registerRepository: RegisterRepository,
   ) {}
 
   async create(data: AnnotationDto) {
@@ -36,91 +23,6 @@ export class AnnotationTypeRepository {
   async update(id: string, data: AnnotationDto) {
     return this.createOrUpdate(id, data);
   }
-
-  async delete(id: string) {
-    return this.annotationRepository.delete(id);
-    const annotation = (await this.annotationRepository.findOne(
-      id,
-    )) as AnnotationNewWithRelations;
-    console.log(annotation);
-
-    const relatedAnnotations = [
-      // this.prisma.annotationRelation.findMany({
-      //   where:{
-      //     or:{
-      //       annotation_from_id: id,
-      //       annotation_to_id: id,
-      //     }
-      //   }
-      // })
-      //   (
-      //     await this.prisma.annotationTarget.findMany({
-      //       where: {
-      //         source_id: id,
-      //         source_type: 'annotation',
-      //       },
-      //     })
-      //   ).map((a) => a.annotation_id),
-      annotation.relationsFrom.map((r) => r.id),
-      annotation.relationsTo.map((r) => r.id),
-      annotation.id,
-    ].flat();
-
-    const relatedAnnotationsIds = [];
-
-    // const sources = [
-    //   annotation.annotationBody.filter((b) => b.source_type),
-    //   annotation.annotationTarget.filter((t) => t.source_type),
-    // ].flat();
-
-    // const sourceTypeDelete = ['example'];
-    //
-    // const deleteRelated = sources
-    //   .filter((s) => sourceTypeDelete.includes(s.source_type))
-    //   .map((s) => s.source_id) as string[];
-
-    // TODO delete linked lemma annotation
-
-    // const deleteRelations = await this.prisma.annotationRelation.deleteMany({
-    //   where: {
-    //     OR: {
-    //       annotationFrom: { id: { in: relatedAnnotations } },
-    //       annotationTo: { id: { in: relatedAnnotations } },
-    //     },
-    //   },
-    // });
-
-    return Promise.all([
-      this.prisma.annotation.deleteMany({
-        where: { id: { in: relatedAnnotations } },
-      }),
-      // this.prisma.example.deleteMany({ where: { id: { in: deleteRelated } } }),
-    ]);
-  }
-
-  // region example
-  private async updateExample(id: string | null, data: AnnotationExample) {
-    // const textContent = await this.prisma.textContent.findFirstOrThrow({
-    //   where: { id: data.textContent.id },
-    // });
-    //
-    // const exampledto = {
-    //   register: data.example.register,
-    //   name: getTextSelection(textContent, data.annotation),
-    //   textContent,
-    // } as ExampleDto;
-    //
-    // const example = await (data.example.id
-    //   ? this.exampleRepository.update(data.example.id!, exampledto)
-    //   : this.exampleRepository.create(exampledto));
-    //
-    // const annotation = createExample(example, textContent, data.annotation);
-    //
-    // if (!id) return this.annotationRepository.create(annotation);
-    // return this.annotationRepository.update(id, annotation);
-  }
-
-  // endregion
 
   private async getType(type: string) {
     return this.prisma.annotationDef
@@ -289,74 +191,4 @@ export class AnnotationTypeRepository {
 
     return this.annotationRepository.findOne(annotation.id);
   }
-
-  // endregion
-
-  // region lemma
-  private async updateLemma(id: string | null, data: AnnotationExampleLemma) {
-    // 1.
-    //    a. find the text content
-    //    b. find or create the lemma
-    //    c. find or create the example
-    const [textContent, lemma, exampleAnnotation] = await Promise.all([
-      this.prisma.textContent.findFirstOrThrow({
-        where: { id: data.textContent.id },
-      }),
-      this.prisma.lemma.findFirstOrThrow({ where: { id: data.lemma.id } }),
-      this.prisma.annotation.findFirstOrThrow({
-        where: { id: data.exampleAnnotation.id },
-      }),
-    ]);
-
-    // 2. Check if the example is the one of the annotation
-
-    // 3. find or create the annotation for the lemma
-    const selectionAnnotation = await this.updateLemmaExampleSelection(
-      id,
-      lemma,
-      textContent,
-      data,
-    );
-
-    // 4. create the lemma annotation with a link betrween the lemma and the example
-    return this.updateLemmaExampleLink(
-      id,
-      textContent,
-      exampleAnnotation,
-      selectionAnnotation,
-    );
-  }
-
-  private async updateLemmaExampleSelection(
-    id: string | null,
-    lemma: LemmaWithRelations,
-    textContent: TextContent,
-    data: AnnotationExampleLemma,
-  ) {
-    const annotation = createLemma(lemma, textContent, data.annotation);
-
-    if (!id) return this.annotationRepository.create(annotation);
-    return this.annotationRepository.update(id, annotation);
-  }
-
-  private async updateLemmaExampleLink(
-    id: string | null,
-    textContent: TextContent,
-    exampleAnnotation: Annotation,
-    selectionAnnotation: Annotation,
-  ) {
-    const annotations = [exampleAnnotation, selectionAnnotation];
-
-    const linkedAnnotation = createLinks(
-      { id: textContent.text_id },
-      PURPOSE_LEMA,
-      annotations,
-    );
-
-    if (!id) return this.annotationRepository.create(linkedAnnotation);
-
-    return this.annotationRepository.update(id, linkedAnnotation);
-  }
-
-  // endregion
 }

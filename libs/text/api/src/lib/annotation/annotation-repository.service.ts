@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
 import { PrismaService } from '@mela/generated-prisma';
 import { AnnotationNew } from '@mela/generated-types';
 
@@ -46,15 +45,25 @@ export class AnnotationRepository extends AbstractRepository<
   }
 
   override async delete(id: string): Promise<AnnotationNew> {
-    await this.prisma.annotationRelation.deleteMany({
-      where: {
-        OR: [
-          { annotation_from_id: id },
-          { annotation_to_id: id },
-        ],
-      },
-    });
+    // find relations that also should be deleted
+    const annotation = await this.findOne(id);
+    const relations = annotation.relationsTo.map((r) => r.annotation_from_id);
 
-    return this.prisma.annotationNew.delete({ where: { id } });
+    const toDeleteIds = [id, relations].flat();
+
+    if (annotation.relationsFrom.length || annotation.relationsTo.length) {
+      await this.prisma.annotationRelation.deleteMany({
+        where: {
+          OR: [
+            { annotation_from_id: { in: toDeleteIds } },
+            { annotation_to_id: { in: toDeleteIds } },
+          ],
+        },
+      });
+    }
+
+    return this.prisma.annotationNew.deleteMany({
+      where: { id: { in: toDeleteIds } },
+    });
   }
 }

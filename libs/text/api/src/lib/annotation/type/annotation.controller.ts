@@ -78,7 +78,7 @@ export class AnnotationController {
     type: string,
   })
   async delete(@Param('id') id: string) {
-    return this.annotationTypeRepository.delete(id);
+    return this.annotationRepository.delete(id);
   }
 
   @Post(':id')
