@@ -6,6 +6,8 @@
       </div>
     </template>
     <Loading :loading="!formData" />
+    {{ routeParams.sectionId }}
+    {{ sectionStore.section }}
     <div class="h-full flex flex-col gap-2 overflow-hidden">
       <div
         class="bg-white w-full border border-gray-300 p-2 flex-grow overflow-y-auto"
@@ -50,8 +52,11 @@ import Loading from '../../ui/loading.vue';
 import { useSectionStore } from './section-store';
 import { NEW_SECTION_ID } from '../../utils/create-section';
 import SectionsMenu from './components/SectionsMenu.vue';
+import { useWorkStore } from './work.store';
+import { useRouteParams } from '../../utils/useRouteParams';
 
 const id = `section`;
+const routeParams = useRouteParams();
 const sectionStore = useSectionStore();
 
 const valid = ref(false);
@@ -91,6 +96,7 @@ const onSubmit = () => {
   sectionStore.saveOrUpdate(formData.value).then((section) => {
     textId.value = sectionStore.section?.id;
     sectionStore.reload();
+    useWorkStore().reload();
   });
   alert(
     'Section saved, existing annotations are not updated, this is still a manual process',

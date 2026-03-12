@@ -18,6 +18,7 @@ export const useSectionStore = defineStore('sectionStore', () => {
     SectionWithRelations
   >({
     get: (id) => {
+      console.log('get section', id);
       if (id === NEW_SECTION_ID) {
         return createSectionDto(params.workId, {});
       }
@@ -32,8 +33,6 @@ export const useSectionStore = defineStore('sectionStore', () => {
     },
     items: { create: sectionRepository.create, patch: sectionRepository.patch },
   });
-
-  sectionDataStore.setId(params.sectionId);
 
   const sources = computed(() => {
     return createSourceContent(sectionDataStore.data.value?.section_text ?? []);

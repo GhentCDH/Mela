@@ -124,6 +124,6 @@ watch(
 );
 
 const updateWork = () => {
-  workStore.reloadWork();
+  workStore.reload();
 };
 </script>

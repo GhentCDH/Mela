@@ -45,6 +45,7 @@ export const useWorkStore = defineStore('workStore', () => {
       params: { sectionId: section.id, workId: work.value?.id },
     });
   };
+
   const editAnnotations = (section: Section) => {
     router.push({
       name: 'annotation-editor',
@@ -56,7 +57,7 @@ export const useWorkStore = defineStore('workStore', () => {
     work,
     sections,
     deleteSection,
-    reloadWork: () => workDataStore.reload(),
+    reload: () => workDataStore.reload(),
     editWork,
     editSection,
     editAnnotations,

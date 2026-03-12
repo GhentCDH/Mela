@@ -1,7 +1,7 @@
 <template>
   <Drawer class="_h-full" :width-left="300" :width-right="20">
     <Loading :loading="!sectionStore.section" />
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-2 py-2">
       <content-edit
         v-for="source in sectionStore.sources"
         :key="source.uri"
