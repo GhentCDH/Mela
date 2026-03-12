@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 import type { W3CAnnotation } from '@ghentcdh/annotated-text';
+import type { SectionText } from '@mela/generated-types';
 
 import { AnnotationService } from './annotation.service';
 import type { AnnotationFilter } from '../utils/annotations.utils';
@@ -39,7 +40,7 @@ export const useAnnotationStore = (id: string) =>
       }),
     );
 
-    const init = (_sources: TextContentDto[], _textId: string) => {
+    const init = (_sources: SectionText[], _textId: string) => {
       textId.value = _textId;
       sources.value = createSourceContent(_sources);
       annotationService.load(_textId);

@@ -61,7 +61,7 @@
           class="flex items-center justify-between w-full gap-2"
           :class="{
             'bg-primary/5 border-b border-primary/60':
-              section.id === routeParams.sectionId,
+              section.id === activeSection?.id,
           }"
         >
           <div class="flex items-center gap-2 min-w-0">
@@ -104,21 +104,19 @@
 import { computed, ref } from 'vue';
 
 import { Btn, Collapse, IconEnum } from '@ghentcdh/ui';
-import { useRouteParams } from '../../../utils/useRouteParams';
 import { useWorkStore } from '../work.store';
 import { SectionsMenuProperties } from './SectionsMenu.properties';
+import { useSectionStore } from '../section-store';
 
 defineProps(SectionsMenuProperties);
 
 const MAX_VISIBLE = 5;
 
-const routeParams = useRouteParams();
 const workStore = useWorkStore();
+const sectionStore = useSectionStore();
 const showAll = ref(false);
 
-const activeSection = computed(() =>
-  workStore.sections.find((s) => s.id === routeParams.sectionId),
-);
+const activeSection = computed(() => sectionStore.section);
 
 const visibleSections = computed(() => {
   if (showAll.value) return workStore.sections;

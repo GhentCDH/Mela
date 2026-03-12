@@ -1,20 +1,20 @@
 import { defineStore } from 'pinia';
 import { useSectionRepository } from '../../../../repository/section.repository';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { W3CAnnotation } from '@ghentcdh/annotated-text';
 import { ModalService } from '@ghentcdh/ui';
 import { useAnnotationRepository } from '../../../../repository/annotation.repository';
 import { AnnotationDto } from '@mela/text/shared';
 import { AnnotationTester } from '../../text-index/controls/annotate-text/utils/tester';
 import { DataStore } from '../../../../repository/data.store';
-import { useRouteParams } from '../../../../utils/useRouteParams';
+import { getRouteParam } from '../../../../utils/useRouteParams';
 import { findPurposeLowerCase } from '../../../../style/annotation.style';
 import type { AnnotationType as AnnotationTypeLabel } from '../../text-index/controls/identify.color';
 import { annotationUtils } from '../utils/annotation-utils';
 
 export const useAnnotationStore = (id: string) =>
   defineStore(`annotation_store_${id}`, () => {
-    const params = useRouteParams();
+    const routerParams = getRouteParam();
     const sectionRepository = useSectionRepository();
     const annotationRepository = useAnnotationRepository();
 
@@ -43,13 +43,7 @@ export const useAnnotationStore = (id: string) =>
       });
     });
 
-    annotationDataStore.setId(params.sectionId as string);
-    watch(
-      () => params.sectionId,
-      (newId, oldId) => {
-        annotationDataStore.setId(params.sectionId);
-      },
-    );
+    routerParams.watch('sectionId', (id) => annotationDataStore.setId(id));
 
     const deleteAnnotation = (annotation: W3CAnnotation): Promise<boolean> => {
       return new Promise((resolve) => {

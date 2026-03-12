@@ -1,47 +1,55 @@
-import { defineStore } from 'pinia';
-import { Ref, ref, watch } from 'vue';
+import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const setValue = (
-  refValue: Ref<string>,
-  newValue: string,
-  oldValue: string,
-) => {
-  if (newValue !== oldValue) {
-    refValue.value = newValue;
-  }
-};
+type RouterParams = 'sectionId' | 'workId';
 
-export const useRouteParams = defineStore(`route_params`, () => {
+/**
+ * Composable to access and observe route params.
+ * Must be called within a Vue setup context (component or Pinia store).
+ *
+ * @example
+ * const routerParams = getRouteParam();
+ *
+ * // Read current value
+ * const id = routerParams.get('workId');
+ *
+ * // React to changes (callback fires immediately with current value, then on each change)
+ * routerParams.watch('sectionId', (id) => {
+ *   dataStore.setId(id);
+ * });
+ */
+export const getRouteParam = () => {
   const route = useRoute();
-  const sectionId = ref<string>('');
-  const workId = ref<string>('');
 
-  const setValues = (params: Record<string, string>) => {
-    setValue(sectionId, params.sectionId, sectionId.value);
-    setValue(workId, params.workId, sectionId.value);
+  /**
+   * Watch a specific route param for changes.
+   * Invokes the callback immediately with the current value, and again
+   * whenever the param changes (skipping duplicate values).
+   */
+  const watchRouteParam = (
+    key: RouterParams,
+    callback: (value: string | undefined) => void,
+  ) => {
+    let previousValue = route.params[key];
+    watch(
+      () => route.params,
+      (value) => {
+        const nextValue = value[key];
+        if (nextValue === previousValue) return;
+
+        previousValue = nextValue;
+        callback(nextValue as string);
+      },
+    );
+
+    callback(previousValue as string);
   };
-  setValues(route.params);
 
-  watch(
-    () => route.params,
-    () => {
-      setValues(route.params);
+  return {
+    /** Get the current value of a route param. */
+    get: (key: RouterParams) => {
+      return route.params[key] as string;
     },
-  );
-
-  // watch(
-  //   () => route.params.sectionId,
-  //   (newId, oldId) => {
-  //     if (newId !== oldId) sectionId.value = newId as string;
-  //   },
-  // );
-  // watch(
-  //   () => route.params.workId,
-  //   (newId, oldId) => {
-  //     if (newId !== oldId) workId.value = newId as string;
-  //   },
-  // );
-
-  return { sectionId, workId };
-});
+    watch: watchRouteParam,
+  };
+};

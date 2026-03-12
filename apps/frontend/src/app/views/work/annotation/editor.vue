@@ -12,8 +12,8 @@
     </div>
     <template #left-drawer>
       <div class="gap-2 flex flex-col">
-        <SectionsMenu />
         <AnnotationFilter :store-id="storeId" />
+        <SectionsMenu />
       </div>
     </template>
   </Drawer>

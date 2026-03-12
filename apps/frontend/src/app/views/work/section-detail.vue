@@ -6,8 +6,6 @@
       </div>
     </template>
     <Loading :loading="!formData" />
-    {{ routeParams.sectionId }}
-    {{ sectionStore.section }}
     <div class="h-full flex flex-col gap-2 overflow-hidden">
       <div
         class="bg-white w-full border border-gray-300 p-2 flex-grow overflow-y-auto"
@@ -53,10 +51,8 @@ import { useSectionStore } from './section-store';
 import { NEW_SECTION_ID } from '../../utils/create-section';
 import SectionsMenu from './components/SectionsMenu.vue';
 import { useWorkStore } from './work.store';
-import { useRouteParams } from '../../utils/useRouteParams';
 
 const id = `section`;
-const routeParams = useRouteParams();
 const sectionStore = useSectionStore();
 
 const valid = ref(false);

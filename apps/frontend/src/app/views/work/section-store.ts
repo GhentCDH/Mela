@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 import type { SectionWithRelations } from '@mela/generated-types';
 import { NotificationService } from '@ghentcdh/ui';
@@ -7,10 +7,12 @@ import { useSectionRepository } from '../../repository/section.repository';
 import { createSectionDto, NEW_SECTION_ID } from '../../utils/create-section';
 import { createSourceContent } from './text-index/controls/annotate-text/utils/source';
 import { DataStore } from '../../repository/data.store';
-import { useRouteParams } from '../../utils/useRouteParams';
+import { getRouteParam } from '../../utils/useRouteParams';
 
 export const useSectionStore = defineStore('sectionStore', () => {
-  const params = useRouteParams();
+  const routerParams = getRouteParam();
+
+  const sectionId = ref('');
   const sectionRepository = useSectionRepository();
 
   const sectionDataStore = new DataStore<
@@ -20,11 +22,11 @@ export const useSectionStore = defineStore('sectionStore', () => {
     get: (id) => {
       console.log('get section', id);
       if (id === NEW_SECTION_ID) {
-        return createSectionDto(params.workId, {});
+        return createSectionDto(routerParams.get('workId'), {});
       }
 
       return sectionRepository.get(id).then((data) => {
-        if (data.work_id !== params.workId) {
+        if (data.work_id !== routerParams.get('workId')) {
           NotificationService.error('Section is no part of the work');
           return null;
         }
@@ -34,19 +36,25 @@ export const useSectionStore = defineStore('sectionStore', () => {
     items: { create: sectionRepository.create, patch: sectionRepository.patch },
   });
 
+  routerParams.watch('sectionId', (id) => {
+    console.log(id);
+    sectionId.value = id as string;
+    sectionDataStore.setId(id as string);
+  });
+
   const sources = computed(() => {
     return createSourceContent(sectionDataStore.data.value?.section_text ?? []);
   });
 
   const saveOrUpdate = (section: SectionWithRelations) => {
-    return params.sectionId === NEW_SECTION_ID
+    return section.id === NEW_SECTION_ID
       ? sectionDataStore.createItem(section)
-      : sectionDataStore.patchItem(params.sectionId, section);
+      : sectionDataStore.patchItem(section.id, section);
   };
 
   return {
     section: computed(() => sectionDataStore.data.value),
-    sectionId: params.sectionId,
+    sectionId,
     saveOrUpdate,
     sources,
     reload: () => sectionDataStore.reload(),
