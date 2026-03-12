@@ -97,6 +97,7 @@ import { FormWithActions } from '@ghentcdh/json-forms-vue';
 
 import { useWorkMenu } from './work-menu.store';
 import { useWorkStore } from './work.store';
+import { useDragSort } from './composables/useDragSort';
 import { WorkFormSchema } from '@mela/text/shared';
 import Loading from '../../ui/loading.vue';
 
@@ -128,37 +129,9 @@ const updateWork = () => {
   workStore.reload();
 };
 
-const dragIndex = ref<number | null>(null);
-const dragOverIndex = ref<number | null>(null);
-
-const onDragStart = (event: DragEvent, index: number) => {
-  dragIndex.value = index;
-  event.dataTransfer!.effectAllowed = 'move';
-};
-
-const onDragOver = (event: DragEvent, index: number) => {
-  event.preventDefault();
-  event.dataTransfer!.dropEffect = 'move';
-  dragOverIndex.value = index;
-};
-
-const onDragLeave = () => {
-  dragOverIndex.value = null;
-};
-
-const onDrop = (event: DragEvent, targetIndex: number) => {
-  event.preventDefault();
-  const sourceIndex = dragIndex.value;
-  if (sourceIndex === null || sourceIndex === targetIndex) return;
-
-  const section = workStore.sections[sourceIndex];
-  workStore.moveSection(section, targetIndex);
-  dragIndex.value = null;
-  dragOverIndex.value = null;
-};
-
-const onDragEnd = () => {
-  dragIndex.value = null;
-  dragOverIndex.value = null;
-};
+const { dragIndex, dragOverIndex, onDragStart, onDragOver, onDragLeave, onDrop, onDragEnd } =
+  useDragSort((fromIndex, toIndex) => {
+    const section = workStore.sections[fromIndex];
+    workStore.moveSection(section, toIndex);
+  });
 </script>
