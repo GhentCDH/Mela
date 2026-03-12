@@ -9,3 +9,7 @@ export class CreateSectionDto extends createZodDto(
 ) {}
 
 export class SectionListDto extends createResponseData(SectionSchema) {}
+
+export class MoveSectionDto extends createZodDto(
+  SectionSchema.pick({ section_order: true }),
+) {}

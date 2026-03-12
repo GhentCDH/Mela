@@ -1,26 +1,12 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  UsePipes,
-} from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiResponse,
-} from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
 import { SectionDto } from '@mela/generated-dtos';
 
 import { SectionRepository } from './section.repository';
-import { CreateSectionDto, SectionListDto } from './dto';
+import { CreateSectionDto, MoveSectionDto, SectionListDto } from './dto';
 import { AbstractController } from '../shared/controller';
 
 @UsePipes(ZodValidationPipe)
@@ -31,8 +17,8 @@ export class SectionController extends AbstractController<
   SectionDto,
   CreateSectionDto
 > {
-  constructor(repository: SectionRepository) {
-    super(repository);
+  constructor(protected _repository: SectionRepository) {
+    super(_repository);
   }
 
   @Get()
@@ -56,7 +42,7 @@ export class SectionController extends AbstractController<
     type: SectionDto,
   })
   override async findAnnotations(@Param('id') id: string): Promise<SectionDto> {
-    return this.repository.findAnnotations(id);
+    return this._repository.findAnnotations(id);
   }
 
   @Get('/:id')
@@ -76,6 +62,17 @@ export class SectionController extends AbstractController<
     @Body() dto: CreateSectionDto,
   ): Promise<SectionDto> {
     return super.update(id, dto);
+  }
+
+  @Put('/:id/move')
+  @ApiResponse({
+    type: SectionDto,
+  })
+  override async moveSection(
+    @Param('id') id: string,
+    @Body() dto: MoveSectionDto,
+  ): Promise<SectionDto> {
+    return this._repository.moveSection(id, dto.section_order);
   }
 
   @Delete('/:id')

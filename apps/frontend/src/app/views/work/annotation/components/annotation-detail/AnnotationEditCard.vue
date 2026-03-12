@@ -193,7 +193,10 @@ const purposeLabel = computed(() => {
         :schema="validation.jsonSchema"
         :ui-schema="validation.metaDataSchema"
       />
-      <LinksDetail :store-id="storeId" :annotation="annotation" />
+      <LinksDetail
+        :store-id="storeId"
+        :annotation="annotation"
+      />
       <Alert
         v-if="toastStore.isVisible"
         type="info"

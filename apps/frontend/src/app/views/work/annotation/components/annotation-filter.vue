@@ -35,7 +35,7 @@
           class="checkbox checkbox-sm"
           :checked="isSelected(type.id)"
           @change="toggleType(type.id, ($event.target as HTMLInputElement).checked)"
-        />
+        >
         <span
           class="w-3 h-3 rounded-full shrink-0 ring-1 ring-black/10"
           :style="{

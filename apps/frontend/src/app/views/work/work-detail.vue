@@ -1,5 +1,5 @@
 <template>
-  <div class="m-auto max-w-xl w-lg p-2 flex gap-2 flex-col">
+  <div class="m-auto max-w-2xl w-2xl p-2 flex gap-2 flex-col overflow-auto">
     <Loading :loading="!formData" />
     <FormWithActions
       v-if="formData"
@@ -9,17 +9,40 @@
       :form-schema="formSchema.schema"
       @success="updateWork"
     />
-    {{ formData }}
     <Collapse title="Sections">
       <template #list>
         <CollapseRow v-if="workStore.sections.length < 0">
           <div class="list-col-grow">
-            <Alert message="No sections defined yet" type="info" />
+            <Alert
+              message="No sections defined yet"
+              type="info"
+            />
           </div>
         </CollapseRow>
-        <CollapseRow v-for="section in workStore.sections" :key="section.id">
+        <CollapseRow
+          v-for="(section, index) in workStore.sections"
+          :key="section.id"
+        >
+          <div class="flex">
+            <Btn
+              tootip="Move section up"
+              color="blank"
+              :icon="IconEnum.ChevronUp"
+              :outline="true"
+              :disabled="index === 0"
+              @click="workStore.moveSection(section, index - 1)"
+            />
+            <Btn
+              color="blank"
+              tootip="Move section up"
+              :icon="IconEnum.ChevronDown"
+              :outline="true"
+              :disabled="index === workStore.sections.length - 1"
+              @click="workStore.moveSection(section, index + 1)"
+            />
+          </div>
           <div class="text-xl font-thin opacity-30 tabular-nums">
-            {{ section.section_number }}
+            {{ section.section_number }} ({{ section.section_order }})
           </div>
           <div class="list-col-grow">
             <div>{{ section.title }}</div>
@@ -28,7 +51,7 @@
             <Btn
               :icon="IconEnum.Edit"
               :outline="true"
-              @click="editChapter(section)"
+              @click="workStore.editSection(section)"
             >
               Edit
             </Btn>
@@ -36,7 +59,7 @@
               :icon="IconEnum.Edit"
               :disabled="section.section_text.length < 1"
               :outline="true"
-              @click="editAnnotations(section)"
+              @click="workStore.editAnnotations(section)"
             >
               Annotations
             </Btn>
@@ -44,7 +67,7 @@
               :icon="IconEnum.Delete"
               :outline="true"
               :disabled="section.section_text.length > 0"
-              @click="deleteSection(section)"
+              @click="workStore.deleteSection(section)"
             >
               Delete
             </Btn>
@@ -53,8 +76,8 @@
         <CollapseRow>
           <Btn
             :icon="IconEnum.Plus"
-            @click="createChapter"
             :disabled="!workStore.work?.id"
+            @click="workStore.createSection()"
           >
             Create section
           </Btn>
@@ -67,14 +90,11 @@
 import { onMounted, ref, watch } from 'vue';
 import { Alert, Btn, Collapse, CollapseRow, IconEnum } from '@ghentcdh/ui';
 import { FormWithActions } from '@ghentcdh/json-forms-vue';
-import { Section } from '@mela/generated-types';
 
 import { useWorkMenu } from './work-menu.store';
 import { useWorkStore } from './work.store';
-import router from '../../../router';
 import { WorkFormSchema } from '@mela/text/shared';
 import Loading from '../../ui/loading.vue';
-import { NEW_SECTION_ID } from '../../utils/create-section';
 
 const formId = 'work-index';
 
@@ -84,34 +104,11 @@ const formSchema = WorkFormSchema;
 const workStore = useWorkStore();
 const workMenuStore = useWorkMenu();
 
-const editChapter = (section: any) => {
-  router.push({
-    name: 'section-detail',
-    params: { sectionId: section.id, workId: workStore.work?.id },
-  });
-};
-const editAnnotations = (section: any) => {
-  router.push({
-    name: 'annotation-editor',
-    params: {
-      sectionId: section.id,
-      workId: workStore.work.id,
-    },
-  });
-};
-
 onMounted(() => {
   workMenuStore.resetMenu();
   workMenuStore.resetBreadcrumbs();
 });
 
-const deleteSection = (section: Section) => {
-  workStore.deleteSection(section.id);
-};
-
-const createChapter = () => {
-  editChapter({ id: NEW_SECTION_ID });
-};
 watch(
   () => workStore.work,
   () => {

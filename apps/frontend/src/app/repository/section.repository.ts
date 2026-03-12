@@ -24,5 +24,19 @@ export const useSectionRepository = defineStore('useSectionRepository', () => {
       .then((res) => res.data);
   };
 
-  return { ...repo, getAnnotations };
+  const moveSection = async (sectionId: string, sectionOrder: number) => {
+    return useApi()
+      .put(`/section/${sectionId}/move`, { section_order: sectionOrder ?? 1 })
+      .then((res) => res.data)
+      .then((res) => {
+        NotificationService.success('Section moved');
+        return res.data;
+      })
+      .catch(() => {
+        NotificationService.error('Move section failed');
+        throw new Error('Move section failed');
+      });
+  };
+
+  return { ...repo, getAnnotations, moveSection };
 });

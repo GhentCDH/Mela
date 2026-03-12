@@ -23,7 +23,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
       },
       {
         path: ':workId',
-        component: () => import('./app/views/work/work-detail-wrapper.vue'),
+        // component: () => import('./app/views/work/work-detail-wrapper.vue'),
         children: [
           {
             path: '',

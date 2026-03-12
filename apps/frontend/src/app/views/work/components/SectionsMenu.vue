@@ -1,11 +1,20 @@
 <template>
-  <Collapse title="Work" :opened="workOpen">
+  <Collapse
+    title="Work"
+    :opened="workOpen"
+  >
     <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm p-2">
-      <dt class="opacity-50">Title</dt>
+      <dt class="opacity-50">
+        Title
+      </dt>
       <dd>{{ workStore.work?.title }}</dd>
-      <dt class="opacity-50">Author</dt>
+      <dt class="opacity-50">
+        Author
+      </dt>
       <dd>{{ workStore.work?.author?.name }}</dd>
-      <dt class="opacity-50">Year</dt>
+      <dt class="opacity-50">
+        Year
+      </dt>
       <dd>{{ workStore.work?.year }}</dd>
     </dl>
     <div class="flex justify-end p-2 pt-0">
@@ -24,39 +33,58 @@
     title="Active Section"
     :opened="activeSectionOpen"
   >
-    <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm p-2">
-      <dt class="opacity-50">Number</dt>
-      <dd>{{ activeSection.section_number }}</dd>
-      <dt class="opacity-50">Title</dt>
-      <dd>{{ activeSection.title }}</dd>
-      <dt class="opacity-50">Texts</dt>
-      <dd>{{ activeSection.section_text?.length ?? 0 }}</dd>
-    </dl>
-    <div class="flex justify-end gap-1 p-2 pt-0">
-      <Btn
-        :icon="IconEnum.Edit"
-        :outline="true"
-        size="xs"
-        tooltip="Edit Section"
-        @click="workStore.editSection(activeSection)"
-      >
-        Edit
-      </Btn>
-      <Btn
-        :icon="IconEnum.Text"
-        :outline="true"
-        size="xs"
-        tooltip="Edit annotations"
-        :disabled="activeSection.section_text?.length < 1"
-        @click="workStore.editAnnotations(activeSection)"
-      >
-        Annotations
-      </Btn>
-    </div>
+    <template v-if="isNewSection">
+      <Alert type="warning">
+        New section creation in progress
+      </Alert>
+    </template>
+    <template v-else>
+      <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm p-2">
+        <dt class="opacity-50">
+          Number
+        </dt>
+        <dd>{{ activeSection.section_number }}</dd>
+        <dt class="opacity-50">
+          Title
+        </dt>
+        <dd>{{ activeSection.title }}</dd>
+        <dt class="opacity-50">
+          Texts
+        </dt>
+        <dd>{{ activeSection.section_text?.length ?? 0 }}</dd>
+      </dl>
+      <div class="flex justify-end gap-1 p-2 pt-0">
+        <Btn
+          :icon="IconEnum.Edit"
+          :outline="true"
+          size="xs"
+          tooltip="Edit Section"
+          @click="workStore.editSection(activeSection)"
+        >
+          Edit
+        </Btn>
+        <Btn
+          :icon="IconEnum.Text"
+          :outline="true"
+          size="xs"
+          tooltip="Edit annotations"
+          :disabled="activeSection.section_text?.length < 1"
+          @click="workStore.editAnnotations(activeSection)"
+        >
+          Annotations
+        </Btn>
+      </div>
+    </template>
   </Collapse>
-  <Collapse title="Sections" :opened="sectionsOpen">
+  <Collapse
+    title="Sections"
+    :opened="sectionsOpen"
+  >
     <ul class="menu menu-sm gap-1 w-full p-0">
-      <li v-for="section in visibleSections" :key="section.id">
+      <li
+        v-for="section in visibleSections"
+        :key="section.id"
+      >
         <div
           class="flex items-center justify-between w-full gap-2"
           :class="{
@@ -94,7 +122,11 @@
       v-if="workStore.sections.length > MAX_VISIBLE"
       class="flex justify-center p-2"
     >
-      <Btn :outline="true" size="xs" @click="showAll = !showAll">
+      <Btn
+        :outline="true"
+        size="xs"
+        @click="showAll = !showAll"
+      >
         {{ showAll ? 'Show less' : `Show all (${workStore.sections.length})` }}
       </Btn>
     </div>
@@ -103,10 +135,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import { Btn, Collapse, IconEnum } from '@ghentcdh/ui';
+import { Alert, Btn, Collapse, IconEnum } from '@ghentcdh/ui';
 import { useWorkStore } from '../work.store';
 import { SectionsMenuProperties } from './SectionsMenu.properties';
 import { useSectionStore } from '../section-store';
+import { NEW_SECTION_ID } from '../../../utils/create-section';
 
 defineProps(SectionsMenuProperties);
 
@@ -122,4 +155,8 @@ const visibleSections = computed(() => {
   if (showAll.value) return workStore.sections;
   return workStore.sections.slice(0, MAX_VISIBLE);
 });
+
+const isNewSection = computed(
+  () => sectionStore.section?.id === NEW_SECTION_ID,
+);
 </script>

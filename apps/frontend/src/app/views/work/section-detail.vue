@@ -1,5 +1,9 @@
 <template>
-  <Drawer class="_h-full" :width-left="300" :width-right="20">
+  <Drawer
+    class="_h-full"
+    :width-left="300"
+    :width-right="20"
+  >
     <template #left-drawer>
       <div class="gap-2 flex flex-col">
         <SectionsMenu />
@@ -18,14 +22,22 @@
           :uischema="formSchema.form.uiSchema"
           @valid="onValid($event)"
           @change="onChange"
-          @errors="onErrors"
         />
       </div>
       <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]">
-        <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+        <Btn
+          :color="Color.secondary"
+          :outline="true"
+          @click="onCancel"
+        >
           Cancel
         </Btn>
-        <Btn :disabled="!valid" @click="onSubmit"> Save </Btn>
+        <Btn
+          :disabled="!valid"
+          @click="onSubmit"
+        >
+          Save
+        </Btn>
         <Btn
           :outline="true"
           :disabled="textId === NEW_SECTION_ID || !textId"
@@ -39,13 +51,11 @@
 </template>
 <script setup lang="ts">
 import { SectionFormSchema } from '@mela/text/shared';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { FormComponent } from '@ghentcdh/json-forms-vue';
 import { Btn, Color, Drawer } from '@ghentcdh/ui';
-
-import { useWorkMenu } from './work-menu.store';
 import Loading from '../../ui/loading.vue';
 import { useSectionStore } from './section-store';
 import { NEW_SECTION_ID } from '../../utils/create-section';
@@ -58,14 +68,12 @@ const sectionStore = useSectionStore();
 const valid = ref(false);
 const formData = ref(null);
 const formSchema = SectionFormSchema.schema;
-const workMenuStore = useWorkMenu();
+const workStore = useWorkStore();
 const router = useRouter();
 
 const textId = ref(null);
 
 const onValid = (v: boolean) => {
-  console.table(formData.value);
-  console.table(formData.value.text);
   valid.value = v;
 };
 
@@ -74,7 +82,6 @@ const onChange = (data: any) => {
 };
 
 const onCancel = () => {
-  console.table(sectionStore.section);
   formData.value = sectionStore.section
     ? SectionFormSchema.dtoSchema.parse(sectionStore.section)
     : null;
@@ -82,17 +89,14 @@ const onCancel = () => {
   valid.value = false;
 };
 
-const onErrors = (errors: any) => {
-  console.table(errors);
-};
-
 const onSubmit = () => {
   if (!valid.value) return;
 
-  sectionStore.saveOrUpdate(formData.value).then((section) => {
-    textId.value = sectionStore.section?.id;
+  sectionStore.saveOrUpdate(formData.value as any).then((section) => {
+    console.log('section', section);
+    workStore.editSection(section.id);
     sectionStore.reload();
-    useWorkStore().reload();
+    workStore.reload();
   });
   alert(
     'Section saved, existing annotations are not updated, this is still a manual process',
@@ -115,10 +119,4 @@ watch(
   },
   { immediate: true },
 );
-
-onMounted(() => {
-  workMenuStore.resetMenu();
-  workMenuStore.resetBreadcrumbs();
-  workMenuStore.resetView();
-});
 </script>

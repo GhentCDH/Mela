@@ -31,7 +31,11 @@ const createWork = () => {
     <div class="flex justify-between items-center mb-2">
       <h1>Works</h1>
       <div>
-        <Btn :icon="IconEnum.Plus" :outline="true" @click="createWork">
+        <Btn
+          :icon="IconEnum.Plus"
+          :outline="true"
+          @click="createWork"
+        >
           Add new record
         </Btn>
       </div>

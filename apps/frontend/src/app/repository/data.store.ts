@@ -55,8 +55,9 @@ export class DataStore<DATA, ITEM> {
     if (!this.repository.items?.create)
       throw new Error('createItem is not implemented for this repository');
 
-    return this.repository.items.create(item).then(() => {
+    return this.repository.items.create(item).then((data) => {
       this.reload();
+      return data;
     });
   }
 
@@ -64,8 +65,9 @@ export class DataStore<DATA, ITEM> {
     if (!this.repository.items?.patch)
       throw new Error('patchItem is not implemented for this repository');
 
-    return this.repository.items.patch(id, item).then(() => {
+    return this.repository.items.patch(id, item).then((data) => {
       this.reload();
+      return data;
     });
   }
 }
