@@ -58,26 +58,23 @@
             <Btn
               :icon="IconEnum.Edit"
               :outline="true"
+              tooltip="Edit section"
               @click="workStore.editSection(section)"
-            >
-              Edit
-            </Btn>
+            />
             <Btn
-              :icon="IconEnum.Edit"
+              :icon="IconEnum.Text"
               :disabled="section.section_text.length < 1"
               :outline="true"
+              tooltip="Edit annotations"
               @click="workStore.editAnnotations(section)"
-            >
-              Annotations
-            </Btn>
+            />
             <Btn
               :icon="IconEnum.Delete"
               :outline="true"
+              tooltip="Delete section"
               :disabled="section.section_text.length > 0"
               @click="workStore.deleteSection(section)"
-            >
-              Delete
-            </Btn>
+            />
           </div>
         </CollapseRow>
         <CollapseRow>
