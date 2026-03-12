@@ -28,16 +28,13 @@ import {
 } from '../../../../style/annotation.style';
 import { SourceModel } from '@mela/text/shared';
 import ContentNavbar from './content-navbar.vue';
+import { ContentEditProperties } from './content-edit.properties';
 import { useAnnotationLink } from './annotation-modal/useAnnotationLink';
 import { useAnnotationDefStore } from '../store/annotation-def.store';
 import { useToast } from './mode/useToast';
 import { useAnnotationEditStore } from './annotation-detail/AnnotationEdit.store';
 
-const properties = defineProps<{
-  source: SourceModel;
-  annotations: W3CAnnotation[];
-  storeId: string;
-}>();
+const properties = defineProps(ContentEditProperties);
 
 const textUuid = `text-content-${uuid()}`;
 let textAnnotation: AnnotatedText<W3CAnnotation>;

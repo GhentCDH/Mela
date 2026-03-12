@@ -2,7 +2,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { findPurpose } from '../../../../../style/annotation.style';
 import { useAnnotationStore } from '../../store/anntotation.store';
-import Navbar, { NavbarAction } from '../navbar.vue';
+import Navbar from '../navbar.vue';
+import type { NavbarAction } from '../navbar.properties';
 import { Alert, IconEnum } from '@ghentcdh/ui';
 import { AnnotationType as Type } from '../../../text-index/controls/identify.color';
 import { useAnnotationLink } from '../annotation-modal/useAnnotationLink';

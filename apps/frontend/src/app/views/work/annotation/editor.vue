@@ -1,6 +1,12 @@
 <template>
-  <Drawer class="_h-full" :width-left="300" :width-right="20">
+  <Drawer class="_h-full" :width-left="300">
     <Loading :loading="!sectionStore.section" />
+
+    <AnnotationEditor
+      :sources="sectionStore.sources"
+      :annotations="annotationStore.annotations"
+      :annotation-definitions="annotationDefStore.definitions"
+    />
     <div class="grid grid-cols-2 gap-2 py-2">
       <content-edit
         v-for="source in sectionStore.sources"
@@ -55,11 +61,14 @@ import { useAnnotationLink } from './components/annotation-modal/useAnnotationLi
 import { useAnnotationSelect } from './components/annotation-modal/useAnnotationSelect';
 import { useToast } from './components/mode/useToast';
 import SectionsMenu from '../components/SectionsMenu.vue';
+import { AnnotationEditor } from '@mela/annotation-editor';
+import { useAnnotationDefStore } from './store/annotation-def.store';
 
 const storeId = `identify_and_translate_${Date.now()}`;
 
 const sectionStore = useSectionStore();
 const annotationStore = useAnnotationStore(storeId);
+const annotationDefStore = useAnnotationDefStore();
 const annotationInfo = useAnnotationInfo();
 const annotationLink = useAnnotationLink();
 const annotationSelect = useAnnotationSelect();

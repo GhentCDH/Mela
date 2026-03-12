@@ -91,11 +91,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { Alert, Btn, Collapse, CollapseRow, IconEnum } from '@ghentcdh/ui';
 import { FormWithActions } from '@ghentcdh/json-forms-vue';
-
-import { useWorkMenu } from './work-menu.store';
 import { useWorkStore } from './work.store';
 import { useDragSort } from './composables/useDragSort';
 import { WorkFormSchema } from '@mela/text/shared';
@@ -107,12 +105,6 @@ const formData = ref(null);
 const formSchema = WorkFormSchema;
 
 const workStore = useWorkStore();
-const workMenuStore = useWorkMenu();
-
-onMounted(() => {
-  workMenuStore.resetMenu();
-  workMenuStore.resetBreadcrumbs();
-});
 
 watch(
   () => workStore.work,
@@ -129,9 +121,16 @@ const updateWork = () => {
   workStore.reload();
 };
 
-const { dragIndex, dragOverIndex, onDragStart, onDragOver, onDragLeave, onDrop, onDragEnd } =
-  useDragSort((fromIndex, toIndex) => {
-    const section = workStore.sections[fromIndex];
-    workStore.moveSection(section, toIndex);
-  });
+const {
+  dragIndex,
+  dragOverIndex,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onDragEnd,
+} = useDragSort((fromIndex, toIndex) => {
+  const section = workStore.sections[fromIndex];
+  workStore.moveSection(section, toIndex);
+});
 </script>

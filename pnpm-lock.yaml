@@ -28,6 +28,9 @@ importers:
       lodash-es:
         specifier: ^4.17.23
         version: 4.17.23
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.29(typescript@5.9.3)
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -111,10 +114,10 @@ importers:
         specifier: ~1.11.1
         version: 1.11.1(@swc/core@1.15.18(@swc/helpers@0.5.19))(@swc/types@0.1.25)(typescript@5.9.3)
       '@swc/core':
-        specifier: ~1.15.3
+        specifier: ~1.15.5
         version: 1.15.18(@swc/helpers@0.5.19)
       '@swc/helpers':
-        specifier: ~0.5.11
+        specifier: ~0.5.18
         version: 0.5.19
       '@types/node':
         specifier: 25.3.0
@@ -417,6 +420,8 @@ importers:
       zod:
         specifier: ^4.3.6
         version: 4.3.6
+
+  libs/annotation-editor: {}
 
 packages:
 

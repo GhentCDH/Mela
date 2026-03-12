@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@mela/text/api": ["libs/text/api/src/index.ts"],
-      "@mela/text/shared": ["libs/text/shared/src/index.ts"]
+      "@mela/text/shared": ["libs/text/shared/src/index.ts"],
+      "@mela/annotation-editor": ["libs/annotation-editor/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "generated"]

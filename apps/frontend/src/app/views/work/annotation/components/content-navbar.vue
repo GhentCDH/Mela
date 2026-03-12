@@ -6,7 +6,8 @@
 import { IconEnum } from '@ghentcdh/ui';
 import type { SourceModel } from '@mela/text/shared';
 import type { AnnotationType as Type } from '../../text-index/controls/identify.color';
-import Navbar, { NavbarAction } from './navbar.vue';
+import Navbar from './navbar.vue';
+import type { NavbarAction } from './navbar.properties';
 import { useAnnotationSelect } from './annotation-modal/useAnnotationSelect';
 
 const properties = defineProps<{

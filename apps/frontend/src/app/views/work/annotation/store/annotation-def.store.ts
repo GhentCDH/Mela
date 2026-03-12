@@ -77,6 +77,7 @@ const getDefinition = (
       default: createHighlightStyle(def.color),
       active: createHighlightStyle(def.color),
     },
+    isRoot: allowedChildrenPerType.root.includes(def.id),
     allowedChildren: (allowedChildrenPerType[def.id] ?? [])
       .map((key) => labels.find((k) => k.key === key))
       .filter(Boolean),
