@@ -13,15 +13,22 @@
       <template #list>
         <CollapseRow v-if="workStore.sections.length < 0">
           <div class="list-col-grow">
-            <Alert
-              message="No sections defined yet"
-              type="info"
-            />
+            <Alert message="No sections defined yet" type="info" />
           </div>
         </CollapseRow>
         <CollapseRow
           v-for="(section, index) in workStore.sections"
           :key="section.id"
+          draggable="true"
+          :class="{
+            'opacity-50': dragIndex === index,
+            'border-t-2 border-primary': dragOverIndex === index,
+          }"
+          @dragstart="onDragStart($event, index)"
+          @dragover="onDragOver($event, index)"
+          @dragleave="onDragLeave"
+          @drop="onDrop($event, index)"
+          @dragend="onDragEnd"
         >
           <div class="flex">
             <Btn
@@ -42,7 +49,7 @@
             />
           </div>
           <div class="text-xl font-thin opacity-30 tabular-nums">
-            {{ section.section_number }} ({{ section.section_order }})
+            {{ section.section_number }}
           </div>
           <div class="list-col-grow">
             <div>{{ section.title }}</div>
@@ -122,5 +129,39 @@ watch(
 
 const updateWork = () => {
   workStore.reload();
+};
+
+const dragIndex = ref<number | null>(null);
+const dragOverIndex = ref<number | null>(null);
+
+const onDragStart = (event: DragEvent, index: number) => {
+  dragIndex.value = index;
+  event.dataTransfer!.effectAllowed = 'move';
+};
+
+const onDragOver = (event: DragEvent, index: number) => {
+  event.preventDefault();
+  event.dataTransfer!.dropEffect = 'move';
+  dragOverIndex.value = index;
+};
+
+const onDragLeave = () => {
+  dragOverIndex.value = null;
+};
+
+const onDrop = (event: DragEvent, targetIndex: number) => {
+  event.preventDefault();
+  const sourceIndex = dragIndex.value;
+  if (sourceIndex === null || sourceIndex === targetIndex) return;
+
+  const section = workStore.sections[sourceIndex];
+  workStore.moveSection(section, targetIndex);
+  dragIndex.value = null;
+  dragOverIndex.value = null;
+};
+
+const onDragEnd = () => {
+  dragIndex.value = null;
+  dragOverIndex.value = null;
 };
 </script>

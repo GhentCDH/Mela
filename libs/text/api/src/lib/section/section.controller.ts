@@ -1,6 +1,21 @@
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiResponse } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  UsePipes,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 import { RequestDto } from '@ghentcdh/json-forms-api';
 import { SectionDto } from '@mela/generated-dtos';
