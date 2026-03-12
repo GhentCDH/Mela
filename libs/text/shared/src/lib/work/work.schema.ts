@@ -19,16 +19,12 @@ import {
 import { AuthorFormSchema } from '../author/author.schema';
 
 const detailStep = LayoutBuilder.horizontal<WorkWithRelations>().addControls(
-  ControlBuilder.properties('title').width('xl'),
-  ControlBuilder.asObject('author')
-    .autocomplete({
-      uri: `${AuthorFormSchema.schema.uri}?filter=name:`,
-      field: {
-        id: 'id',
-        label: 'name',
-      },
-    })
-    .width('xl'),
+  ControlBuilder.properties('title'),
+  ControlBuilder.asObject('author').autocomplete({
+    uri: `${AuthorFormSchema.schema.uri}?filter=name:`,
+    valueKey: 'id',
+    labelKey: 'name',
+  }),
   ControlBuilder.properties('year').width('sm'),
 );
 

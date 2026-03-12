@@ -9,20 +9,15 @@
       :form-schema="formSchema.schema"
       @success="updateWork"
     />
+    {{ formData }}
     <Collapse title="Sections">
       <template #list>
         <CollapseRow v-if="workStore.sections.length < 0">
           <div class="list-col-grow">
-            <Alert
-              message="No sections defined yet"
-              type="info"
-            />
+            <Alert message="No sections defined yet" type="info" />
           </div>
         </CollapseRow>
-        <CollapseRow
-          v-for="section in workStore.sections"
-          :key="section.id"
-        >
+        <CollapseRow v-for="section in workStore.sections" :key="section.id">
           <div class="text-xl font-thin opacity-30 tabular-nums">
             {{ section.section_number }}
           </div>
@@ -59,6 +54,7 @@
           <Btn
             :icon="IconEnum.Plus"
             @click="createChapter"
+            :disabled="!workStore.work?.id"
           >
             Create section
           </Btn>
@@ -119,9 +115,10 @@ const createChapter = () => {
 watch(
   () => workStore.work,
   () => {
-    formData.value = workStore.work
-      ? formSchema.dtoSchema.parse(workStore.work)
-      : null;
+    const data = workStore.work;
+
+    if (!data || !data.id) formData.value = {};
+    else formData.value = formSchema.dtoSchema.parse(workStore.work);
   },
   { immediate: true },
 );

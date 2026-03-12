@@ -15,6 +15,7 @@ const DEFAULT_TRANSLATION = {
   text_type: 'TRANSLATION',
 };
 
+export const NEW_WORK_ID = 'NEW_WORK_ID';
 export const NEW_SECTION_ID = 'NEW_SECTION_ID';
 
 const findSource = (section: Partial<SectionWithRelations>, defaultSource) => {

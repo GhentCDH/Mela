@@ -6,7 +6,10 @@ import Navbar, { NavbarAction } from '../navbar.vue';
 import { Alert, IconEnum } from '@ghentcdh/ui';
 import { AnnotationType as Type } from '../../../text-index/controls/identify.color';
 import { useAnnotationLink } from '../annotation-modal/useAnnotationLink';
-import { AnnotationDefinition, useAnnotationDefStore } from '../../store/annotation-def.store';
+import {
+  AnnotationDefinition,
+  useAnnotationDefStore,
+} from '../../store/annotation-def.store';
 import { getMetadata } from '../../utils/metadata';
 import Metadata from './Metadata.vue';
 import { useAnnotationSelect } from '../annotation-modal/useAnnotationSelect';
@@ -48,6 +51,10 @@ watch(
 
 function handleOutsideClick(e: MouseEvent) {
   if (annotationEditStore.disabled) return;
+  if (closeNextClick.value) {
+    closeNextClick.value = false;
+    return;
+  }
 
   if (cardRef.value && !cardRef.value.contains(e.target as Node)) {
     console.log('close');
@@ -186,10 +193,7 @@ const purposeLabel = computed(() => {
         :schema="validation.jsonSchema"
         :ui-schema="validation.metaDataSchema"
       />
-      <LinksDetail
-        :store-id="storeId"
-        :annotation="annotation"
-      />
+      <LinksDetail :store-id="storeId" :annotation="annotation" />
       <Alert
         v-if="toastStore.isVisible"
         type="info"

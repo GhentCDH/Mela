@@ -87,6 +87,7 @@
       "better-sqlite3"
     ],
     "overrides": {
+      "@ghentcdh/json-forms-core": "link:../ghentcdh/dist/libs/json-forms/core",
       "@ghentcdh/json-forms-vue": "link:../ghentcdh/dist/libs/json-forms/vue",
       "@ghentcdh/ui": "link:../ghentcdh/dist/libs/ui"
     },

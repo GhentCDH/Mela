@@ -1,43 +1,41 @@
 <template>
-  <Loading :loading="!formData" />
-  <div class="h-full flex flex-col gap-2 overflow-hidden">
-    <div
-      class="bg-white w-full border border-gray-300 p-2 flex-grow overflow-y-auto"
-    >
-      <FormComponent
-        v-if="formData"
-        :id="`modal-${id}`"
-        v-model="formData"
-        :schema="formSchema.form.schema"
-        :uischema="formSchema.form.uiSchema"
-        @valid="onValid($event)"
-        @change="onChange"
-        @errors="onErrors"
-      />
+  <Drawer class="_h-full" :width-left="300" :width-right="20">
+    <template #left-drawer>
+      <div class="gap-2 flex flex-col">
+        <SectionsMenu />
+      </div>
+    </template>
+    <Loading :loading="!formData" />
+    <div class="h-full flex flex-col gap-2 overflow-hidden">
+      <div
+        class="bg-white w-full border border-gray-300 p-2 flex-grow overflow-y-auto"
+      >
+        <FormComponent
+          v-if="formData"
+          :id="`modal-${id}`"
+          v-model="formData"
+          :schema="formSchema.form.schema"
+          :uischema="formSchema.form.uiSchema"
+          @valid="onValid($event)"
+          @change="onChange"
+          @errors="onErrors"
+        />
+      </div>
+      <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]">
+        <Btn :color="Color.secondary" :outline="true" @click="onCancel">
+          Cancel
+        </Btn>
+        <Btn :disabled="!valid" @click="onSubmit"> Save </Btn>
+        <Btn
+          :outline="true"
+          :disabled="textId === NEW_SECTION_ID || !textId"
+          @click="goToAnnotations"
+        >
+          Create annotations
+        </Btn>
+      </div>
     </div>
-    <div class="flex justify-end gap-2 p-2 border-t-1 border-gray-300 z-[30]">
-      <Btn
-        :color="Color.secondary"
-        :outline="true"
-        @click="onCancel"
-      >
-        Cancel
-      </Btn>
-      <Btn
-        :disabled="!valid"
-        @click="onSubmit"
-      >
-        Save
-      </Btn>
-      <Btn
-        :outline="true"
-        :disabled="textId === NEW_SECTION_ID || !textId"
-        @click="goToAnnotations"
-      >
-        Create annotations
-      </Btn>
-    </div>
-  </div>
+  </Drawer>
 </template>
 <script setup lang="ts">
 import { SectionFormSchema } from '@mela/text/shared';
@@ -45,12 +43,13 @@ import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { FormComponent } from '@ghentcdh/json-forms-vue';
-import { Btn, Color } from '@ghentcdh/ui';
+import { Btn, Color, Drawer } from '@ghentcdh/ui';
 
 import { useWorkMenu } from './work-menu.store';
 import Loading from '../../ui/loading.vue';
 import { useSectionStore } from './section-store';
 import { NEW_SECTION_ID } from '../../utils/create-section';
+import SectionsMenu from './components/SectionsMenu.vue';
 
 const id = `section`;
 const sectionStore = useSectionStore();

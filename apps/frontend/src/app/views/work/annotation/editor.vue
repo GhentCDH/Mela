@@ -1,9 +1,5 @@
 <template>
-  <Drawer
-    class="_h-full"
-    :width-left="300"
-    :width-right="20"
-  >
+  <Drawer class="_h-full" :width-left="300" :width-right="20">
     <Loading :loading="!sectionStore.section" />
     <div class="grid grid-cols-2 gap-2">
       <content-edit
@@ -15,7 +11,10 @@
       />
     </div>
     <template #left-drawer>
-      <AnnotationFilter :store-id="storeId" />
+      <div class="gap-2 flex flex-col">
+        <SectionsMenu />
+        <AnnotationFilter :store-id="storeId" />
+      </div>
     </template>
   </Drawer>
   <EditToast
@@ -55,6 +54,7 @@ import AnnotationSelectModal from './components/annotation-modal/AnnotationSelec
 import { useAnnotationLink } from './components/annotation-modal/useAnnotationLink';
 import { useAnnotationSelect } from './components/annotation-modal/useAnnotationSelect';
 import { useToast } from './components/mode/useToast';
+import SectionsMenu from '../components/SectionsMenu.vue';
 
 const storeId = `identify_and_translate_${Date.now()}`;
 
