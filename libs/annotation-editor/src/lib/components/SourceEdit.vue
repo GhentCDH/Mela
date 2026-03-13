@@ -1,19 +1,11 @@
 <template>
-  <Collapse :title="source.content.label">
-    <SourceNavbar v-bind="properties" />
-    <div :id="textUuid"
-  /></Collapse>
+  <SourceNavbar v-bind="properties" />
+  <div :id="textUuid" />
 </template>
 <script lang="ts" setup>
 import { SourceEditProperties } from './SourceEdit.properties';
-
-import { Collapse } from '@ghentcdh/ui';
 import { v4 as uuid } from 'uuid';
-import {
-  AnnotatedText,
-  createAnnotatedText,
-  W3CAnnotation,
-} from '@ghentcdh/annotated-text';
+import { AnnotatedText, createAnnotatedText, W3CAnnotation } from '@ghentcdh/annotated-text';
 import { onMounted, watch } from 'vue';
 import SourceNavbar from './SourceNavbar.vue';
 
